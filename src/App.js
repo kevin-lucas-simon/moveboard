@@ -1,25 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import {Canvas} from "@react-three/fiber";
+import {UserControls} from "./components/UserControls";
+import {ControlledPlane} from "./components/ControlledPlane";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <UserControls>
+                <Canvas camera={{position: [0, 7, 0], fov: 75}}>
+                    <ambientLight intensity={Math.PI / 2} />
+                    <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} decay={0} intensity={Math.PI} />
+                    <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+
+                    <ControlledPlane />
+                </Canvas>
+            </UserControls>
+        </>
+    );
 }
 
 export default App;
