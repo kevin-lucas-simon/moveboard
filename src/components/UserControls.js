@@ -1,7 +1,8 @@
 import {createContext, useState} from "react";
-import {Euler, Quaternion} from "three";
+import {Euler, Quaternion, Vector3} from "three";
+import * as THREE from "three/src/math/MathUtils";
 
-export const RotationContext = createContext(1);
+export const RotationContext = createContext(new Euler());
 
 export function UserControls({children}) {
     const [rotationRate, setRotationRate] = useState(null)
@@ -15,23 +16,16 @@ export function UserControls({children}) {
                     // (optional) Do something after API prompt dismissed.
                     if ( response == "granted" ) {
                         window.addEventListener( "deviceorientation", (e) => {
-                            setRotationRate(e)
-
-                            // correct
-                            // const euler = new Euler(
-                            //     (e.beta || 0) * (Math.PI / 180),
-                            //     (e.alpha || 0) * (Math.PI / 180),
-                            //     (-e.gamma || 0) * (Math.PI / 180),
-                            //     'XYZ'
-                            // )
-
+                            // calculation order always: alpha, beta, gamma!
+                            // https://stackoverflow.com/questions/11814488/webgl-opengl-rotate-camera-according-to-device-orientation
                             const euler = new Euler(
-                                (e.beta || 0) * (Math.PI / 360),
-                                0,
-                                (-e.gamma || 0) * (Math.PI / 360),
-                                'XYZ'
+                                e.beta * Math.PI / 180,
+                                e.alpha * Math.PI / 180,
+                                -e.gamma * Math.PI / 180,
+                                'YXZ',
                             )
 
+                            setRotationRate(e)
                             setRotationVector(euler)
                         })
                     }
