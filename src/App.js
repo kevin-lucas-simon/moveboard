@@ -7,21 +7,19 @@ import {Physics} from "@react-three/rapier";
 
 function App() {
     return (
-        <>
-            <UserControls>
-                <Canvas>
-                    <ambientLight intensity={Math.PI / 2} />
-                    <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} decay={0} intensity={Math.PI} />
-                    <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+        <UserControls>
+            <Canvas>
+                <ambientLight intensity={Math.PI / 2} />
+                <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} decay={0} intensity={Math.PI} />
+                <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
 
-                    <FollowCamera target={{ position: { x: 0, y: 0, z: 0 } }} distance={5}/>
+                <FollowCamera target={{ position: { x: 0, y: 0, z: 0 } }} distance={5}/>
 
-                    <Physics>
-                        <ControlledPlane />
-                    </Physics>
-                </Canvas>
-            </UserControls>
-        </>
+                <Physics>
+                    <ControlledPlane />
+                </Physics>
+            </Canvas>
+        </UserControls>
     );
 }
 

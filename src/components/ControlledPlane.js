@@ -4,7 +4,7 @@ import {quat, RigidBody, vec3} from "@react-three/rapier";
 
 export function ControlledPlane() {
     const rigidBody = useRef();
-    const rotationContext = useContext(DeviceRotationContext);
+    const deviceRotation = useContext(DeviceRotationContext);
 
     useEffect(() => {
         if (rigidBody.current) {
@@ -19,18 +19,16 @@ export function ControlledPlane() {
 
     return (
         <>
-            <RigidBody ref={rigidBody} type={"fixed"}>
-                <mesh position={[0, 0, 0]}
-                      rotation={rotationContext}
-                >
+            <RigidBody ref={rigidBody} type={"fixed"} rotation={[deviceRotation.x, deviceRotation.y, deviceRotation.z]}>
+                <mesh position={[0, 0, 0]}>
                     <boxGeometry args={[5, 1, 5]} />
                     <meshStandardMaterial color={'green'} />
                 </mesh>
             </RigidBody>
 
-            <RigidBody>
+            <RigidBody colliders={"ball"}>
                 <mesh position={[0, 1, 0]}>
-                    <boxGeometry args={[1, 1, 1]} />
+                    <sphereGeometry args={[0.5]}/>
                     <meshStandardMaterial color={"hotpink"} />
                 </mesh>
             </RigidBody>

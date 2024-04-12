@@ -3,8 +3,14 @@ import {Euler} from "three";
 
 export const DeviceRotationContext = createContext(new Euler());
 
+const UserControlState = {
+    Game: 'Game',
+    Debug: 'Debug',
+    NotStarted: null,
+}
+
 export function UserControls({children}) {
-    const [rotationRate, setRotationRate] = useState(null)
+    const [userControlState, setUserControlState] = useState(UserControlState.NotStarted)
     const [rotationVector, setRotationVector] = useState(new Euler(0,0,0,'XYZ'))
 
     function permission () {
@@ -23,31 +29,43 @@ export function UserControls({children}) {
                             )
                             euler.reorder('XYZ')
 
-                            setRotationRate(e)
+                            setUserControlState(UserControlState.Game)
                             setRotationVector(euler)
                         })
                     }
                 })
                 .catch( console.error )
         } else {
-            alert( "DeviceMotionEvent is not defined" );
+            setUserControlState(UserControlState.Debug)
+            alert( "DeviceMotionEvent is not defined. Debug mode is activated." );
         }
     }
 
     return (
         <>
-            <div style={{height: "400px"}}>
-                <DeviceRotationContext.Provider value={rotationVector}>
-                    {children}
-                </DeviceRotationContext.Provider>
-            </div>
-            <div>
-                <button onClick={permission}>Click me</button>
-                <hr></hr>
-                <small>α: {rotationRate?.alpha}</small><br></br>
-                <small>β: {rotationRate?.beta}</small><br></br>
-                <small>γ: {rotationRate?.gamma}</small>
-            </div>
+            {userControlState === UserControlState.NotStarted &&
+                <div className="fixed z-10 w-full h-full flex items-center justify-center backdrop-blur p-8">
+                    <div className="bg-white rounded p-8">
+                        <h1 className="text-2xl font-bold mb-2">
+                            Moveboard Techdemo
+                        </h1>
+                        <p className="mb-2">
+                            Utilisation of gravity and motion data in 3D web engine.
+                            <br/>
+                            Please use your smartphone.
+                        </p>
+                        <button
+                            onClick={permission}
+                            className="border-2 border-black bg-black text-white rounded p-1 hover:bg-white hover:text-black transition"
+                        >
+                            Start demo
+                        </button>
+                    </div>
+                </div>
+            }
+            <DeviceRotationContext.Provider value={rotationVector}>
+                {children}
+            </DeviceRotationContext.Provider>
         </>
     );
 }
