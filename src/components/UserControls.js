@@ -1,8 +1,7 @@
 import {createContext, useState} from "react";
-import {Euler, Quaternion, Vector3} from "three";
-import * as THREE from "three/src/math/MathUtils";
+import {Euler} from "three";
 
-export const RotationContext = createContext(new Euler());
+export const DeviceRotationContext = createContext(new Euler());
 
 export function UserControls({children}) {
     const [rotationRate, setRotationRate] = useState(null)
@@ -10,11 +9,9 @@ export function UserControls({children}) {
 
     function permission () {
         if ( typeof( DeviceOrientationEvent ) !== "undefined" && typeof( DeviceOrientationEvent.requestPermission ) === "function" ) {
-            // (optional) Do something before API request prompt.
             DeviceOrientationEvent.requestPermission()
                 .then( response => {
-                    // (optional) Do something after API prompt dismissed.
-                    if ( response == "granted" ) {
+                    if ( response === "granted" ) {
                         window.addEventListener( "deviceorientation", (e) => {
                             // calculation order always: alpha, beta, gamma!
                             // https://stackoverflow.com/questions/11814488/webgl-opengl-rotate-camera-according-to-device-orientation
@@ -24,6 +21,7 @@ export function UserControls({children}) {
                                 -e.gamma * Math.PI / 180,
                                 'YXZ',
                             )
+                            euler.reorder('XYZ')
 
                             setRotationRate(e)
                             setRotationVector(euler)
@@ -39,9 +37,9 @@ export function UserControls({children}) {
     return (
         <>
             <div style={{height: "400px"}}>
-                <RotationContext.Provider value={rotationVector}>
+                <DeviceRotationContext.Provider value={rotationVector}>
                     {children}
-                </RotationContext.Provider>
+                </DeviceRotationContext.Provider>
             </div>
             <div>
                 <button onClick={permission}>Click me</button>
@@ -49,10 +47,6 @@ export function UserControls({children}) {
                 <small>α: {rotationRate?.alpha}</small><br></br>
                 <small>β: {rotationRate?.beta}</small><br></br>
                 <small>γ: {rotationRate?.gamma}</small>
-                <hr></hr>
-                <small>x: {rotationVector.x}</small><br></br>
-                <small>y: {rotationVector.y}</small><br></br>
-                <small>z: {rotationVector.z}</small>
             </div>
         </>
     );
