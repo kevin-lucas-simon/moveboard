@@ -37,7 +37,7 @@ export function UserControls({children}) {
                 .catch( console.error )
         } else {
             setUserControlState(UserControlState.Debug)
-            alert( "DeviceMotionEvent is not defined. Debug mode is activated." );
+            // alert( "DeviceMotionEvent is not defined. Debug mode is activated." );
         }
     }
 
