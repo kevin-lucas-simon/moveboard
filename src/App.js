@@ -3,7 +3,6 @@ import {Canvas} from "@react-three/fiber";
 import {UserControls} from "./components/UserControls";
 import {ControlledPlane} from "./components/ControlledPlane";
 import {FollowCamera} from "./components/FollowCamera";
-import {Physics} from "@react-three/rapier";
 import {PlayerPhysics} from "./components/PlayerPhysics";
 
 function App() {
