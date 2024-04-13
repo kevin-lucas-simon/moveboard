@@ -1,7 +1,7 @@
 import {createContext, useState} from "react";
-import {Euler} from "three";
+import {Vector3} from "three";
 
-export const DeviceRotationContext = createContext(new Euler());
+export const DeviceMotionContext = createContext(new Vector3(0, -9.81, 0));
 
 const UserControlState = {
     Game: 'Game',
@@ -11,26 +11,20 @@ const UserControlState = {
 
 export function UserControls({children}) {
     const [userControlState, setUserControlState] = useState(UserControlState.NotStarted)
-    const [rotationVector, setRotationVector] = useState(new Euler(0,0,0,'XYZ'))
+    const [motionVector, setMotionVector] = useState(new Vector3(0, -9.81, 0))
 
     function permission () {
-        if ( typeof( DeviceOrientationEvent ) !== "undefined" && typeof( DeviceOrientationEvent.requestPermission ) === "function" ) {
-            DeviceOrientationEvent.requestPermission()
+        if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
+            DeviceMotionEvent.requestPermission()
                 .then( response => {
                     if ( response === "granted" ) {
-                        window.addEventListener( "deviceorientation", (e) => {
-                            // calculation order always: alpha, beta, gamma!
-                            // https://stackoverflow.com/questions/11814488/webgl-opengl-rotate-camera-according-to-device-orientation
-                            const euler = new Euler(
-                                e.beta * Math.PI / 180,
-                                e.alpha * Math.PI / 180,
-                                -e.gamma * Math.PI / 180,
-                                'YXZ',
-                            )
-                            euler.reorder('XYZ')
-
+                        window.addEventListener( "devicemotion", (e) => {
+                            setMotionVector(new Vector3(
+                                e.accelerationIncludingGravity.x,
+                                e.accelerationIncludingGravity.z,
+                                -e.accelerationIncludingGravity.y,
+                            ))
                             setUserControlState(UserControlState.Game)
-                            setRotationVector(euler)
                         })
                     }
                 })
@@ -63,9 +57,9 @@ export function UserControls({children}) {
                     </div>
                 </div>
             }
-            <DeviceRotationContext.Provider value={rotationVector}>
+            <DeviceMotionContext.Provider value={motionVector}>
                 {children}
-            </DeviceRotationContext.Provider>
+            </DeviceMotionContext.Provider>
         </>
     );
 }
