@@ -1,22 +1,105 @@
-import {useRef} from "react";
 import {RigidBody} from "@react-three/rapier";
 
 export function ControlledPlane() {
-    const rigidBody = useRef();
+    const box = {
+        x: 5,
+        y: 3,
+        z: 5,
+        thickness: 1,
+        color: "#dddddd",
+    }
 
     return (
         <>
+            {/* ball */}
+            <RigidBody colliders={"ball"} canSleep={false}>
+                <mesh position={[0, 1, 0]}>
+                    <sphereGeometry args={[0.5]}/>
+                    <meshStandardMaterial color={"hotpink"} />
+                </mesh>
+            </RigidBody>
+
+            {/* floor */}
             <RigidBody type={"fixed"}>
-                <mesh position={[0, 0, 0]}>
-                    <boxGeometry args={[5, 1, 5]} />
+                <mesh position={[0, -box.thickness/2, 0]}>
+                    <boxGeometry args={[
+                        box.x + box.thickness,
+                        box.thickness,
+                        box.z + box.thickness,
+                    ]} />
                     <meshStandardMaterial color={'green'} />
                 </mesh>
             </RigidBody>
 
-            <RigidBody ref={rigidBody} colliders={"ball"} canSleep={false}>
-                <mesh position={[0, 1, 0]}>
-                    <sphereGeometry args={[0.5]}/>
-                    <meshStandardMaterial color={"hotpink"} />
+            {/* short walls on x-axis */}
+            <RigidBody type={"fixed"}>
+                <mesh position={[
+                    box.x/2 + box.thickness,
+                    box.y/2,
+                    0,
+                ]}>
+                    <boxGeometry args={[
+                        box.thickness,
+                        box.y + 2 * box.thickness,
+                        box.z + box.thickness,
+                    ]} />
+                    <meshStandardMaterial color={box.color} />
+                </mesh>
+            </RigidBody>
+            <RigidBody type={"fixed"}>
+                <mesh position={[
+                    -(box.x/2 + box.thickness),
+                    box.y/2,
+                    0,
+                ]}>
+                    <boxGeometry args={[
+                        box.thickness,
+                        box.y + 2 * box.thickness,
+                        box.z + box.thickness,
+                    ]} />
+                    <meshStandardMaterial color={box.color} />
+                </mesh>
+            </RigidBody>
+
+            {/* long walls on z-axis */}
+            <RigidBody type={"fixed"}>
+                <mesh position={[
+                    0,
+                    box.y/2,
+                    box.z/2 + box.thickness,
+                ]}>
+                    <boxGeometry args={[
+                        box.x + 3 * box.thickness,
+                        box.y + 2 * box.thickness,
+                        box.thickness,
+                    ]} />
+                    <meshStandardMaterial color={box.color} />
+                </mesh>
+            </RigidBody>
+            <RigidBody type={"fixed"}>
+                <mesh position={[
+                    0,
+                    box.y/2,
+                    -(box.z/2 + box.thickness),
+                ]}>
+                    <boxGeometry args={[
+                        box.x + 3 * box.thickness,
+                        box.y + 2 * box.thickness,
+                        box.thickness,
+                    ]} />
+                    <meshStandardMaterial color={box.color} />
+                </mesh>
+            </RigidBody>
+
+            {/* ceiling */}
+            <RigidBody type={"fixed"}>
+                <mesh position={[0, box.y+box.thickness/2, 0]}>
+                    <boxGeometry args={[
+                        box.x + box.thickness,
+                        box.thickness,
+                        box.z + box.thickness,
+                    ]} />
+                    <meshPhongMaterial color={'lightblue'} opacity={0.1} transparent="true"/>
                 </mesh>
             </RigidBody>
         </>

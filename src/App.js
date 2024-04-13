@@ -4,6 +4,7 @@ import {UserControls} from "./components/UserControls";
 import {ControlledPlane} from "./components/ControlledPlane";
 import {FollowCamera} from "./components/FollowCamera";
 import {PlayerPhysics} from "./components/PlayerPhysics";
+import {OrbitControls} from "@react-three/drei";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
 
                 {/*<FollowCamera target={{ position: { x: 0, y: 0, z: 0 } }} distance={5}/>*/}
+                {/*<OrbitControls />*/}
 
                 <PlayerPhysics>
                     <ControlledPlane />
