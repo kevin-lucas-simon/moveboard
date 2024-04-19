@@ -19,10 +19,12 @@ export function UserControls({children}) {
                 .then( response => {
                     if ( response === "granted" ) {
                         window.addEventListener( "devicemotion", (e) => {
+                            const realScreenSizeToSimulationFactor = 10; // TODO diese Logik einbauen https://jsfiddle.net/peteng/6MmvB/
+
                             setMotionVector(new Vector3(
-                                e.accelerationIncludingGravity.x,
-                                e.accelerationIncludingGravity.z,
-                                -e.accelerationIncludingGravity.y,
+                                e.accelerationIncludingGravity.x * realScreenSizeToSimulationFactor,
+                                e.accelerationIncludingGravity.z * realScreenSizeToSimulationFactor,
+                                -e.accelerationIncludingGravity.y * realScreenSizeToSimulationFactor,
                             ))
                             setUserControlState(UserControlState.Game)
                         })

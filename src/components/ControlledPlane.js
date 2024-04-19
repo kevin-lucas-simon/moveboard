@@ -12,7 +12,8 @@ export function ControlledPlane() {
     return (
         <>
             {/* ball */}
-            <RigidBody colliders={"ball"} canSleep={false}>
+            {/* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */}
+            <RigidBody colliders={"ball"} canSleep={false} restitution={0.98}>
                 <mesh position={[0, 1, 0]}>
                     <sphereGeometry args={[0.5]}/>
                     <meshStandardMaterial color={"hotpink"} />
@@ -35,12 +36,12 @@ export function ControlledPlane() {
             <RigidBody type={"fixed"}>
                 <mesh position={[
                     box.x/2 + box.thickness,
-                    box.y/2,
+                    box.y/2 - box.thickness/2,
                     0,
                 ]}>
                     <boxGeometry args={[
                         box.thickness,
-                        box.y + 2 * box.thickness,
+                        box.y + box.thickness,
                         box.z + box.thickness,
                     ]} />
                     <meshStandardMaterial color={box.color} />
@@ -49,12 +50,12 @@ export function ControlledPlane() {
             <RigidBody type={"fixed"}>
                 <mesh position={[
                     -(box.x/2 + box.thickness),
-                    box.y/2,
+                    box.y/2 - box.thickness/2,
                     0,
                 ]}>
                     <boxGeometry args={[
                         box.thickness,
-                        box.y + 2 * box.thickness,
+                        box.y + box.thickness,
                         box.z + box.thickness,
                     ]} />
                     <meshStandardMaterial color={box.color} />
@@ -65,12 +66,12 @@ export function ControlledPlane() {
             <RigidBody type={"fixed"}>
                 <mesh position={[
                     0,
-                    box.y/2,
+                    box.y/2 - box.thickness/2,
                     box.z/2 + box.thickness,
                 ]}>
                     <boxGeometry args={[
                         box.x + 3 * box.thickness,
-                        box.y + 2 * box.thickness,
+                        box.y + box.thickness,
                         box.thickness,
                     ]} />
                     <meshStandardMaterial color={box.color} />
@@ -79,12 +80,12 @@ export function ControlledPlane() {
             <RigidBody type={"fixed"}>
                 <mesh position={[
                     0,
-                    box.y/2,
+                    box.y/2 - box.thickness/2,
                     -(box.z/2 + box.thickness),
                 ]}>
                     <boxGeometry args={[
                         box.x + 3 * box.thickness,
-                        box.y + 2 * box.thickness,
+                        box.y + box.thickness,
                         box.thickness,
                     ]} />
                     <meshStandardMaterial color={box.color} />
@@ -95,9 +96,9 @@ export function ControlledPlane() {
             <RigidBody type={"fixed"}>
                 <mesh position={[0, box.y+box.thickness/2, 0]}>
                     <boxGeometry args={[
-                        box.x + box.thickness,
+                        box.x + 3 * box.thickness,
                         box.thickness,
-                        box.z + box.thickness,
+                        box.z + 3 * box.thickness,
                     ]} />
                     <meshPhongMaterial color={'lightblue'} opacity={0.1} transparent="true"/>
                 </mesh>
