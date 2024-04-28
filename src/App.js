@@ -3,7 +3,8 @@ import {Canvas} from "@react-three/fiber";
 import {UserControls} from "./components/UserControls";
 import {ControlledPlane} from "./components/ControlledPlane";
 import {PlayerPhysics} from "./components/PlayerPhysics";
-import {OrbitControls} from "@react-three/drei";
+import {GizmoHelper, GizmoViewport, Grid, OrbitControls} from "@react-three/drei";
+import {ChunkLoader} from "./components/ChunkLoader";
 
 function App() {
     return (
@@ -15,11 +16,17 @@ function App() {
                 <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
                 {/*<FollowCamera target={{ position: { x: 0, y: 0, z: 0 } }} distance={5}/>*/}
-                <OrbitControls />
 
                 <PlayerPhysics>
-                    <ControlledPlane />
+                    {/*<ControlledPlane />*/}
+                    <ChunkLoader />
                 </PlayerPhysics>
+
+                <OrbitControls />
+                <Grid infiniteGrid={true}/>
+                <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                    <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
+                </GizmoHelper>
             </Canvas>
         </UserControls>
     );
