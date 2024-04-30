@@ -1,113 +1,92 @@
 import {Component} from "react";
-import {RigidBody} from "@react-three/rapier";
+import {BasicBlock} from "./blocks/BasicBlock";
+import {Vector3} from "three";
 
 export class BlockChunk extends Component {
-    constructor(key, chunk, joint = null, joint_chunk = null) {
+    constructor(key, chunkData, jointKey = null, jointData = null) {
         super();
-
-        this.key = key;
-        if (!this.key) {
-            console.error("No key for chunk given!", chunk)
-        }
-
-        this.config = chunk?.config ?? {}
-        this.blocks = chunk?.blocks ?? []
-        this.joints = chunk?.joints ?? []
-        this.entities = chunk?.entities ?? []
-
-        // get chunk dimensions
-        let minPos = {x: 0, y: 0, z: 0}
-        let maxPos = {x: 0, y: 0, z: 0}
-        this.blocks.forEach(block => {
-            minPos = {
-                x: block.position.x < minPos.x ? block.position.x : minPos.x,
-                y: block.position.y < minPos.y ? block.position.y : minPos.y,
-                z: block.position.z < minPos.z ? block.position.z : minPos.z,
-            }
-            maxPos = {
-                x: (block.position.x+block.dimension.x) > maxPos.x ? (block.position.x+block.dimension.x) : maxPos.x,
-                y: (block.position.y+block.dimension.y) > maxPos.y ? (block.position.y+block.dimension.y) : maxPos.y,
-                z: (block.position.z+block.dimension.z) > maxPos.z ? (block.position.z+block.dimension.z) : maxPos.z,
-            }
-        })
-        this.chunkDimension = {
-            x: Math.abs(minPos.x) + Math.abs(maxPos.x),
-            y: Math.abs(minPos.y) + Math.abs(maxPos.y),
-            z: Math.abs(minPos.z) + Math.abs(maxPos.z),
-        }
-
-        // move block coordinates to positive numbers for easier calculation
-        this.blocks.forEach(block => {
-            block.position = {
-                x: minPos.x >= 0 ? block.position.x : block.position.x-minPos.x,
-                y: minPos.y >= 0 ? block.position.y : block.position.y-minPos.y,
-                z: minPos.z >= 0 ? block.position.z : block.position.z-minPos.z,
-            }
-        })
-        this.joints.forEach(joint => {
-            joint.position = {
-                x: minPos.x >= 0 ? joint.position.x : joint.position.x-minPos.x,
-                y: minPos.y >= 0 ? joint.position.y : joint.position.y-minPos.y,
-                z: minPos.z >= 0 ? joint.position.z : joint.position.z-minPos.z,
-            }
-        })
-
-        // joint.direction
-        if (!joint || joint.chunk !== this.key) {
-            this.chunkPosition = {x: 0, y: 0, z:0}
-        } else {
-            this.joint = this.joints.find(x => x.chunk === joint_chunk) // TODO unschön, Übergabe muss anders erfolgen
-
-            this.chunkPosition = {
-                x: joint.position.x - this.joint.position.x
-                    + (joint.direction === "+x" ? joint.dimension.x : 0)
-                    + (joint.direction === "-x" ? -joint.dimension.x : 0)
-                ,
-                y: joint.position.y - this.joint.position.y
-                    + (joint.direction === "+y" ? joint.dimension.y : 0)
-                    + (joint.direction === "-y" ? -joint.dimension.y : 0)
-                ,
-                z: joint.position.z - this.joint.position.z
-                    + (joint.direction === "+z" ? joint.dimension.z : 0)
-                    + (joint.direction === "-z" ? -joint.dimension.z : 0)
-                ,
-            }
-        }
-    }
-
-    renderBlock(key, blockData) { // TODO ne eigene Klasse wäre gut, die einmal "block:basic" als auch "joint:basic" simuliert (letzteres erbt vom ersteren!)
         if (!key) {
-            console.error("No key for block given!", blockData)
+            console.error("No key for chunk given!", chunkData)
         }
-        switch (blockData.type) {
-            case "block:basic": { // TODO vlt wäre die switch case methode in Datentypen zu automatisieren ziemlich nice?
-                return (
-                    <RigidBody key={key} type={"fixed"}>
-                        <mesh position={[
-                            blockData.position.x + Math.abs(blockData.dimension.x) / 2 + this.chunkPosition.x,
-                            blockData.position.y + Math.abs(blockData.dimension.y) / 2 + this.chunkPosition.y,
-                            blockData.position.z + Math.abs(blockData.dimension.z) / 2 + this.chunkPosition.z,
-                        ]}>
-                            <boxGeometry args={[
-                                Math.abs(blockData.dimension.x),
-                                Math.abs(blockData.dimension.y),
-                                Math.abs(blockData.dimension.z),
-                            ]} />
-                            <meshStandardMaterial color={blockData.color ?? 'grey'} />
-                        </mesh>
-                    </RigidBody>
-                );
-            }
-            default: {
-                console.error("Block type not found!", blockData.type)
-                return;
-            }
-        }
+
+        this.blocks = chunkData.blocks ?? []
+        this.joints = chunkData.joints ?? []
+
+        // TODO refactor
+        this.dimension = this.calculateChunkDimensions(this.blocks)
+        this.position = this.calculateChunkPosition(key, this.joints, jointKey, jointData)
+        this.renderBlocks = this.initializeBlocks(key, this.blocks, this.position)
     }
 
     render() {
-        return this.blocks.map((block, index) => {
-            return this.renderBlock(this.key+index, block)
+        return this.renderBlocks.map((block, index) => {
+            return block.render()
         });
+    }
+
+    calculateChunkDimensions(blocks) {
+        let minPos = new Vector3(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+        let maxPos = new Vector3(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+        blocks.forEach(block => {
+            minPos = new Vector3(
+                Math.min(minPos.x, block.position.x),
+                Math.min(minPos.y, block.position.y),
+                Math.min(minPos.z, block.position.z),
+            )
+            maxPos = new Vector3(
+                Math.max(maxPos.x, block.position.x + block.dimension.x),
+                Math.max(maxPos.y, block.position.y + block.dimension.y),
+                Math.max(maxPos.z, block.position.z + block.dimension.z),
+            )
+        })
+        return new Vector3(
+            Math.abs(maxPos.x - minPos.x),
+            Math.abs(maxPos.y - minPos.y),
+            Math.abs(maxPos.z - minPos.z),
+        )
+    }
+
+    calculateChunkPosition(ourKey, ourJoints, neighbourJointKey, neighbourJoint) {
+        if (!neighbourJoint || neighbourJoint.chunk !== ourKey) {
+            return new Vector3(0,0,0)
+        } else {
+            const ourJoint = ourJoints.find(x => x.chunk === neighbourJointKey)
+
+            return new Vector3(
+                neighbourJoint.position.x - ourJoint.position.x
+                + (neighbourJoint.direction === "+x" ? neighbourJoint.dimension.x : 0)
+                + (neighbourJoint.direction === "-x" ? -neighbourJoint.dimension.x : 0)
+                ,
+                neighbourJoint.position.y - ourJoint.position.y
+                + (neighbourJoint.direction === "+y" ? neighbourJoint.dimension.y : 0)
+                + (neighbourJoint.direction === "-y" ? -neighbourJoint.dimension.y : 0)
+                ,
+                neighbourJoint.position.z - ourJoint.position.z
+                + (neighbourJoint.direction === "+z" ? neighbourJoint.dimension.z : 0)
+                + (neighbourJoint.direction === "-z" ? -neighbourJoint.dimension.z : 0)
+            )
+        }
+    }
+
+    initializeBlocks(key, blocks, chunkPosition) {
+        const initializedBlocks = []
+        blocks.forEach((block, index) => {
+            switch (block.type) {
+                case "block:basic": {
+                    initializedBlocks.push(new BasicBlock(
+                        key+index,
+                        new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition),
+                        new Vector3(block.dimension.x, block.dimension.y, block.dimension.z),
+                        block.color,
+                    ))
+                    break
+                }
+                default: {
+                    console.error("Block type not found!", block.type)
+                    break
+                }
+            }
+        })
+        return initializedBlocks
     }
 }

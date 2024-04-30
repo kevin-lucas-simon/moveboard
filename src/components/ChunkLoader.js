@@ -1,23 +1,20 @@
 import {BlockChunk} from "./BlockChunk";
+import chunkData from "../data/chunkData";
 
 export function ChunkLoader() {
-    const chunksData = require('../data/chunks.json') // TODO vlt doch in javascript file umwandeln für Kommentieren?
-
     // create start chunk
-    const start = new BlockChunk("down", chunksData.down)
+    const start = new BlockChunk("start", chunkData.start)
 
     // create neighbour chunks
-    const chunks = [
+    const renderChunks = [
         start,
         ...start.joints.map(joint => {
-            return new BlockChunk(joint.chunk, chunksData[joint.chunk], joint, start.key)
+            return new BlockChunk(joint.chunk, chunkData[joint.chunk], "start", joint)
         })
     ]
 
-    console.log(chunks)
-
     // render chunks
-    return chunks.map(chunk => {
+    return renderChunks.map(chunk => {
         return chunk.render()
     });
 }

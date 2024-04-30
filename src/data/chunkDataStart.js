@@ -1,0 +1,96 @@
+export default {
+    key: "start",
+    type: "chunk:block",
+    config: {
+        walled: true
+    },
+    joints: [
+        {
+            chunk: "next",
+            direction: "+z",
+            position: {
+                x: 0,
+                y: 0,
+                z: 3
+            },
+            dimension: {
+                x: 2,
+                y: 1,
+                z: 1
+            }
+        },
+        {
+            chunk: "down",
+            direction: "-x",
+            position: {
+                x: -3,
+                y: 1,
+                z: 0
+            },
+            dimension: {
+                x: 1,
+                y: 1,
+                z: 2
+            }
+        }
+    ],
+    blocks: [
+        {
+            type: "block:basic",
+            position: {
+                x: -3,
+                y: -1,
+                z: -3
+            },
+            dimension: {
+                x: 7,
+                y: 1,
+                z: 7
+            },
+            color: "#187187"
+        },
+        {
+            type: "block:basic",
+            position: {
+                x: 0,
+                y: 0,
+                z: 0
+            },
+            dimension: {
+                x: 1,
+                y: 1,
+                z: 1
+            },
+            color: "#888888"
+        },
+        {
+            type: "block:basic",
+            position: {
+                x: 0,
+                y: 0,
+                z: 3
+            },
+            dimension: {
+                x: 2,
+                y: 1,
+                z: 1
+            },
+            color: "#bada55"
+        },
+        {
+            type: "block:basic",
+            position: {
+                x: -3,
+                y: 1,
+                z: 0
+            },
+            dimension: {
+                x: 1,
+                y: 1,
+                z: 2
+            },
+            color: "#bada55"
+        }
+    ],
+    entities: []
+}
