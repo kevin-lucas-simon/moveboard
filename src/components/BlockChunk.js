@@ -1,30 +1,26 @@
-import {Component} from "react";
-import {BasicBlock} from "./blocks/BasicBlock";
 import {Vector3} from "three";
+import {BasicBlock} from "./blocks/BasicBlock";
+import {DebugJointBlock} from "./blocks/DebugJointBlock";
 
-export class BlockChunk extends Component {
-    constructor(key, chunkData, jointKey = null, jointData = null) {
-        super();
-        if (!key) {
-            console.error("No key for chunk given!", chunkData)
-        }
+export function BlockChunk({chunkData, jointKey = null, jointData = null}) {
+    // TODO joint datenstruktur putzen
+    // TODO definitiv diese Komponente vereinfachen!
 
-        this.blocks = chunkData.blocks ?? []
-        this.joints = chunkData.joints ?? []
-
-        // TODO refactor
-        this.dimension = this.calculateChunkDimensions(this.blocks)
-        this.position = this.calculateChunkPosition(key, this.joints, jointKey, jointData)
-        this.renderBlocks = this.initializeBlocks(key, this.blocks, this.position)
+    if (!chunkData.key) {
+        console.error("No key for chunk given!", chunkData)
     }
 
-    render() {
-        return this.renderBlocks.map((block, index) => {
-            return block.render()
-        });
-    }
+    const blocks = chunkData.blocks ?? []
+    const joints = chunkData.joints ?? []
 
-    calculateChunkDimensions(blocks) {
+    const dimension = calculateChunkDimensions(blocks)
+    const position = calculateChunkPosition(chunkData.key, joints, jointKey, jointData)
+    const renderBlocks = [
+        ...initializeBlocks(chunkData.key, blocks, position),
+        ...initializeBlocks(chunkData.key+"debug", joints, position)
+    ]
+
+    function calculateChunkDimensions(blocks) {
         let minPos = new Vector3(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
         let maxPos = new Vector3(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
         blocks.forEach(block => {
@@ -46,7 +42,7 @@ export class BlockChunk extends Component {
         )
     }
 
-    calculateChunkPosition(ourKey, ourJoints, neighbourJointKey, neighbourJoint) {
+    function calculateChunkPosition(ourKey, ourJoints, neighbourJointKey, neighbourJoint) {
         if (!neighbourJoint || neighbourJoint.chunk !== ourKey) {
             return new Vector3(0,0,0)
         } else {
@@ -68,17 +64,31 @@ export class BlockChunk extends Component {
         }
     }
 
-    initializeBlocks(key, blocks, chunkPosition) {
+    function initializeBlocks(key, blocks, chunkPosition) {
         const initializedBlocks = []
         blocks.forEach((block, index) => {
+            // TODO interpreter Klasse schreiben (der ggf überladen werden kann)
             switch (block.type) {
                 case "block:basic": {
-                    initializedBlocks.push(new BasicBlock(
-                        key+index,
-                        new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition),
-                        new Vector3(block.dimension.x, block.dimension.y, block.dimension.z),
-                        block.color,
-                    ))
+                    initializedBlocks.push(
+                        <BasicBlock // TODO vlt auch Props vereinfachen?
+                            // TODO So allgemein JSON rüberschieben und ggf Inhalte nachjustieren über weitere Props!
+                            key={key+index}
+                            position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
+                            dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
+                            color={block.color}
+                        />
+                    )
+                    break
+                }
+                case "joint:block": {
+                    initializedBlocks.push(
+                        <DebugJointBlock
+                            key={key+index}
+                            position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
+                            dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
+                        />
+                    )
                     break
                 }
                 default: {
@@ -89,4 +99,6 @@ export class BlockChunk extends Component {
         })
         return initializedBlocks
     }
+
+    return renderBlocks
 }

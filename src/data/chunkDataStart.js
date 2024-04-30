@@ -6,6 +6,7 @@ export default {
     },
     joints: [
         {
+            type: "joint:block",
             chunk: "next",
             direction: "+z",
             position: {
@@ -20,6 +21,7 @@ export default {
             }
         },
         {
+            type: "joint:block",
             chunk: "down",
             direction: "-x",
             position: {
@@ -63,34 +65,6 @@ export default {
             },
             color: "#888888"
         },
-        {
-            type: "block:basic",
-            position: {
-                x: 0,
-                y: 0,
-                z: 3
-            },
-            dimension: {
-                x: 2,
-                y: 1,
-                z: 1
-            },
-            color: "#bada55"
-        },
-        {
-            type: "block:basic",
-            position: {
-                x: -3,
-                y: 1,
-                z: 0
-            },
-            dimension: {
-                x: 1,
-                y: 1,
-                z: 2
-            },
-            color: "#bada55"
-        }
     ],
     entities: []
 }

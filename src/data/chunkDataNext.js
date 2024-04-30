@@ -3,6 +3,7 @@ export default {
     type: "chunk:block",
     joints: [
         {
+            type: "joint:block",
             chunk: "start",
             direction: "-z",
             position: {
@@ -33,19 +34,5 @@ export default {
             },
             color: "#ff8888"
         },
-        {
-            type: "block:basic",
-            position: {
-                x: 0,
-                y: 0,
-                z: 0
-            },
-            dimension: {
-                x: 2,
-                y: 1,
-                z: 1
-            },
-            color: "#bada55"
-        }
     ]
 }
