@@ -1,6 +1,5 @@
 import {Vector3} from "three";
-import {BasicBlock} from "../blocks/BasicBlock";
-import {DebugJointBlock} from "../blocks/DebugJointBlock";
+import {BlockLoader} from "../BlockLoader";
 
 export function BlockChunk({chunkData, jointOrigin = null, jointData = null}) {
     if (!chunkData.name) {
@@ -59,37 +58,15 @@ export function BlockChunk({chunkData, jointOrigin = null, jointData = null}) {
     }
 
     function initializeBlocks(key, blocks, chunkPosition) {
-        const initializedBlocks = []
-        blocks.forEach((block, index) => {
-            switch (block.type) {
-                case "block:basic": {
-                    initializedBlocks.push(
-                        <BasicBlock
-                            key={key+index}
-                            position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
-                            dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
-                            color={block.color}
-                        />
-                    )
-                    break
-                }
-                case "joint:block": {
-                    initializedBlocks.push(
-                        <DebugJointBlock
-                            key={key+index}
-                            position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
-                            dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
-                        />
-                    )
-                    break
-                }
-                default: {
-                    console.error("Block type not found!", block.type)
-                    break
-                }
-            }
-        })
-        return initializedBlocks
+        return blocks.map((block, index) =>
+            <BlockLoader
+                type={block.type}
+                key={key+index}
+                position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
+                dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
+                color={block.color}
+            />
+        )
     }
 
     return [
