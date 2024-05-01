@@ -6,12 +6,22 @@ export function BlockChunk({chunkData, jointOrigin = null, jointData = null}) {
         console.error("No name for chunk given!", chunkData)
     }
 
-    const name = chunkData.name
-    const blocks = chunkData.blocks ?? []
-    const joints = chunkData.joints ?? []
+    const chunkName = chunkData.name
+    const chunkBlocks = chunkData.blocks ?? []
+    const chunkJoints = chunkData.joints ?? []
 
-    const dimension = calculateChunkDimensions(blocks)
-    const position = calculateChunkPosition(name, joints, jointOrigin, jointData)
+    const chunkDimension = calculateChunkDimensions(chunkBlocks)
+    const chunkPosition = calculateChunkPosition(chunkName, chunkJoints, jointOrigin, jointData)
+
+    return [...chunkBlocks, ...chunkJoints].map((block, index) =>
+        <BlockLoader
+            type={block.type}
+            key={chunkName+index}
+            position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
+            dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
+            color={block.color}
+        />
+    )
 
     function calculateChunkDimensions(blocks) {
         let minPos = new Vector3(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
@@ -56,21 +66,4 @@ export function BlockChunk({chunkData, jointOrigin = null, jointData = null}) {
             )
         }
     }
-
-    function initializeBlocks(key, blocks, chunkPosition) {
-        return blocks.map((block, index) =>
-            <BlockLoader
-                type={block.type}
-                key={key+index}
-                position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
-                dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
-                color={block.color}
-            />
-        )
-    }
-
-    return [
-        ...initializeBlocks(name, blocks, position),
-        ...initializeBlocks(name+"debug", joints, position)
-    ]
 }
