@@ -1,13 +1,20 @@
-import chunksData from "../data/chunksData";
-import {BlockChunk} from "./BlockChunk";
+import chunksData from "../data/_chunksData";
+import {BlockChunk} from "./chunks/BlockChunk";
 
 export function ChunkLoader() {
+    const activeChunk = chunksData.find(chunk => chunk.name === "start")
+
     return (
         <>
-            <BlockChunk chunkData={chunksData.start} />
+            <BlockChunk chunkData={activeChunk} />
 
-            {chunksData.start.joints.map(joint =>
-                <BlockChunk chunkData={chunksData[joint.chunk]} jointKey={"start"} jointData={joint}/>
+            {activeChunk.joints.map(joint =>
+                <BlockChunk
+                    key={joint.chunk}
+                    chunkData={chunksData.find(chunk => chunk.name === joint.chunk)}
+                    jointOrigin={activeChunk.name}
+                    jointData={joint}
+                />
             )}
         </>
     )

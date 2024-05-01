@@ -1,5 +1,5 @@
 export default {
-    key: "start",
+    name: "start",
     type: "chunk:block",
     config: {
         walled: true

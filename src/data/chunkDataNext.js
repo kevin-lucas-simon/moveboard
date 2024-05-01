@@ -1,5 +1,5 @@
 export default {
-    key: "next",
+    name: "next",
     type: "chunk:block",
     joints: [
         {

@@ -2,13 +2,12 @@ import {Vector3} from "three";
 import {RigidBody} from "@react-three/rapier";
 
 export function BasicBlock({
-    key, // TODO key muss weg
     position = new Vector3(0,0,0),
     dimension = new Vector3(1,1,1),
     color = "grey"
 }) {
     return (
-        <RigidBody key={key} type={"fixed"}>
+        <RigidBody type={"fixed"}>
             <mesh position={[
                 position.x + Math.abs(dimension.x)/2,
                 position.y + Math.abs(dimension.y)/2,

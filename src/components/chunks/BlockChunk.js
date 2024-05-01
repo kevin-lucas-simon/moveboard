@@ -1,24 +1,18 @@
 import {Vector3} from "three";
-import {BasicBlock} from "./blocks/BasicBlock";
-import {DebugJointBlock} from "./blocks/DebugJointBlock";
+import {BasicBlock} from "../blocks/BasicBlock";
+import {DebugJointBlock} from "../blocks/DebugJointBlock";
 
-export function BlockChunk({chunkData, jointKey = null, jointData = null}) {
-    // TODO joint datenstruktur putzen
-    // TODO definitiv diese Komponente vereinfachen!
-
-    if (!chunkData.key) {
-        console.error("No key for chunk given!", chunkData)
+export function BlockChunk({chunkData, jointOrigin = null, jointData = null}) {
+    if (!chunkData.name) {
+        console.error("No name for chunk given!", chunkData)
     }
 
+    const name = chunkData.name
     const blocks = chunkData.blocks ?? []
     const joints = chunkData.joints ?? []
 
     const dimension = calculateChunkDimensions(blocks)
-    const position = calculateChunkPosition(chunkData.key, joints, jointKey, jointData)
-    const renderBlocks = [
-        ...initializeBlocks(chunkData.key, blocks, position),
-        ...initializeBlocks(chunkData.key+"debug", joints, position)
-    ]
+    const position = calculateChunkPosition(name, joints, jointOrigin, jointData)
 
     function calculateChunkDimensions(blocks) {
         let minPos = new Vector3(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
@@ -42,11 +36,11 @@ export function BlockChunk({chunkData, jointKey = null, jointData = null}) {
         )
     }
 
-    function calculateChunkPosition(ourKey, ourJoints, neighbourJointKey, neighbourJoint) {
-        if (!neighbourJoint || neighbourJoint.chunk !== ourKey) {
+    function calculateChunkPosition(ourChunkName, ourJoints, neighbourChunkName, neighbourJoint) {
+        if (!neighbourJoint || neighbourJoint.chunk !== ourChunkName) {
             return new Vector3(0,0,0)
         } else {
-            const ourJoint = ourJoints.find(x => x.chunk === neighbourJointKey)
+            const ourJoint = ourJoints.find(joint => joint.chunk === neighbourChunkName)
 
             return new Vector3(
                 neighbourJoint.position.x - ourJoint.position.x
@@ -67,12 +61,10 @@ export function BlockChunk({chunkData, jointKey = null, jointData = null}) {
     function initializeBlocks(key, blocks, chunkPosition) {
         const initializedBlocks = []
         blocks.forEach((block, index) => {
-            // TODO interpreter Klasse schreiben (der ggf überladen werden kann)
             switch (block.type) {
                 case "block:basic": {
                     initializedBlocks.push(
-                        <BasicBlock // TODO vlt auch Props vereinfachen?
-                            // TODO So allgemein JSON rüberschieben und ggf Inhalte nachjustieren über weitere Props!
+                        <BasicBlock
                             key={key+index}
                             position={new Vector3(block.position.x, block.position.y, block.position.z).add(chunkPosition)}
                             dimension={new Vector3(block.dimension.x, block.dimension.y, block.dimension.z)}
@@ -100,5 +92,8 @@ export function BlockChunk({chunkData, jointKey = null, jointData = null}) {
         return initializedBlocks
     }
 
-    return renderBlocks
+    return [
+        ...initializeBlocks(name, blocks, position),
+        ...initializeBlocks(name+"debug", joints, position)
+    ]
 }
