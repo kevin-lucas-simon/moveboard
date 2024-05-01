@@ -54,9 +54,9 @@ export default {
         {
             type: "block:basic",
             position: {
-                x: 0,
+                x: 2,
                 y: 0,
-                z: 0
+                z: -2
             },
             dimension: {
                 x: 1,

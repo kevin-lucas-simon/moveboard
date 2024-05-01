@@ -1,4 +1,5 @@
 import {RigidBody} from "@react-three/rapier";
+import {PlayerBall} from "./entities/PlayerBall";
 
 export function ControlledPlane() {
     const box = {
@@ -12,13 +13,7 @@ export function ControlledPlane() {
     return (
         <>
             {/* ball */}
-            {/* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */}
-            <RigidBody colliders={"ball"} canSleep={false} restitution={0.98}>
-                <mesh position={[0, 1, 0]}>
-                    <sphereGeometry args={[0.5]}/>
-                    <meshStandardMaterial color={"hotpink"} />
-                </mesh>
-            </RigidBody>
+            <PlayerBall />
 
             {/* floor */}
             <RigidBody type={"fixed"}>

@@ -3,10 +3,27 @@ import {Canvas} from "@react-three/fiber";
 import {UserControls} from "./components/UserControls";
 import {ControlledPlane} from "./components/ControlledPlane";
 import {PlayerPhysics} from "./components/PlayerPhysics";
-import {GizmoHelper, GizmoViewport, Grid, OrbitControls} from "@react-three/drei";
+import {GizmoHelper, GizmoViewport, Grid, KeyboardControls, OrbitControls} from "@react-three/drei";
 import {ChunkLoader} from "./components/ChunkLoader";
+import {useMemo} from "react";
+
+const Controls = {
+    top: 'top',
+    bottom: 'bottom',
+    left: 'left',
+    right: 'right',
+    jump: 'jump',
+}
 
 function App() {
+    const keyboardControls = useMemo(()=>[
+        { name: Controls.top, keys: ['KeyW'] },
+        { name: Controls.bottom, keys: ['KeyS'] },
+        { name: Controls.left, keys: ['KeyA'] },
+        { name: Controls.right, keys: ['KeyD'] },
+        { name: Controls.jump, keys: ['Space'] },
+    ], [])
+
     return (
         <UserControls>
             <Canvas camera={{position: [0, 8, 0], fov: 75}}>
@@ -17,10 +34,12 @@ function App() {
 
                 {/*<FollowCamera target={{ position: { x: 0, y: 0, z: 0 } }} distance={5}/>*/}
 
-                <PlayerPhysics>
-                    {/*<ControlledPlane />*/}
-                    <ChunkLoader />
-                </PlayerPhysics>
+                <KeyboardControls map={keyboardControls}>
+                    <PlayerPhysics>
+                        {/*<ControlledPlane />*/}
+                        <ChunkLoader />
+                    </PlayerPhysics>
+                </KeyboardControls>
 
                 <OrbitControls />
                 <Grid infiniteGrid={true}/>
