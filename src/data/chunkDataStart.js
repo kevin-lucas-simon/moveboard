@@ -8,11 +8,10 @@ export default {
         {
             type: "joint:block",
             chunk: "next",
-            direction: "+z",
             position: {
                 x: 0,
                 y: 0,
-                z: 3
+                z: 3.5
             },
             dimension: {
                 x: 2,
@@ -23,10 +22,9 @@ export default {
         {
             type: "joint:block",
             chunk: "down",
-            direction: "-x",
             position: {
                 x: -3,
-                y: 1,
+                y: 2,
                 z: 0
             },
             dimension: {
@@ -40,9 +38,9 @@ export default {
         {
             type: "block:basic",
             position: {
-                x: -3,
+                x: 0,
                 y: -1,
-                z: -3
+                z: 0
             },
             dimension: {
                 x: 7,

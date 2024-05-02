@@ -15,7 +15,7 @@ export function ChunkLoader() {
                 <BlockChunk
                     key={joint.chunk}
                     chunkData={chunksData.find(chunk => chunk.name === joint.chunk)}
-                    jointOrigin={activeChunk.name}
+                    jointOriginChunk={activeChunk}
                     jointData={joint}
                 />
             )}

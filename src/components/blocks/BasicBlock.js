@@ -9,9 +9,9 @@ export function BasicBlock({
     return (
         <RigidBody type={"fixed"}>
             <mesh position={[
-                position.x + Math.abs(dimension.x)/2,
-                position.y + Math.abs(dimension.y)/2,
-                position.z + Math.abs(dimension.z)/2,
+                position.x,
+                position.y,
+                position.z,
             ]}>
                 <boxGeometry args={[
                     Math.abs(dimension.x),

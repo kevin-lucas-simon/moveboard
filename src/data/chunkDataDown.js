@@ -5,7 +5,6 @@ export default {
         {
             type: "joint:block",
             chunk: "start",
-            direction: "+x",
             position: {
                 x: 4,
                 y: 0,

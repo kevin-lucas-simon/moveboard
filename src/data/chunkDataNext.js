@@ -5,11 +5,10 @@ export default {
         {
             type: "joint:block",
             chunk: "start",
-            direction: "-z",
             position: {
-                x: 0,
+                x: 1,
                 y: 0,
-                z: 0
+                z: -0.5
             },
             dimension: {
                 x: 2,
@@ -23,9 +22,9 @@ export default {
         {
             type: "block:basic",
             position: {
-                x: 0,
+                x: 2,
                 y: -1,
-                z: 0
+                z: 2
             },
             dimension: {
                 x: 5,
