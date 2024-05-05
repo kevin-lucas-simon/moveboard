@@ -4,8 +4,8 @@ import {UserControls} from "./components/UserControls";
 import {ControlledPlane} from "./components/ControlledPlane";
 import {PlayerPhysics} from "./components/PlayerPhysics";
 import {GizmoHelper, GizmoViewport, Grid, KeyboardControls, OrbitControls} from "@react-three/drei";
-import {ChunkLoader} from "./components/ChunkLoader";
 import {useMemo} from "react";
+import {TestLevel} from "./data/TestLevel/TestLevel";
 
 const Controls = {
     top: 'top',
@@ -17,10 +17,10 @@ const Controls = {
 
 function App() {
     const keyboardControls = useMemo(()=>[
-        { name: Controls.top, keys: ['KeyW'] },
-        { name: Controls.bottom, keys: ['KeyS'] },
-        { name: Controls.left, keys: ['KeyA'] },
-        { name: Controls.right, keys: ['KeyD'] },
+        { name: Controls.top, keys: ['ArrowUp'] },
+        { name: Controls.bottom, keys: ['ArrowDown'] },
+        { name: Controls.left, keys: ['ArrowLeft'] },
+        { name: Controls.right, keys: ['ArrowRight'] },
         { name: Controls.jump, keys: ['Space'] },
     ], [])
 
@@ -37,7 +37,7 @@ function App() {
                 <KeyboardControls map={keyboardControls}>
                     <PlayerPhysics>
                         {/*<ControlledPlane />*/}
-                        <ChunkLoader />
+                        <TestLevel />
                     </PlayerPhysics>
                 </KeyboardControls>
 
