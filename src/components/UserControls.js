@@ -19,7 +19,7 @@ export function UserControls({children}) {
                 .then( response => {
                     if ( response === "granted" ) {
                         window.addEventListener( "devicemotion", (e) => {
-                            const realScreenSizeToSimulationFactor = 10;
+                            const realScreenSizeToSimulationFactor = 5;
                             setMotionVector(new Vector3(
                                 e.accelerationIncludingGravity.x * realScreenSizeToSimulationFactor,
                                 e.accelerationIncludingGravity.z * realScreenSizeToSimulationFactor,

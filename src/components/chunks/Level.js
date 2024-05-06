@@ -16,6 +16,14 @@ export const Level = ({start, children}) => {
         }));
     }, [])
 
+    useEffect(() => {
+        console.log("Level", {
+            chunks: chunks,
+            activeChunkName: activeChunkName,
+            renderedChunks: renderedChunks,
+        })
+    })
+
     // define rendered chunks
     useEffect(() => {
         // get current active chunk
@@ -34,6 +42,7 @@ export const Level = ({start, children}) => {
             newRenderedChunks[activeJoint.neighbour] = new Vector3()
                 .copy(newRenderedChunks[activeChunkName])
                 .add(activeJoint.position)
+                .sub(chunks[activeJoint.neighbour].joints.find(x => x.neighbour === activeChunkName).position)
         })
 
         // return defined chunks for rendering

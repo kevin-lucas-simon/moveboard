@@ -1,23 +1,19 @@
 import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {Vector3} from "three";
 import {useLevelContext} from "./Level";
+import {DebugJointBlock} from "../blocks/DebugJointBlock.tsx";
 
 const ChunkContext = createContext({});
-export const useChunk = () => useContext(ChunkContext); // TODO vlt aufsplitten in useChunkPosition und andere Dinge?
+export const useChunk = () => useContext(ChunkContext);
 
 export const ChunkType = {
     BLOCK: 'normal',
 };
 
-export const Chunk = ({ name, type = ChunkType.BLOCK, children }) => {
-    const [joints, setJoints] = useState([])
-    const [position, setPosition] = useState(new Vector3(0,0,0))
+export const Chunk = ({ name, joints, type = ChunkType.BLOCK, children }) => {
+    const [worldPosition, setWorldPosition] = useState(new Vector3(0,0,0))
 
     const levelContext = useLevelContext()
-
-    const registerJoint = useCallback((joint) => {
-        setJoints(previousState => [...previousState, joint])
-    }, [])
 
     // register chunk on level
     useEffect(() => {
@@ -33,10 +29,9 @@ export const Chunk = ({ name, type = ChunkType.BLOCK, children }) => {
     // align self to given joint connection
     useEffect(() => {
         const worldPositionByJoint = levelContext.value.renderedChunks[name] ?? new Vector3(0,0,0)
-        const ourPositionOffsetByJoint = joints
-            .find(joint => joint.neighbour === levelContext.value.activeChunk)?.position ?? new Vector3(0,0,0)
+        const ourPositionOffsetByJoint = joints[levelContext.value.activeChunk]?.position ?? new Vector3(0,0,0)
 
-        setPosition(new Vector3()
+        setWorldPosition(new Vector3()
             .copy(worldPositionByJoint)
             .sub(ourPositionOffsetByJoint)
         )
@@ -45,16 +40,19 @@ export const Chunk = ({ name, type = ChunkType.BLOCK, children }) => {
     return (
         <ChunkContext.Provider value={{
             variables: {
-                position: position,
+                position: worldPosition,
             },
-            function: {
-                registerJoint: registerJoint
-            }
         }}>
+            {joints.map(joint =>
+                <DebugJointBlock
+                    key={name+joint.neighbour}
+                    position={new Vector3().copy(joint.position ?? new Vector3(0,0,0)).add(worldPosition)}
+                    dimension={joint.dimension ?? new Vector3(1,1,1)}
+                />
+            )}
             {levelContext.value.renderedChunks[name] &&
                 children
             }
-            {/*{children}*/}
         </ChunkContext.Provider>
     );
 };
