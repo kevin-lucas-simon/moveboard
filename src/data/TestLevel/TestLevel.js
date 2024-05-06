@@ -1,4 +1,4 @@
-import {Level} from "../../components/chunks/Level";
+import {Level} from "../../components/chunks/Level.tsx";
 import {FirstChunk} from "./chunks/FirstChunk";
 import {SecondChunk} from "./chunks/SecondChunk";
 import {PlayerBall} from "../../components/entities/PlayerBall";

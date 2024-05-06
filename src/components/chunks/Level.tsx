@@ -1,28 +1,40 @@
-import {createContext, useCallback, useContext, useEffect, useState} from "react";
+import {createContext, ReactNode, useContext, useCallback, useEffect, useState} from "react";
 import {Vector3} from "three";
+import {ChunkModel} from "../model/ChunkModel";
+import {JointModel} from "../model/JointModel";
 
-const LevelContext = createContext({});
+const LevelContext = createContext<LevelContextType|null>(null);
+export type LevelContextType = {
+    value: {
+        activeChunk: string,
+        renderedChunks: {[key: string]: Vector3},
+    },
+    function: {
+        registerChunk: (chunk: any) => void
+    }
+}
+
 export const useLevelContext = () => useContext(LevelContext);
-export const Level = ({start, children}) => {
-    const [chunks, setChunks] = useState({})
-    const [activeChunkName, setActiveChunkName] = useState(start)
-    const [renderedChunks, setRenderedChunks] = useState({})
+
+export type LevelProps = {
+    start: string,
+    children?: ReactNode | undefined,
+}
+export const Level = (props: LevelProps) => {
+    const [chunks, setChunks]
+        = useState<{[key: string]: ChunkModel}>({})
+    const [activeChunkName, setActiveChunkName]
+        = useState(props.start)
+    const [renderedChunks, setRenderedChunks]
+        = useState<{[key: string]: Vector3}>({})
 
     // let all belonging chunks register here
-    const registerChunk = useCallback(chunk => {
+    const registerChunk = useCallback((chunk: ChunkModel) => {
         setChunks(prevChunks => ({
             ...prevChunks,
             [chunk.name]: chunk
         }));
     }, [])
-
-    useEffect(() => {
-        console.log("Level", {
-            chunks: chunks,
-            activeChunkName: activeChunkName,
-            renderedChunks: renderedChunks,
-        })
-    })
 
     // define rendered chunks
     useEffect(() => {
@@ -38,18 +50,17 @@ export const Level = ({start, children}) => {
         };
 
         // get active chunk neighbours via joints
-        (activeChunk?.joints ?? []).forEach(activeJoint => {
+        (activeChunk?.joints ?? []).forEach((activeJoint: JointModel) => {
             newRenderedChunks[activeJoint.neighbour] = new Vector3()
                 .copy(newRenderedChunks[activeChunkName])
                 .add(activeJoint.position)
-                .sub(chunks[activeJoint.neighbour].joints.find(x => x.neighbour === activeChunkName).position)
+                .sub(chunks[activeJoint.neighbour].joints.find((joint: JointModel) => joint.neighbour === activeChunkName)?.position ?? new Vector3())
         })
 
         // return defined chunks for rendering
         setRenderedChunks(newRenderedChunks)
     }, [activeChunkName, chunks])
 
-    // provide render information to corresponding chunk children
     return (
         <LevelContext.Provider value={{
             value: {
@@ -60,7 +71,7 @@ export const Level = ({start, children}) => {
                 registerChunk: registerChunk,
             }
         }}>
-            {children}
+            {props.children}
         </LevelContext.Provider>
     );
 };

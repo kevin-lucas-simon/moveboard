@@ -1,6 +1,6 @@
 import {FirstChunk} from "./FirstChunk";
 import {Vector3} from "three";
-import {Chunk} from "../../../components/chunks/Chunk";
+import {Chunk} from "../../../components/chunks/Chunk.tsx";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 
 export function SecondChunk() {

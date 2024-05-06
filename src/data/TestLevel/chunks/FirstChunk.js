@@ -1,13 +1,13 @@
 import {Vector3} from "three";
 import {SecondChunk} from "./SecondChunk";
-import {Chunk, ChunkType} from "../../../components/chunks/Chunk";
+import {Chunk, ChunkType} from "../../../components/chunks/Chunk.tsx";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 
 export function FirstChunk() {
     return (
-        <Chunk name={FirstChunk.name} type={ChunkType.BLOCK} joints={[
+        <Chunk name={FirstChunk.name} joints={[
             {
-                neighbour: SecondChunk.name, // TODO refactor to chunk
+                neighbour: SecondChunk.name,
                 position: new Vector3(-3.5, 1, 0),
             }
         ]}>
