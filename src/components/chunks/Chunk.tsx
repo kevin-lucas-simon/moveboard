@@ -1,7 +1,7 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Vector3} from "three";
 import {useLevelContext} from "./Level";
-import {DebugJointBlock} from "../blocks/DebugJointBlock";
+import {Joint} from "./Joint";
 import {JointModel} from "../model/JointModel";
 
 const ChunkContext = createContext<ChunkContextType|null>(null);
@@ -44,20 +44,22 @@ export const Chunk = (props: ChunkProps) => {
         )
     }, [props.joints, levelContext?.value.activeChunk, levelContext?.value.renderedChunks])
 
+    const isRendering = levelContext?.value.renderedChunks[props.name]
+
     return (
         <ChunkContext.Provider value={{
             variables: {
                 position: worldPosition,
             }
         }}>
-            {props.joints.map(joint =>
-                <DebugJointBlock
+            {isRendering && props.joints.map(joint =>
+                <Joint
                     key={props.name+joint.neighbour}
                     position={new Vector3().copy(joint.position ?? new Vector3(0,0,0)).add(worldPosition)}
                     dimension={joint.dimension ?? new Vector3(1,1,1)}
                 />
             )}
-            {levelContext?.value.renderedChunks[props.name] &&
+            {isRendering &&
                 props.children
             }
         </ChunkContext.Provider>

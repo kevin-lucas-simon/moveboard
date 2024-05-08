@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import {SecondChunk} from "./SecondChunk";
-import {Chunk, ChunkType} from "../../../components/chunks/Chunk.tsx";
+import {Chunk} from "../../../components/chunks/Chunk.tsx";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 
 export function FirstChunk() {
@@ -9,6 +9,10 @@ export function FirstChunk() {
             {
                 neighbour: SecondChunk.name,
                 position: new Vector3(-3.5, 1, 0),
+            },
+            {
+                neighbour: "Multi0",
+                position: new Vector3(3.5, 1, 0),
             }
         ]}>
             <BasicBlock

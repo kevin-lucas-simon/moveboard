@@ -2,6 +2,7 @@ import {Level} from "../../components/chunks/Level.tsx";
 import {FirstChunk} from "./chunks/FirstChunk";
 import {SecondChunk} from "./chunks/SecondChunk";
 import {PlayerBall} from "../../components/entities/PlayerBall";
+import {MultiChunk} from "./chunks/MultiChunk";
 
 export function TestLevel() {
     return (
@@ -9,6 +10,7 @@ export function TestLevel() {
             <PlayerBall />
             <FirstChunk />
             <SecondChunk />
+            <MultiChunk />
         </Level>
     )
 }

@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 export type BasicBlockProps = {
     position: Vector3,
     dimension: Vector3,
-    color: string,
+    color: string|undefined,
 }
 
 export function BasicBlock(props: BasicBlockProps) {
@@ -23,7 +23,7 @@ export function BasicBlock(props: BasicBlockProps) {
         <RigidBody position={worldPosition.toArray()} type={"fixed"}>
             <mesh>
                 <boxGeometry args={props.dimension.toArray()} />
-                <meshStandardMaterial color={props.color} />
+                <meshStandardMaterial color={props.color ?? "grey"} />
             </mesh>
         </RigidBody>
     );
