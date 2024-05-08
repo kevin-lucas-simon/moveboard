@@ -1,6 +1,7 @@
 import {Vector3} from "three";
 import {Edges} from "@react-three/drei";
 import {RigidBody} from "@react-three/rapier";
+import {useChunkContext, useChunkWorldPosition} from "./Chunk";
 
 export type DebugJointBlockProps = {
     position: Vector3,
@@ -8,12 +9,15 @@ export type DebugJointBlockProps = {
 }
 
 export function Joint(props: DebugJointBlockProps) {
+    const worldPosition = useChunkWorldPosition(props.position)
+    const chunkName = useChunkContext()?.value.chunk.name
+
     function onCollisionExit() {
-        console.log("onCollisionExit", props)
+        console.log("onCollisionExit", chunkName, props)
     }
 
     return (
-        <RigidBody position={props.position} type={"fixed"} sensor={true} onCollisionExit={onCollisionExit}>
+        <RigidBody position={worldPosition} type={"fixed"} sensor={true} onCollisionExit={onCollisionExit}>
             <mesh>
                 <sphereGeometry args={[0.05]}/>
                 <meshStandardMaterial color={"green"} />

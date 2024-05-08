@@ -10,7 +10,7 @@ export type LevelContextType = {
         renderedChunks: {[key: string]: Vector3},
     },
     function: {
-        registerChunk: (chunk: any) => void
+        registerChunk: (chunk: ChunkModel) => void
     }
 }
 

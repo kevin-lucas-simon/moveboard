@@ -3,14 +3,15 @@ import {Vector3} from "three";
 import {useLevelContext} from "./Level";
 import {Joint} from "./Joint";
 import {JointModel} from "../model/JointModel";
+import {ChunkModel} from "../model/ChunkModel";
 
 const ChunkContext = createContext<ChunkContextType|null>(null);
 export type ChunkContextType = {
-    variables: {
-        position: Vector3,
-    }
+    value: {
+        chunk: ChunkModel,
+    },
 }
-export const useChunk = () => useContext(ChunkContext);
+export const useChunkContext = () => useContext(ChunkContext);
 
 export type ChunkProps = {
     name: string,
@@ -18,44 +19,20 @@ export type ChunkProps = {
     children?: ReactNode | undefined,
 }
 export const Chunk = (props: ChunkProps) => {
-    const [worldPosition, setWorldPosition]
-        = useState(new Vector3(0,0,0))
-    const levelContext
-        = useLevelContext()
+    const registeredChunkOnLevel = useRegisteredChunkOnLevel(props)
 
-    // register chunk on level
-    useEffect(() => {
-        levelContext?.function.registerChunk({
-            name: props.name,
-            joints: props.joints,
-        })
-    }, [props.name, props.joints])
-
-    // align self to given joint connection
-    useEffect(() => {
-        // @ts-ignore
-        const worldPositionByJoint = levelContext.value.renderedChunks[props.name] ?? new Vector3(0,0,0)
-        // @ts-ignore
-        const ourPositionOffsetByJoint = props.joints[levelContext.value.activeChunk]?.position ?? new Vector3(0,0,0)
-
-        setWorldPosition(new Vector3()
-            .copy(worldPositionByJoint)
-            .sub(ourPositionOffsetByJoint)
-        )
-    }, [props.joints, levelContext?.value.activeChunk, levelContext?.value.renderedChunks])
-
-    const isRendering = levelContext?.value.renderedChunks[props.name]
+    const isRendering = useChunkVisibility(props.name)
 
     return (
         <ChunkContext.Provider value={{
-            variables: {
-                position: worldPosition,
-            }
+            value: {
+                chunk: registeredChunkOnLevel,
+            },
         }}>
-            {isRendering && props.joints.map(joint =>
+            {isRendering && props.joints.map((joint: JointModel) =>
                 <Joint
                     key={props.name+joint.neighbour}
-                    position={new Vector3().copy(joint.position ?? new Vector3(0,0,0)).add(worldPosition)}
+                    position={joint.position ?? new Vector3(0,0,0)}
                     dimension={joint.dimension ?? new Vector3(1,1,1)}
                 />
             )}
@@ -65,3 +42,62 @@ export const Chunk = (props: ChunkProps) => {
         </ChunkContext.Provider>
     );
 };
+
+function useRegisteredChunkOnLevel(props: ChunkProps): ChunkModel {
+    const levelChunkRegisterFunction = useLevelContext()?.function.registerChunk
+
+    const [registeredChunk, setRegisteredChunk] = useState<ChunkModel>({
+        name: props.name,
+        joints: props.joints,
+    })
+
+    useEffect(() => {
+        if (typeof levelChunkRegisterFunction !== "function") {
+            console.error(useRegisteredChunkOnLevel.name, "levelContext function is not defined")
+            return
+        }
+        setRegisteredChunk({
+            name: props.name,
+            joints: props.joints,
+        })
+        levelChunkRegisterFunction(registeredChunk)
+    }, [levelChunkRegisterFunction, props, registeredChunk]);
+
+    return registeredChunk
+}
+
+function useChunkVisibility(chunkName: string) {
+    const levelContext = useLevelContext()
+
+    if (!levelContext) {
+        return false
+    }
+
+    return levelContext.value.renderedChunks[chunkName]
+}
+
+export function useChunkWorldPosition(offset?: Vector3|undefined) {
+    const levelContext = useLevelContext()
+    const chunkContext = useChunkContext()
+
+    const [positionOffset, setPositionOffset] = useState(offset ?? new Vector3())
+    useEffect(() => setPositionOffset(offset ?? new Vector3()), [offset]);
+
+    const [worldPosition, setWorldPosition] = useState(positionOffset)
+    useEffect(() => {
+        if (!levelContext || !chunkContext) {
+            return
+        }
+
+        const chunkName = chunkContext.value.chunk.name
+        const chunkPosition = levelContext.value.renderedChunks[chunkName] // TODO umsetzen in .position!
+
+        if (!chunkPosition) {
+            return
+        }
+
+        setWorldPosition(new Vector3().copy(chunkPosition).add(positionOffset))
+    }, [positionOffset, chunkContext?.value.chunk.name, levelContext?.value.renderedChunks])
+
+    return worldPosition
+}
