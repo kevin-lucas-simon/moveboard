@@ -7,6 +7,7 @@ const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
     function: {
         registerChunk: (chunk: ChunkModel) => void,
+        setActiveChunk: (chunkName: string) => void,
     }
     activeChunk: string,
     renderedChunkPositions: {[key: string]: Vector3},
@@ -24,6 +25,10 @@ export const Level = (props: LevelProps) => {
 
     const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
 
+    function setActiveChunk(chunkName: string) {
+        setActiveChunkName(chunkName)
+    }
+
     // debug log
     useEffect(() => {
         console.log({chunks: chunks, renderedChunkPositions: renderedChunkPositions, activeChunkName: activeChunkName})
@@ -33,6 +38,7 @@ export const Level = (props: LevelProps) => {
         <LevelContext.Provider value={{
             function: {
                 registerChunk: registerChunk,
+                setActiveChunk: setActiveChunk,
             },
             activeChunk: activeChunkName,
             renderedChunkPositions: renderedChunkPositions,

@@ -28,8 +28,15 @@ export function Player({position = [0, 1, 0]}) {
 
     return (
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */
-        <RigidBody ref={rigidBody} colliders={"ball"} canSleep={false} restitution={0.98} name={Player.name}>
-            <mesh position={position}>
+        <RigidBody
+            name={Player.name}
+            ref={rigidBody}
+            position={position}
+            colliders={"ball"}
+            canSleep={false}
+            restitution={0.98}
+        >
+            <mesh>
                 <sphereGeometry args={[0.5]}/>
                 <meshStandardMaterial color={"hotpink"} />
             </mesh>
