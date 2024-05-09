@@ -3,11 +3,11 @@ import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
 
-const LevelContext = createContext<LevelContextType|null>(null);
+const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
     value: {
         activeChunk: string,
-        renderedChunks: {[key: string]: Vector3},
+        renderedChunkPositions: {[key: string]: Vector3},
     },
     function: {
         registerChunk: (chunk: ChunkModel) => void
@@ -25,7 +25,7 @@ export const Level = (props: LevelProps) => {
         = useState<{[key: string]: ChunkModel}>({})
     const [activeChunkName, setActiveChunkName]
         = useState(props.start)
-    const [renderedChunks, setRenderedChunks]
+    const [renderedChunkPositions, setRenderedChunkPositions]
         = useState<{[key: string]: Vector3}>({})
 
     // let all belonging chunks register here
@@ -34,14 +34,14 @@ export const Level = (props: LevelProps) => {
             ...prevChunks,
             [chunk.name]: chunk
         }));
-    }, [])
+    }, []) // TODO in eigene Funktion auslagern
 
     // define rendered chunks
     useEffect(() => {
         // get current active chunk
         const activeChunk = chunks[activeChunkName]
         if (!activeChunk && Object.keys(chunks).length !== 0) {
-            console.error("Level: active chunk '" + activeChunkName + "' not found!")
+            throw Error("Level: active chunk '" + activeChunkName + "' not found!")
         }
 
         // define render pipeline object
@@ -58,14 +58,14 @@ export const Level = (props: LevelProps) => {
         })
 
         // return defined chunks for rendering
-        setRenderedChunks(newRenderedChunks)
-    }, [activeChunkName, chunks])
+        setRenderedChunkPositions(newRenderedChunks)
+    }, [activeChunkName, chunks]) // TODO eigene Funktion
 
     return (
         <LevelContext.Provider value={{
             value: {
                 activeChunk: activeChunkName,
-                renderedChunks: renderedChunks,
+                renderedChunkPositions: renderedChunkPositions,
             },
             function: {
                 registerChunk: registerChunk,

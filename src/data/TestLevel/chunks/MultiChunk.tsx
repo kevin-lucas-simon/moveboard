@@ -1,7 +1,7 @@
 import {Chunk} from "../../../components/chunks/Chunk";
-import {BasicBlock} from "../../../components/blocks/BasicBlock";
-import {Vector3} from "three";
 import {FirstChunk} from "./FirstChunk";
+import {Vector3} from "three";
+import {BasicBlock} from "../../../components/blocks/BasicBlock";
 
 export function MultiChunk() {
     return (
@@ -10,10 +10,12 @@ export function MultiChunk() {
                 {
                     neighbour: FirstChunk.name,
                     position: new Vector3(-2.5, 1, 0),
+                    dimension: new Vector3(1,1,1),
                 },
                 {
                     neighbour: "Multi1",
                     position: new Vector3(2.5, 1, 0),
+                    dimension: new Vector3(1,1,1),
                 }
             ]}>
                 <BasicBlock
@@ -26,10 +28,12 @@ export function MultiChunk() {
                 {
                     neighbour: "Multi0",
                     position: new Vector3(-2.5, 1, 0),
+                    dimension: new Vector3(1,1,1),
                 },
                 {
                     neighbour: "Multi2",
                     position: new Vector3(2.5, 1, 0),
+                    dimension: new Vector3(1,1,1),
                 }
             ]}>
                 <BasicBlock
@@ -42,6 +46,7 @@ export function MultiChunk() {
                 {
                     neighbour: "Multi1",
                     position: new Vector3(-2.5, 1, 0),
+                    dimension: new Vector3(1,1,1),
                 },
             ]}>
                 <BasicBlock
@@ -51,5 +56,5 @@ export function MultiChunk() {
                 />
             </Chunk>
         </>
-    )
+    );
 }

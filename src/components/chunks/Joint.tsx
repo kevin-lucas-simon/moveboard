@@ -1,16 +1,15 @@
-import {Vector3} from "three";
 import {Edges} from "@react-three/drei";
 import {RigidBody} from "@react-three/rapier";
 import {useChunkContext, useChunkWorldPosition} from "./Chunk";
+import {JointModel} from "../model/JointModel";
 
-export type DebugJointBlockProps = {
-    position: Vector3,
-    dimension: Vector3,
+export type JointProps = {
+    joint: JointModel,
 }
 
-export function Joint(props: DebugJointBlockProps) {
-    const worldPosition = useChunkWorldPosition(props.position)
-    const chunkName = useChunkContext()?.value.chunk.name
+export function Joint(props: JointProps) {
+    const worldPosition = useChunkWorldPosition(props.joint.position)
+    const chunkName = useChunkContext()?.chunk.name
 
     function onCollisionExit() {
         console.log("onCollisionExit", chunkName, props)
@@ -23,7 +22,7 @@ export function Joint(props: DebugJointBlockProps) {
                 <meshStandardMaterial color={"green"} />
             </mesh>
             <mesh>
-                <boxGeometry args={props.dimension.toArray()} />
+                <boxGeometry args={props.joint.dimension.toArray()} />
                 <meshPhongMaterial color={"green"} opacity={0.25} transparent />
                 <Edges color={"black"} />
             </mesh>
