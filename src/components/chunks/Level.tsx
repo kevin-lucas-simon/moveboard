@@ -24,6 +24,7 @@ export const Level = (props: LevelProps) => {
 
     const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
 
+    // debug log
     useEffect(() => {
         console.log({chunks: chunks, renderedChunkPositions: renderedChunkPositions, activeChunkName: activeChunkName})
     }, [chunks, renderedChunkPositions, activeChunkName]);

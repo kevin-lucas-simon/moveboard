@@ -56,7 +56,7 @@ function useRegisteredChunkOnLevel(props: ChunkProps): ChunkModel {
             joints: props.joints,
         })
         levelChunkRegisterFunction(registeredChunk)
-    }, [levelChunkRegisterFunction, props, registeredChunk]);
+    }, [props]);
 
     return registeredChunk
 }
