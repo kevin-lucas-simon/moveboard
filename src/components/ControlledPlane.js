@@ -1,5 +1,5 @@
 import {RigidBody} from "@react-three/rapier";
-import {PlayerBall} from "./entities/PlayerBall";
+import {Player} from "./entities/Player";
 
 export function ControlledPlane() {
     const box = {
@@ -13,7 +13,7 @@ export function ControlledPlane() {
     return (
         <>
             {/* ball */}
-            <PlayerBall />
+            <Player />
 
             {/* floor */}
             <RigidBody type={"fixed"}>

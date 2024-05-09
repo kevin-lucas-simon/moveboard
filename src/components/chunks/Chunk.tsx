@@ -85,7 +85,7 @@ export function useChunkWorldPosition(offset?: Vector3|undefined) {
         }
 
         const chunkName = chunkContext.chunk.name
-        const chunkPosition = levelContext.renderedChunkPositions[chunkName] // TODO umsetzen in .position!
+        const chunkPosition = levelContext.renderedChunkPositions[chunkName]
 
         if (!chunkPosition) {
             return

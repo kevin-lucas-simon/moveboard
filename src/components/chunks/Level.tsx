@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useContext, useCallback, useEffect, useState, Ref} from "react";
+import {createContext, ReactNode, useContext, useEffect, useState, Ref} from "react";
 import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
@@ -23,6 +23,10 @@ export const Level = (props: LevelProps) => {
     const [activeChunkName, setActiveChunkName] = useState(props.start)
 
     const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
+
+    useEffect(() => {
+        console.log({chunks: chunks, renderedChunkPositions: renderedChunkPositions, activeChunkName: activeChunkName})
+    }, [chunks, renderedChunkPositions, activeChunkName]);
 
     return (
         <LevelContext.Provider value={{
