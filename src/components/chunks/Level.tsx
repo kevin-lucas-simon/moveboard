@@ -1,52 +1,72 @@
-import {createContext, ReactNode, useContext, useCallback, useEffect, useState} from "react";
+import {createContext, ReactNode, useContext, useCallback, useEffect, useState, Ref} from "react";
 import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
-    value: {
-        activeChunk: string,
-        renderedChunkPositions: {[key: string]: Vector3},
-    },
     function: {
-        registerChunk: (chunk: ChunkModel) => void
+        registerChunk: (chunk: ChunkModel) => void,
     }
+    activeChunk: string,
+    renderedChunkPositions: {[key: string]: Vector3},
 }
-
 export const useLevelContext = () => useContext(LevelContext);
 
 export type LevelProps = {
     start: string,
     children?: ReactNode | undefined,
 }
+
 export const Level = (props: LevelProps) => {
+    const [chunks, registerChunk] = useChunkRegister();
+    const [activeChunkName, setActiveChunkName] = useState(props.start)
+
+    const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
+
+    return (
+        <LevelContext.Provider value={{
+            function: {
+                registerChunk: registerChunk,
+            },
+            activeChunk: activeChunkName,
+            renderedChunkPositions: renderedChunkPositions,
+        }}>
+            {props.children}
+        </LevelContext.Provider>
+    );
+};
+
+function useChunkRegister() {
+    // define all chunks
     const [chunks, setChunks]
         = useState<{[key: string]: ChunkModel}>({})
-    const [activeChunkName, setActiveChunkName]
-        = useState(props.start)
-    const [renderedChunkPositions, setRenderedChunkPositions]
-        = useState<{[key: string]: Vector3}>({})
 
-    // let all belonging chunks register here
-    const registerChunk = useCallback((chunk: ChunkModel) => {
+    // define chunk register hook
+    const registerChunk = (chunk: ChunkModel) => {
         setChunks(prevChunks => ({
             ...prevChunks,
             [chunk.name]: chunk
-        }));
-    }, []) // TODO in eigene Funktion auslagern
+        }))
+    }
 
-    // define rendered chunks
+    return [chunks, registerChunk] as const
+}
+
+function useRenderChunkPositions(chunks: {[key: string]: ChunkModel}, activeChunkName: string) {
+    const [renderedChunkPositions, setRenderedChunkPositions]
+        = useState<{[key: string]: Vector3}>({})
+
     useEffect(() => {
         // get current active chunk
         const activeChunk = chunks[activeChunkName]
         if (!activeChunk && Object.keys(chunks).length !== 0) {
-            throw Error("Level: active chunk '" + activeChunkName + "' not found!")
+            throw Error(useRenderChunkPositions.name + " active chunk '" + activeChunkName + "' not found!")
         }
 
         // define render pipeline object
         const newRenderedChunks = {
-            [activeChunkName]: new Vector3(0,0,0),
+            [activeChunkName]: renderedChunkPositions[activeChunkName] ?? new Vector3(0,0,0),
         };
 
         // get active chunk neighbours via joints
@@ -59,19 +79,7 @@ export const Level = (props: LevelProps) => {
 
         // return defined chunks for rendering
         setRenderedChunkPositions(newRenderedChunks)
-    }, [activeChunkName, chunks]) // TODO eigene Funktion
+    }, [activeChunkName, chunks])
 
-    return (
-        <LevelContext.Provider value={{
-            value: {
-                activeChunk: activeChunkName,
-                renderedChunkPositions: renderedChunkPositions,
-            },
-            function: {
-                registerChunk: registerChunk,
-            }
-        }}>
-            {props.children}
-        </LevelContext.Provider>
-    );
-};
+    return renderedChunkPositions
+}
