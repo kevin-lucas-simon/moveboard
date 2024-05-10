@@ -12,39 +12,13 @@ export type JointProps = {
 
 export function Joint(props: JointProps) {
     const worldPosition = useChunkWorldPosition(props.joint.position)
-    const levelSetActiveChunkFunction = useLevelContext()?.function.setActiveChunk
-
-    function onIntersectionExit(event: IntersectionExitPayload) {
-        // is the intersecting object our player?
-        if (event.other.rigidBodyObject?.name !== Player.name) {
-            return
-        }
-
-        // get player and joint relative coordinates to chunk center
-        const playerWorldPosition = event.other.rigidBodyObject.position.clone()
-        const chunkCenterWorldPosition = worldPosition.clone().sub(props.joint.position)
-
-        const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkCenterWorldPosition)
-        const jointDistanceToChunkCenter = props.joint.position.length()
-
-        // is it leaving our chunk?
-        const isLeavingJointChunk = playerDistanceToChunkCenter > jointDistanceToChunkCenter
-        if (!isLeavingJointChunk) {
-            return;
-        }
-
-        // register new active chunk
-        if (!levelSetActiveChunkFunction) {
-            throw Error(onIntersectionExit.name + " must be within " + Level.name)
-        }
-        levelSetActiveChunkFunction(props.joint.neighbour)
-    }
+    const onIntersectionExitFunction = useJointIntersectionChunkLeavingLogic(props.joint)
 
     return (
         <>
             <CuboidCollider
                 sensor={true}
-                onIntersectionExit={onIntersectionExit}
+                onIntersectionExit={onIntersectionExitFunction}
                 args={props.joint.dimension.clone().multiplyScalar(0.5).toArray()}
                 position={worldPosition}
             />
@@ -61,4 +35,38 @@ export function Joint(props: JointProps) {
             </group>
         </>
     );
+}
+
+function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
+    const levelSetActiveChunkFunction = useLevelContext()?.function.setActiveChunk
+    // don't like this useChunkWorldPosition(), but it makes the hook more decoupled
+    // maybe we can put the offset out of the hook and build a second one for caching?
+    const chunkCenterWorldPosition = useChunkWorldPosition()
+
+    function onIntersectionExit(event: IntersectionExitPayload) {
+        // is the intersecting object our player?
+        if (event.other.rigidBodyObject?.name !== Player.name) {
+            return
+        }
+
+        // get player and joint relative coordinates to chunk center
+        const playerWorldPosition = event.other.rigidBodyObject.position.clone()
+
+        const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkCenterWorldPosition)
+        const jointDistanceToChunkCenter = joint.position.length()
+
+        // is it leaving our chunk?
+        const isLeavingJointChunk = playerDistanceToChunkCenter > jointDistanceToChunkCenter
+        if (!isLeavingJointChunk) {
+            return;
+        }
+
+        // register new active chunk
+        if (!levelSetActiveChunkFunction) {
+            throw Error(onIntersectionExit.name + " must be within " + Level.name)
+        }
+        levelSetActiveChunkFunction(joint.neighbour)
+    }
+
+    return onIntersectionExit
 }

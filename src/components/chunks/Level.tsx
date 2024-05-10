@@ -21,13 +21,8 @@ export type LevelProps = {
 
 export const Level = (props: LevelProps) => {
     const [chunks, registerChunk] = useChunkRegister();
-    const [activeChunkName, setActiveChunkName] = useState(props.start)
-
+    const [activeChunkName, setActiveChunk] = useActiveChunk(props.start)
     const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
-
-    function setActiveChunk(chunkName: string) {
-        setActiveChunkName(chunkName)
-    }
 
     // debug log
     useEffect(() => {
@@ -93,4 +88,14 @@ function useRenderChunkPositions(chunks: {[key: string]: ChunkModel}, activeChun
     }, [activeChunkName, chunks])
 
     return renderedChunkPositions
+}
+
+function useActiveChunk(startChunkName: string) {
+    const [activeChunkName, setActiveChunkName] = useState(startChunkName)
+
+    function setActiveChunk(chunkName: string) {
+        setActiveChunkName(chunkName)
+    }
+
+    return [activeChunkName, setActiveChunk] as const
 }
