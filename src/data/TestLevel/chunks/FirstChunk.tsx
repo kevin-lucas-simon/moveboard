@@ -8,18 +8,18 @@ export function FirstChunk() {
         <Chunk name={FirstChunk.name} joints={[
             {
                 neighbour: SecondChunk.name,
-                position: new Vector3(-3.5, 1, 0),
+                position: new Vector3(-4, 1, 0),
                 dimension: new Vector3(1,1,1)
             },
             {
                 neighbour: "Multi0",
-                position: new Vector3(3.5, 1, 0),
+                position: new Vector3(4, 1, 0),
                 dimension: new Vector3(1,1,1)
             }
         ]}>
             <BasicBlock
                 position={new Vector3(0,0,0)}
-                dimension={new Vector3(7,1,7)}
+                dimension={new Vector3(9,1,9)}
                 color={"blue"}
             />
             <BasicBlock
@@ -27,6 +27,17 @@ export function FirstChunk() {
                 dimension={new Vector3(1,1,1)}
                 color={"lightblue"}
             />
+
+            {/* walls */}
+            <BasicBlock position={new Vector3(0,1,-4)} dimension={new Vector3(9,1,1)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(0,1,4)} dimension={new Vector3(9,1,1)} color={"lightblue"}/>
+
+            <BasicBlock position={new Vector3(-4,1,-2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(-4,1,2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(4,1,-2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(4,1,2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
+
+
         </Chunk>
     );
 }

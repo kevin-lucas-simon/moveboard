@@ -26,7 +26,7 @@ function App() {
 
     return (
         <UserControls>
-            <Canvas camera={{position: [0, 8, 0], fov: 75}}>
+            <Canvas camera={{position: [0, 10.864 + 0.5, 0], fov: 45}}>
                 <ambientLight intensity={Math.PI / 2} />
                 <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} decay={0} intensity={Math.PI} />
                 <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />

@@ -9,7 +9,7 @@ export function MultiChunk() {
             <Chunk name={"Multi0"} joints={[
                 {
                     neighbour: FirstChunk.name,
-                    position: new Vector3(-2.5, 1, 0),
+                    position: new Vector3(-3, 1, 0),
                     dimension: new Vector3(1,1,1),
                 },
                 {
