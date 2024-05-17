@@ -2,15 +2,18 @@ import {createContext, ReactNode, useContext, useEffect, useState, Ref} from "re
 import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
+import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
     function: {
         registerChunk: (chunk: ChunkModel) => void,
         setActiveChunk: (chunkName: string) => void,
+        registerBlockInChunkDimension: (chunkName: string, minimalChunkPosition: Vector3, maximalChunkPosition: Vector3) => void,
     }
     activeChunk: string,
     renderedChunkPositions: {[key: string]: Vector3},
+    chunkDimensions: {[key: string]: ChunkDimensionBoundaries}
 }
 export const useLevelContext = () => useContext(LevelContext);
 
@@ -23,20 +26,28 @@ export const Level = (props: LevelProps) => {
     const [chunks, registerChunk] = useChunkRegister();
     const [activeChunkName, setActiveChunk] = useActiveChunk(props.start)
     const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
+    const [chunkDimensions, registerBlockInChunkDimension] = useChunkDimensionProvider()
 
     // debug log
     useEffect(() => {
-        console.log({chunks: chunks, renderedChunkPositions: renderedChunkPositions, activeChunkName: activeChunkName})
-    }, [chunks, renderedChunkPositions, activeChunkName]);
+        console.log({
+            activeChunkName: activeChunkName,
+            chunks: chunks,
+            renderedChunkPositions: renderedChunkPositions,
+            chunkDimensions: chunkDimensions,
+        })
+    }, [chunks, renderedChunkPositions, activeChunkName, chunkDimensions]);
 
     return (
         <LevelContext.Provider value={{
             function: {
                 registerChunk: registerChunk,
                 setActiveChunk: setActiveChunk,
+                registerBlockInChunkDimension: registerBlockInChunkDimension
             },
             activeChunk: activeChunkName,
             renderedChunkPositions: renderedChunkPositions,
+            chunkDimensions: chunkDimensions,
         }}>
             {props.children}
         </LevelContext.Provider>
