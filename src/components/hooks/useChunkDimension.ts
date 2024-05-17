@@ -2,38 +2,11 @@ import {Vector3} from "three";
 import {useEffect, useState} from "react";
 import {Level, useLevelContext} from "../chunks/Level";
 import {Chunk, useChunkContext} from "../chunks/Chunk";
-import {log} from "three/examples/jsm/nodes/math/MathNode";
 
 export type ChunkDimensionBoundaries = {
+    dimension: Vector3,
     minimalPosition: Vector3,
     maximalPosition: Vector3,
-}
-
-/**
- * Rückgabe ausm Chunk/Level Context
- */
-export function useChunkDimension() {
-    const levelChunkDimensionList = useLevelContext()?.chunkDimensions
-    const chunkName = useChunkContext()?.chunk.name
-    const [chunkDimension, setChunkDimension] = useState<Vector3|undefined>(undefined)
-
-    if (!levelChunkDimensionList) {
-        throw new Error(useChunkDimension.name + " must be within " + Level.name + " with " + useChunkDimensionProvider.name)
-    }
-    if (!chunkName) {
-        throw new Error(useChunkDimensionRegister.name + " must be within " + Chunk.name)
-    }
-
-    useEffect(() => {
-        const levelChunkDimension = levelChunkDimensionList[chunkName]
-        if (!levelChunkDimension) {
-            setChunkDimension(new Vector3(0,0,0))
-            return
-        }
-        setChunkDimension(levelChunkDimension.maximalPosition.clone().sub(levelChunkDimension.minimalPosition))
-    }, [levelChunkDimensionList]);
-
-    return chunkDimension
 }
 
 /**
@@ -76,6 +49,7 @@ export function useChunkDimensionProvider() {
             const chunkDimension = prevChunkDimensions[chunkName] ?? {
                 minimalPosition: new Vector3(Infinity, Infinity, Infinity),
                 maximalPosition: new Vector3(-Infinity, -Infinity, -Infinity),
+                dimension: new Vector3(0, 0, 0),
             }
 
             // set new boundaries if size is bigger
@@ -87,12 +61,14 @@ export function useChunkDimensionProvider() {
             chunkDimension.maximalPosition.y = Math.max(chunkDimension.maximalPosition.y, maximalChunkPosition.y);
             chunkDimension.maximalPosition.z = Math.max(chunkDimension.maximalPosition.z, maximalChunkPosition.z);
 
+            // calculate new dimension
+            chunkDimension.dimension = chunkDimension.maximalPosition.clone().sub(chunkDimension.minimalPosition)
+
             return {
             ...prevChunkDimensions,
             [chunkName]: chunkDimension
         }})
     }
 
-    // TODO vlt refactor mit Provide anstatt klassische Rückgabe?
     return [chunkDimensions, registerBlockInChunkDimension] as const
 }

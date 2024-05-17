@@ -1,8 +1,9 @@
-import {createContext, ReactNode, useContext, useEffect, useState, Ref} from "react";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
 import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
+import {ChunkCamera} from "../camera/ChunkCamera";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
@@ -50,6 +51,7 @@ export const Level = (props: LevelProps) => {
             chunkDimensions: chunkDimensions,
         }}>
             {props.children}
+            <ChunkCamera />
         </LevelContext.Provider>
     );
 };
