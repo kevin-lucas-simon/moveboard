@@ -92,7 +92,10 @@ function usePositionInterpolation(
         }
         setTransitionTime(transitionTime - 1)
         refPositionToInterpolate.copy(
-            lastPosition.clone().lerp(targetPosition, 1 - transitionTime / transitionTimeInFrames)
+            lastPosition.clone().lerp(
+                targetPosition,
+                Math.pow(1 - transitionTime / transitionTimeInFrames, 3)
+            )
         )
     });
 }
