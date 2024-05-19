@@ -1,7 +1,7 @@
 import {Chunk} from "../../../components/chunks/Chunk";
 import {FirstChunk} from "./FirstChunk";
 import {Vector3} from "three";
-import {BasicBlock} from "../../../components/blocks/BasicBlock";
+import {FloorBlock} from "../../../components/blocks/FloorBlock";
 
 export function MultiChunk() {
     return (
@@ -18,7 +18,7 @@ export function MultiChunk() {
                     dimension: new Vector3(1,1,1),
                 }
             ]}>
-                <BasicBlock
+                <FloorBlock
                     position={new Vector3()}
                     dimension={new Vector3(5, 1, 5)}
                     color={"orange"}
@@ -36,7 +36,7 @@ export function MultiChunk() {
                     dimension: new Vector3(1,1,1),
                 }
             ]}>
-                <BasicBlock
+                <FloorBlock
                     position={new Vector3()}
                     dimension={new Vector3(5, 1, 5)}
                     color={"orange"}
@@ -49,7 +49,7 @@ export function MultiChunk() {
                     dimension: new Vector3(1,1,1),
                 },
             ]}>
-                <BasicBlock
+                <FloorBlock
                     position={new Vector3()}
                     dimension={new Vector3(5, 1, 5)}
                     color={"orange"}

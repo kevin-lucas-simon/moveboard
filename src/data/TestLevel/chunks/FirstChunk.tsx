@@ -2,6 +2,7 @@ import {SecondChunk} from "./SecondChunk";
 import {Vector3} from "three";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 import {Chunk} from "../../../components/chunks/Chunk";
+import {FloorBlock} from "../../../components/blocks/FloorBlock";
 
 export function FirstChunk() {
     return (
@@ -17,7 +18,7 @@ export function FirstChunk() {
                 dimension: new Vector3(1,1,1)
             }
         ]}>
-            <BasicBlock
+            <FloorBlock
                 position={new Vector3(0,0,0)}
                 dimension={new Vector3(9,1,9)}
                 color={"blue"}
