@@ -1,4 +1,3 @@
-import {SecondChunk} from "./SecondChunk";
 import {Vector3} from "three";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 import {Chunk} from "../../../components/chunks/Chunk";

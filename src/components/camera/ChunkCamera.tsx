@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
+import {Bounds, OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3} from "three";
 import {useLevelContext} from "../chunks/Level";
 import {useFrame} from "@react-three/fiber";
@@ -9,6 +9,9 @@ export type ChunkCameraProps = {
     transitionFrames: number,
     fov: number,
 }
+
+// TODO Monitorausrichtung check und nach Kante ausrichten! Hochkant an Z, Breitkant an X Dimension!
+// TODO Bounds nutzen! https://github.com/pmndrs/drei?tab=readme-ov-file#bounds
 
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
