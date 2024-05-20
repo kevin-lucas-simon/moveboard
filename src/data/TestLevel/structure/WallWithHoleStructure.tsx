@@ -3,12 +3,14 @@ import {Vector3} from "three";
 
 export type WallStructureProps = BasicBlockProps & {
     holeDimension: Vector3,
+    holeOffset: Vector3,
 }
 
 export function WallWithHoleStructure(props: WallStructureProps) {
     const position = props.position;
     const dimension = props.dimension;
     const holeDimension = props.holeDimension;
+    const holeOffset = props.holeOffset;
 
     let wallBlocks = []
 
@@ -22,10 +24,23 @@ export function WallWithHoleStructure(props: WallStructureProps) {
                 }
 
                 // calculate possible position
+                // (position + hole dimension size + half of the rest dimension space + hole offset)
                 const possiblePosition = new Vector3(
-                    position.x + x * ((dimension.x - holeDimension.x) / 4) + x * (holeDimension.x / 2),
-                    position.y + y * ((dimension.y - holeDimension.y) / 4) + y * (holeDimension.y / 2),
-                    position.z + z * ((dimension.z - holeDimension.z) / 4) + z * (holeDimension.z / 2),
+                    position.x
+                        + x * (holeDimension.x / 2)
+                        + x * ((dimension.x - holeDimension.x) / 4)
+                        + holeOffset.x - Math.abs(x) * holeOffset.x / 2
+                    ,
+                    position.y
+                        + y * (holeDimension.y / 2)
+                        + y * ((dimension.y - holeDimension.y) / 4)
+                        + holeOffset.y - Math.abs(y) * holeOffset.y / 2
+                    ,
+                    position.z
+                        + z * (holeDimension.z / 2)
+                        + z * ((dimension.z - holeDimension.z) / 4)
+                        + holeOffset.z - Math.abs(z) * holeOffset.z / 2
+                    ,
                 )
 
                 // skip positions outside the wall
@@ -41,9 +56,12 @@ export function WallWithHoleStructure(props: WallStructureProps) {
 
                 // calculate dimension
                 const possibleDimension = new Vector3(
-                    x === 0 ? Math.min(holeDimension.x, dimension.x) : (dimension.x - holeDimension.x) / 2,
-                    y === 0 ? Math.min(holeDimension.y, dimension.y) : (dimension.y - holeDimension.y) / 2,
-                    z === 0 ? Math.min(holeDimension.z, dimension.z) : (dimension.z - holeDimension.z) / 2,
+                    x === 0 ? Math.min(holeDimension.x, dimension.x)
+                        : (dimension.x - holeDimension.x) / 2 + Math.abs(holeOffset.x),
+                    y === 0 ? Math.min(holeDimension.y, dimension.y)
+                        : (dimension.y - holeDimension.y) / 2 + Math.abs(holeOffset.y),
+                    z === 0 ? Math.min(holeDimension.z, dimension.z)
+                        : (dimension.z - holeDimension.z) / 2 + Math.abs(holeOffset.z),
                 )
 
                 wallBlocks.push({
@@ -53,8 +71,6 @@ export function WallWithHoleStructure(props: WallStructureProps) {
             }
         }
     }
-
-    console.log(wallBlocks);
 
     return (
         <>

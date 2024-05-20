@@ -42,16 +42,21 @@ export function FirstChunk() {
 
             {/* left wall */}
             <WallWithHoleStructure
-                position={new Vector3(-4, 1.5, 0)}
-                dimension={new Vector3(1,4,7)}
+                position={new Vector3(-4, 2, 0)}
+                dimension={new Vector3(1,3,7)}
                 holeDimension={new Vector3(2,2,2)}
-                color={"pink"}
+                holeOffset={new Vector3(0,-0.5,0)}
+                color={"lightblue"}
             />
 
             {/* right wall*/}
-            <BasicBlock position={new Vector3(4,2,-2.25)} dimension={new Vector3(1,3,2.5)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(4,2,2.25)} dimension={new Vector3(1,3,2.5)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(4,3,0)} dimension={new Vector3(1,1,2)} color={"lightblue"}/>
+            <WallWithHoleStructure
+                position={new Vector3(4, 2, 0)}
+                dimension={new Vector3(1,3,7)}
+                holeDimension={new Vector3(2,2,2)}
+                holeOffset={new Vector3(0,-0.5,0)}
+                color={"lightblue"}
+            />
         </Chunk>
     );
 }

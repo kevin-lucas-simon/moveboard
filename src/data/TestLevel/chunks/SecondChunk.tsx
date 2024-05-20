@@ -9,8 +9,8 @@ export function SecondChunk() {
         <Chunk name={SecondChunk.name} joints={[
             {
                 neighbour: FirstChunk.name,
-                position: new Vector3(2, 1, 0),
-                dimension: new Vector3(1, 1, 1),
+                position: new Vector3(2, 1.5, 0),
+                dimension: new Vector3(1, 2, 2),
             }
         ]}>
             <FloorBlock
