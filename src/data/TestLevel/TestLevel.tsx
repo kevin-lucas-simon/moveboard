@@ -3,6 +3,7 @@ import {Player} from "../../components/entities/Player";
 import {SecondChunk} from "./chunks/SecondChunk";
 import {MultiChunk} from "./chunks/MultiChunk";
 import {Level} from "../../components/chunks/Level";
+import {TunnelChunk} from "./chunks/TunnelChunk";
 
 export function TestLevel() {
     return (
@@ -10,7 +11,7 @@ export function TestLevel() {
             <Player />
             <FirstChunk />
             <SecondChunk />
-            <MultiChunk />
+            <TunnelChunk />
         </Level>
     );
 }

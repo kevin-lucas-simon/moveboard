@@ -5,20 +5,16 @@ import {Chunk} from "../../../components/chunks/Chunk";
 import {FloorBlock} from "../../../components/blocks/FloorBlock";
 import {CeilingBlock} from "../../../components/blocks/CeilingBlock";
 import {WallWithHoleStructure} from "../structure/WallWithHoleStructure";
+import {TunnelChunk} from "./TunnelChunk";
 
 export function FirstChunk() {
     return (
         <Chunk name={FirstChunk.name} joints={[
             {
-                neighbour: SecondChunk.name,
+                neighbour: TunnelChunk.name,
                 position: new Vector3(-4, 1.5, 0),
                 dimension: new Vector3(1,2,2)
             },
-            {
-                neighbour: "Multi0",
-                position: new Vector3(4, 1.5, 0),
-                dimension: new Vector3(1,2,2)
-            }
         ]}>
             <FloorBlock
                 position={new Vector3(0,0,0)}
@@ -50,11 +46,9 @@ export function FirstChunk() {
             />
 
             {/* right wall*/}
-            <WallWithHoleStructure
+            <BasicBlock
                 position={new Vector3(4, 2, 0)}
                 dimension={new Vector3(1,3,7)}
-                holeDimension={new Vector3(2,2,2)}
-                holeOffset={new Vector3(0,-0.5,0)}
                 color={"lightblue"}
             />
         </Chunk>
