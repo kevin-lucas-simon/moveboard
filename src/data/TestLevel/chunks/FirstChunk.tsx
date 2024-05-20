@@ -3,23 +3,30 @@ import {Vector3} from "three";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 import {Chunk} from "../../../components/chunks/Chunk";
 import {FloorBlock} from "../../../components/blocks/FloorBlock";
+import {CeilingBlock} from "../../../components/blocks/CeilingBlock";
+import {WallWithHoleStructure} from "../structure/WallWithHoleStructure";
 
 export function FirstChunk() {
     return (
         <Chunk name={FirstChunk.name} joints={[
             {
                 neighbour: SecondChunk.name,
-                position: new Vector3(-4, 1, 0),
-                dimension: new Vector3(1,1,1)
+                position: new Vector3(-4, 1.5, 0),
+                dimension: new Vector3(1,2,2)
             },
             {
                 neighbour: "Multi0",
-                position: new Vector3(4, 1, 0),
-                dimension: new Vector3(1,1,1)
+                position: new Vector3(4, 1.5, 0),
+                dimension: new Vector3(1,2,2)
             }
         ]}>
             <FloorBlock
                 position={new Vector3(0,0,0)}
+                dimension={new Vector3(9,1,9)}
+                color={"blue"}
+            />
+            <CeilingBlock
+                position={new Vector3(0,4,0)}
                 dimension={new Vector3(9,1,9)}
                 color={"blue"}
             />
@@ -29,16 +36,22 @@ export function FirstChunk() {
                 color={"lightblue"}
             />
 
-            {/* walls */}
-            <BasicBlock position={new Vector3(0,1,-4)} dimension={new Vector3(9,1,1)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(0,1,4)} dimension={new Vector3(9,1,1)} color={"lightblue"}/>
+            {/* top down walls */}
+            <BasicBlock position={new Vector3(0,2,-4)} dimension={new Vector3(9,3,1)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(0,2,4)} dimension={new Vector3(9,3,1)} color={"lightblue"}/>
 
-            <BasicBlock position={new Vector3(-4,1,-2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(-4,1,2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(4,1,-2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
-            <BasicBlock position={new Vector3(4,1,2)} dimension={new Vector3(1,1,3)} color={"lightblue"}/>
+            {/* left wall */}
+            <WallWithHoleStructure
+                position={new Vector3(-4, 1.5, 0)}
+                dimension={new Vector3(1,4,7)}
+                holeDimension={new Vector3(2,2,2)}
+                color={"pink"}
+            />
 
-
+            {/* right wall*/}
+            <BasicBlock position={new Vector3(4,2,-2.25)} dimension={new Vector3(1,3,2.5)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(4,2,2.25)} dimension={new Vector3(1,3,2.5)} color={"lightblue"}/>
+            <BasicBlock position={new Vector3(4,3,0)} dimension={new Vector3(1,1,2)} color={"lightblue"}/>
         </Chunk>
     );
 }

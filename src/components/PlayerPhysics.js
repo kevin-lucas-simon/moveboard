@@ -6,7 +6,7 @@ export function PlayerPhysics({children}) {
     const deviceMotion = useContext(DeviceMotionContext)
 
     return (
-        <Physics gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]} debug={true}>
+        <Physics gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]}>
             {children}
         </Physics>
     )

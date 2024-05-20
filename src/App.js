@@ -33,12 +33,11 @@ function App() {
 
                 <KeyboardControls map={keyboardControls}>
                     <PlayerPhysics>
-                        {/*<ControlledPlane />*/}
                         <TestLevel />
                     </PlayerPhysics>
                 </KeyboardControls>
 
-                <Grid infiniteGrid={true}/>
+                {/*<Grid infiniteGrid={true}/>*/}
                 <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
                 </GizmoHelper>
