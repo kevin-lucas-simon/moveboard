@@ -8,6 +8,7 @@ export type ChunkCameraProps = {
     startHeight: number,
     transitionFrames: number,
     fov: number,
+    margin: number,
 }
 
 export function ChunkCamera(props: ChunkCameraProps) {
@@ -15,7 +16,8 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const orbitControlRef = useRef<any>(null)
 
     // calculate camera position and target
-    const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(props.fov, cameraRef.current?.aspect)
+    const [targetCameraPosition, targetChunkPosition] =
+        useChunkCameraTargetCalculation(props.fov, cameraRef.current?.aspect, props.margin)
 
     // interpolate values to refs
     usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionFrames, props.startHeight)
@@ -34,7 +36,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
     );
 }
 
-function useChunkCameraTargetCalculation(fov: number, aspect: number = 1.0) {
+function useChunkCameraTargetCalculation(fov: number, aspect: number = 1.0, margin: number = 0.0) {
     // context values
     const activeChunk = useLevelContext()?.activeChunk ?? ""
     const chunkPosition = useLevelContext()?.renderedChunkPositions[activeChunk]
@@ -53,29 +55,42 @@ function useChunkCameraTargetCalculation(fov: number, aspect: number = 1.0) {
             return
         }
 
-        // TODO in Funktion auslagern
-        let chunk_length = chunkDimensions.dimension.x / 2
-        if (aspect < chunkDimensions.dimension.x / chunkDimensions.dimension.z) {
-            chunk_length =
-                (chunkDimensions.dimension.z * chunkDimensions.dimension.x)
-                / (chunkDimensions.dimension.z * aspect)
-                / 2
-        }
+        // calculate chunk length based on aspect ratio
+        const chunkLength = getAspectRatioBasedChunkLength(
+            chunkDimensions.dimension.x,
+            chunkDimensions.dimension.z,
+            aspect,
+            margin,
+        )
 
         // calculate camera distance via tangens
-        const angle = fov / 2
-        const distance = chunk_length / Math.tan(angle * Math.PI / 180)
+        const cameraDistance = chunkLength / Math.tan(fov/2 * Math.PI/180)
 
         // define camera aimed position for animation
         setTargetCameraPosition(new Vector3(
             chunkPosition.x,
-            chunkPosition.y + chunkDimensions.maximalPosition.y + distance,
+            chunkPosition.y + chunkDimensions.maximalPosition.y + cameraDistance,
             chunkPosition.z
         ))
         setTargetChunkPosition(chunkPosition)
-    }, [fov, chunkPosition, chunkDimensions, aspect]) // TODO aspect klappt noch net
+    }, [fov, chunkPosition, chunkDimensions, aspect, margin])
 
     return [targetCameraPosition, targetChunkPosition] as const
+}
+
+function getAspectRatioBasedChunkLength(chunkX: number, chunkZ: number, aspect: number, margin: number) {
+    // apply margin to chunk dimensions
+    const x = chunkX + margin
+    const z = chunkZ + margin
+
+    // compare aspect ratio with chunk dimension ratio
+    if (aspect < x / z) {
+        // z camera (based on x default)
+        return (z * x) / (z * aspect) / 2
+    }
+
+    // x camera (default)
+    return x / 2
 }
 
 function usePositionInterpolation(

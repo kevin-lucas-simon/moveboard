@@ -51,7 +51,7 @@ export const Level = (props: LevelProps) => {
             chunkDimensions: chunkDimensions,
         }}>
             {props.children}
-            <ChunkCamera fov={45} startHeight={3} transitionFrames={24} />
+            <ChunkCamera fov={45} startHeight={3} transitionFrames={24} margin={1.0} />
         </LevelContext.Provider>
     );
 };
