@@ -11,20 +11,31 @@ export function TunnelChunk() {
         <Chunk name={TunnelChunk.name} joints={[
             {
                 neighbour: FirstChunk.name,
-                position: new Vector3(3, 1.5, 0),
+                position: new Vector3(4.5, 1.5, 2),
                 dimension: new Vector3(1,2,2)
             },
             {
                 neighbour: SecondChunk.name,
-                position: new Vector3(-3, 1, 0),
+                position: new Vector3(-4.5, 1, -2),
                 dimension: new Vector3(1,1,1.5)
             },
         ]}>
-            <FloorBlock position={new Vector3(0,0,0)} dimension={new Vector3(5,1,4)} />
-            <CeilingBlock position={new Vector3(0,3,0)} dimension={new Vector3(5,1,4)} />
+            <FloorBlock position={new Vector3(0,0,0)} dimension={new Vector3(4,1,8)} />
+            <FloorBlock position={new Vector3(-3,0,-2)} dimension={new Vector3(2,1,4)} />
+            <FloorBlock position={new Vector3(3,0,2)} dimension={new Vector3(2,1,4)} />
 
-            <BasicBlock position={new Vector3(0,1.5,1.5)} dimension={new Vector3(5, 2, 1)} color={"lightgrey"} />
-            <BasicBlock position={new Vector3(0,1.5,-1.5)} dimension={new Vector3(5, 2, 1)} color={"lightgrey"} />
+            <CeilingBlock position={new Vector3(0,3,0)} dimension={new Vector3(4,1,8)} />
+            <CeilingBlock position={new Vector3(-3,3,-2)} dimension={new Vector3(2,1,4)} />
+            <CeilingBlock position={new Vector3(3,3,2)} dimension={new Vector3(2,1,4)} />
+
+            <BasicBlock position={new Vector3(1,1.5,3.5)} dimension={new Vector3(6, 2, 1)} color={"lightgrey"} />
+            <BasicBlock position={new Vector3(-1,1.5,-3.5)} dimension={new Vector3(6, 2, 1)} color={"lightgrey"} />
+
+            <BasicBlock position={new Vector3(-2.5,1.5,-0.5)} dimension={new Vector3(3, 2, 1)} color={"lightgrey"} />
+            <BasicBlock position={new Vector3(2.5,1.5,0.5)} dimension={new Vector3(3, 2, 1)} color={"lightgrey"} />
+
+            <BasicBlock position={new Vector3(1.5,1.5,-1.5)} dimension={new Vector3(1, 2, 3)} color={"lightgrey"} />
+            <BasicBlock position={new Vector3(-1.5,1.5,1.5)} dimension={new Vector3(1, 2, 3)} color={"lightgrey"} />
         </Chunk>
     );
 }

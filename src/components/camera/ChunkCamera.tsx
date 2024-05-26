@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {Bounds, OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
+import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3} from "three";
 import {useLevelContext} from "../chunks/Level";
 import {useFrame} from "@react-three/fiber";
@@ -10,15 +10,12 @@ export type ChunkCameraProps = {
     fov: number,
 }
 
-// TODO Monitorausrichtung check und nach Kante ausrichten! Hochkant an Z, Breitkant an X Dimension!
-// TODO Bounds nutzen! https://github.com/pmndrs/drei?tab=readme-ov-file#bounds
-
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
 
     // calculate camera position and target
-    const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(props.fov)
+    const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(props.fov, cameraRef.current?.aspect)
 
     // interpolate values to refs
     usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionFrames, props.startHeight)
@@ -37,7 +34,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
     );
 }
 
-function useChunkCameraTargetCalculation(fov: number) {
+function useChunkCameraTargetCalculation(fov: number, aspect: number = 1.0) {
     // context values
     const activeChunk = useLevelContext()?.activeChunk ?? ""
     const chunkPosition = useLevelContext()?.renderedChunkPositions[activeChunk]
@@ -56,19 +53,27 @@ function useChunkCameraTargetCalculation(fov: number) {
             return
         }
 
+        // TODO in Funktion auslagern
+        let chunk_length = chunkDimensions.dimension.x / 2
+        if (aspect < chunkDimensions.dimension.x / chunkDimensions.dimension.z) {
+            chunk_length =
+                (chunkDimensions.dimension.z * chunkDimensions.dimension.x)
+                / (chunkDimensions.dimension.z * aspect)
+                / 2
+        }
+
         // calculate camera distance via tangens
-        const alpha = fov / 2
-        const chunk_length_a = chunkDimensions.dimension.x / 2
-        const distance_b = chunk_length_a / Math.tan(alpha * Math.PI / 180)
+        const angle = fov / 2
+        const distance = chunk_length / Math.tan(angle * Math.PI / 180)
 
         // define camera aimed position for animation
         setTargetCameraPosition(new Vector3(
             chunkPosition.x,
-            chunkPosition.y + chunkDimensions.maximalPosition.y + distance_b,
+            chunkPosition.y + chunkDimensions.maximalPosition.y + distance,
             chunkPosition.z
         ))
         setTargetChunkPosition(chunkPosition)
-    }, [fov, chunkPosition, chunkDimensions])
+    }, [fov, chunkPosition, chunkDimensions, aspect]) // TODO aspect klappt noch net
 
     return [targetCameraPosition, targetChunkPosition] as const
 }

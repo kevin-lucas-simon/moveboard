@@ -2,7 +2,7 @@ import './App.css';
 import {Canvas} from "@react-three/fiber";
 import {UserControls} from "./components/UserControls";
 import {PlayerPhysics} from "./components/PlayerPhysics";
-import {GizmoHelper, GizmoViewport, Grid, KeyboardControls, StatsGl} from "@react-three/drei";
+import {GizmoHelper, GizmoViewport, Grid, KeyboardControls, Stats} from "@react-three/drei";
 import {useMemo} from "react";
 import {TestLevel} from "./data/TestLevel/TestLevel";
 
@@ -38,10 +38,11 @@ function App() {
                 </KeyboardControls>
 
                 {/*<Grid infiniteGrid={true}/>*/}
-                <StatsGl />
                 <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
                 </GizmoHelper>
+
+                <Stats />
             </Canvas>
         </UserControls>
     );
