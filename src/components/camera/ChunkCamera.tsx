@@ -6,7 +6,7 @@ import {useFrame} from "@react-three/fiber";
 
 export type ChunkCameraProps = {
     startHeight: number,
-    transitionFrames: number,
+    transitionSeconds: number,
     fov: number,
     margin: number,
 }
@@ -20,8 +20,8 @@ export function ChunkCamera(props: ChunkCameraProps) {
         useChunkCameraTargetCalculation(props.fov, cameraRef.current?.aspect, props.margin)
 
     // interpolate values to refs
-    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionFrames, props.startHeight)
-    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionFrames)
+    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, props.startHeight)
+    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds)
 
     return (
         <>
@@ -96,7 +96,7 @@ function getAspectRatioBasedChunkLength(chunkX: number, chunkZ: number, aspect: 
 function usePositionInterpolation(
     refPositionToInterpolate: Vector3|undefined,
     targetPosition: Vector3,
-    transitionTimeInFrames: number,
+    transitionSeconds: number,
     startHeight: number = 0,
 ) {
     const [transitionTime, setTransitionTime] = useState<number>(0)
@@ -104,20 +104,20 @@ function usePositionInterpolation(
 
     // start interpolation if target position changes
     useEffect(() => {
-        setTransitionTime(transitionTimeInFrames)
+        setTransitionTime(transitionSeconds)
         setLastPosition(refPositionToInterpolate ?? new Vector3(0, startHeight, 0))
     }, [targetPosition])
 
     // update transition if active
-    useFrame(() => {
-        if (transitionTime < 0 || !refPositionToInterpolate) {
+    useFrame((state, delta) => {
+        if (transitionTime <= 0 || !refPositionToInterpolate) {
             return
         }
-        setTransitionTime(transitionTime - 1)
+        setTransitionTime(Math.max(transitionTime - delta, 0))
         refPositionToInterpolate.copy(
             lastPosition.clone().lerp(
                 targetPosition,
-                Math.pow(1 - transitionTime / transitionTimeInFrames, 3)
+                Math.pow(1 - transitionTime / transitionSeconds, 3)
             )
         )
     });
