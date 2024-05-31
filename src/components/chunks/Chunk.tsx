@@ -78,7 +78,7 @@ export function useChunkWorldPosition(offset?: Vector3|undefined) {
     const [positionOffset, setPositionOffset] = useState(offset ?? new Vector3())
     useEffect(() => setPositionOffset(offset ?? new Vector3()), [offset]);
 
-    const [worldPosition, setWorldPosition] = useState(positionOffset)
+    const [worldPosition, setWorldPosition] = useState<Vector3|null>(null)
     useEffect(() => {
         if (!levelContext || !chunkContext) {
             return

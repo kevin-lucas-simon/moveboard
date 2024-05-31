@@ -14,6 +14,10 @@ export function Joint(props: JointProps) {
     const worldPosition = useChunkWorldPosition(props.joint.position)
     const onIntersectionExitFunction = useJointIntersectionChunkLeavingLogic(props.joint)
 
+    if (!worldPosition) {
+        return null
+    }
+
     return (
         <>
             <CuboidCollider
@@ -44,6 +48,11 @@ function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
     const chunkCenterWorldPosition = useChunkWorldPosition()
 
     function onIntersectionExit(event: IntersectionExitPayload) {
+        // check if required values are set
+        if (!chunkCenterWorldPosition) {
+            return
+        }
+
         // is the intersecting object our player?
         if (event.other.rigidBodyObject?.name !== Player.name) {
             return
@@ -51,7 +60,6 @@ function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
 
         // get player and joint relative coordinates to chunk center
         const playerWorldPosition = event.other.rigidBodyObject.position.clone()
-
         const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkCenterWorldPosition)
         const jointDistanceToChunkCenter = joint.position.length()
 

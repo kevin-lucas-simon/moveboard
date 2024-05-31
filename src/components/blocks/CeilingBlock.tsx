@@ -4,6 +4,9 @@ import {RigidBody} from "@react-three/rapier";
 
 export function CeilingBlock(props: BasicBlockProps) {
     const worldPosition = useChunkWorldPosition(props.position)
+    if (!worldPosition) {
+        return null
+    }
 
     return (
         <RigidBody position={worldPosition.toArray()} type={"fixed"}>
