@@ -1,4 +1,3 @@
-import './App.css';
 import {Canvas} from "@react-three/fiber";
 import {UserControls} from "./components/UserControls";
 import {PlayerPhysics} from "./components/PlayerPhysics";
