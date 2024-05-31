@@ -71,7 +71,7 @@ function useChunkVisibility(chunkName: string) {
     return levelContext.renderedChunkPositions[chunkName]
 }
 
-export function useChunkWorldPosition(offset?: Vector3|undefined) {
+export function useChunkRenderedWorldPosition(offset?: Vector3|undefined) {
     const levelContext = useLevelContext()
     const chunkContext = useChunkContext()
 
