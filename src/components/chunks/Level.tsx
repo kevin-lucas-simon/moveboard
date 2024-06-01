@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
 import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
-import {ChunkCamera} from "../camera/ChunkCamera";
+import {ChunkCamera} from "../render/ChunkCamera";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
