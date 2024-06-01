@@ -30,7 +30,9 @@ export function ChunkCamera(props: ChunkCameraProps) {
                 rotation={[-Math.PI/2, 0, 0]}
                 fov={props.cameraFov}
             />
-            <OrbitControls ref={orbitControlRef}/>
+            <OrbitControls
+                ref={orbitControlRef}
+            />
         </>
     );
 }
@@ -145,7 +147,7 @@ function usePositionInterpolation(
 
     // update transition if active
     useFrame((state, delta) => {
-        if (transitionTime <= 0 || !refPositionToInterpolate) {
+        if (transitionTime < 0 || !refPositionToInterpolate) {
             return
         }
         setTransitionTime(Math.max(transitionTime - delta, 0))
