@@ -147,15 +147,16 @@ function usePositionInterpolation(
 
     // update transition if active
     useFrame((state, delta) => {
-        if (transitionTime < 0 || !refPositionToInterpolate) {
+        if (transitionTime <= 0 || !refPositionToInterpolate) {
             return
         }
-        setTransitionTime(Math.max(transitionTime - delta, 0))
+        const newTransitionTime = Math.max(transitionTime - delta, 0)
         refPositionToInterpolate.copy(
             lastPosition.clone().lerp(
                 targetPosition,
-                Math.pow(1 - transitionTime / transitionSeconds, 3)
+                Math.pow(1 - newTransitionTime / transitionSeconds, 3)
             )
         )
+        setTransitionTime(newTransitionTime)
     });
 }
