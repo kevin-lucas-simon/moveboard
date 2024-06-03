@@ -8,7 +8,7 @@ import {TunnelChunk} from "./chunks/TunnelChunk";
 export function TestLevel() {
     return (
         <Level start={FirstChunk.name}>
-            <Player />
+            {/*<Player />*/}
             <FirstChunk />
             <SecondChunk />
             <TunnelChunk />

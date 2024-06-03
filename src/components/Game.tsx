@@ -1,8 +1,6 @@
-import {Canvas} from "@react-three/fiber";
-import {GizmoHelper, GizmoViewport, KeyboardControls, Stats} from "@react-three/drei";
-import {PlayerPhysics} from "./PlayerPhysics";
 import {UserControls} from "./UserControls";
 import {ReactNode, useMemo} from "react";
+import {Experience} from "./Experience";
 
 const Controls = {
     top: 'top',
@@ -27,25 +25,9 @@ export function Game(props: GameProps) {
 
     return (
         <UserControls>
-            <Canvas>
-                <ambientLight intensity={Math.PI / 2} />
-                <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
-                <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
-                <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
-
-                <KeyboardControls map={keyboardControls}>
-                    <PlayerPhysics>
-                        {props.children}
-                    </PlayerPhysics>
-                </KeyboardControls>
-
-                {/*<Grid infiniteGrid={true}/>*/}
-                <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                    <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
-                </GizmoHelper>
-
-                <Stats />
-            </Canvas>
+            <Experience>
+                {props.children}
+            </Experience>
         </UserControls>
     );
 }
