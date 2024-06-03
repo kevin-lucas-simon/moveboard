@@ -1,14 +1,14 @@
 import {FirstChunk} from "./chunks/FirstChunk";
 import {Player} from "../../components/entities/Player";
 import {SecondChunk} from "./chunks/SecondChunk";
-import {MultiChunk} from "./chunks/MultiChunk";
 import {Level} from "../../components/chunks/Level";
 import {TunnelChunk} from "./chunks/TunnelChunk";
+import {Vector3} from "three";
 
 export function TestLevel() {
     return (
         <Level start={FirstChunk.name}>
-            {/*<Player />*/}
+            <Player position={new Vector3(0,1,0)} />
             <FirstChunk />
             <SecondChunk />
             <TunnelChunk />
