@@ -11,11 +11,12 @@ export function UserControls(props: UserControlsProps) {
     const [combinedInputVector, setCombinedInputVector] = useState(new Vector3(0, -9.81, 0))
 
     const [deviceMotionVector, setDeviceMotionVector] = useState(null)
-    const keyboardVector = useKeyboardControls()
+    const keyboardVector = useKeyboardControls();
 
     // add all vectors together
     useEffect(() => {
         const newCombinedInputVector = deviceMotionVector ?? new Vector3(0, -9.81, 0)
+        // TODO: change vector to an unit vector to allow for diagonal movement
         newCombinedInputVector.add(keyboardVector)
 
         setCombinedInputVector(newCombinedInputVector)
@@ -24,6 +25,7 @@ export function UserControls(props: UserControlsProps) {
 
     return (
         <>
+            {/* TODO add permission request */}
             {/*{!deviceMotionVector &&*/}
             {/*    <StartModal onPermissionClick={test} />*/}
             {/*}*/}
@@ -54,42 +56,56 @@ export function UserControls(props: UserControlsProps) {
 //     }
 // }
 
+/**
+ * Hook to get the current keyboard input vector
+ */
 function useKeyboardControls() {
-    const [keyboardVector, setKeyboardVector] = useState(new Vector3(0, 0, 0))
+    const [keysDown, setKeysDown]
+        = useState(new Set<string>())
+    const [keyboardVector, setKeyboardVector]
+        = useState(new Vector3(0, 0, 0))
 
+    // add event listeners
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    setKeyboardVector(new Vector3(0, 0, -9.81))
-                    break;
-                case 'ArrowDown':
-                    setKeyboardVector(new Vector3(0, 0, 9.81))
-                    break;
-                case 'ArrowLeft':
-                    setKeyboardVector(new Vector3(-9.81, 0, 0))
-                    break;
-                case 'ArrowRight':
-                    setKeyboardVector(new Vector3(9.81, 0, 0))
-                    break;
-                case ' ':
-                    setKeyboardVector(new Vector3(0, 2*9.81, 0))
-                    break;
-            }
+            setKeysDown(keysDown.add(event.key))
         }
-
-        const handleKeyUp = () => {
-            setKeyboardVector(new Vector3(0, 0, 0))
+        const handleKeyUp = (event: KeyboardEvent) => {
+            keysDown.delete(event.key)
+            setKeysDown(new Set(keysDown))
         }
 
         window.addEventListener('keydown', handleKeyDown)
         window.addEventListener('keyup', handleKeyUp)
-
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
             window.removeEventListener('keyup', handleKeyUp)
         }
     }, [])
+
+    // calculate vector based on keys pressed
+    useEffect(() => {
+        const newKeyboardVector = new Vector3(0, 0, 0)
+
+        if (keysDown.has('ArrowUp') || keysDown.has('w')) {
+            newKeyboardVector.add(new Vector3(0, 0, -1))
+        }
+        if (keysDown.has('ArrowDown') || keysDown.has('s')) {
+            newKeyboardVector.add(new Vector3(0, 0, 1))
+        }
+        if (keysDown.has('ArrowLeft') || keysDown.has('a')) {
+            newKeyboardVector.add(new Vector3(-1, 0, 0))
+        }
+        if (keysDown.has('ArrowRight') || keysDown.has('d')) {
+            newKeyboardVector.add(new Vector3(1, 0, 0))
+        }
+        if (keysDown.has(' ')) {
+            newKeyboardVector.add(new Vector3(0, 1, 0))
+        }
+
+        newKeyboardVector.normalize()
+        setKeyboardVector(newKeyboardVector)
+    }, [keysDown])
 
     return keyboardVector
 }
