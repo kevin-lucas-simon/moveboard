@@ -1,7 +1,11 @@
 import {Vector3} from "three";
 import {createContext, ReactNode, useEffect, useState} from "react";
+import {StartModal} from "./gui/StartModal";
 
-export const GRAVITATION = 9.81;
+const GRAVITATION = 9.81;
+const KEYBOARD_SPEED = 0.5;
+const DEVICE_MOTION_SPEED = 5;
+
 export const DeviceMotionContext = createContext(new Vector3(0, -9.81, 0));
 
 export type UserControlsProps = {
@@ -9,9 +13,10 @@ export type UserControlsProps = {
 }
 
 export function UserControls(props: UserControlsProps) {
+    const [controlsActive, setControlsActive] = useState(false)
     const [combinedInputVector, setCombinedInputVector] = useState(new Vector3(0, -9.81, 0))
 
-    const [deviceMotionVector, setDeviceMotionVector] = useState<Vector3|null>(null)
+    const [deviceMotionVector, clickDeviceMotionPermission] = useDeviceMotionControls();
     const keyboardVector = useKeyboardControls();
 
     // add all vectors together
@@ -20,24 +25,34 @@ export function UserControls(props: UserControlsProps) {
 
         // apply device sensor input as basis if available
         if (deviceMotionVector) {
-            newCombinedInputVector.copy(deviceMotionVector)
+            newCombinedInputVector
+                .copy(deviceMotionVector)
+                .multiplyScalar(DEVICE_MOTION_SPEED)
         }
 
         // apply keyboard input
-        keyboardVector.multiply(new Vector3(GRAVITATION, 2*GRAVITATION, GRAVITATION))
-        newCombinedInputVector.add(keyboardVector)
+        newCombinedInputVector.add(
+            keyboardVector
+                .multiply(new Vector3(GRAVITATION, 2*GRAVITATION, GRAVITATION))
+                .multiplyScalar(KEYBOARD_SPEED)
+        )
 
-        console.log(newCombinedInputVector)
+        // save combined vector
         setCombinedInputVector(newCombinedInputVector)
     }, [deviceMotionVector, keyboardVector]);
 
+    // handle start modal
+    function handleSubmit() {
+        clickDeviceMotionPermission()
+        setControlsActive(true)
+    }
 
     return (
         <>
-            {/* TODO add permission request */}
-            {/*{!deviceMotionVector &&*/}
-            {/*    <StartModal onPermissionClick={test} />*/}
-            {/*}*/}
+            {/* TODO permissions ins Menü auslagern -> in dieser Klasse nur auf Event zugreifen, ohne zu fragen! */}
+            {!controlsActive &&
+                <StartModal onSubmit={handleSubmit} />
+            }
             <DeviceMotionContext.Provider value={combinedInputVector}>
                 {props.children}
             </DeviceMotionContext.Provider>
@@ -45,25 +60,37 @@ export function UserControls(props: UserControlsProps) {
     );
 }
 
-// function setPermission(setMotionVector, setUserControlState) {
-//     if ( typeof( DeviceMotionEvent ) !== "undefined" && typeof( DeviceMotionEvent.requestPermission ) === "function" ) {
-//         DeviceMotionEvent.requestPermission()
-//             .then( response => {
-//                 if ( response === "granted" ) {
-//                     window.addEventListener( "devicemotion", (e) => {
-//                         const realScreenSizeToSimulationFactor = 5;
-//                         setMotionVector(new Vector3(
-//                             e.accelerationIncludingGravity.x * realScreenSizeToSimulationFactor,
-//                             e.accelerationIncludingGravity.z * realScreenSizeToSimulationFactor,
-//                             -e.accelerationIncludingGravity.y * realScreenSizeToSimulationFactor,
-//                         ))
-//                         setUserControlState(UserControlState.Game)
-//                     })
-//                 }
-//             })
-//             .catch( console.error )
-//     }
-// }
+/**
+ * Hook to get the current device motion vector (mobile devices)
+ */
+function useDeviceMotionControls() {
+    const [deviceMotionVector, setDeviceMotionVector]
+        = useState<Vector3|null>(null);
+
+    const clickDeviceMotionPermission = () => {
+        if (typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
+            (DeviceMotionEvent as any).requestPermission()
+                .then((permissionState: string) => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('devicemotion', handleDeviceMotion);
+                    }
+                })
+        } else {
+            // fallback for browsers who do not need an authorisation
+            window.addEventListener('devicemotion', handleDeviceMotion);
+        }
+    };
+
+    const handleDeviceMotion = (event: any) => {
+        setDeviceMotionVector(new Vector3(
+            event.accelerationIncludingGravity.x,
+            event.accelerationIncludingGravity.z,
+            -event.accelerationIncludingGravity.y
+        ));
+    };
+
+    return [deviceMotionVector, clickDeviceMotionPermission] as const;
+}
 
 /**
  * Hook to get the current keyboard input vector
@@ -74,7 +101,7 @@ function useKeyboardControls() {
     const [keyboardVector, setKeyboardVector]
         = useState(new Vector3(0, 0, 0))
 
-    // add event listeners
+    // add keyboard event listeners
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             setKeysDown(keysDown.add(event.key))

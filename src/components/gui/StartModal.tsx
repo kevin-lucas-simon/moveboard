@@ -1,5 +1,5 @@
 export type StartModalProps = {
-    onPermissionClick: () => void,
+    onSubmit: () => void,
 }
 
 export function StartModal(props: StartModalProps) {
@@ -15,7 +15,7 @@ export function StartModal(props: StartModalProps) {
                     Please use your smartphone.
                 </p>
                 <button
-                    onClick={props.onPermissionClick}
+                    onClick={props.onSubmit}
                     className="border-2 border-black bg-black text-white rounded p-1 hover:bg-white hover:text-black transition"
                 >
                     Start demo
