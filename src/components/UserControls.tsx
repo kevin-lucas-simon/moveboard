@@ -1,6 +1,7 @@
 import {Vector3} from "three";
 import {createContext, ReactNode, useEffect, useState} from "react";
 
+export const GRAVITATION = 9.81;
 export const DeviceMotionContext = createContext(new Vector3(0, -9.81, 0));
 
 export type UserControlsProps = {
@@ -10,15 +11,23 @@ export type UserControlsProps = {
 export function UserControls(props: UserControlsProps) {
     const [combinedInputVector, setCombinedInputVector] = useState(new Vector3(0, -9.81, 0))
 
-    const [deviceMotionVector, setDeviceMotionVector] = useState(null)
+    const [deviceMotionVector, setDeviceMotionVector] = useState<Vector3|null>(null)
     const keyboardVector = useKeyboardControls();
 
     // add all vectors together
     useEffect(() => {
-        const newCombinedInputVector = deviceMotionVector ?? new Vector3(0, -9.81, 0)
-        // TODO: change vector to an unit vector to allow for diagonal movement
+        const newCombinedInputVector = new Vector3(0, -GRAVITATION, 0)
+
+        // apply device sensor input as basis if available
+        if (deviceMotionVector) {
+            newCombinedInputVector.copy(deviceMotionVector)
+        }
+
+        // apply keyboard input
+        keyboardVector.multiply(new Vector3(GRAVITATION, 2*GRAVITATION, GRAVITATION))
         newCombinedInputVector.add(keyboardVector)
 
+        console.log(newCombinedInputVector)
         setCombinedInputVector(newCombinedInputVector)
     }, [deviceMotionVector, keyboardVector]);
 
@@ -69,10 +78,12 @@ function useKeyboardControls() {
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             setKeysDown(keysDown.add(event.key))
+            calculateKeyboardVector()
         }
         const handleKeyUp = (event: KeyboardEvent) => {
             keysDown.delete(event.key)
             setKeysDown(new Set(keysDown))
+            calculateKeyboardVector()
         }
 
         window.addEventListener('keydown', handleKeyDown)
@@ -84,7 +95,7 @@ function useKeyboardControls() {
     }, [])
 
     // calculate vector based on keys pressed
-    useEffect(() => {
+    const calculateKeyboardVector = () => {
         const newKeyboardVector = new Vector3(0, 0, 0)
 
         if (keysDown.has('ArrowUp') || keysDown.has('w')) {
@@ -105,7 +116,7 @@ function useKeyboardControls() {
 
         newKeyboardVector.normalize()
         setKeyboardVector(newKeyboardVector)
-    }, [keysDown])
+    }
 
     return keyboardVector
 }
