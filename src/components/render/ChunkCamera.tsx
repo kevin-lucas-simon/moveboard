@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3} from "three";
 import {useLevelContext} from "../chunks/Level";
@@ -11,6 +11,11 @@ export type ChunkCameraProps = {
     marginInBlockSize: number,
 }
 
+/**
+ * Camera that follows active chunk
+ * @param props
+ * @constructor
+ */
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
@@ -64,7 +69,7 @@ function useChunkCameraTargetCalculation(
         = useState<Vector3>(new Vector3(0, 0, 0))
 
     // calculation function that generate target values for active chunk
-    const calculateTargetChunkPosition = () => {
+    const calculateTargetChunkPosition = useCallback(() => {
         // check if context values are available
         if (!chunkPosition || !chunkDimensions) {
             return
@@ -88,7 +93,7 @@ function useChunkCameraTargetCalculation(
             chunkPosition.z
         ))
         setTargetChunkPosition(chunkPosition)
-    }
+    }, [chunkPosition, chunkDimensions, cameraAspectRatio, cameraFov, marginInBlockSize])
 
     // use two effects, one for prop and chunk change, the other one for window resize
     useEffect(calculateTargetChunkPosition, [cameraFov, chunkPosition, chunkDimensions, cameraAspectRatio, marginInBlockSize])
