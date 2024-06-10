@@ -33,7 +33,7 @@ export function UserControls(props: UserControlsProps) {
         // apply keyboard input
         newCombinedInputVector.add(
             keyboardVector
-                .multiply(new Vector3(GRAVITATION, 2*GRAVITATION, GRAVITATION))
+                .multiply(new Vector3(GRAVITATION, 5*GRAVITATION, GRAVITATION))
                 .multiplyScalar(KEYBOARD_SPEED)
         )
 
