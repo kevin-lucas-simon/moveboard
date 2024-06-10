@@ -1,7 +1,7 @@
 import {BasicBlockProps} from "./BasicBlock";
-import {useChunkRenderedWorldPosition} from "../chunks/Chunk";
 import {RigidBody} from "@react-three/rapier";
 import {useDebug} from "../hooks/useDebug";
+import {useChunkPosition} from "../hooks/useChunkPosition";
 
 /**
  * Invisible block that acts as barrier for the player
@@ -9,7 +9,7 @@ import {useDebug} from "../hooks/useDebug";
  * @constructor
  */
 export function BarrierBlock(props: BasicBlockProps) {
-    const worldPosition = useChunkRenderedWorldPosition(props.position)
+    const worldPosition = useChunkPosition(props.position)
     const debug = useDebug()
 
     if (!worldPosition) {

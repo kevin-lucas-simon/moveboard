@@ -1,5 +1,4 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {Vector3} from "three";
 import {Level, useLevelContext} from "./Level";
 import {Joint} from "./Joint";
 import {JointModel} from "../model/JointModel";
@@ -24,7 +23,6 @@ export type ChunkProps = {
  */
 export const Chunk = (props: ChunkProps) => {
     const registeredChunkOnLevel = useRegisteredChunkOnLevel(props)
-
     const isRendering = useChunkVisibility(props.name)
 
     return (
@@ -83,36 +81,4 @@ function useChunkVisibility(chunkName: string) {
     }
 
     return levelContext.renderedChunkPositions[chunkName]
-}
-
-/**
- * Hook to get the world position of a rendered chunk
- * @param offset
- */
-export function useChunkRenderedWorldPosition(offset?: Vector3|undefined) {
-    const levelContext = useLevelContext()
-    const chunkContext = useChunkContext()
-
-    const [positionOffset, setPositionOffset] = useState(offset ?? new Vector3())
-    useEffect(() => setPositionOffset(offset ?? new Vector3()), [offset]);
-
-    const [worldPosition, setWorldPosition] = useState<Vector3|null>(null)
-    useEffect(() => {
-        if (!levelContext || !chunkContext) {
-            return
-        }
-
-        const chunkName = chunkContext.chunk.name
-        const chunkPosition = levelContext.renderedChunkPositions[chunkName]
-
-        if (!chunkPosition) {
-            return
-        }
-
-        setWorldPosition(new Vector3().copy(chunkPosition).add(positionOffset))
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [positionOffset, chunkContext?.chunk.name, levelContext?.renderedChunkPositions])
-
-    return worldPosition
 }

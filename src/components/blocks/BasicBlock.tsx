@@ -1,6 +1,6 @@
 import {RigidBody} from "@react-three/rapier";
-import {useChunkRenderedWorldPosition} from "../chunks/Chunk";
 import {Vector3} from "three";
+import {useChunkPosition} from "../hooks/useChunkPosition";
 
 export type BasicBlockProps = {
     position: Vector3,
@@ -14,7 +14,7 @@ export type BasicBlockProps = {
  * @constructor
  */
 export function BasicBlock(props: BasicBlockProps) {
-    const worldPosition = useChunkRenderedWorldPosition(props.position)
+    const worldPosition = useChunkPosition(props.position)
     if (!worldPosition) {
         return null
     }
