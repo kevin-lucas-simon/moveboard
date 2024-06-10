@@ -9,7 +9,7 @@ export type GameProps = {
 export function Game(props: GameProps) {
     return (
         <UserControls>
-            {/* TODO Speicherung von Config über LocalStorage */}
+            {/* TODO Übergreifendes Menü mit Permission-Abfrage -> dann erst <UserControls> einblenden! */}
             <Experience>
                 {props.children}
             </Experience>

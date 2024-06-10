@@ -5,6 +5,7 @@ import {JointModel} from "../model/JointModel";
 import {Player} from "../entities/Player";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Level, useLevelContext} from "./Level";
+import {useDebug} from "../hooks/useDebug";
 
 export type JointProps = {
     joint: JointModel,
@@ -13,6 +14,7 @@ export type JointProps = {
 export function Joint(props: JointProps) {
     const worldPosition = useChunkRenderedWorldPosition(props.joint.position)
     const onIntersectionExitFunction = useJointIntersectionChunkLeavingLogic(props.joint)
+    const debug = useDebug()
 
     if (!worldPosition) {
         return null
@@ -26,17 +28,19 @@ export function Joint(props: JointProps) {
                 args={props.joint.dimension.clone().multiplyScalar(0.5).toArray()}
                 position={worldPosition}
             />
-            <group position={worldPosition}>
-                <mesh>
-                    <sphereGeometry args={[0.05]}/>
-                    <meshStandardMaterial color={"green"} />
-                </mesh>
-                <mesh>
-                    <boxGeometry args={props.joint.dimension.toArray()} />
-                    <meshPhongMaterial color={"green"} opacity={0.25} transparent />
-                    <Edges color={"black"} />
-                </mesh>
-            </group>
+            {debug?.joint &&
+                <group position={worldPosition}>
+                    <mesh>
+                        <sphereGeometry args={[0.05]}/>
+                        <meshStandardMaterial color={"green"} />
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={props.joint.dimension.toArray()} />
+                        <meshPhongMaterial color={"green"} opacity={0.25} transparent />
+                        <Edges color={"black"} />
+                    </mesh>
+                </group>
+            }
         </>
     );
 }
