@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {Chunk} from "../../../components/chunks/Chunk";
 import {FirstChunk} from "./FirstChunk";
 import {SecondChunk} from "./SecondChunk";
-import {CeilingBlock} from "../../../components/blocks/CeilingBlock";
+import {BarrierBlock} from "../../../components/blocks/BarrierBlock";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 
 export function TunnelChunk() {
@@ -24,9 +24,9 @@ export function TunnelChunk() {
             <FloorBlock position={new Vector3(-3,0,-2)} dimension={new Vector3(2,1,4)} />
             <FloorBlock position={new Vector3(3,0,2)} dimension={new Vector3(2,1,4)} />
 
-            <CeilingBlock position={new Vector3(0,3,0)} dimension={new Vector3(4,1,8)} />
-            <CeilingBlock position={new Vector3(-3,3,-2)} dimension={new Vector3(2,1,4)} />
-            <CeilingBlock position={new Vector3(3,3,2)} dimension={new Vector3(2,1,4)} />
+            <BarrierBlock position={new Vector3(0,3,0)} dimension={new Vector3(4,1,8)} />
+            <BarrierBlock position={new Vector3(-3,3,-2)} dimension={new Vector3(2,1,4)} />
+            <BarrierBlock position={new Vector3(3,3,2)} dimension={new Vector3(2,1,4)} />
 
             <BasicBlock position={new Vector3(1,1.5,3.5)} dimension={new Vector3(6, 2, 1)} color={"lightgrey"} />
             <BasicBlock position={new Vector3(-1,1.5,-3.5)} dimension={new Vector3(6, 2, 1)} color={"lightgrey"} />

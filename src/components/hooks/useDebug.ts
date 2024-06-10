@@ -6,16 +6,16 @@ export type DebugSettings = {
     stats: boolean,
     gizmo: boolean,
     camera: boolean,
-    joint: boolean,
-    ceiling: boolean,
+    visible_joint: boolean,
+    visible_barrier: boolean,
 }
 export const DefaultDebugSettings: DebugSettings = {
     active: false,
     stats: true,
     gizmo: true,
     camera: true,
-    joint: true,
-    ceiling: true,
+    visible_joint: true,
+    visible_barrier: true,
 }
 
 /**

@@ -2,6 +2,11 @@ export type StartModalProps = {
     onSubmit: () => void,
 }
 
+/**
+ * Modal to show the user before starting the demo to ask for device permissions
+ * @param props
+ * @constructor
+ */
 export function StartModal(props: StartModalProps) {
     return (
         <div className="fixed z-10 w-full h-full flex items-center justify-center backdrop-blur p-8">

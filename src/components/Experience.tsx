@@ -9,19 +9,22 @@ export type GameExperienceProps = {
     children?: React.ReactNode | undefined,
 }
 
+/**
+ * Main game experience component to wrap the game and physics engine
+ * @param props
+ * @constructor
+ */
 export function Experience(props: GameExperienceProps) {
     const deviceMotion = useContext(DeviceMotionContext)
     const debug = useDebug()
 
     return (
         <Canvas>
-            {/* global lightning */}
             <ambientLight intensity={Math.PI / 2} />
             <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
             <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
-            {/* physics engine */}
             <Physics gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]}>
                 {props.children}
             </Physics>

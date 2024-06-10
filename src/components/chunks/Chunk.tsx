@@ -17,6 +17,11 @@ export type ChunkProps = {
     children?: ReactNode | undefined,
 }
 
+/**
+ * Chunk component to group blocks together and define joints to other chunks
+ * @param props
+ * @constructor
+ */
 export const Chunk = (props: ChunkProps) => {
     const registeredChunkOnLevel = useRegisteredChunkOnLevel(props)
 
@@ -39,6 +44,10 @@ export const Chunk = (props: ChunkProps) => {
     );
 };
 
+/**
+ * Register chunk on level and update on props change
+ * @param props
+ */
 function useRegisteredChunkOnLevel(props: ChunkProps): ChunkModel {
     const levelChunkRegisterFunction = useLevelContext()?.function.registerChunk
 
@@ -56,11 +65,16 @@ function useRegisteredChunkOnLevel(props: ChunkProps): ChunkModel {
             joints: props.joints,
         })
         levelChunkRegisterFunction(registeredChunk)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props]);
 
     return registeredChunk
 }
 
+/**
+ * Hook to get the visibility of a chunk in the level
+ * @param chunkName
+ */
 function useChunkVisibility(chunkName: string) {
     const levelContext = useLevelContext()
 
@@ -71,6 +85,10 @@ function useChunkVisibility(chunkName: string) {
     return levelContext.renderedChunkPositions[chunkName]
 }
 
+/**
+ * Hook to get the world position of a rendered chunk
+ * @param offset
+ */
 export function useChunkRenderedWorldPosition(offset?: Vector3|undefined) {
     const levelContext = useLevelContext()
     const chunkContext = useChunkContext()
@@ -92,6 +110,8 @@ export function useChunkRenderedWorldPosition(offset?: Vector3|undefined) {
         }
 
         setWorldPosition(new Vector3().copy(chunkPosition).add(positionOffset))
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [positionOffset, chunkContext?.chunk.name, levelContext?.renderedChunkPositions])
 
     return worldPosition

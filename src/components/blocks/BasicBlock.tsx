@@ -8,6 +8,11 @@ export type BasicBlockProps = {
     color?: string,
 }
 
+/**
+ * Basic block with fixed position
+ * @param props
+ * @constructor
+ */
 export function BasicBlock(props: BasicBlockProps) {
     const worldPosition = useChunkRenderedWorldPosition(props.position)
     if (!worldPosition) {

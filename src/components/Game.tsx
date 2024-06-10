@@ -6,6 +6,11 @@ export type GameProps = {
     children?: ReactNode|undefined,
 }
 
+/**
+ * Main game component to initialize the game
+ * @param props
+ * @constructor
+ */
 export function Game(props: GameProps) {
     return (
         <UserControls>

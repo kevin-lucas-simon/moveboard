@@ -28,7 +28,7 @@ export function Joint(props: JointProps) {
                 args={props.joint.dimension.clone().multiplyScalar(0.5).toArray()}
                 position={worldPosition}
             />
-            {debug?.joint &&
+            {debug?.visible_joint &&
                 <group position={worldPosition}>
                     <mesh>
                         <sphereGeometry args={[0.05]}/>

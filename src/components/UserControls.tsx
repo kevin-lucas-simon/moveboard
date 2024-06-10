@@ -12,6 +12,11 @@ export type UserControlsProps = {
     children?: ReactNode|undefined,
 }
 
+/**
+ * Component to handle user input from keyboard and device motion
+ * @param props
+ * @constructor
+ */
 export function UserControls(props: UserControlsProps) {
     const [controlsActive, setControlsActive] = useState(false)
     const [combinedInputVector, setCombinedInputVector] = useState(new Vector3(0, -9.81, 0))
@@ -119,6 +124,7 @@ function useKeyboardControls() {
             window.removeEventListener('keydown', handleKeyDown)
             window.removeEventListener('keyup', handleKeyUp)
         }
+        // eslint-disable-next-line
     }, [])
 
     // calculate vector based on keys pressed

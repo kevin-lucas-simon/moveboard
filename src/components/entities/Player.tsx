@@ -5,6 +5,11 @@ export type PlayerProps = {
     position: Vector3,
 }
 
+/**
+ * Player as a simple sphere
+ * @param props
+ * @constructor
+ */
 export function Player(props: PlayerProps) {
     return (
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */

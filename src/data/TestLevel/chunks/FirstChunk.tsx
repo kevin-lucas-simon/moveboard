@@ -2,7 +2,7 @@ import {Vector3} from "three";
 import {BasicBlock} from "../../../components/blocks/BasicBlock";
 import {Chunk} from "../../../components/chunks/Chunk";
 import {FloorBlock} from "../../../components/blocks/FloorBlock";
-import {CeilingBlock} from "../../../components/blocks/CeilingBlock";
+import {BarrierBlock} from "../../../components/blocks/BarrierBlock";
 import {WallWithHoleStructure} from "../structure/WallWithHoleStructure";
 import {TunnelChunk} from "./TunnelChunk";
 
@@ -20,7 +20,7 @@ export function FirstChunk() {
                 dimension={new Vector3(9,1,9)}
                 color={"blue"}
             />
-            <CeilingBlock
+            <BarrierBlock
                 position={new Vector3(0,4,0)}
                 dimension={new Vector3(9,1,9)}
                 color={"blue"}
