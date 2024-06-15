@@ -23,6 +23,11 @@ export type LevelProps = {
     children?: ReactNode | undefined,
 }
 
+/**
+ * Level component to group all chunks together and define active chunk for rendering
+ * @param props
+ * @constructor
+ */
 export const Level = (props: LevelProps) => {
     const [chunks, registerChunk] = useChunkRegister();
     const [activeChunkName, setActiveChunk] = useActiveChunk(props.start)
@@ -60,6 +65,9 @@ export const Level = (props: LevelProps) => {
     );
 };
 
+/**
+ * Hook to register chunks with their names in level
+ */
 function useChunkRegister() {
     // define all chunks
     const [chunks, setChunks]
@@ -76,6 +84,11 @@ function useChunkRegister() {
     return [chunks, registerChunk] as const
 }
 
+/**
+ * Hook to get the rendered chunk positions for rendering
+ * @param chunks
+ * @param activeChunkName
+ */
 function useRenderChunkPositions(chunks: {[key: string]: ChunkModel}, activeChunkName: string) {
     const [renderedChunkPositions, setRenderedChunkPositions]
         = useState<{[key: string]: Vector3}>({})
@@ -102,11 +115,17 @@ function useRenderChunkPositions(chunks: {[key: string]: ChunkModel}, activeChun
 
         // return defined chunks for rendering
         setRenderedChunkPositions(newRenderedChunks)
+
+        // eslint-disable-next-line
     }, [activeChunkName, chunks])
 
     return renderedChunkPositions
 }
 
+/**
+ * Hook to get the active chunk name with initial chunk name to start
+ * @param startChunkName
+ */
 function useActiveChunk(startChunkName: string) {
     const [activeChunkName, setActiveChunkName] = useState(startChunkName)
 

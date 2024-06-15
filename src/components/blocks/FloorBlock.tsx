@@ -3,7 +3,7 @@ import {useMemo} from "react";
 import {useChunkDimensionRegister} from "../hooks/useChunkDimension";
 
 /**
- * Block that is guarantied in cameras view
+ * Block that is guarantied visible in camera chunk view
  * @param props
  * @constructor
  */

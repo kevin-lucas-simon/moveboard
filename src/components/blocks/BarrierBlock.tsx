@@ -1,20 +1,17 @@
+import {BasicBlockProps} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
+import {useDebug} from "../hooks/useDebug";
 import {useChunkPosition} from "../hooks/useChunkPosition";
 
-export type BasicBlockProps = {
-    position: Vector3,
-    dimension: Vector3,
-    color?: string,
-}
-
 /**
- * Basic block with fixed position
+ * Invisible block that acts as barrier for the player
  * @param props
  * @constructor
  */
-export function BasicBlock(props: BasicBlockProps) {
+export function BarrierBlock(props: BasicBlockProps) {
     const worldPosition = useChunkPosition(props.position)
+    const debug = useDebug()
+
     if (!worldPosition) {
         return null
     }
@@ -23,7 +20,7 @@ export function BasicBlock(props: BasicBlockProps) {
         <RigidBody position={worldPosition.toArray()} type={"fixed"}>
             <mesh>
                 <boxGeometry args={props.dimension.toArray()} />
-                <meshStandardMaterial color={props.color ?? "grey"} />
+                <meshPhongMaterial color={'lightblue'} opacity={debug?.visible_barrier ? 0.25 : 0} transparent={true}/>
             </mesh>
         </RigidBody>
     );

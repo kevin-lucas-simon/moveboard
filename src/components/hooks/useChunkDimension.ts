@@ -10,7 +10,9 @@ export type ChunkDimensionBoundaries = {
 }
 
 /**
- * Anmelde Schnittstelle für Elemente in Chunks
+ * Registration interface for elements in chunks
+ * @param minimalPosition
+ * @param maximalPosition
  */
 export function useChunkDimensionRegister(minimalPosition: Vector3, maximalPosition: Vector3) {
     const chunkName = useChunkContext()?.chunk.name
@@ -24,11 +26,12 @@ export function useChunkDimensionRegister(minimalPosition: Vector3, maximalPosit
             throw new Error(useChunkDimensionRegister.name + " must be within " + Level.name)
         }
         registerBlockInChunkDimension(chunkName, minimalPosition, maximalPosition)
+        // eslint-disable-next-line
     }, [minimalPosition, maximalPosition])
 }
 
 /**
- * Provider Schnittstelle im Level
+ * Provider for chunk dimensions in level
  */
 export function useChunkDimensionProvider() {
     const [chunkDimensions, setChunkDimensions]
