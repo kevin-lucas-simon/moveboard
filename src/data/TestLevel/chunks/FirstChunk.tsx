@@ -5,6 +5,7 @@ import {FloorBlock} from "../../../components/blocks/FloorBlock";
 import {BarrierBlock} from "../../../components/blocks/BarrierBlock";
 import {WallWithHoleStructure} from "../structure/WallWithHoleStructure";
 import {TunnelChunk} from "./TunnelChunk";
+import {BouncerBlock} from "../../../components/blocks/BouncerBlock";
 
 export function FirstChunk() {
     return (
@@ -29,6 +30,12 @@ export function FirstChunk() {
                 position={new Vector3(2,1,2)}
                 dimension={new Vector3(1,1,1)}
                 color={"lightblue"}
+            />
+            <BouncerBlock
+                position={new Vector3(0,1,-4)}
+            />
+            <BouncerBlock
+                position={new Vector3(4,1,-1)}
             />
 
             {/* top down walls */}
