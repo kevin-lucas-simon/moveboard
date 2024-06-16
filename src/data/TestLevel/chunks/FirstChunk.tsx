@@ -33,9 +33,15 @@ export function FirstChunk() {
             />
             <BouncerBlock
                 position={new Vector3(0,1,-4)}
+                diameter={2}
             />
             <BouncerBlock
                 position={new Vector3(4,1,-1)}
+                diameter={3}
+            />
+            <BouncerBlock
+                position={new Vector3(0,1,3.5)}
+                intensity={4}
             />
 
             {/* top down walls */}
