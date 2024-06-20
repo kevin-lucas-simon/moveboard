@@ -83,7 +83,7 @@ export function BouncerBlock(props: BouncerBlockProps) {
             colliders={"ball"}
             onCollisionEnter={onCollision}
         >
-            <mesh>
+            <mesh castShadow receiveShadow>
                 <sphereGeometry args={[props.diameter/2 + bounceAnimation * (bounceAnimationDiameter-props.diameter)/2]}/>
                 <meshStandardMaterial color={"grey"} />
             </mesh>

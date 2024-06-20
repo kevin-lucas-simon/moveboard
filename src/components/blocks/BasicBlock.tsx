@@ -21,7 +21,7 @@ export function BasicBlock(props: BasicBlockProps) {
 
     return (
         <RigidBody position={worldPosition.toArray()} type={"fixed"}>
-            <mesh>
+            <mesh castShadow receiveShadow>
                 <boxGeometry args={props.dimension.toArray()} />
                 <meshStandardMaterial color={props.color ?? "grey"} />
             </mesh>

@@ -4,6 +4,7 @@ import {ChunkModel} from "../model/ChunkModel";
 import {JointModel} from "../model/JointModel";
 import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
 import {ChunkCamera} from "../render/ChunkCamera";
+import {ChunkLights} from "../render/ChunkLights";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
@@ -61,6 +62,7 @@ export const Level = (props: LevelProps) => {
                 transitionSeconds={0.5}
                 marginInBlockSize={1.0}
             />
+            <ChunkLights />
         </LevelContext.Provider>
     );
 };
