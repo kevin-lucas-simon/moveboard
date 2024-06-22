@@ -1,9 +1,13 @@
-import {useContext} from "react";
-import {DeviceMotionContext} from "../UserControls";
+import {useContext, useEffect, useState} from "react";
+import {DeviceMotionContext, DeviceOrientationContext} from "../UserControls";
+import {Quaternion, Vector3} from "three";
 
 export function ChunkLights() {
     // TODO add deviceRotation as user input
-    const deviceMotion = useContext(DeviceMotionContext)
+    const deviceMotion = useContext(DeviceMotionContext) // TODO rename to UserMotionContext
+    const deviceOrientation = useContext(DeviceOrientationContext) // TODO rename to UserOrientationContext
+
+    const [shadowCasterPosition, setShadowCasterPosition] = useState(new Vector3(0, 10, 0))
 
     // TODO integrate dynamic positions for static lights
     const activeChunk = null
@@ -14,17 +18,28 @@ export function ChunkLights() {
 
     // TODO add interpolation while changing chunk
 
+    // calculate shadow caster position
+    useEffect(() => {
+        const vector = new Vector3(0, 10, 0)
+        const rotation = new Quaternion().setFromEuler(deviceOrientation)
+
+        rotation.invert()
+        vector.applyQuaternion(rotation)
+
+        setShadowCasterPosition(vector)
+    }, [deviceOrientation])
+
     return (
         <>
             {/* static lights */}
             <ambientLight intensity={Math.PI / 8}/>
-            <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI / 2}/>
-            <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI / 4}/>
-            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI / 8}/>
+            <directionalLight position={[10, 10, 10]} intensity={Math.PI / 2}/>
+            <directionalLight position={[10, -10, -10]} intensity={Math.PI / 4}/>
+            <directionalLight position={[-10, -10, -10]} intensity={Math.PI / 8}/>
             {/* dynamic lights */}
             <directionalLight
                 intensity={Math.PI}
-                position={[-deviceMotion.x, 10, -deviceMotion.z]} // TODO integrate full rotation sphere
+                position={shadowCasterPosition.toArray()}
                 // TODO or use the sphere only for the upper half and make some own "realistic lighting?"
                 castShadow={true}
                 // shadow-bias={-0.0001} // TODO whats that?

@@ -1,12 +1,13 @@
-import {Vector3} from "three";
+import {Euler, Vector3} from "three";
 import {createContext, ReactNode, useEffect, useState} from "react";
 import {StartModal} from "./gui/StartModal";
 
 const GRAVITATION = 9.81;
-const KEYBOARD_SPEED = 0.5;
-const DEVICE_MOTION_SPEED = 5;
+const MOTION_SPEED_KEYBOARD = 0.5;
+const MOTION_SPEED_DEVICE_SENSOR = 5;
 
 export const DeviceMotionContext = createContext(new Vector3(0, -9.81, 0));
+export const DeviceOrientationContext = createContext(new Euler());
 
 export type UserControlsProps = {
     children?: ReactNode|undefined,
@@ -19,36 +20,43 @@ export type UserControlsProps = {
  */
 export function UserControls(props: UserControlsProps) {
     const [controlsActive, setControlsActive] = useState(false)
-    const [combinedInputVector, setCombinedInputVector] = useState(new Vector3(0, -9.81, 0))
 
-    const [deviceMotionVector, clickDeviceMotionPermission] = useDeviceMotionControls();
-    const keyboardVector = useKeyboardControls();
+    const [combinedMotion, setCombinedMotion] = useState(new Vector3(0, -9.81, 0))
+    const [combinedOrientation, setCombinedOrientation] = useState(new Euler())
 
-    // add all vectors together
+    const [deviceMotion, deviceOrientation, clickDevicePermission] = useDeviceSensor();
+    const keyboardMotion = useKeyboardControls();
+
+    // combine keyboard and device sensor input
     useEffect(() => {
-        const newCombinedInputVector = new Vector3(0, -GRAVITATION, 0)
+        const newCombinedMotion = new Vector3(0, -GRAVITATION, 0)
+        const newCombinedOrientation = new Euler()
 
-        // apply device sensor input as basis if available
-        if (deviceMotionVector) {
-            newCombinedInputVector
-                .copy(deviceMotionVector)
-                .multiplyScalar(DEVICE_MOTION_SPEED)
+        // apply device sensor as basis if available
+        if (deviceMotion && deviceOrientation) {
+            newCombinedMotion
+                .copy(deviceMotion)
+                .multiplyScalar(MOTION_SPEED_DEVICE_SENSOR)
+            newCombinedOrientation
+                .copy(deviceOrientation)
         }
 
         // apply keyboard input
-        newCombinedInputVector.add(
-            keyboardVector
+        newCombinedMotion.add(
+            keyboardMotion
                 .multiply(new Vector3(GRAVITATION, 5*GRAVITATION, GRAVITATION))
-                .multiplyScalar(KEYBOARD_SPEED)
+                .multiplyScalar(MOTION_SPEED_KEYBOARD)
         )
+        // TODO integrate keyboard orientation
 
-        // save combined vector
-        setCombinedInputVector(newCombinedInputVector)
-    }, [deviceMotionVector, keyboardVector]);
+        // save combined values
+        setCombinedMotion(newCombinedMotion)
+        setCombinedOrientation(newCombinedOrientation)
+    }, [deviceMotion, deviceOrientation, keyboardMotion]);
 
     // handle start modal
     function handleSubmit() {
-        clickDeviceMotionPermission()
+        clickDevicePermission()
         setControlsActive(true)
     }
 
@@ -58,43 +66,59 @@ export function UserControls(props: UserControlsProps) {
             {!controlsActive &&
                 <StartModal onSubmit={handleSubmit} />
             }
-            <DeviceMotionContext.Provider value={combinedInputVector}>
-                {props.children}
+            <DeviceMotionContext.Provider value={combinedMotion}>
+                <DeviceOrientationContext.Provider value={combinedOrientation}>
+                    {props.children}
+                </DeviceOrientationContext.Provider>
             </DeviceMotionContext.Provider>
         </>
     );
 }
 
 /**
- * Hook to get the current device motion vector (mobile devices)
+ * Hook to get the current device sensor values (mobile devices)
  */
-function useDeviceMotionControls() {
-    const [deviceMotionVector, setDeviceMotionVector]
+function useDeviceSensor() {
+    const [deviceMotion, setDeviceMotion]
         = useState<Vector3|null>(null);
+    const [deviceOrientation, setDeviceOrientation]
+        = useState<Euler|null>(null);
 
-    const clickDeviceMotionPermission = () => {
+    const clickDevicePermission = () => {
         if (typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
             (DeviceMotionEvent as any).requestPermission()
                 .then((permissionState: string) => {
                     if (permissionState === 'granted') {
                         window.addEventListener('devicemotion', handleDeviceMotion);
+                        window.addEventListener('deviceorientation', handleDeviceOrientation);
                     }
                 })
         } else {
             // fallback for browsers who do not need an authorisation
             window.addEventListener('devicemotion', handleDeviceMotion);
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
         }
     };
 
     const handleDeviceMotion = (event: any) => {
-        setDeviceMotionVector(new Vector3(
+        setDeviceMotion(new Vector3(
             event.accelerationIncludingGravity.x,
             event.accelerationIncludingGravity.z,
             -event.accelerationIncludingGravity.y
         ));
     };
 
-    return [deviceMotionVector, clickDeviceMotionPermission] as const;
+    const handleDeviceOrientation = (event: any) => {
+        // https://stackoverflow.com/questions/11814488/webgl-opengl-rotate-camera-according-to-device-orientation
+        setDeviceOrientation(new Euler(
+            event.beta * Math.PI / 180,
+            event.alpha * Math.PI / 180,
+            -event.gamma * Math.PI / 180,
+            'YXZ',
+        ));
+    };
+
+    return [deviceMotion, deviceOrientation, clickDevicePermission] as const;
 }
 
 /**
