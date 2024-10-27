@@ -3,7 +3,7 @@ import {createContext, ReactNode, useEffect, useState} from "react";
 import {StartModal} from "./gui/StartModal";
 
 const GRAVITATION = 9.81;
-const KEYBOARD_SPEED = 0.5;
+const KEYBOARD_SPEED = 2;
 const DEVICE_MOTION_SPEED = 5;
 
 export const DeviceMotionContext = createContext(new Vector3(0, -9.81, 0));
@@ -38,8 +38,8 @@ export function UserControls(props: UserControlsProps) {
         // apply keyboard input
         newCombinedInputVector.add(
             keyboardVector
-                .multiply(new Vector3(GRAVITATION, 5*GRAVITATION, GRAVITATION))
-                .multiplyScalar(KEYBOARD_SPEED)
+                .multiply(new Vector3(1, 2, 1))
+                .multiplyScalar(KEYBOARD_SPEED*GRAVITATION)
         )
 
         // save combined vector
@@ -87,11 +87,13 @@ function useDeviceMotionControls() {
     };
 
     const handleDeviceMotion = (event: any) => {
-        setDeviceMotionVector(new Vector3(
-            event.accelerationIncludingGravity.x,
-            event.accelerationIncludingGravity.z,
-            -event.accelerationIncludingGravity.y
-        ));
+        if (deviceMotionVector) {
+            setDeviceMotionVector(new Vector3(
+                event.accelerationIncludingGravity.x,
+                event.accelerationIncludingGravity.z,
+                -event.accelerationIncludingGravity.y
+            ));
+        }
     };
 
     return [deviceMotionVector, clickDeviceMotionPermission] as const;
