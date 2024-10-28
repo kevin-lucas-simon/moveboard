@@ -6,13 +6,18 @@ import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src
 import {Level, useLevelContext} from "./Level";
 import {useDebug} from "../hooks/useDebug";
 import {useChunkPosition} from "../hooks/useChunkPosition";
+import {useVector3} from "../serializer/toVector3";
+import {Vector3} from "three";
 
 export type JointProps = {
     joint: JointModel,
 }
 
 export function Joint(props: JointProps) {
-    const worldPosition = useChunkPosition(props.joint.position)
+    const position = useVector3(props.joint.position)
+    const dimension = useVector3(props.joint.dimension)
+
+    const worldPosition = useChunkPosition(position)
     const onIntersectionExitFunction = useJointIntersectionChunkLeavingLogic(props.joint)
     const debug = useDebug()
 
@@ -25,7 +30,7 @@ export function Joint(props: JointProps) {
             <CuboidCollider
                 sensor={true}
                 onIntersectionExit={onIntersectionExitFunction}
-                args={props.joint.dimension.clone().multiplyScalar(0.5).toArray()}
+                args={dimension.clone().multiplyScalar(0.5).toArray()}
                 position={worldPosition}
             />
             {debug?.visible_joint &&
@@ -35,7 +40,7 @@ export function Joint(props: JointProps) {
                         <meshStandardMaterial color={"green"} />
                     </mesh>
                     <mesh>
-                        <boxGeometry args={props.joint.dimension.toArray()} />
+                        <boxGeometry args={dimension.toArray()} />
                         <meshPhongMaterial color={"green"} opacity={0.25} transparent />
                         <Edges color={"black"} />
                     </mesh>
@@ -65,7 +70,7 @@ function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
         // get player and joint relative coordinates to chunk center
         const playerWorldPosition = event.other.rigidBodyObject.position.clone()
         const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkCenterWorldPosition)
-        const jointDistanceToChunkCenter = joint.position.length()
+        const jointDistanceToChunkCenter = new Vector3().copy(joint.position).length()
 
         // is it leaving our chunk?
         const isLeavingJointChunk = playerDistanceToChunkCenter > jointDistanceToChunkCenter

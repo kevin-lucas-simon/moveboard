@@ -1,16 +1,17 @@
-import {Vector3} from "three";
+import {Vector3Like} from "three";
 import {CollisionEnterPayload, RigidBody} from "@react-three/rapier";
 import {useChunkPosition} from "../hooks/useChunkPosition";
 import {Player} from "../entities/Player";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
+import {useVector3} from "../serializer/toVector3";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
 export type BouncerBlockProps = {
-    position: Vector3,
+    position: Vector3Like,
     diameter: number,
     intensity: number,
 }
@@ -23,7 +24,8 @@ export type BouncerBlockProps = {
  * @constructor
  */
 export function BouncerBlock(props: BouncerBlockProps) {
-    const worldPosition = useChunkPosition(props.position)
+    const position = useVector3(props.position)
+    const worldPosition = useChunkPosition(position)
     const [bounceAnimation, setBounceAnimation] = useState(0)
 
     // calculate bounce animation diameter related to the intensity and diameter

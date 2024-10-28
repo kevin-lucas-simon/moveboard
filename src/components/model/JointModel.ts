@@ -1,7 +1,7 @@
-import {Vector3} from "three";
+import {Vector3Like} from "three";
 
 export type JointModel = {
     neighbour: string,
-    position: Vector3,
-    dimension: Vector3,
+    position: Vector3Like,
+    dimension: Vector3Like,
 }
