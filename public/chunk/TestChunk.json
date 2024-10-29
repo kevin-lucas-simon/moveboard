@@ -1,0 +1,40 @@
+{
+    "type": "NewChunk",
+    "props": {
+        "name": "TestChunk",
+        "children": [
+            {
+                "type": "FloorBlock",
+                "props": {
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 1,
+                        "z": 9
+                    },
+                    "color": "blue"
+                }
+            },
+            {
+                "type": "BasicBlock",
+                "props": {
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "color": "lightblue"
+                }
+            }
+        ]
+    }
+}

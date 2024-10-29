@@ -1,10 +1,10 @@
 import {Game} from "./components/Game";
-import {TestLevel} from "./data/TestLevel/TestLevel";
+import {NewLevel} from "./components/chunks/NewLevel";
 
 export function App() {
     return (
         <Game>
-            <TestLevel />
+            <NewLevel start={"TestChunk"} />
         </Game>
     );
 }

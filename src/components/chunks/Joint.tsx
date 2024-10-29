@@ -6,7 +6,7 @@ import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src
 import {Level, useLevelContext} from "./Level";
 import {useDebug} from "../hooks/useDebug";
 import {useChunkPosition} from "../hooks/useChunkPosition";
-import {useVector3} from "../serializer/toVector3";
+import {useVector3} from "../util/toVector3";
 import {Vector3} from "three";
 
 export type JointProps = {

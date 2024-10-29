@@ -1,10 +1,9 @@
 import {Vector3Like} from "three";
 import {CollisionEnterPayload, RigidBody} from "@react-three/rapier";
-import {useChunkPosition} from "../hooks/useChunkPosition";
 import {Player} from "../entities/Player";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
-import {useVector3} from "../serializer/toVector3";
+import {useWorldPosition} from "../util/toVector3";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
@@ -24,8 +23,7 @@ export type BouncerBlockProps = {
  * @constructor
  */
 export function BouncerBlock(props: BouncerBlockProps) {
-    const position = useVector3(props.position)
-    const worldPosition = useChunkPosition(position)
+    const position = useWorldPosition(props.position)
     const [bounceAnimation, setBounceAnimation] = useState(0)
 
     // calculate bounce animation diameter related to the intensity and diameter
@@ -43,7 +41,8 @@ export function BouncerBlock(props: BouncerBlockProps) {
         }
     })
 
-    if (!worldPosition) {
+    // TODO eigentlich müsste kein Check notwendig sein, da die Position immer gesetzt ist
+    if (!position) {
         return null
     }
 
@@ -80,7 +79,7 @@ export function BouncerBlock(props: BouncerBlockProps) {
     return (
         <RigidBody
             name={"Bouncer"}
-            position={worldPosition.toArray()}
+            position={position.toArray()}
             type={"fixed"}
             colliders={"ball"}
             onCollisionEnter={onCollision}
