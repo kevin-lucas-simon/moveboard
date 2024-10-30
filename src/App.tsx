@@ -4,7 +4,7 @@ import {NewLevel} from "./components/chunks/NewLevel";
 export function App() {
     return (
         <Game>
-            <NewLevel start={"TestChunk"} />
+            <NewLevel startChunk={"FirstChunk"} />
         </Game>
     );
 }

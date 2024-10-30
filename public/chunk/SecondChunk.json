@@ -1,0 +1,128 @@
+{
+    "type": "NewChunk",
+    "props": {
+        "name": "SecondChunk",
+        "joints": [
+            {
+                "neighbour": "TunnelChunk",
+                "position": {
+                    "x": 2,
+                    "y": 1,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1.5
+                }
+            }
+        ],
+        "children": [
+            {
+                "type": "FloorBlock",
+                "props": {
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 5
+                    },
+                    "color": "green"
+                }
+            },
+            {
+                "type": "BarrierBlock",
+                "props": {
+                    "position": {
+                        "x": 0,
+                        "y": 6,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 5
+                    }
+                }
+            },
+            {
+                "type": "BasicBlock",
+                "props": {
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 5,
+                        "z": 1
+                    },
+                    "color": "lightgreen"
+                }
+            },
+            {
+                "type": "BasicBlock",
+                "props": {
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 5,
+                        "z": 1
+                    },
+                    "color": "lightgreen"
+                }
+            },
+            {
+                "type": "BasicBlock",
+                "props": {
+                    "position": {
+                        "x": -2,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 5,
+                        "z": 5
+                    },
+                    "color": "lightgreen"
+                }
+            },
+            {
+                "type": "WallWithHoleStructure",
+                "props": {
+                    "position": {
+                        "x": 2,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 5,
+                        "z": 5
+                    },
+                    "holeDimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1.5
+                    },
+                    "holeOffset": {
+                        "x": 0,
+                        "y": -2,
+                        "z": 0
+                    },
+                    "color": "lightgreen"
+                }
+            }
+        ]
+    }
+}
