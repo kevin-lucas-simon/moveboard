@@ -50,47 +50,7 @@ function useRenderChunks(currentChunk: string) {
 
     // fetch chunk data
     useEffect(() => {
-        fetchChunkData(currentChunk)
-            .then(chunkData => {
-                // deserialize chunk data
-                const deserializedChunk = deserializeChunk(chunkData);
-
-                // set deserialized chunk to rendered chunks
-                setRenderedChunks({
-                    [currentChunk]: {
-                        component: deserializedChunk,
-                        position: {x: 0, y: 0, z: 0}
-                    }
-                });
-
-                deserializedChunk.props.joints.forEach((joint: JointModel) => {
-                    fetchChunkData(joint.neighbour)
-                        .then(neighbourChunkData => {
-                            // deserialize chunk data
-                            const neighbourChunk = deserializeChunk(neighbourChunkData);
-
-                            // find joint of neighbour chunk
-                            const neighbourJoint = neighbourChunk.props.joints.find(
-                                (joint: JointModel) => joint.neighbour === currentChunk
-                            );
-
-                            // set position of neighbour chunk
-                            const neighbourPosition = new Vector3()
-                                .copy(joint.position)
-                                .sub(neighbourJoint.position)
-                            ;
-
-                            // set deserialized chunk to rendered chunks
-                            setRenderedChunks(prevChunks => ({
-                                ...prevChunks,
-                                [joint.neighbour]: {
-                                    component: neighbourChunk,
-                                    position: neighbourPosition
-                                }
-                            }));
-                        });
-                });
-            });
+        recursiveRendering(currentChunk, null, renderedChunks, setRenderedChunks);
     }, [currentChunk]);
 
     return renderedChunks;
@@ -127,4 +87,73 @@ function deserializeChunk(chunkData: string|undefined) {
 
     // return deserialized chunk
     return deserializedChunk;
+}
+
+function recursiveRendering(
+    currentChunkName: string,
+    previousChunkName: string|null,
+    renderedChunks: {[key: string]: RenderedChunk},
+    setRenderedChunks: (chunks: {[key: string]: RenderedChunk}) => void,
+) {
+    fetchChunkData(currentChunkName)
+        .then(chunkData => {
+            // deserialize chunk data
+            const currentChunk = deserializeChunk(chunkData);
+
+            // calculate position of chunk
+            let worldPosition = {x: 0, y: 0, z: 0};
+            if (previousChunkName) {
+                // get previous chunk
+                const previousChunk = renderedChunks[previousChunkName];
+
+// TODO Problem ist dieses hier, die Hook muss einmal durchlaufen, bevor ich mit der nächsten Anfrage beginnen kann
+                if (!previousChunk) {
+                    throw new Error("Previous chunk not found: " + previousChunkName);
+                }
+
+                // find joint of previous chunk
+                const previousChunkJoint = previousChunk.component.props.joints.find(
+                    (joint: JointModel) => joint.neighbour === currentChunkName
+                );
+
+                // find joint of current chunk
+                const currentChunkJoint = currentChunk.props.joints.find(
+                    (joint: JointModel) => joint.neighbour === previousChunkName
+                );
+
+                // set world position for current chunk
+                worldPosition = new Vector3()
+                    .copy(previousChunk.position)
+                    .add(previousChunkJoint.position)
+                    .sub(currentChunkJoint.position)
+                ;
+            }
+
+            // add chunk to rendered chunks
+// TODO Problem ist dieses hier, die Hook muss einmal durchlaufen, bevor ich mit der nächsten Anfrage beginnen kann
+            setRenderedChunks({
+                ...renderedChunks,
+                [currentChunkName]: {
+                    component: currentChunk,
+                    position: worldPosition
+                }
+            });
+
+            // recursive rendering for neighbours
+            currentChunk.props.joints.forEach((joint: JointModel) => {
+                // skip if neighbour is previous chunk
+                if (joint.neighbour === previousChunkName) {
+                    return;
+                }
+
+                // skip if neighbour is already rendered
+                if (renderedChunks[joint.neighbour]) {
+                    return;
+                }
+
+                // start rendering for neighbour
+                recursiveRendering(joint.neighbour, currentChunkName, renderedChunks, setRenderedChunks);
+            });
+        })
+    ;
 }
