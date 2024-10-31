@@ -43,15 +43,109 @@ export function NewLevel(props: NewLevelProps) {
     );
 }
 
+// TODO Dokumentation Prinzip:
+// Task-Pipeline wird nach und nach abgearbeitet
+// Start nur mit current chunk
+// Daten werden geladen und in rendered chunks gepackt
+// Dabei wird auf Nachbar Chunks in den Joints geschaut
+// Falls es Nachbarn gibt, werden diese in die Pipeline geschoben
+
+type ChunkToRender = {
+    current: string,
+    parent: string|null,
+}
 function useRenderChunks(currentChunk: string) {
-    // state for rendered chunks
+    const [chunksToRender, setChunksToRender]
+        = useState<ChunkToRender[]>([])
     const [renderedChunks, setRenderedChunks]
         = useState<{[key: string]: RenderedChunk}>({})
 
-    // fetch chunk data
+    // TODO: Tunnelchunk als current rendered nur in eine Richtung, irgendwie wird die Pipeline komplett platt gemacht
+    // TODO: Wechsel des current chunks rendered nicht korrekt die neue Position neu!
+    // TODO: Diese Funktion ist ein Monster geworden! Wir müssen dad hier kürzen!
+
+    // reset pipeline and start render job if current chunk changes
     useEffect(() => {
-        recursiveRendering(currentChunk, null, renderedChunks, setRenderedChunks);
+        setChunksToRender([{
+            current: currentChunk,
+            parent: null,
+        }])
     }, [currentChunk]);
+
+    // render chunk objects
+    useEffect(() => {
+        // take first task from pipeline queue
+        const render = chunksToRender.shift()
+        if (!render) {
+            return
+        }
+        setChunksToRender(chunksToRender)
+
+        // render chunk asynchronous
+        fetchChunkData(render.current)
+            .then(chunkData => {
+                // deserialize chunk data
+                const currentChunk = deserializeChunk(chunkData);
+
+                // calculate position of chunk
+                let worldPosition = {x: 0, y: 0, z: 0};
+                if (render.parent) {
+                    // get previous chunk
+                    const previousChunk = renderedChunks[render.parent];
+                    if (!previousChunk) {
+                        throw new Error("Previous chunk not found: " + render.parent);
+                    }
+
+                    // find joint of previous chunk
+                    const previousChunkJoint = previousChunk.component.props.joints.find(
+                        (joint: JointModel) => joint.neighbour === render.current
+                    );
+
+                    // find joint of current chunk
+                    const currentChunkJoint = currentChunk.props.joints.find(
+                        (joint: JointModel) => joint.neighbour === render.parent
+                    );
+
+                    // set world position for current chunk
+                    worldPosition = new Vector3()
+                        .copy(previousChunk.position)
+                        .add(previousChunkJoint.position)
+                        .sub(currentChunkJoint.position)
+                    ;
+                }
+
+                // add chunk to rendered chunks
+                setRenderedChunks({
+                    ...renderedChunks,
+                    [render.current]: {
+                        component: currentChunk,
+                        position: worldPosition
+                    }
+                });
+
+                // add neighbour chunks to render pipeline
+                currentChunk.props.joints.forEach((joint: JointModel) => {
+                    // skip if neighbour is previous chunk
+                    if (joint.neighbour === render.parent) {
+                        return;
+                    }
+                    // skip if neighbour is already rendered
+                    if (renderedChunks[joint.neighbour]) {
+                        return;
+                    }
+
+                    // add render task to queue
+                    setChunksToRender([
+                        ...chunksToRender,
+                        {
+                            current: joint.neighbour,
+                            parent: render.current,
+                        }
+                    ]);
+                });
+            })
+        ;
+    },[chunksToRender]);
 
     return renderedChunks;
 }
@@ -87,73 +181,4 @@ function deserializeChunk(chunkData: string|undefined) {
 
     // return deserialized chunk
     return deserializedChunk;
-}
-
-function recursiveRendering(
-    currentChunkName: string,
-    previousChunkName: string|null,
-    renderedChunks: {[key: string]: RenderedChunk},
-    setRenderedChunks: (chunks: {[key: string]: RenderedChunk}) => void,
-) {
-    fetchChunkData(currentChunkName)
-        .then(chunkData => {
-            // deserialize chunk data
-            const currentChunk = deserializeChunk(chunkData);
-
-            // calculate position of chunk
-            let worldPosition = {x: 0, y: 0, z: 0};
-            if (previousChunkName) {
-                // get previous chunk
-                const previousChunk = renderedChunks[previousChunkName];
-
-// TODO Problem ist dieses hier, die Hook muss einmal durchlaufen, bevor ich mit der nächsten Anfrage beginnen kann
-                if (!previousChunk) {
-                    throw new Error("Previous chunk not found: " + previousChunkName);
-                }
-
-                // find joint of previous chunk
-                const previousChunkJoint = previousChunk.component.props.joints.find(
-                    (joint: JointModel) => joint.neighbour === currentChunkName
-                );
-
-                // find joint of current chunk
-                const currentChunkJoint = currentChunk.props.joints.find(
-                    (joint: JointModel) => joint.neighbour === previousChunkName
-                );
-
-                // set world position for current chunk
-                worldPosition = new Vector3()
-                    .copy(previousChunk.position)
-                    .add(previousChunkJoint.position)
-                    .sub(currentChunkJoint.position)
-                ;
-            }
-
-            // add chunk to rendered chunks
-// TODO Problem ist dieses hier, die Hook muss einmal durchlaufen, bevor ich mit der nächsten Anfrage beginnen kann
-            setRenderedChunks({
-                ...renderedChunks,
-                [currentChunkName]: {
-                    component: currentChunk,
-                    position: worldPosition
-                }
-            });
-
-            // recursive rendering for neighbours
-            currentChunk.props.joints.forEach((joint: JointModel) => {
-                // skip if neighbour is previous chunk
-                if (joint.neighbour === previousChunkName) {
-                    return;
-                }
-
-                // skip if neighbour is already rendered
-                if (renderedChunks[joint.neighbour]) {
-                    return;
-                }
-
-                // start rendering for neighbour
-                recursiveRendering(joint.neighbour, currentChunkName, renderedChunks, setRenderedChunks);
-            });
-        })
-    ;
 }
