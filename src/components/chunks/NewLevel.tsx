@@ -8,7 +8,8 @@ import {BouncerBlock} from "../blocks/BouncerBlock";
 import {NewChunk} from "./NewChunk";
 import {OrbitControls} from "@react-three/drei";
 import {createContext, useEffect, useState} from "react";
-import {Vector3Like} from "three";
+import {Vector3, Vector3Like} from "three";
+import {JointModel} from "../model/JointModel";
 export const NewLevelContext = createContext<{[key: string]: RenderedChunk}>({});
 export type RenderedChunk = {
     component: any,
@@ -51,27 +52,8 @@ function useRenderChunks(currentChunk: string) {
     useEffect(() => {
         fetchChunkData(currentChunk)
             .then(chunkData => {
-                // validate if string format
-                if (typeof chunkData !== "string") {
-                    console.error("Chunk data is not a string");
-                    return;
-                }
-
-                // deserialize string to react component
-                const deserializedChunk = deserialize(chunkData, {
-                    components: {
-                        [NewChunk.name]: NewChunk as React.ComponentType,
-                        [BasicBlock.name]: BasicBlock as React.ComponentType,
-                        [FloorBlock.name]: FloorBlock as React.ComponentType,
-                        [BarrierBlock.name]: BarrierBlock as React.ComponentType,
-                        [WallWithHoleStructure.name]: WallWithHoleStructure as React.ComponentType,
-                        [BouncerBlock.name]: BouncerBlock as React.ComponentType,
-                    }
-                });
-                if (!deserializedChunk) {
-                    console.error("Deserialized Chunk is undefined");
-                    return;
-                }
+                // deserialize chunk data
+                const deserializedChunk = deserializeChunk(chunkData);
 
                 // set deserialized chunk to rendered chunks
                 setRenderedChunks({
@@ -81,8 +63,33 @@ function useRenderChunks(currentChunk: string) {
                     }
                 });
 
-                // TODO hier müsste die Joints Überprüfung geschehen
-                // Vlt ist ne Helper Klasse sinnvoll mit statischen Getter Methoden für Variablenaufrufe (component.joint.xy)
+                deserializedChunk.props.joints.forEach((joint: JointModel) => {
+                    fetchChunkData(joint.neighbour)
+                        .then(neighbourChunkData => {
+                            // deserialize chunk data
+                            const neighbourChunk = deserializeChunk(neighbourChunkData);
+
+                            // find joint of neighbour chunk
+                            const neighbourJoint = neighbourChunk.props.joints.find(
+                                (joint: JointModel) => joint.neighbour === currentChunk
+                            );
+
+                            // set position of neighbour chunk
+                            const neighbourPosition = new Vector3()
+                                .copy(joint.position)
+                                .sub(neighbourJoint.position)
+                            ;
+
+                            // set deserialized chunk to rendered chunks
+                            setRenderedChunks(prevChunks => ({
+                                ...prevChunks,
+                                [joint.neighbour]: {
+                                    component: neighbourChunk,
+                                    position: neighbourPosition
+                                }
+                            }));
+                        });
+                });
             });
     }, [currentChunk]);
 
@@ -93,4 +100,31 @@ function fetchChunkData(chunkName: string): Promise<string|undefined> {
     // download chunk data
     return fetch(window.location.origin+'/chunk/'+chunkName+'.json')
         .then((response) => response.text())
+}
+
+function deserializeChunk(chunkData: string|undefined) {
+    // validate if string format
+    if (typeof chunkData !== "string") {
+        throw new Error("Chunk data is not a string");
+    }
+
+    // deserialize string to react component
+    const deserializedChunk = deserialize(chunkData, {
+        components: {
+            [NewChunk.name]: NewChunk as React.ComponentType,
+            [BasicBlock.name]: BasicBlock as React.ComponentType,
+            [FloorBlock.name]: FloorBlock as React.ComponentType,
+            [BarrierBlock.name]: BarrierBlock as React.ComponentType,
+            [WallWithHoleStructure.name]: WallWithHoleStructure as React.ComponentType,
+            [BouncerBlock.name]: BouncerBlock as React.ComponentType,
+        }
+    });
+
+    // validate deserialization
+    if (typeof deserializedChunk !== "object") {
+        throw new Error("Deserialized Chunk is not an object");
+    }
+
+    // return deserialized chunk
+    return deserializedChunk;
 }
