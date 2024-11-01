@@ -1,6 +1,6 @@
 import {Edges} from "@react-three/drei";
 import {CuboidCollider} from "@react-three/rapier";
-import {JointModel} from "../model/JointModel";
+import {JointModel} from "./model/JointModel";
 import {Player} from "../entities/Player";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Level, useLevelContext} from "./Level";

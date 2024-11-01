@@ -67,7 +67,7 @@ function deserializeElement(
     return React.createElement(type, { ...props, key })
 }
 
-export const serialize = <T extends React.Component | JSX.Element>(component: T) => {
+export const serializeComponent = <T extends React.Component | JSX.Element>(component: T) => {
     const getName = (value: string | Function) => {
         if (typeof value === 'string') {
             return value
@@ -93,7 +93,7 @@ export const serialize = <T extends React.Component | JSX.Element>(component: T)
     return JSON.stringify(component, replacer);
 }
 
-export const deserialize = <T extends React.ReactElement<any>>(serializedComponent: string, options?: DeserializationOpts): T => {
+export const deserializeComponent = <T extends React.ReactElement<any>>(serializedComponent: string, options?: DeserializationOpts): T => {
     const componentData = JSON.parse(serializedComponent);
 
     return deserializeElement(componentData, options) as T;

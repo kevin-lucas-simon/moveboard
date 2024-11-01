@@ -1,8 +1,8 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Level, useLevelContext} from "./Level";
 import {Joint} from "./Joint";
-import {JointModel} from "../model/JointModel";
-import {ChunkModel} from "../model/ChunkModel";
+import {JointModel} from "./model/JointModel";
+import {ChunkModel} from "./model/ChunkModel";
 
 const ChunkContext = createContext<ChunkContextType|undefined>(undefined);
 export type ChunkContextType = {

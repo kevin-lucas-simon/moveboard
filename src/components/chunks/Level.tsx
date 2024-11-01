@@ -1,7 +1,7 @@
 import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Vector3} from "three";
-import {ChunkModel} from "../model/ChunkModel";
-import {JointModel} from "../model/JointModel";
+import {ChunkModel} from "./model/ChunkModel";
+import {JointModel} from "./model/JointModel";
 import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
 import {ChunkCamera} from "../render/ChunkCamera";
 

@@ -1,4 +1,4 @@
-import {JointModel} from "../model/JointModel";
+import {JointModel} from "./model/JointModel";
 import {createContext, ReactNode, useContext} from "react";
 import {Vector3Like} from "three";
 import {NewLevelContext} from "./NewLevel";
