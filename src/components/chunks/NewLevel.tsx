@@ -64,16 +64,12 @@ function useRenderChunks(rootChunk: string) {
     const [renderedChunks, setRenderedChunks]
         = useState<{[key: string]: RenderedChunk}>({})
 
-    // TODO: Tunnelchunk als current rendered nur in eine Richtung, irgendwie wird die Pipeline komplett platt gemacht
-    // TODO: Wechsel des current chunks rendered nicht korrekt die neue Position neu!
-    // TODO: Diese Funktion ist ein Monster geworden! Wir müssen dad hier kürzen!
-
     // reset pipeline and start render job if current chunk changes
     useEffect(() => {
         setRenderTasks([{
             current: rootChunk,
             parent: null,
-            distance: 2,
+            distance: 1,
             updated: Date.now(),
         }])
     }, [rootChunk]);
@@ -88,70 +84,64 @@ function useRenderChunks(rootChunk: string) {
         setRenderTasks(renderTasks)
 
         // get current chunk for render task
-        const currentChunk = renderedChunks[renderTask.current]
+        getUpdatedCurrentChunk(renderTask, renderedChunks)
+            .then((currentChunk) => {
+                console.log(currentChunk.component.props.name, currentChunk.visible, renderTask.distance)
 
-        // update chunk visibility if already rendered
-        // TODO an sich muss ich das ja nicht direkt in die rendered chunks reinbringen, oder? Kanns ja am Ende der Queue machen
-        // TODO und warum auch immer bin ich zu dumm, hier ne asynchrone funktion zu basteln, in der das fetch gewartet wird...
-        if (currentChunk) {
-            setRenderedChunks({
-                ...renderedChunks,
-                [renderTask.current]: {
-                    ...currentChunk,
-                    updated: renderTask.updated,
-                    visible: renderTask.distance > 0,
-                } as RenderedChunk,
-            });
-            return;
-        }
+                // add or replace chunk to rendered chunks
+                setRenderedChunks({
+                    ...renderedChunks,
+                    [renderTask.current]: currentChunk
+                });
 
-        // create new chunk component by fetching from server
-        fetchChunkComponent(renderTask.current).then((chunkComponent) => {
-            // calculate world position, if root chunk the world center is used
-            let worldPosition = {x:0,y:0,z:0}
-            if (renderTask.parent) {
-                const parentChunk = renderedChunks[renderTask.parent]
-
-                worldPosition = calculateWorldpositionFromParent(renderTask, parentChunk, chunkComponent)
-            }
-
-            // create new chunk object
-            return {
-                component: chunkComponent,
-                position: worldPosition,
-                updated: renderTask.updated,
-                visible: renderTask.distance > 0,
-            } as RenderedChunk
-        }).then((newChunk) => {
-            // add or replace chunk to rendered chunks
-            setRenderedChunks({
-                ...renderedChunks,
-                [renderTask.current]: newChunk
-            });
-            return newChunk;
-        }).then((newChunk) => {
-            newChunk.component.props.joints.forEach((joint: JointModel) => {
-                // skip if neighbour is already updated
-                if (renderedChunks[joint.neighbour].updated === renderTask.updated) {
-                    return;
-                }
-
-                // add render task to queue
-                setRenderTasks([
-                    ...renderTasks,
-                    {
-                        current: joint.neighbour,
-                        parent: renderTask.current,
-                        updated: renderTask.updated,
-                        distance: renderTask.distance - 1,
+                // iterate through joints and add to the queue
+                currentChunk.component.props.joints.forEach((joint: JointModel) => {
+                    // skip if neighbour is already updated
+                    if (renderedChunks[joint.neighbour]?.updated === renderTask.updated) {
+                        return;
                     }
-                ])
+
+                    // add render task to queue
+                    setRenderTasks([
+                        ...renderTasks,
+                        {
+                            current: joint.neighbour,
+                            parent: renderTask.current,
+                            updated: renderTask.updated,
+                            distance: renderTask.distance - 1,
+                        }
+                    ])
+                })
             })
-        });
     },[renderTasks]);
 
-
     return renderedChunks;
+}
+
+async function getUpdatedCurrentChunk(renderTask: RenderTask, renderedChunks: {[key: string]: RenderedChunk}): Promise<RenderedChunk> {
+    // get current chunk for render task
+    const currentRendered = renderedChunks[renderTask.current]
+    let currentComponent = currentRendered?.component
+    let currentPosition = currentRendered?.position
+
+    // create new chunk component by fetching from server
+    if (!currentRendered) {
+        currentComponent = await fetchChunkComponent(renderTask.current)
+        currentPosition = {x:0,y:0,z:0}
+
+        // calculate world position, for root chunk the world center is used
+        if (renderTask.parent) {
+            currentPosition = calculateWorldpositionFromParent(renderTask, currentComponent, renderedChunks[renderTask.parent])
+        }
+    }
+
+    // update chunk timestamp and visibility
+    return {
+        component: currentComponent,
+        position: currentPosition,
+        updated: renderTask.updated,
+        visible: renderTask.distance >= 0,
+    } as RenderedChunk;
 }
 
 async function fetchChunkComponent(chunkName: string): Promise<React.ReactElement<any>> {
@@ -163,8 +153,8 @@ async function fetchChunkComponent(chunkName: string): Promise<React.ReactElemen
 
 function calculateWorldpositionFromParent(
     renderTask: RenderTask,
-    parentChunk: RenderedChunk,
     renderComponent: React.ReactElement<any>,
+    parentChunk: RenderedChunk,
 ): Vector3Like {
     // find joint of parent chunk
     const previousChunkJoint = parentChunk.component.props.joints.find(

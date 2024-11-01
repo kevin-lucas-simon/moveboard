@@ -19,6 +19,10 @@ export function NewChunk(props: NewChunkProps) {
         throw new Error("Chunk context not found: " + props.name);
     }
 
+    if (!chunkContext.visible) {
+        return <></>;
+    }
+
     return (
         <NewChunkContext.Provider value={{
             position: chunkContext.position,
