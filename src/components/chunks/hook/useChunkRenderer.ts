@@ -27,7 +27,7 @@ export function useChunkRenderer(
         setRenderTasks([{
             current: rootChunk,
             parent: null,
-            distance: 0, // TODO joint logic
+            distance: Number.MAX_SAFE_INTEGER,
             updated: Date.now(),
         }])
     }, [rootChunk]);
@@ -52,7 +52,7 @@ export function useChunkRenderer(
                 [renderTask.current]: {
                     ...currentChunk,
                     updated: renderTask.updated,
-                    visible: renderTask.distance >= 0,
+                    visible: renderTask.distance > 0,
                 },
             }));
 
@@ -106,9 +106,6 @@ function createRenderTasksOfChunkJoints(
     currentChunk: RenderedChunk,
     renderedChunks: {[key: string]: RenderedChunk},
 ): RenderTask[] {
-
-    console.log(currentChunk, renderTask, renderedChunks)
-
     // iterate through joints and add to the queue
     const newRenderTasks: RenderTask[] = []
     currentChunk.component.props.joints.forEach((joint: JointModel) => {
@@ -122,8 +119,10 @@ function createRenderTasksOfChunkJoints(
             current: joint.neighbour,
             parent: renderTask.current,
             updated: renderTask.updated,
-            distance: renderTask.distance - 1, // TODO ich möchte noch die Joints so bearbeiten, dass sie die distance vorgeben!
+            distance: Math.min(renderTask.distance - 1, joint.vision),
         });
+
+        console.log(renderTask.current, joint.neighbour, Math.min(renderTask.distance - 1, joint.vision))
     })
 
     return newRenderTasks;
