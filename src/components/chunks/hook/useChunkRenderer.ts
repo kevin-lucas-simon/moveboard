@@ -27,109 +27,106 @@ export function useChunkRenderer(
         setRenderTasks([{
             current: rootChunk,
             parent: null,
-            distance: 1, // TODO ich möchte die distance nach den Joints richten!
+            distance: 0, // TODO joint logic
             updated: Date.now(),
         }])
     }, [rootChunk]);
 
-    // render chunk objects
+    // process render tasks
     useEffect(() => {
         // take first task from pipeline queue
-        const renderTask = renderTasks.shift()
+        const renderTask = renderTasks.shift();
         if (!renderTask) {
-            return
+            return;
         }
-        setRenderTasks(renderTasks)
+        setRenderTasks(renderTasks);
 
-        // get current chunk for render task
-        // TODO ich mag diese Funktion nicht, da sie die Update/Visibility Logik enthält
-        // TODO ich würde die Funktion so aufteilen, sodass die mir nur den Chunk erstellt, und bedingt nur bei Bedarf aufrufe
-        getUpdatedCurrentChunk(renderTask, renderedChunks)
-            .then((currentChunk) => {
-                // add or replace chunk to rendered chunks
-                setRenderedChunks({
-                    ...renderedChunks,
-                    [renderTask.current]: {
-                        ...currentChunk,
-                        updated: renderTask.updated,
-                        visible: renderTask.distance >= 0,
-                        // TODO reicht das aus oder soll bei Distance null der Chunk unsichtbar aber mit ihren Hitboxen da sein?
-                    }
-                });
+        // process render task asynchronously
+        const processRenderTask = async () => {
+            // get or create current chunk
+            const currentChunk = renderedChunks[renderTask.current] ?? await createRenderedChunk(renderTask, renderedChunks);
 
-                // iterate through joints and add to the queue
-                currentChunk.component.props.joints.forEach((joint: JointModel) => {
-                    // skip if neighbour is already updated
-                    if (renderedChunks[joint.neighbour]?.updated === renderTask.updated) {
-                        return;
-                    }
+            // update rendered chunk visibility
+            setRenderedChunks(renderedChunks => ({
+                ...renderedChunks,
+                [renderTask.current]: {
+                    ...currentChunk,
+                    updated: renderTask.updated,
+                    visible: renderTask.distance >= 0,
+                },
+            }));
 
-                    // add render task to queue
-                    // TODO ich möchte noch die Joints so bearbeiten, dass sie die distance vorgeben!
-                    renderTasks.push({
-                        current: joint.neighbour,
-                        parent: renderTask.current,
-                        updated: renderTask.updated,
-                        distance: renderTask.distance - 1,
-                    });
-                })
-                setRenderTasks([
-                    ...renderTasks,
-                ])
-            })
-    },[renderTasks]);
+            // create new render tasks for joints
+            const nextRenderTasks = createRenderTasksOfChunkJoints(renderTask, currentChunk, renderedChunks);
+            setRenderTasks([
+                ...renderTasks,
+                ...nextRenderTasks,
+            ]);
+        };
+        processRenderTask();
+    }, [renderTasks]);
 
     return renderedChunks;
 }
 
-// TODO ich mag diese Funktion nicht, da sie die Update/Visibility Logik enthält
-// TODO ich würde die Funktion so aufteilen, sodass die mir nur den Chunk erstellt, und bedingt nur bei Bedarf aufrufe
-async function getUpdatedCurrentChunk(
+async function createRenderedChunk(
     renderTask: RenderTask,
-    renderedChunks: {[key: string]: RenderedChunk}
+    renderedChunks: {[key: string]: RenderedChunk},
 ): Promise<RenderedChunk> {
-    // get current chunk for render task
-    const currentRendered = renderedChunks[renderTask.current]
-    let currentComponent = currentRendered?.component
-    let currentPosition = currentRendered?.position
+    // fetch chunk data string from API
+    const fetchURL = window.location.origin + '/chunk/' + renderTask.current + '.json';
+    const fetchResponse = await fetch(fetchURL);
+    const fetchData = await fetchResponse.text();
 
-    // create new chunk component by fetching from server
-    if (!currentRendered) {
-        currentComponent = await fetchChunkComponent(renderTask.current)
-        currentPosition = {x:0,y:0,z:0}
-
-        // calculate world position, for root chunk the world center is used
-        if (renderTask.parent) {
-            currentPosition = calculateWorldpositionFromParent(renderTask, currentComponent, renderedChunks[renderTask.parent])
-        }
-    }
-
-    // update chunk timestamp and visibility
-    return {
-        component: currentComponent,
-        position: currentPosition,
-    } as RenderedChunk;
-}
-
-async function fetchChunkComponent(
-    chunkName: string
-): Promise<React.ReactElement<any>> {
-    const url = window.location.origin + '/chunk/' + chunkName + '.json'
-    const response = await fetch(url);
-    const chunkData = await response.text();
-    return deserializeChunk(chunkData);
-}
-
-function deserializeChunk(
-    chunkData: string
-) {
-    // deserialize string to react component
-    return deserializeComponent(chunkData, {
+    // deserialize data string to react component
+    const chunkComponent = deserializeComponent(fetchData, {
         components: {
             ...allBlocks,
             [NewChunk.name]: NewChunk as React.ComponentType,
         }
     });
+
+    // calculate world position for current chunk, root chunk has no parent
+    let worldPosition = {x:0,y:0,z:0};
+    if (renderTask.parent && renderedChunks[renderTask.parent]) {
+        worldPosition = calculateWorldpositionFromParent(renderTask, chunkComponent, renderedChunks[renderTask.parent]);
+    }
+
+    // return created rendered chunk with some technical default values
+    return {
+        component: chunkComponent,
+        position: worldPosition,
+        updated: 0,
+        visible: false,
+    } as RenderedChunk;
+}
+
+function createRenderTasksOfChunkJoints(
+    renderTask: RenderTask,
+    currentChunk: RenderedChunk,
+    renderedChunks: {[key: string]: RenderedChunk},
+): RenderTask[] {
+
+    console.log(currentChunk, renderTask, renderedChunks)
+
+    // iterate through joints and add to the queue
+    const newRenderTasks: RenderTask[] = []
+    currentChunk.component.props.joints.forEach((joint: JointModel) => {
+        // skip if neighbour is already updated
+        if (renderedChunks[joint.neighbour]?.updated === renderTask.updated) {
+            return;
+        }
+
+        // add render task to queue
+        newRenderTasks.push({
+            current: joint.neighbour,
+            parent: renderTask.current,
+            updated: renderTask.updated,
+            distance: renderTask.distance - 1, // TODO ich möchte noch die Joints so bearbeiten, dass sie die distance vorgeben!
+        });
+    })
+
+    return newRenderTasks;
 }
 
 function calculateWorldpositionFromParent(
@@ -152,5 +149,5 @@ function calculateWorldpositionFromParent(
         .copy(parentChunk.position)
         .add(previousChunkJoint.position)
         .sub(currentChunkJoint.position)
-        ;
+    ;
 }
