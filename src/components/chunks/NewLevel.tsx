@@ -12,8 +12,10 @@ import {Vector3, Vector3Like} from "three";
 import {JointModel} from "../model/JointModel";
 export const NewLevelContext = createContext<{[key: string]: RenderedChunk}>({});
 export type RenderedChunk = {
-    component: any,
+    component: React.ReactElement<any>,
     position: Vector3Like,
+    updated: number,
+    visible: boolean,
 }
 
 export type NewLevelProps = {
@@ -50,13 +52,15 @@ export function NewLevel(props: NewLevelProps) {
 // Dabei wird auf Nachbar Chunks in den Joints geschaut
 // Falls es Nachbarn gibt, werden diese in die Pipeline geschoben
 
-type ChunkToRender = {
+type RenderTask = {
     current: string,
     parent: string|null,
+    distance: number,
+    updated: number,
 }
-function useRenderChunks(currentChunk: string) {
-    const [chunksToRender, setChunksToRender]
-        = useState<ChunkToRender[]>([])
+function useRenderChunks(rootChunk: string) {
+    const [renderTasks, setRenderTasks]
+        = useState<RenderTask[]>([])
     const [renderedChunks, setRenderedChunks]
         = useState<{[key: string]: RenderedChunk}>({})
 
@@ -66,94 +70,118 @@ function useRenderChunks(currentChunk: string) {
 
     // reset pipeline and start render job if current chunk changes
     useEffect(() => {
-        setChunksToRender([{
-            current: currentChunk,
+        setRenderTasks([{
+            current: rootChunk,
             parent: null,
+            distance: 2,
+            updated: Date.now(),
         }])
-    }, [currentChunk]);
+    }, [rootChunk]);
 
     // render chunk objects
     useEffect(() => {
         // take first task from pipeline queue
-        const render = chunksToRender.shift()
-        if (!render) {
+        const renderTask = renderTasks.shift()
+        if (!renderTask) {
             return
         }
-        setChunksToRender(chunksToRender)
+        setRenderTasks(renderTasks)
 
-        // render chunk asynchronous
-        fetchChunkData(render.current)
-            .then(chunkData => {
-                // deserialize chunk data
-                const currentChunk = deserializeChunk(chunkData);
+        // get current chunk for render task
+        const currentChunk = renderedChunks[renderTask.current]
 
-                // calculate position of chunk
-                let worldPosition = {x: 0, y: 0, z: 0};
-                if (render.parent) {
-                    // get previous chunk
-                    const previousChunk = renderedChunks[render.parent];
-                    if (!previousChunk) {
-                        throw new Error("Previous chunk not found: " + render.parent);
-                    }
+        // update chunk visibility if already rendered
+        // TODO an sich muss ich das ja nicht direkt in die rendered chunks reinbringen, oder? Kanns ja am Ende der Queue machen
+        // TODO und warum auch immer bin ich zu dumm, hier ne asynchrone funktion zu basteln, in der das fetch gewartet wird...
+        if (currentChunk) {
+            setRenderedChunks({
+                ...renderedChunks,
+                [renderTask.current]: {
+                    ...currentChunk,
+                    updated: renderTask.updated,
+                    visible: renderTask.distance > 0,
+                } as RenderedChunk,
+            });
+            return;
+        }
 
-                    // find joint of previous chunk
-                    const previousChunkJoint = previousChunk.component.props.joints.find(
-                        (joint: JointModel) => joint.neighbour === render.current
-                    );
+        // create new chunk component by fetching from server
+        fetchChunkComponent(renderTask.current).then((chunkComponent) => {
+            // calculate world position, if root chunk the world center is used
+            let worldPosition = {x:0,y:0,z:0}
+            if (renderTask.parent) {
+                const parentChunk = renderedChunks[renderTask.parent]
 
-                    // find joint of current chunk
-                    const currentChunkJoint = currentChunk.props.joints.find(
-                        (joint: JointModel) => joint.neighbour === render.parent
-                    );
+                worldPosition = calculateWorldpositionFromParent(renderTask, parentChunk, chunkComponent)
+            }
 
-                    // set world position for current chunk
-                    worldPosition = new Vector3()
-                        .copy(previousChunk.position)
-                        .add(previousChunkJoint.position)
-                        .sub(currentChunkJoint.position)
-                    ;
+            // create new chunk object
+            return {
+                component: chunkComponent,
+                position: worldPosition,
+                updated: renderTask.updated,
+                visible: renderTask.distance > 0,
+            } as RenderedChunk
+        }).then((newChunk) => {
+            // add or replace chunk to rendered chunks
+            setRenderedChunks({
+                ...renderedChunks,
+                [renderTask.current]: newChunk
+            });
+            return newChunk;
+        }).then((newChunk) => {
+            newChunk.component.props.joints.forEach((joint: JointModel) => {
+                // skip if neighbour is already updated
+                if (renderedChunks[joint.neighbour].updated === renderTask.updated) {
+                    return;
                 }
 
-                // add chunk to rendered chunks
-                setRenderedChunks({
-                    ...renderedChunks,
-                    [render.current]: {
-                        component: currentChunk,
-                        position: worldPosition
+                // add render task to queue
+                setRenderTasks([
+                    ...renderTasks,
+                    {
+                        current: joint.neighbour,
+                        parent: renderTask.current,
+                        updated: renderTask.updated,
+                        distance: renderTask.distance - 1,
                     }
-                });
-
-                // add neighbour chunks to render pipeline
-                currentChunk.props.joints.forEach((joint: JointModel) => {
-                    // skip if neighbour is previous chunk
-                    if (joint.neighbour === render.parent) {
-                        return;
-                    }
-                    // skip if neighbour is already rendered
-                    if (renderedChunks[joint.neighbour]) {
-                        return;
-                    }
-
-                    // add render task to queue
-                    setChunksToRender([
-                        ...chunksToRender,
-                        {
-                            current: joint.neighbour,
-                            parent: render.current,
-                        }
-                    ]);
-                });
+                ])
             })
-        ;
-    },[chunksToRender]);
+        });
+    },[renderTasks]);
+
 
     return renderedChunks;
 }
 
-function fetchChunkData(chunkName: string): Promise<string|undefined> {
-    // download chunk data
-    return fetch(window.location.origin+'/chunk/'+chunkName+'.json')
-        .then((response) => response.text())
+async function fetchChunkComponent(chunkName: string): Promise<React.ReactElement<any>> {
+    const url = window.location.origin + '/chunk/' + chunkName + '.json'
+    const response = await fetch(url);
+    const chunkData = await response.text();
+    return deserializeChunk(chunkData);
+}
+
+function calculateWorldpositionFromParent(
+    renderTask: RenderTask,
+    parentChunk: RenderedChunk,
+    renderComponent: React.ReactElement<any>,
+): Vector3Like {
+    // find joint of parent chunk
+    const previousChunkJoint = parentChunk.component.props.joints.find(
+        (joint: JointModel) => joint.neighbour === renderTask.current
+    );
+
+    // find joint of render component
+    const currentChunkJoint = renderComponent.props.joints.find(
+        (joint: JointModel) => joint.neighbour === renderTask.parent
+    );
+
+    // calculate world position for current chunk
+    return new Vector3()
+        .copy(parentChunk.position)
+        .add(previousChunkJoint.position)
+        .sub(currentChunkJoint.position)
+    ;
 }
 
 function deserializeChunk(chunkData: string|undefined) {
