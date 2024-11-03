@@ -1,10 +1,17 @@
-import {BasicBlock} from "../blocks/BasicBlock";
 import * as React from "react";
 import {OrbitControls} from "@react-three/drei";
-import {createContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {useChunkRenderer} from "./hook/useChunkRenderer";
 import {RenderedChunk} from "./model/RenderedChunk";
-export const NewLevelContext = createContext<{[key: string]: RenderedChunk}>({});
+
+const NewLevelContext = createContext<NewLevelContextType|undefined>(undefined);
+export type NewLevelContextType = {
+    function: {
+        setActiveChunk: (chunkName: string) => void,
+    },
+    renderedChunks: {[key: string]: RenderedChunk},
+    activeChunk: string,
+}
 
 export type NewLevelProps = {
     startChunk: string,
@@ -21,14 +28,27 @@ export function NewLevel(props: NewLevelProps) {
 
     return (
         <>
-            <NewLevelContext.Provider value={renderedChunks}>
+            <NewLevelContext.Provider value={{
+                function: {
+                    setActiveChunk: setActiveChunk,
+                },
+                renderedChunks,
+                activeChunk,
+            }}>
                 {/* TODO key in Objekte integrieren! */}
                 {Object.keys(renderedChunks).map((key) => renderedChunks[key].component)}
             </NewLevelContext.Provider>
 
             {/* TODO yoo die Kamera soll einfach die Maße vom aktiven Chunk bekommen und danach sich ausrichten, fertig */}
             <OrbitControls />
-            <BasicBlock position={{x:0,y:0,z:0}} dimension={{x:0.5,y:1.5,z:0.5}} color={"pink"} />
         </>
     );
+}
+
+export function useNewLevelContext(): NewLevelContextType {
+    const levelContext = useContext(NewLevelContext);
+    if (!levelContext) {
+        throw new Error("Level context not found. Are you using the Level component?");
+    }
+    return levelContext;
 }
