@@ -5,12 +5,13 @@ import {Vector3, Vector3Like} from "three";
 import {deserializeComponent} from "../../util/componentSerializer";
 import {NewChunk} from "../NewChunk";
 import {allBlocks} from "../../blocks/allBlocks";
-import {RenderedChunk} from "../model/RenderedChunk";
+import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
+import {FloorBlock} from "../../blocks/FloorBlock";
 
 type RenderTask = {
     current: string,
     parent: string|null,
-    distance: number,
+    vision: number,
     updated: number,
 }
 
@@ -27,7 +28,7 @@ export function useChunkRenderer(
         setRenderTasks([{
             current: rootChunk,
             parent: null,
-            distance: Number.MAX_SAFE_INTEGER,
+            vision: Number.MAX_SAFE_INTEGER,
             updated: Date.now(),
         }])
     }, [rootChunk]);
@@ -52,7 +53,7 @@ export function useChunkRenderer(
                 [renderTask.current]: {
                     ...currentChunk,
                     updated: renderTask.updated,
-                    visible: renderTask.distance > 0,
+                    visible: renderTask.vision > 0,
                 },
             }));
 
@@ -86,16 +87,18 @@ async function createRenderedChunk(
         }
     });
 
-    // calculate world position for current chunk, root chunk has no parent
-    let worldPosition = {x:0,y:0,z:0};
+    // calculate world position and dimension for current chunk, root chunk has no parent
+    const chunkDimension = calculateCameraDimension(chunkComponent);
+    let chunkPosition = {x:0,y:0,z:0};
     if (renderTask.parent && renderedChunks[renderTask.parent]) {
-        worldPosition = calculateWorldpositionFromParent(renderTask, chunkComponent, renderedChunks[renderTask.parent]);
+        chunkPosition = calculateWorldpositionFromParent(renderTask, chunkComponent, renderedChunks[renderTask.parent]);
     }
 
     // return created rendered chunk with some technical default values
     return {
         component: chunkComponent,
-        position: worldPosition,
+        position: chunkPosition,
+        dimension: chunkDimension,
         updated: 0,
         visible: false,
     } as RenderedChunk;
@@ -119,10 +122,8 @@ function createRenderTasksOfChunkJoints(
             current: joint.neighbour,
             parent: renderTask.current,
             updated: renderTask.updated,
-            distance: Math.min(renderTask.distance - 1, joint.vision),
+            vision: Math.min(renderTask.vision - 1, joint.vision),
         });
-
-        console.log(renderTask.current, joint.neighbour, Math.min(renderTask.distance - 1, joint.vision))
     })
 
     return newRenderTasks;
@@ -149,4 +150,43 @@ function calculateWorldpositionFromParent(
         .add(previousChunkJoint.position)
         .sub(currentChunkJoint.position)
     ;
+}
+
+function calculateCameraDimension(
+    renderComponent: React.ReactElement<any>,
+): RenderedChunkDimension {
+    const minPosition = new Vector3(Infinity, Infinity, Infinity);
+    const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
+
+    // iterate through component children
+    renderComponent.props.children.forEach((child: React.ReactElement<any>) => {
+        // skip if not a floor block
+        if (child.type !== FloorBlock) {
+            return;
+        }
+
+        // extract position and dimension from child
+        const childPosition = child.props.position as Vector3;
+        const childDimension = child.props.dimension as Vector3;
+        if (!childPosition || !childDimension) {
+            throw new Error("Missing props in " + child.type + ": position and dimension");
+        }
+
+        // calculate minimal and maximal position
+        minPosition.x = Math.min(minPosition.x, childPosition.x - childDimension.x / 2);
+        minPosition.y = Math.min(minPosition.y, childPosition.y - childDimension.y / 2);
+        minPosition.z = Math.min(minPosition.z, childPosition.z - childDimension.z / 2);
+
+        maxPosition.x = Math.max(maxPosition.x, childPosition.x + childDimension.x / 2);
+        maxPosition.y = Math.max(maxPosition.y, childPosition.y + childDimension.y / 2);
+        maxPosition.z = Math.max(maxPosition.z, childPosition.z + childDimension.z / 2);
+    });
+
+    // calculate new dimension and return it
+    const dimension = maxPosition.clone().sub(minPosition);
+    return {
+        dimension: dimension,
+        minimalPosition: minPosition,
+        maximalPosition: maxPosition,
+    } as RenderedChunkDimension;
 }
