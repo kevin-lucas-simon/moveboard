@@ -17,7 +17,7 @@ type RenderTask = {
 
 export function useChunkRenderer(
     rootChunk: string
-) {
+): {[key: string]: RenderedChunk} {
     const [renderTasks, setRenderTasks]
         = useState<RenderTask[]>([])
     const [renderedChunks, setRenderedChunks]

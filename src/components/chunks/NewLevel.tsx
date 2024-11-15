@@ -1,8 +1,8 @@
 import * as React from "react";
-import {OrbitControls} from "@react-three/drei";
 import {createContext, useContext, useEffect, useState} from "react";
 import {useChunkRenderer} from "./hook/useChunkRenderer";
 import {RenderedChunk} from "./model/RenderedChunk";
+import {ChunkCamera} from "../render/ChunkCamera";
 
 const NewLevelContext = createContext<NewLevelContextType|undefined>(undefined);
 export type NewLevelContextType = {
@@ -39,8 +39,14 @@ export function NewLevel(props: NewLevelProps) {
                 {Object.keys(renderedChunks).map((key) => renderedChunks[key].component)}
             </NewLevelContext.Provider>
 
-            {/* TODO yoo die Kamera soll einfach die Maße vom aktiven Chunk bekommen und danach sich ausrichten, fertig */}
-            <OrbitControls />
+            <ChunkCamera
+                chunkPosition={renderedChunks[activeChunk]?.position ?? {x: 0, y: 0, z: 0}}
+                chunkDimension={renderedChunks[activeChunk]?.dimension.dimension ?? {x: 0, y: 0, z: 0}}
+                chunkMaxY={renderedChunks[activeChunk]?.dimension.maximalPosition.y ?? 0}
+                transitionSeconds={0.4}
+                cameraFov={45}
+                marginInBlockSize={1}
+            />
         </>
     );
 }
