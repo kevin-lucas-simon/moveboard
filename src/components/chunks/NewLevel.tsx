@@ -2,7 +2,7 @@ import * as React from "react";
 import {createContext, useContext, useEffect, useState} from "react";
 import {useChunkRenderer} from "./hook/useChunkRenderer";
 import {RenderedChunk} from "./model/RenderedChunk";
-import {ChunkCamera} from "../render/ChunkCamera";
+import {ChunkCamera} from "./camera/ChunkCamera";
 
 const NewLevelContext = createContext<NewLevelContextType|undefined>(undefined);
 export type NewLevelContextType = {
