@@ -3,7 +3,7 @@ import {JointModel} from "../model/JointModel";
 import * as React from "react";
 import {Vector3, Vector3Like} from "three";
 import {deserializeComponent} from "../../util/componentSerializer";
-import {NewChunk} from "../NewChunk";
+import {Chunk} from "../Chunk";
 import {allBlocks} from "../../blocks/allBlocks";
 import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
 import {FloorBlock} from "../../blocks/FloorBlock";
@@ -83,7 +83,7 @@ async function createRenderedChunk(
     const chunkComponent = deserializeComponent(fetchData, {
         components: {
             ...allBlocks,
-            [NewChunk.name]: NewChunk as React.ComponentType,
+            [Chunk.name]: Chunk as React.ComponentType,
         }
     });
 

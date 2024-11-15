@@ -2,19 +2,19 @@ import {JointModel} from "./model/JointModel";
 import {useVector3, useWorldPosition} from "../util/toVector3";
 import {useDebug} from "../hooks/useDebug";
 import {CuboidCollider} from "@react-three/rapier";
-import {useNewLevelContext} from "./NewLevel";
-import {useNewChunkContext} from "./NewChunk";
+import {useLevelContext} from "./Level";
+import {useChunkContext} from "./Chunk";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../entities/Player";
 import {Vector3} from "three";
 
-export type NewJointProps = {
+export type JointProps = {
     joint: JointModel,
 }
 
-export function NewJoint(props: NewJointProps) {
-    const levelContext = useNewLevelContext();
-    const chunkContext = useNewChunkContext();
+export function Joint(props: JointProps) {
+    const levelContext = useLevelContext();
+    const chunkContext = useChunkContext();
 
     const position = useWorldPosition(props.joint.position)
     const dimension = useVector3(props.joint.dimension)

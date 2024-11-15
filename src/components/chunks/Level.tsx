@@ -4,8 +4,8 @@ import {useChunkRenderer} from "./hook/useChunkRenderer";
 import {RenderedChunk} from "./model/RenderedChunk";
 import {ChunkCamera} from "./camera/ChunkCamera";
 
-const NewLevelContext = createContext<NewLevelContextType|undefined>(undefined);
-export type NewLevelContextType = {
+const LevelContext = createContext<LevelContextType|undefined>(undefined);
+export type LevelContextType = {
     function: {
         setActiveChunk: (chunkName: string) => void,
     },
@@ -13,11 +13,11 @@ export type NewLevelContextType = {
     activeChunk: string,
 }
 
-export type NewLevelProps = {
+export type LevelProps = {
     startChunk: string,
 }
 
-export function NewLevel(props: NewLevelProps) {
+export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<string>(props.startChunk);
     const renderedChunks= useChunkRenderer(activeChunk);
@@ -28,7 +28,7 @@ export function NewLevel(props: NewLevelProps) {
 
     return (
         <>
-            <NewLevelContext.Provider value={{
+            <LevelContext.Provider value={{
                 function: {
                     setActiveChunk: setActiveChunk,
                 },
@@ -37,7 +37,7 @@ export function NewLevel(props: NewLevelProps) {
             }}>
                 {/* TODO key in Objekte integrieren! */}
                 {Object.keys(renderedChunks).map((key) => renderedChunks[key].component)}
-            </NewLevelContext.Provider>
+            </LevelContext.Provider>
 
             <ChunkCamera
                 chunkPosition={renderedChunks[activeChunk]?.position ?? {x: 0, y: 0, z: 0}}
@@ -51,8 +51,8 @@ export function NewLevel(props: NewLevelProps) {
     );
 }
 
-export function useNewLevelContext(): NewLevelContextType {
-    const levelContext = useContext(NewLevelContext);
+export function useLevelContext(): LevelContextType {
+    const levelContext = useContext(LevelContext);
     if (!levelContext) {
         throw new Error("Level context not found. Are you using the Level component?");
     }

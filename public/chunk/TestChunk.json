@@ -1,5 +1,5 @@
 {
-    "type": "NewChunk",
+    "type": "Chunk",
     "props": {
         "name": "TestChunk",
         "children": [

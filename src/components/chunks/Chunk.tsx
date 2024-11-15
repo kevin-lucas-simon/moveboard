@@ -1,23 +1,23 @@
 import {JointModel} from "./model/JointModel";
 import {createContext, ReactNode, useContext} from "react";
 import {Vector3Like} from "three";
-import {NewJoint} from "./NewJoint";
-import {useNewLevelContext} from "./NewLevel";
+import {Joint} from "./Joint";
+import {useLevelContext} from "./Level";
 
-const NewChunkContext = createContext<NewChunkContextType|undefined>(undefined);
-export type NewChunkContextType = {
+const ChunkContext = createContext<ChunkContextType|undefined>(undefined);
+export type ChunkContextType = {
     position: Vector3Like,
     active: boolean,
 }
 
-export type NewChunkProps = {
+export type ChunkProps = {
     name: string,
     joints: JointModel[],
     children?: ReactNode | undefined,
 }
-export function NewChunk(props: NewChunkProps) {
+export function Chunk(props: ChunkProps) {
     // get chunk context from level
-    const levelContext = useNewLevelContext();
+    const levelContext = useLevelContext();
     const chunkContext = levelContext.renderedChunks[props.name];
     if (!chunkContext) {
         throw new Error("Chunk context not found: " + props.name);
@@ -29,28 +29,23 @@ export function NewChunk(props: NewChunkProps) {
     }
 
     return (
-        <NewChunkContext.Provider value={{
+        <ChunkContext.Provider value={{
             position: chunkContext.position,
             active: props.name === levelContext.activeChunk,
         }}>
             {props.joints.map((joint: JointModel) =>
-                <NewJoint
+                <Joint
                     key={props.name+joint.neighbour}
                     joint={joint}
                 />
             )}
             {props.children}
-            {/*<ChunkCamera*/}
-            {/*    cameraFov={45}*/}
-            {/*    transitionSeconds={0.5}*/}
-            {/*    marginInBlockSize={1.0}*/}
-            {/*/>*/}
-        </NewChunkContext.Provider>
+        </ChunkContext.Provider>
     );
 }
 
-export function useNewChunkContext() {
-    const context = useContext(NewChunkContext);
+export function useChunkContext() {
+    const context = useContext(ChunkContext);
     if (!context) {
         throw new Error("Chunk context not found. Are you using the Chunk component?");
     }
