@@ -41,11 +41,6 @@ export function BouncerBlock(props: BouncerBlockProps) {
         }
     })
 
-    // TODO eigentlich müsste kein Check notwendig sein, da die Position immer gesetzt ist
-    if (!position) {
-        return null
-    }
-
     function onCollision(event: CollisionEnterPayload) {
         // is the intersecting object our player?
         if (event.other.rigidBodyObject?.name !== Player.name) {

@@ -35,8 +35,11 @@ export function Level(props: LevelProps) {
                 renderedChunks,
                 activeChunk,
             }}>
-                {/* TODO key in Objekte integrieren! */}
-                {Object.keys(renderedChunks).map((key) => renderedChunks[key].component)}
+                {Object.keys(renderedChunks).map((key) => (
+                    <React.Fragment key={key}>
+                        {renderedChunks[key].component}
+                    </React.Fragment>
+                ))}
             </LevelContext.Provider>
 
             <ChunkCamera
