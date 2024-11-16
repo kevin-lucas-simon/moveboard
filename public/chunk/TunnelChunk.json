@@ -2,6 +2,11 @@
     "type": "Chunk",
     "props": {
         "name": "TunnelChunk",
+        "player": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+        },
         "joints": [
             {
                 "neighbour": "FirstChunk",

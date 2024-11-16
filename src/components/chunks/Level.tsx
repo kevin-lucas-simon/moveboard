@@ -3,6 +3,7 @@ import {createContext, useContext, useEffect, useState} from "react";
 import {useChunkRenderer} from "./hook/useChunkRenderer";
 import {RenderedChunk} from "./model/RenderedChunk";
 import {ChunkCamera} from "./camera/ChunkCamera";
+import {Player} from "../entities/Player";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
@@ -26,6 +27,10 @@ export function Level(props: LevelProps) {
         setActiveChunk(props.startChunk);
     }, [props.startChunk]);
 
+    if (!renderedChunks[activeChunk]) {
+        return null;
+    }
+
     return (
         <>
             <LevelContext.Provider value={{
@@ -43,13 +48,15 @@ export function Level(props: LevelProps) {
             </LevelContext.Provider>
 
             <ChunkCamera
-                chunkPosition={renderedChunks[activeChunk]?.position ?? {x: 0, y: 0, z: 0}}
-                chunkDimension={renderedChunks[activeChunk]?.dimension.dimension ?? {x: 0, y: 0, z: 0}}
-                chunkMaxY={renderedChunks[activeChunk]?.dimension.maximalPosition.y ?? 0}
+                chunkPosition={renderedChunks[activeChunk].position}
+                chunkDimension={renderedChunks[activeChunk].dimension.dimension}
+                chunkMaxY={renderedChunks[activeChunk].dimension.maximalPosition.y}
                 transitionSeconds={0.4}
                 cameraFov={45}
                 marginInBlockSize={1}
             />
+
+            <Player position={renderedChunks[props.startChunk].component.props.player} />
         </>
     );
 }

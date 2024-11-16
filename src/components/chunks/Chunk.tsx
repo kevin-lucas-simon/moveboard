@@ -12,6 +12,7 @@ export type ChunkContextType = {
 
 export type ChunkProps = {
     name: string,
+    player: Vector3Like,
     joints: JointModel[],
     children?: ReactNode | undefined,
 }

@@ -1,8 +1,8 @@
 import {RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
+import {Vector3, Vector3Like} from "three";
 
 export type PlayerProps = {
-    position: Vector3,
+    position: Vector3Like,
 }
 
 /**
@@ -15,14 +15,14 @@ export function Player(props: PlayerProps) {
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */
         <RigidBody
             name={Player.name}
-            position={props.position}
+            position={new Vector3().copy(props.position)}
             colliders={"ball"}
             canSleep={false}
             restitution={0.98}
         >
             <mesh>
                 <sphereGeometry args={[0.5]}/>
-                <meshStandardMaterial color={"hotpink"} />
+                <meshStandardMaterial color={"hotpink"}/>
             </mesh>
         </RigidBody>
     )

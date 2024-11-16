@@ -1,8 +1,9 @@
 import * as React from "react";
 import {Vector3Like} from "three";
+import {ChunkProps} from "../Chunk";
 
 export type RenderedChunk = {
-    component: React.ReactElement<any>,
+    component: React.ReactElement<ChunkProps>,
     position: Vector3Like,
     dimension: RenderedChunkDimension,
     updated: number,

@@ -3,7 +3,7 @@ import {JointModel} from "../model/JointModel";
 import * as React from "react";
 import {Vector3, Vector3Like} from "three";
 import {deserializeComponent} from "../../util/componentSerializer";
-import {Chunk} from "../Chunk";
+import {Chunk, ChunkProps} from "../Chunk";
 import {allBlocks} from "../../blocks/allBlocks";
 import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
 import {FloorBlock} from "../../blocks/FloorBlock";
@@ -131,7 +131,7 @@ function createRenderTasksOfChunkJoints(
 
 function calculateWorldpositionFromParent(
     renderTask: RenderTask,
-    renderComponent: React.ReactElement<any>,
+    renderComponent: React.ReactElement<ChunkProps>,
     parentChunk: RenderedChunk,
 ): Vector3Like {
     // find joint of parent chunk
@@ -143,6 +143,11 @@ function calculateWorldpositionFromParent(
     const currentChunkJoint = renderComponent.props.joints.find(
         (joint: JointModel) => joint.neighbour === renderTask.parent
     );
+
+    // check if joints are found
+    if (!previousChunkJoint || !currentChunkJoint) {
+        throw new Error("Joint not found between " + renderTask.parent + " and " + renderTask.current);
+    }
 
     // calculate world position for current chunk
     return new Vector3()
