@@ -1,10 +1,10 @@
 import {RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
-import {useChunkPosition} from "../hooks/useChunkPosition";
+import {Vector3Like} from "three";
+import {useVector3, useWorldPosition} from "../util/toVector3";
 
 export type BasicBlockProps = {
-    position: Vector3,
-    dimension: Vector3,
+    position: Vector3Like,
+    dimension: Vector3Like,
     color?: string,
 }
 
@@ -14,15 +14,13 @@ export type BasicBlockProps = {
  * @constructor
  */
 export function BasicBlock(props: BasicBlockProps) {
-    const worldPosition = useChunkPosition(props.position)
-    if (!worldPosition) {
-        return null
-    }
+    const position = useWorldPosition(props.position)
+    const dimension = useVector3(props.dimension)
 
     return (
-        <RigidBody position={worldPosition.toArray()} type={"fixed"}>
+        <RigidBody position={position.toArray()} type={"fixed"}>
             <mesh>
-                <boxGeometry args={props.dimension.toArray()} />
+                <boxGeometry args={dimension.toArray()} />
                 <meshStandardMaterial color={props.color ?? "grey"} />
             </mesh>
         </RigidBody>

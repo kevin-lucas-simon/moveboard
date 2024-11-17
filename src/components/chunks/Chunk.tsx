@@ -1,17 +1,18 @@
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {Level, useLevelContext} from "./Level";
+import {JointModel} from "./model/JointModel";
+import {createContext, ReactNode, useContext} from "react";
+import {Vector3Like} from "three";
 import {Joint} from "./Joint";
-import {JointModel} from "../model/JointModel";
-import {ChunkModel} from "../model/ChunkModel";
+import {useLevelContext} from "./Level";
 
 const ChunkContext = createContext<ChunkContextType|undefined>(undefined);
 export type ChunkContextType = {
-    chunk: ChunkModel,
+    position: Vector3Like,
+    active: boolean,
 }
-export const useChunkContext = () => useContext(ChunkContext);
 
 export type ChunkProps = {
     name: string,
+    player: Vector3Like,
     joints: JointModel[],
     children?: ReactNode | undefined,
 }
@@ -21,64 +22,39 @@ export type ChunkProps = {
  * @param props
  * @constructor
  */
-export const Chunk = (props: ChunkProps) => {
-    const registeredChunkOnLevel = useRegisteredChunkOnLevel(props)
-    const isRendering = useChunkVisibility(props.name)
+export function Chunk(props: ChunkProps) {
+    // get chunk context from level
+    const levelContext = useLevelContext();
+    const chunkContext = levelContext.renderedChunks[props.name];
+    if (!chunkContext) {
+        throw new Error("Chunk context not found: " + props.name);
+    }
+
+    // check if chunk should be rendered
+    if (!chunkContext.visible) {
+        return <></>;
+    }
 
     return (
         <ChunkContext.Provider value={{
-            chunk: registeredChunkOnLevel,
+            position: chunkContext.position,
+            active: props.name === levelContext.activeChunk,
         }}>
-            {isRendering && props.joints.map((joint: JointModel) =>
+            {props.joints.map((joint: JointModel) =>
                 <Joint
                     key={props.name+joint.neighbour}
                     joint={joint}
                 />
             )}
-            {isRendering &&
-                props.children
-            }
+            {props.children}
         </ChunkContext.Provider>
     );
-};
-
-/**
- * Register chunk on level and update on props change
- * @param props
- */
-function useRegisteredChunkOnLevel(props: ChunkProps): ChunkModel {
-    const levelChunkRegisterFunction = useLevelContext()?.function.registerChunk
-
-    const [registeredChunk, setRegisteredChunk] = useState<ChunkModel>({
-        name: props.name,
-        joints: props.joints,
-    })
-
-    useEffect(() => {
-        if (typeof levelChunkRegisterFunction !== "function") {
-            throw new Error(useRegisteredChunkOnLevel.name + " must be within " + Level.name)
-        }
-        setRegisteredChunk({
-            name: props.name,
-            joints: props.joints,
-        })
-        levelChunkRegisterFunction(registeredChunk)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props]);
-
-    return registeredChunk
 }
 
-/**
- * Hook to get the visibility of a chunk in the level
- * @param chunkName
- */
-function useChunkVisibility(chunkName: string) {
-    const levelContext = useLevelContext()
-
-    if (!levelContext) {
-        return false
+export function useChunkContext() {
+    const context = useContext(ChunkContext);
+    if (!context) {
+        throw new Error("Chunk context not found. Are you using the Chunk component?");
     }
-
-    return levelContext.renderedChunkPositions[chunkName]
+    return context;
 }

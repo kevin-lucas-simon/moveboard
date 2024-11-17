@@ -1,137 +1,70 @@
-import {createContext, ReactNode, useContext, useEffect, useState} from "react";
-import {Vector3} from "three";
-import {ChunkModel} from "../model/ChunkModel";
-import {JointModel} from "../model/JointModel";
-import {ChunkDimensionBoundaries, useChunkDimensionProvider} from "../hooks/useChunkDimension";
-import {ChunkCamera} from "../render/ChunkCamera";
+import * as React from "react";
+import {createContext, useContext, useEffect, useState} from "react";
+import {useChunkRenderer} from "./hook/useChunkRenderer";
+import {RenderedChunk} from "./model/RenderedChunk";
+import {ChunkCamera} from "./camera/ChunkCamera";
+import {Player} from "../entities/Player";
 
 const LevelContext = createContext<LevelContextType|undefined>(undefined);
 export type LevelContextType = {
     function: {
-        registerChunk: (chunk: ChunkModel) => void,
         setActiveChunk: (chunkName: string) => void,
-        registerBlockInChunkDimension: (chunkName: string, minimalChunkPosition: Vector3, maximalChunkPosition: Vector3) => void,
-    }
+    },
+    renderedChunks: {[key: string]: RenderedChunk},
     activeChunk: string,
-    renderedChunkPositions: {[key: string]: Vector3},
-    chunkDimensions: {[key: string]: ChunkDimensionBoundaries}
 }
-export const useLevelContext = () => useContext(LevelContext);
 
 export type LevelProps = {
-    start: string,
-    children?: ReactNode | undefined,
+    startChunk: string,
 }
 
-/**
- * Level component to group all chunks together and define active chunk for rendering
- * @param props
- * @constructor
- */
-export const Level = (props: LevelProps) => {
-    const [chunks, registerChunk] = useChunkRegister();
-    const [activeChunkName, setActiveChunk] = useActiveChunk(props.start)
-    const renderedChunkPositions = useRenderChunkPositions(chunks, activeChunkName)
-    const [chunkDimensions, registerBlockInChunkDimension] = useChunkDimensionProvider()
+export function Level(props: LevelProps) {
+    const [activeChunk, setActiveChunk]
+        = useState<string>(props.startChunk);
+    const renderedChunks= useChunkRenderer(activeChunk);
 
-    // debug log
     useEffect(() => {
-        console.log({
-            activeChunkName: activeChunkName,
-            chunks: chunks,
-            renderedChunkPositions: renderedChunkPositions,
-            chunkDimensions: chunkDimensions,
-        })
-    }, [chunks, renderedChunkPositions, activeChunkName, chunkDimensions]);
+        setActiveChunk(props.startChunk);
+    }, [props.startChunk]);
+
+    if (!renderedChunks[activeChunk]) {
+        return null;
+    }
 
     return (
-        <LevelContext.Provider value={{
-            function: {
-                registerChunk: registerChunk,
-                setActiveChunk: setActiveChunk,
-                registerBlockInChunkDimension: registerBlockInChunkDimension
-            },
-            activeChunk: activeChunkName,
-            renderedChunkPositions: renderedChunkPositions,
-            chunkDimensions: chunkDimensions,
-        }}>
-            {props.children}
+        <>
+            <LevelContext.Provider value={{
+                function: {
+                    setActiveChunk: setActiveChunk,
+                },
+                renderedChunks,
+                activeChunk,
+            }}>
+                {Object.keys(renderedChunks).map((key) => (
+                    <React.Fragment key={key}>
+                        {renderedChunks[key].component}
+                    </React.Fragment>
+                ))}
+            </LevelContext.Provider>
+
             <ChunkCamera
+                chunkPosition={renderedChunks[activeChunk].position}
+                chunkDimension={renderedChunks[activeChunk].dimension.dimension}
+                chunkMaxY={renderedChunks[activeChunk].dimension.maximalPosition.y}
+                transitionSeconds={0.4}
                 cameraFov={45}
-                transitionSeconds={0.5}
-                marginInBlockSize={1.0}
+                marginInBlockSize={1}
             />
-        </LevelContext.Provider>
+
+            <Player position={renderedChunks[props.startChunk].component.props.player} />
+        </>
     );
-};
-
-/**
- * Hook to register chunks with their names in level
- */
-function useChunkRegister() {
-    // define all chunks
-    const [chunks, setChunks]
-        = useState<{[key: string]: ChunkModel}>({})
-
-    // define chunk register hook
-    const registerChunk = (chunk: ChunkModel) => {
-        setChunks(prevChunks => ({
-            ...prevChunks,
-            [chunk.name]: chunk
-        }))
-    }
-
-    return [chunks, registerChunk] as const
 }
 
-/**
- * Hook to get the rendered chunk positions for rendering
- * @param chunks
- * @param activeChunkName
- */
-function useRenderChunkPositions(chunks: {[key: string]: ChunkModel}, activeChunkName: string) {
-    const [renderedChunkPositions, setRenderedChunkPositions]
-        = useState<{[key: string]: Vector3}>({})
-
-    useEffect(() => {
-        // get current active chunk
-        const activeChunk = chunks[activeChunkName]
-        if (!activeChunk && Object.keys(chunks).length !== 0) {
-            throw Error(useRenderChunkPositions.name + " active chunk '" + activeChunkName + "' not found!")
-        }
-
-        // define render pipeline object
-        const newRenderedChunks = {
-            [activeChunkName]: renderedChunkPositions[activeChunkName] ?? new Vector3(0,0,0),
-        };
-
-        // get active chunk neighbours via joints
-        (activeChunk?.joints ?? []).forEach((activeJoint: JointModel) => {
-            newRenderedChunks[activeJoint.neighbour] = new Vector3()
-                .copy(newRenderedChunks[activeChunkName])
-                .add(activeJoint.position)
-                .sub(chunks[activeJoint.neighbour].joints.find((joint: JointModel) => joint.neighbour === activeChunkName)?.position ?? new Vector3())
-        })
-
-        // return defined chunks for rendering
-        setRenderedChunkPositions(newRenderedChunks)
-
-        // eslint-disable-next-line
-    }, [activeChunkName, chunks])
-
-    return renderedChunkPositions
-}
-
-/**
- * Hook to get the active chunk name with initial chunk name to start
- * @param startChunkName
- */
-function useActiveChunk(startChunkName: string) {
-    const [activeChunkName, setActiveChunkName] = useState(startChunkName)
-
-    function setActiveChunk(chunkName: string) {
-        setActiveChunkName(chunkName)
+export function useLevelContext(): LevelContextType {
+    const levelContext = useContext(LevelContext);
+    if (!levelContext) {
+        throw new Error("Level context not found. Are you using the Level component?");
     }
-
-    return [activeChunkName, setActiveChunk] as const
+    return levelContext;
 }

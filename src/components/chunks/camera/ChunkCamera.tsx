@@ -1,13 +1,15 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
-import {PerspectiveCamera, Vector3} from "three";
-import {useLevelContext} from "../chunks/Level";
+import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
-import {useDebug} from "../hooks/useDebug";
+import {useDebug} from "../../hooks/useDebug";
 
 export type ChunkCameraProps = {
-    transitionSeconds: number,
+    chunkPosition: Vector3Like,
+    chunkDimension: Vector3Like,
+    chunkMaxY: number,
     cameraFov: number,
+    transitionSeconds: number,
     marginInBlockSize: number,
 }
 
@@ -22,8 +24,14 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const debug = useDebug()
 
     // calculate camera position and target
-    const [targetCameraPosition, targetChunkPosition] =
-        useChunkCameraTargetCalculation(props.cameraFov, cameraRef.current?.aspect, props.marginInBlockSize)
+    const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
+        props.chunkPosition,
+        props.chunkDimension,
+        props.chunkMaxY,
+        props.cameraFov,
+        cameraRef.current?.aspect,
+        props.marginInBlockSize
+    );
 
     // interpolate position values to refs
     usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds)
@@ -48,21 +56,22 @@ export function ChunkCamera(props: ChunkCameraProps) {
 
 /**
  * Calculate target camera position and target chunk position based on active chunk
+ * @param chunkPosition
+ * @param chunkDimension
+ * @param chunkMaxY
  * @param cameraFov
  * @param cameraAspectRatio
  * @param marginInBlockSize
  */
 function useChunkCameraTargetCalculation(
+    chunkPosition: Vector3Like,
+    chunkDimension: Vector3Like,
+    chunkMaxY: number,
     cameraFov: number,
     cameraAspectRatio: number = 1.0,
     marginInBlockSize: number = 0.0,
 ) {
     // context values
-    const activeChunk = useLevelContext()?.activeChunk ?? ""
-    const chunkPosition = useLevelContext()?.renderedChunkPositions[activeChunk]
-    const chunkDimensions = useLevelContext()?.chunkDimensions[activeChunk]
-
-    // target values
     const [targetCameraPosition, setTargetCameraPosition]
         = useState<Vector3>(new Vector3(0, 0, 0))
     const [targetChunkPosition, setTargetChunkPosition]
@@ -70,15 +79,10 @@ function useChunkCameraTargetCalculation(
 
     // calculation function that generate target values for active chunk
     const calculateTargetChunkPosition = useCallback(() => {
-        // check if context values are available
-        if (!chunkPosition || !chunkDimensions) {
-            return
-        }
-
         // calculate chunk length based on aspect ratio
         const chunkLength = getAspectRatioBasedChunkLength(
-            chunkDimensions.dimension.x,
-            chunkDimensions.dimension.z,
+            chunkDimension.x,
+            chunkDimension.z,
             cameraAspectRatio,
             marginInBlockSize,
         )
@@ -89,14 +93,18 @@ function useChunkCameraTargetCalculation(
         // define camera aimed position for animation
         setTargetCameraPosition(new Vector3(
             chunkPosition.x,
-            chunkPosition.y + chunkDimensions.maximalPosition.y + cameraDistance,
+            chunkPosition.y + chunkMaxY + cameraDistance,
             chunkPosition.z
         ))
-        setTargetChunkPosition(chunkPosition)
-    }, [chunkPosition, chunkDimensions, cameraAspectRatio, cameraFov, marginInBlockSize])
+        setTargetChunkPosition(new Vector3()
+            .copy(chunkPosition)
+        )
+    }, [chunkPosition, chunkDimension, cameraAspectRatio, cameraFov, marginInBlockSize])
 
     // use two effects, one for prop and chunk change, the other one for window resize
-    useEffect(calculateTargetChunkPosition, [cameraFov, chunkPosition, chunkDimensions, cameraAspectRatio, marginInBlockSize])
+    useEffect(
+        calculateTargetChunkPosition
+    , [calculateTargetChunkPosition, cameraFov, chunkPosition, chunkDimension, cameraAspectRatio, marginInBlockSize])
     useEffect(() => {
         window.addEventListener('resize', calculateTargetChunkPosition);
         return () => {
@@ -145,8 +153,10 @@ function usePositionInterpolation(
     targetPosition: Vector3,
     transitionSeconds: number,
 ) {
-    const [transitionTime, setTransitionTime] = useState<number>(0)
-    const [lastPosition, setLastPosition] = useState<Vector3>(new Vector3(0, 0, 0))
+    const [transitionTime, setTransitionTime]
+        = useState<number>(0)
+    const [lastPosition, setLastPosition]
+        = useState<Vector3>(new Vector3(0, 0, 0))
 
     // start interpolation if target position changes
     useEffect(() => {

@@ -1,9 +1,9 @@
 import {UserControls} from "./UserControls";
-import {ReactNode} from "react";
 import {Experience} from "./Experience";
+import {Level} from "./chunks/Level";
 
 export type GameProps = {
-    children?: ReactNode|undefined,
+    startChunk: string,
 }
 
 /**
@@ -16,7 +16,7 @@ export function Game(props: GameProps) {
         <UserControls>
             {/* TODO Übergreifendes Menü mit Permission-Abfrage -> dann erst <UserControls> einblenden! */}
             <Experience>
-                {props.children}
+                <Level startChunk={props.startChunk} />
             </Experience>
         </UserControls>
     );

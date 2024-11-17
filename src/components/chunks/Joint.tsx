@@ -1,60 +1,29 @@
-import {Edges} from "@react-three/drei";
-import {CuboidCollider} from "@react-three/rapier";
-import {JointModel} from "../model/JointModel";
-import {Player} from "../entities/Player";
-import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
-import {Level, useLevelContext} from "./Level";
+import {JointModel} from "./model/JointModel";
+import {useVector3, useWorldPosition} from "../util/toVector3";
 import {useDebug} from "../hooks/useDebug";
-import {useChunkPosition} from "../hooks/useChunkPosition";
+import {CuboidCollider} from "@react-three/rapier";
+import {useLevelContext} from "./Level";
+import {useChunkContext} from "./Chunk";
+import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
+import {Player} from "../entities/Player";
+import {Vector3} from "three";
 
 export type JointProps = {
     joint: JointModel,
 }
 
 export function Joint(props: JointProps) {
-    const worldPosition = useChunkPosition(props.joint.position)
-    const onIntersectionExitFunction = useJointIntersectionChunkLeavingLogic(props.joint)
+    const levelContext = useLevelContext();
+    const chunkContext = useChunkContext();
+
+    const position = useWorldPosition(props.joint.position)
+    const dimension = useVector3(props.joint.dimension)
     const debug = useDebug()
 
-    if (!worldPosition) {
-        return null
-    }
-
-    return (
-        <>
-            <CuboidCollider
-                sensor={true}
-                onIntersectionExit={onIntersectionExitFunction}
-                args={props.joint.dimension.clone().multiplyScalar(0.5).toArray()}
-                position={worldPosition}
-            />
-            {debug?.visible_joint &&
-                <group position={worldPosition}>
-                    <mesh>
-                        <sphereGeometry args={[0.05]}/>
-                        <meshStandardMaterial color={"green"} />
-                    </mesh>
-                    <mesh>
-                        <boxGeometry args={props.joint.dimension.toArray()} />
-                        <meshPhongMaterial color={"green"} opacity={0.25} transparent />
-                        <Edges color={"black"} />
-                    </mesh>
-                </group>
-            }
-        </>
-    );
-}
-
-function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
-    const levelSetActiveChunkFunction = useLevelContext()?.function.setActiveChunk
-    // don't like this useChunkPosition(), but it makes the hook more decoupled
-    // maybe we can put the offset out of the hook and build a second one for caching?
-    const chunkCenterWorldPosition = useChunkPosition()
-
-    function onIntersectionExit(event: IntersectionExitPayload) {
-        // check if required values are set
-        if (!chunkCenterWorldPosition) {
-            return
+    const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {
+        // if we are the neighbour chunk joint we do nothing
+        if (!chunkContext.active) {
+            return;
         }
 
         // is the intersecting object our player?
@@ -64,21 +33,39 @@ function useJointIntersectionChunkLeavingLogic(joint: JointModel) {
 
         // get player and joint relative coordinates to chunk center
         const playerWorldPosition = event.other.rigidBodyObject.position.clone()
-        const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkCenterWorldPosition)
-        const jointDistanceToChunkCenter = joint.position.length()
+        const playerDistanceToChunkCenter = playerWorldPosition.clone().distanceTo(chunkContext.position)
+        const jointDistanceToChunkCenter = new Vector3().copy(props.joint.position).length()
 
         // is it leaving our chunk?
-        const isLeavingJointChunk = playerDistanceToChunkCenter > jointDistanceToChunkCenter
+        const isLeavingJointChunk = playerDistanceToChunkCenter > jointDistanceToChunkCenter;
         if (!isLeavingJointChunk) {
             return;
         }
 
-        // register new active chunk
-        if (!levelSetActiveChunkFunction) {
-            throw Error(onIntersectionExit.name + " must be within " + Level.name)
-        }
-        levelSetActiveChunkFunction(joint.neighbour)
+        // register new chunk
+        levelContext.function.setActiveChunk(props.joint.neighbour);
     }
 
-    return onIntersectionExit
+    return (
+        <>
+            <CuboidCollider
+                sensor={true}
+                onIntersectionExit={emitEventWhenLeavingChunk}
+                position={position}
+                args={dimension.clone().multiplyScalar(0.5).toArray()}
+            />
+            {debug?.visible_joint &&
+                <group position={position}>
+                    <mesh>
+                        <sphereGeometry args={[0.05]}/>
+                        <meshStandardMaterial color={"green"} />
+                    </mesh>
+                    <mesh>
+                        <boxGeometry args={dimension.toArray()} />
+                        <meshPhongMaterial color={"green"} opacity={0.25} transparent />
+                    </mesh>
+                </group>
+            }
+        </>
+    );
 }
