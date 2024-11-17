@@ -16,6 +16,12 @@ export type ChunkProps = {
     joints: JointModel[],
     children?: ReactNode | undefined,
 }
+
+/**
+ * Chunk component to group blocks together and define joints to other chunks
+ * @param props
+ * @constructor
+ */
 export function Chunk(props: ChunkProps) {
     // get chunk context from level
     const levelContext = useLevelContext();
