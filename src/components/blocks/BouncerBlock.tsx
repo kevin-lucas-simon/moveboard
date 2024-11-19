@@ -3,7 +3,7 @@ import {CollisionEnterPayload, RigidBody} from "@react-three/rapier";
 import {Player} from "../entities/Player";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
-import {useWorldPosition} from "../util/toVector3";
+import {useWorldPosition} from "../hooks/toVector3";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10

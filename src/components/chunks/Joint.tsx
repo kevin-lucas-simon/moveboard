@@ -1,5 +1,5 @@
 import {JointModel} from "./model/JointModel";
-import {useVector3, useWorldPosition} from "../util/toVector3";
+import {useVector3, useWorldPosition} from "../hooks/toVector3";
 import {useDebug} from "../hooks/useDebug";
 import {CuboidCollider} from "@react-three/rapier";
 import {useLevelContext} from "./Level";

@@ -3,7 +3,7 @@ import {JointModel} from "../model/JointModel";
 import * as React from "react";
 import {Vector3, Vector3Like} from "three";
 import {Chunk, ChunkProps} from "../Chunk";
-import {allBlocks} from "../../blocks/allBlocks";
+import {allBlocks} from "../../../config/allBlocks";
 import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
 import {FloorBlock} from "../../blocks/FloorBlock";
 import {ChunkRepository} from "../../../repository/ChunkRepository";

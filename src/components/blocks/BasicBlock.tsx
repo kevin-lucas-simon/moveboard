@@ -1,6 +1,6 @@
 import {RigidBody} from "@react-three/rapier";
 import {Vector3Like} from "three";
-import {useVector3, useWorldPosition} from "../util/toVector3";
+import {useVector3, useWorldPosition} from "../hooks/toVector3";
 
 export type BasicBlockProps = {
     position: Vector3Like,

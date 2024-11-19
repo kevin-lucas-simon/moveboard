@@ -1,7 +1,7 @@
 import {BasicBlockProps} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
 import {useDebug} from "../hooks/useDebug";
-import {useVector3, useWorldPosition} from "../util/toVector3";
+import {useVector3, useWorldPosition} from "../hooks/toVector3";
 
 /**
  * Invisible block that acts as barrier for the player

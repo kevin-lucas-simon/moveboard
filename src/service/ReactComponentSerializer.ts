@@ -27,13 +27,18 @@ type DeserializationOpts = {
  * See https://gist.github.com/Nachasic/0431415eec47b4bd090a65bade6e8597
  */
 export class ReactComponentSerializer {
-    public deserializeComponent = <T extends React.ReactElement<any>>(serializedComponent: string, options?: DeserializationOpts): T => {
+    public deserializeComponent<T extends React.ReactElement<any>>(
+        serializedComponent: string,
+        options?: DeserializationOpts
+    ): T {
         const componentData = JSON.parse(serializedComponent);
 
         return this.deserializeElement(componentData, options) as T;
     }
 
-    public serializeComponent = <T extends React.Component | JSX.Element>(component: T) => {
+    public serializeComponent<T extends React.Component | JSX.Element>(
+        component: T
+    ): string {
         const getName = (value: string | Function) => {
             if (typeof value === 'string') {
                 return value
