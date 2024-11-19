@@ -2,12 +2,10 @@ import {useEffect, useState} from "react";
 import {JointModel} from "../model/JointModel";
 import * as React from "react";
 import {Vector3, Vector3Like} from "three";
-import {Chunk, ChunkProps} from "../Chunk";
-import {allBlocks} from "../../../config/allBlocks";
+import {ChunkProps} from "../Chunk";
 import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
 import {FloorBlock} from "../../blocks/FloorBlock";
 import {ChunkRepository} from "../../../repository/ChunkRepository";
-import {ReactComponentSerializer} from "../../../service/ReactComponentSerializer";
 
 type RenderTask = {
     current: string,
@@ -75,16 +73,8 @@ async function createRenderedChunk(
     renderTask: RenderTask,
     renderedChunks: {[key: string]: RenderedChunk},
 ): Promise<RenderedChunk> {
-    // fetch chunk data string from API
-    const fetchData = await new ChunkRepository().get(renderTask.current);
-
-    // deserialize data string to react component
-    const chunkComponent = new ReactComponentSerializer().deserializeComponent(fetchData, {
-        components: {
-            ...allBlocks,
-            [Chunk.name]: Chunk as React.ComponentType,
-        }
-    });
+    // get chunk component from API
+    const chunkComponent = await new ChunkRepository().get(renderTask.current);
 
     // calculate world position and dimension for current chunk, root chunk has no parent
     const chunkDimension = calculateCameraDimension(chunkComponent);
