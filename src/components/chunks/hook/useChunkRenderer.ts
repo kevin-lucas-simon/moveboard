@@ -2,11 +2,12 @@ import {useEffect, useState} from "react";
 import {JointModel} from "../model/JointModel";
 import * as React from "react";
 import {Vector3, Vector3Like} from "three";
-import {deserializeComponent} from "../../util/componentSerializer";
 import {Chunk, ChunkProps} from "../Chunk";
 import {allBlocks} from "../../blocks/allBlocks";
 import {RenderedChunk, RenderedChunkDimension} from "../model/RenderedChunk";
 import {FloorBlock} from "../../blocks/FloorBlock";
+import {ChunkRepository} from "../../../repository/ChunkRepository";
+import {ReactComponentSerializer} from "../../../service/ReactComponentSerializer";
 
 type RenderTask = {
     current: string,
@@ -75,12 +76,10 @@ async function createRenderedChunk(
     renderedChunks: {[key: string]: RenderedChunk},
 ): Promise<RenderedChunk> {
     // fetch chunk data string from API
-    const fetchURL = window.location.origin + '/chunk/' + renderTask.current + '.json';
-    const fetchResponse = await fetch(fetchURL);
-    const fetchData = await fetchResponse.text();
+    const fetchData = await new ChunkRepository().get(renderTask.current);
 
     // deserialize data string to react component
-    const chunkComponent = deserializeComponent(fetchData, {
+    const chunkComponent = new ReactComponentSerializer().deserializeComponent(fetchData, {
         components: {
             ...allBlocks,
             [Chunk.name]: Chunk as React.ComponentType,

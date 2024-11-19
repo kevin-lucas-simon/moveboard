@@ -6,6 +6,7 @@ export type WallStructureProps = BasicBlockProps & {
     holeOffset: Vector3,
 }
 
+// TODO DEPRECATED - remove this component!
 export function WallWithHoleStructure(props: WallStructureProps) {
     const position = props.position;
     const dimension = props.dimension;
