@@ -3,6 +3,8 @@ import {Vector3, Vector3Like} from "three";
 import React from "react";
 import {allElements} from "../element/allElements";
 import {NewElementModel} from "../element/NewElementModel";
+import {JointModel} from "../chunks/model/JointModel";
+import {NewJoint} from "./NewJoint";
 
 export type NewChunkProps = NewChunkModel & {
     position: Vector3Like,
@@ -19,6 +21,13 @@ export function NewChunk(props: NewChunkProps) {
     return (
         <>
             {props.elements.map((element) => createChunkElement(element))}
+            {props.joints.map((joint: JointModel) =>
+                <NewJoint
+                    {...joint}
+                    key={props.name+"->"+joint.neighbour}
+                    position={new Vector3().copy(props.position).add(joint.position)} // temporary solution
+                />
+            )}
         </>
     );
 }

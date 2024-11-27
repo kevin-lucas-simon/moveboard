@@ -1,47 +1,30 @@
-import {NewChunkModel} from "../model/NewChunkModel";
 import {NewChunk} from "./NewChunk";
-import {NewElementModel} from "../element/NewElementModel";
 import {OrbitControls} from "@react-three/drei";
-import {Player} from "../entities/Player";
+import {useState} from "react";
+import {useRecursiveChunkDownloader} from "./hook/useRecursiveChunkDownloader";
+import {useNewChunkRenderer} from "./hook/useNewChunkRenderer";
+import React from "react";
 
 export type NewLevelProps = {
     startChunk: string,
 }
 
 export function NewLevel(props: NewLevelProps) {
-    const chunks = chunkData;
+    const [activeChunkId, setActiveChunkId]
+        = useState<string>(props.startChunk);
+
+    const downloadedChunks = useRecursiveChunkDownloader(props.startChunk);
+    const renderedChunks = useNewChunkRenderer(downloadedChunks, activeChunkId);
 
     return (
         <>
             <OrbitControls />
 
-            {chunks.map((chunk) =>
-                <NewChunk key={chunk.name} {...chunk} position={{x:0, y:0, z:0}} />
-            )}
-
-            <Player position={chunks.find(chunk => chunk.name === props.startChunk)?.player ?? {x:0,y:5,z:0}} />
+            {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
+                <NewChunk key={key} {...renderedChunks[key].model}
+                    position={renderedChunks[key].renderPosition}
+                />
+            ))}
         </>
     );
 }
-
-const chunkData: NewChunkModel[] = [
-    {
-        name: "FirstChunk",
-        player: {x: 0, y: 1, z: 0},
-        joints: [],
-        elements: [
-            {
-                type: "FloorBlock",
-                position: {x: 0, y: 0, z: 0},
-                dimension: {x: 5, y: 1, z: 5},
-                color: "rebeccapurple",
-            } as NewElementModel,
-            {
-                type: "BasicBlock",
-                position: {x: 1, y: 1, z: 1},
-                dimension: {x: 1, y: 1, z: 1},
-                color: "purple",
-            } as NewElementModel,
-        ]
-    }
-]
