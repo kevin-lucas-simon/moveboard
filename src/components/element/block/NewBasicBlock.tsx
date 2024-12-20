@@ -1,9 +1,13 @@
-import {NewBasicBlockModel} from "../NewElementModel";
+import {NewElementModel} from "../NewElementModel";
 import {RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
+import {Vector3, Vector3Like} from "three";
 
-export type NewBasicBlockProps = NewBasicBlockModel;
-export function NewBasicBlock(props: NewBasicBlockProps) {
+export type NewBasicBlockModel = NewElementModel & {
+    dimension: Vector3Like,
+    color?: string,
+}
+
+export function NewBasicBlock(props: NewBasicBlockModel) {
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>
             <mesh>

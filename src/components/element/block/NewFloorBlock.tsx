@@ -1,8 +1,8 @@
-import {NewFloorBlockModel} from "../NewElementModel";
-import {NewBasicBlock} from "./NewBasicBlock";
+import {NewBasicBlock, NewBasicBlockModel} from "./NewBasicBlock";
 
-export type NewFloorBlockType = NewFloorBlockModel;
-export function NewFloorBlock(props: NewFloorBlockType) {
+export type NewFloorBlockModel = NewBasicBlockModel
+
+export function NewFloorBlock(props: NewFloorBlockModel) {
     return (
         <NewBasicBlock {...props} />
     );

@@ -1,0 +1,165 @@
+{
+    "FirstChunk": {
+        "name": "FirstChunk",
+        "player": {
+            "x": 2,
+            "y": 1,
+            "z": 0
+        },
+        "joints": [
+            {
+                "neighbour": "TunnelChunk",
+                "position": {
+                    "x": -4,
+                    "y": 1.5,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 1,
+                    "y": 2,
+                    "z": 2
+                },
+                "vision": 0
+            }
+        ],
+        "elements": [
+            {
+                "type": "FloorBlock",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 9,
+                    "y": 1,
+                    "z": 9
+                },
+                "color": "blue"
+            },
+            {
+                "type": "BarrierBlock",
+                "position": {
+                    "x": 0,
+                    "y": 4,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 9,
+                    "y": 1,
+                    "z": 9
+                },
+                "color": "blue"
+            },
+            {
+                "type": "BasicBlock",
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                },
+                "color": "red"
+            }
+        ]
+    },
+    "SecondChunk": {
+        "name": "SecondChunk",
+        "player": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+        },
+        "joints": [
+            {
+                "neighbour": "TunnelChunk",
+                "position": {
+                    "x": 2,
+                    "y": 1,
+                    "z": 0
+                },
+                "dimension": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1.5
+                },
+                "vision": 0
+            }
+        ]
+    },
+    "elements": [
+        {
+            "type": "FloorBlock",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "dimension": {
+                "x": 5,
+                "y": 1,
+                "z": 5
+            },
+            "color": "green"
+        },
+        {
+            "type": "BarrierBlock",
+            "position": {
+                "x": 0,
+                "y": 6,
+                "z": 0
+            },
+            "dimension": {
+                "x": 5,
+                "y": 1,
+                "z": 5
+            }
+        },
+        {
+            "type": "BasicBlock",
+            "position": {
+                "x": 0,
+                "y": 3,
+                "z": 2
+            },
+            "dimension": {
+                "x": 5,
+                "y": 5,
+                "z": 1
+            },
+            "color": "lightgreen"
+        },
+        {
+            "type": "BasicBlock",
+            "position": {
+                "x": 0,
+                "y": 3,
+                "z": -2
+            },
+            "dimension": {
+                "x": 5,
+                "y": 5,
+                "z": 1
+            },
+            "color": "lightgreen"
+        },
+        {
+            "type": "BasicBlock",
+            "position": {
+                "x": -2,
+                "y": 3,
+                "z": 0
+            },
+            "dimension": {
+                "x": 1,
+                "y": 5,
+                "z": 5
+            },
+            "color": "lightgreen"
+        }
+    ]
+}

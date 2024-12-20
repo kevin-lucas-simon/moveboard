@@ -2,8 +2,9 @@ import {NewChunkModel} from "../../model/NewChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {useEffect, useState} from "react";
 import {RenderedChunkDimension} from "../../chunks/model/RenderedChunk";
-import {NewElementModel, NewFloorBlockModel} from "../../element/NewElementModel";
+import {NewElementModel} from "../../element/NewElementModel";
 import {JointModel} from "../../chunks/model/JointModel";
+import {NewFloorBlockModel} from "../../element/block/NewFloorBlock";
 
 export type NewRenderedChunk = {
     id: string,
@@ -18,7 +19,6 @@ type RenderDimension = {
     minimalPosition: Vector3Like,
     maximalPosition: Vector3Like,
 }
-
 type RenderTask = {
     currentId: string,
     parentId: string|null,
@@ -70,7 +70,7 @@ export function useNewChunkRenderer(
         setRenderedChunks(renderedChunks => ({
             ...renderedChunks,
             [renderTask.currentId]: {
-                ...currentChunk,
+                ...currentChunk, // TODO Aktualisierung von Position!
                 updated: renderTask.updated,
                 visible: renderTask.vision > 0,
             }

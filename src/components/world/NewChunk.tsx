@@ -2,9 +2,9 @@ import {NewChunkModel} from "../model/NewChunkModel";
 import {Vector3, Vector3Like} from "three";
 import React from "react";
 import {allElements} from "../element/allElements";
-import {NewElementModel} from "../element/NewElementModel";
 import {JointModel} from "../chunks/model/JointModel";
 import {NewJoint} from "./NewJoint";
+import {NewElementModel} from "../element/NewElementModel";
 
 export type NewChunkProps = NewChunkModel & {
     position: Vector3Like,
