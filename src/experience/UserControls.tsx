@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import {createContext, ReactNode, useEffect, useState} from "react";
-import {StartModal} from "./gui/StartModal";
+import {StartModal} from "../page/gui/StartModal";
 
 const GRAVITATION = 9.81;
 const KEYBOARD_SPEED = 2;

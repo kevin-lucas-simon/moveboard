@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
-import {useDebug} from "../../hooks/useDebug";
+import {useDebug} from "../../misc/useDebug";
 
 export type ChunkCameraProps = {
     chunkPosition: Vector3Like,

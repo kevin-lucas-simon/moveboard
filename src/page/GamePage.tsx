@@ -1,7 +1,7 @@
-import {UserControls} from "../components/UserControls";
-import {Experience} from "../components/Experience";
-import {useLevelDownloader} from "../components/world/hook/useLevelDownloader";
-import {Level} from "../components/world/Level";
+import {UserControls} from "../experience/UserControls";
+import {Experience} from "../experience/Experience";
+import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
+import {Level} from "../experience/world/Level";
 
 /**
  * Game page that initializes the game

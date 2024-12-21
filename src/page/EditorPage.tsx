@@ -1,6 +1,6 @@
-import {Level} from "../components/world/Level";
-import {Experience} from "../components/Experience";
-import {useLevelDownloader} from "../components/world/hook/useLevelDownloader";
+import {Level} from "../experience/world/Level";
+import {Experience} from "../experience/Experience";
+import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
 
 export function EditorPage() {
     const downloadedLevel

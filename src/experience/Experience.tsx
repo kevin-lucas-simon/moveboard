@@ -3,7 +3,7 @@ import {DeviceMotionContext} from "./UserControls";
 import {Physics} from "@react-three/rapier";
 import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
-import {useDebug} from "./hooks/useDebug";
+import {useDebug} from "./misc/useDebug";
 
 export type GameExperienceProps = {
     children?: React.ReactNode | undefined,

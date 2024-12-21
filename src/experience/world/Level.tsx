@@ -2,9 +2,9 @@ import {Chunk} from "./Chunk";
 import {useState} from "react";
 import {useChunkRenderer} from "./hook/useChunkRenderer";
 import React from "react";
-import {LevelModel} from "../model/LevelModel";
-import {ChunkCamera} from "../chunks/camera/ChunkCamera";
-import {Player} from "../entities/Player";
+import {LevelModel} from "./model/LevelModel";
+import {ChunkCamera} from "./camera/ChunkCamera";
+import {Player} from "../element/entity/Player";
 
 export type LevelProps = LevelModel & {};
 
@@ -17,9 +17,6 @@ export function Level(props: LevelProps) {
     if (!renderedChunks[activeChunk]) {
         return null;
     }
-
-    // TODO restructure project files to better readable format
-    // TODO Player and FloorBlock should be a tag?
 
     return (
         <>

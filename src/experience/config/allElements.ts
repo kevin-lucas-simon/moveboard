@@ -1,9 +1,9 @@
 import React from "react";
-import {BasicBlock} from "./block/BasicBlock";
-import {FloorBlock} from "./block/FloorBlock";
-import {UnknownElement} from "./UnknownElement";
-import {BarrierBlock} from "./block/BarrierBlock";
-import {BounceBlock} from "./block/BounceBlock";
+import {BasicBlock} from "../element/block/BasicBlock";
+import {FloorBlock} from "../element/block/FloorBlock";
+import {UnknownElement} from "../element/UnknownElement";
+import {BarrierBlock} from "../element/block/BarrierBlock";
+import {BounceBlock} from "../element/block/BounceBlock";
 
 /**
  * This file is used to store all blocks that are available in the editor.

@@ -1,10 +1,10 @@
-import {ChunkModel} from "../model/ChunkModel";
+import {ChunkModel} from "./model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import React from "react";
-import {allElements} from "../element/allElements";
+import {allElements} from "../config/allElements";
 import {Joint} from "./Joint";
 import {ElementModel} from "../element/ElementModel";
-import {JointModel} from "../model/JointModel";
+import {JointModel} from "./model/JointModel";
 
 export type ChunkProps = ChunkModel & {
     active: boolean,

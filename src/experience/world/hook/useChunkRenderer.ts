@@ -1,9 +1,9 @@
-import {ChunkModel} from "../../model/ChunkModel";
+import {ChunkModel} from "../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {useEffect, useState} from "react";
 import {ElementModel} from "../../element/ElementModel";
 import {FloorBlockModel} from "../../element/block/FloorBlock";
-import {JointModel} from "../../model/JointModel";
+import {JointModel} from "../model/JointModel";
 
 export type RenderedChunk = {
     id: string,

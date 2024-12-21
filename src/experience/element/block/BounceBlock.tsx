@@ -3,7 +3,7 @@ import {ElementModel} from "../ElementModel";
 import {Vector3} from "three";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
-import {Player} from "../../entities/Player";
+import {Player} from "../entity/Player";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
