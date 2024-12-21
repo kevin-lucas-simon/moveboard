@@ -137,30 +137,6 @@
                     "color": "lightblue"
                 },
                 {
-                    "type": "WallWithHoleStructure",
-                    "position": {
-                        "x": -4,
-                        "y": 2,
-                        "z": 0
-                    },
-                    "dimension": {
-                        "x": 1,
-                        "y": 3,
-                        "z": 7
-                    },
-                    "holeDimension": {
-                        "x": 2,
-                        "y": 2,
-                        "z": 2
-                    },
-                    "holeOffset": {
-                        "x": 0,
-                        "y": -0.5,
-                        "z": 0
-                    },
-                    "color": "lightblue"
-                },
-                {
                     "type": "BasicBlock",
                     "position": {
                         "x": 4,
@@ -171,6 +147,48 @@
                         "x": 1,
                         "y": 3,
                         "z": 7
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -4,
+                        "y": 2,
+                        "z": 2.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 2.5
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -4,
+                        "y": 2,
+                        "z": -2.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 2.5
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -4,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 2
                     },
                     "color": "lightblue"
                 }
@@ -265,31 +283,49 @@
                     "dimension": {
                         "x": 1,
                         "y": 5,
-                        "z": 5
+                        "z": 3
                     },
                     "color": "lightgreen"
                 },
                 {
-                    "type": "WallWithHoleStructure",
+                    "type": "BasicBlock",
                     "position": {
                         "x": 2,
-                        "y": 3,
+                        "y": 3.5,
                         "z": 0
                     },
                     "dimension": {
                         "x": 1,
-                        "y": 5,
-                        "z": 5
+                        "y": 4,
+                        "z": 3
                     },
-                    "holeDimension": {
+                    "color": "lightgreen"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 1.125
+                    },
+                    "dimension": {
                         "x": 1,
                         "y": 1,
-                        "z": 1.5
+                        "z": 0.75
                     },
-                    "holeOffset": {
-                        "x": 0,
-                        "y": -2,
-                        "z": 0
+                    "color": "lightgreen"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": -1.125
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 0.75
                     },
                     "color": "lightgreen"
                 }
