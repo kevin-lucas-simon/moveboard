@@ -25,7 +25,9 @@ export function NewLevel(props: NewLevelProps) {
 
             {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
                 <NewChunk key={key} {...renderedChunks[key].model}
-                    position={renderedChunks[key].renderPosition}
+                          active={key === activeChunk}
+                          position={renderedChunks[key].renderPosition}
+                          onChunkLeave={setActiveChunk}
                 />
             ))}
 

@@ -7,7 +7,9 @@ import {NewJoint} from "./NewJoint";
 import {NewElementModel} from "../element/NewElementModel";
 
 export type NewChunkProps = NewChunkModel & {
+    active: boolean,
     position: Vector3Like,
+    onChunkLeave: (neighbour: string) => void,
 }
 export function NewChunk(props: NewChunkProps) {
     const createChunkElement = (model: NewElementModel) => {
@@ -26,7 +28,10 @@ export function NewChunk(props: NewChunkProps) {
                 <NewJoint
                     {...joint}
                     key={props.name+"->"+joint.neighbour}
-                    position={new Vector3().copy(props.position).add(joint.position)} // temporary solution
+                    inActiveChunk={props.active}
+                    position={new Vector3().copy(props.position).add(joint.position)}
+                    chunkPosition={new Vector3().copy(props.position)}
+                    onChunkLeave={props.onChunkLeave}
                 />
             )}
         </>
