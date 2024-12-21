@@ -2,9 +2,9 @@ import {NewChunkModel} from "../model/NewChunkModel";
 import {Vector3, Vector3Like} from "three";
 import React from "react";
 import {allElements} from "../element/allElements";
-import {JointModel} from "../chunks/model/JointModel";
 import {NewJoint} from "./NewJoint";
 import {NewElementModel} from "../element/NewElementModel";
+import {NewJointModel} from "../model/NewJointModel";
 
 export type NewChunkProps = NewChunkModel & {
     active: boolean,
@@ -24,7 +24,7 @@ export function NewChunk(props: NewChunkProps) {
     return (
         <>
             {props.elements.map((element) => createChunkElement(element))}
-            {props.joints.map((joint: JointModel) =>
+            {props.joints.map((joint: NewJointModel) =>
                 <NewJoint
                     {...joint}
                     key={props.name+"->"+joint.neighbour}

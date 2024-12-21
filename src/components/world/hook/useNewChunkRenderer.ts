@@ -1,10 +1,9 @@
 import {NewChunkModel} from "../../model/NewChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {useEffect, useState} from "react";
-import {RenderedChunkDimension} from "../../chunks/model/RenderedChunk";
 import {NewElementModel} from "../../element/NewElementModel";
-import {JointModel} from "../../chunks/model/JointModel";
 import {NewFloorBlockModel} from "../../element/block/NewFloorBlock";
+import {NewJointModel} from "../../model/NewJointModel";
 
 export type NewRenderedChunk = {
     id: string,
@@ -130,7 +129,7 @@ function createRenderedChunk(
  */
 function calculateCameraDimension(
     elementModels: NewElementModel[],
-): RenderedChunkDimension {
+): RenderDimension {
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
 
@@ -181,7 +180,7 @@ function createRenderTasks(
 ): RenderTask[] {
     // iterate through joints and add to the queue
     const newRenderTasks: RenderTask[] = []
-    currentChunk.model.joints.forEach((joint: JointModel) => {
+    currentChunk.model.joints.forEach((joint: NewJointModel) => {
         // skip if neighbour is already updated
         if (renderChunks[joint.neighbour]?.updated === renderTask.updated) {
             return;
