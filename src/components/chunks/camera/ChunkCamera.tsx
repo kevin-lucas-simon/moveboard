@@ -17,9 +17,10 @@ export type ChunkCameraProps = {
  * Camera that follows the active chunk and is always positioned above it
  * @param props.chunkPosition active chunk position
  * @param props.chunkDimension active chunk dimension
- * @param props.chunkMaxY maximal y position of active chunk (for camera distance calculation)
+ * @param props.chunkMaxY maximal y position of active chunk (for calculating the chunk edge)
  * @param props.cameraFov field of view of camera
  * @param props.transitionSeconds time in seconds for camera position transition when active chunk changes
+ * @param props.marginInBlockSize margin in block size around the displayed active chunk
  * @constructor
  */
 export function ChunkCamera(props: ChunkCameraProps) {

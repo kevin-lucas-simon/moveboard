@@ -1,5 +1,4 @@
 import {NewChunk} from "./NewChunk";
-import {OrbitControls} from "@react-three/drei";
 import {useState} from "react";
 import {useNewChunkRenderer} from "./hook/useNewChunkRenderer";
 import React from "react";
@@ -21,8 +20,6 @@ export function NewLevel(props: NewLevelProps) {
 
     return (
         <>
-            <OrbitControls />
-
             {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
                 <NewChunk key={key} {...renderedChunks[key].model}
                           active={key === activeChunk}
