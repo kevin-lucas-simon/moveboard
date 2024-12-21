@@ -5,6 +5,7 @@ import {useNewChunkRenderer} from "./hook/useNewChunkRenderer";
 import React from "react";
 import {NewLevelModel} from "../model/NewLevelModel";
 import {ChunkCamera} from "../chunks/camera/ChunkCamera";
+import {Player} from "../entities/Player";
 
 export type NewLevelProps = NewLevelModel & {};
 
@@ -13,6 +14,10 @@ export function NewLevel(props: NewLevelProps) {
         = useState<string>(props.start);
     const renderedChunks
         = useNewChunkRenderer(props.chunks, activeChunk);
+
+    if (!renderedChunks[activeChunk]) {
+        return null;
+    }
 
     return (
         <>
@@ -25,13 +30,15 @@ export function NewLevel(props: NewLevelProps) {
             ))}
 
             <ChunkCamera
-                chunkPosition={renderedChunks[activeChunk]?.renderPosition ?? {x: 0, y: 0, z: 0}}
-                chunkDimension={renderedChunks[activeChunk]?.renderDimension?.dimension ?? {x: 0, y: 0, z: 0}}
-                chunkMaxY={renderedChunks[activeChunk]?.renderDimension?.maximalPosition?.y ?? 0}
+                chunkPosition={renderedChunks[activeChunk].renderPosition}
+                chunkDimension={renderedChunks[activeChunk].renderDimension.dimension}
+                chunkMaxY={renderedChunks[activeChunk].renderDimension.maximalPosition.y}
                 cameraFov={45}
                 transitionSeconds={0.4}
                 marginInBlockSize={1}
             />
+
+            <Player position={renderedChunks[props.start].model.player} />
         </>
     );
 }
