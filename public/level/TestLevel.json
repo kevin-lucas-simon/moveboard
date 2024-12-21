@@ -11,9 +11,9 @@
             },
             "joints": [
                 {
-                    "neighbour": "SecondChunk",
+                    "neighbour": "TunnelChunk",
                     "position": {
-                        "x": -5,
+                        "x": -4,
                         "y": 1.5,
                         "z": 0
                     },
@@ -39,6 +39,140 @@
                         "z": 9
                     },
                     "color": "blue"
+                },
+                {
+                    "type": "BarrierBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 4,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 1,
+                        "z": 9
+                    },
+                    "color": "blue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BouncerBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 1,
+                        "z": -4
+                    },
+                    "diameter": 2,
+                    "intensity": 2
+                },
+                {
+                    "type": "BouncerBlock",
+                    "position": {
+                        "x": 4,
+                        "y": 1,
+                        "z": -1
+                    },
+                    "diameter": 3,
+                    "intensity": 3
+                },
+                {
+                    "type": "BouncerBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 1,
+                        "z": 3.5
+                    },
+                    "diameter": 1,
+                    "intensity": 1
+                },
+                {
+                    "type": "BouncerBlock",
+                    "position": {
+                        "x": -2,
+                        "y": 1,
+                        "z": 3.5
+                    },
+                    "diameter": 1,
+                    "intensity": 2
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "z": -4
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 3,
+                        "z": 1
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "z": 4
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 3,
+                        "z": 1
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "WallWithHoleStructure",
+                    "position": {
+                        "x": -4,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 7
+                    },
+                    "holeDimension": {
+                        "x": 2,
+                        "y": 2,
+                        "z": 2
+                    },
+                    "holeOffset": {
+                        "x": 0,
+                        "y": -0.5,
+                        "z": 0
+                    },
+                    "color": "lightblue"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 4,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 7
+                    },
+                    "color": "lightblue"
                 }
             ]
         },
@@ -51,15 +185,15 @@
             },
             "joints": [
                 {
-                    "neighbour": "FirstChunk",
+                    "neighbour": "TunnelChunk",
                     "position": {
                         "x": 2,
-                        "y": 1.5,
+                        "y": 1,
                         "z": 0
                     },
                     "dimension": {
                         "x": 1,
-                        "y": 2,
+                        "y": 1,
                         "z": 1.5
                     },
                     "vision": 0
@@ -79,6 +213,19 @@
                         "z": 5
                     },
                     "color": "green"
+                },
+                {
+                    "type": "BarrierBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 6,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 5
+                    }
                 },
                 {
                     "type": "BasicBlock",
@@ -121,6 +268,232 @@
                         "z": 5
                     },
                     "color": "lightgreen"
+                },
+                {
+                    "type": "WallWithHoleStructure",
+                    "position": {
+                        "x": 2,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 5,
+                        "z": 5
+                    },
+                    "holeDimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1.5
+                    },
+                    "holeOffset": {
+                        "x": 0,
+                        "y": -2,
+                        "z": 0
+                    },
+                    "color": "lightgreen"
+                }
+            ]
+        },
+        "TunnelChunk": {
+            "name": "TunnelChunk",
+            "player": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "joints": [
+                {
+                    "neighbour": "FirstChunk",
+                    "position": {
+                        "x": 4.5,
+                        "y": 1.5,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 2
+                    },
+                    "vision": 1
+                },
+                {
+                    "neighbour": "SecondChunk",
+                    "position": {
+                        "x": -4.5,
+                        "y": 1,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1.5
+                    },
+                    "vision": 1
+                }
+            ],
+            "elements": [
+                {
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 8
+                    }
+                },
+                {
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": -3,
+                        "y": 0,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    }
+                },
+                {
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 3,
+                        "y": 0,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    }
+                },
+                {
+                    "type": "BarrierBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 8
+                    }
+                },
+                {
+                    "type": "BarrierBlock",
+                    "position": {
+                        "x": -3,
+                        "y": 3,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    }
+                },
+                {
+                    "type": "BarrierBlock",
+                    "position": {
+                        "x": 3,
+                        "y": 3,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    }
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 1,
+                        "y": 1.5,
+                        "z": 3.5
+                    },
+                    "dimension": {
+                        "x": 6,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "color": "lightgrey"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -1,
+                        "y": 1.5,
+                        "z": -3.5
+                    },
+                    "dimension": {
+                        "x": 6,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "color": "lightgrey"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -2.5,
+                        "y": 1.5,
+                        "z": -0.5
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "color": "lightgrey"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 2.5,
+                        "y": 1.5,
+                        "z": 0.5
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "color": "lightgrey"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5,
+                        "z": -1.5
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 3
+                    },
+                    "color": "lightgrey"
+                },
+                {
+                    "type": "BasicBlock",
+                    "position": {
+                        "x": -1.5,
+                        "y": 1.5,
+                        "z": 1.5
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 3
+                    },
+                    "color": "lightgrey"
                 }
             ]
         }

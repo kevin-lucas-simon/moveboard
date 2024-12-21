@@ -7,6 +7,11 @@ export type NewBasicBlockModel = NewElementModel & {
     color?: string,
 }
 
+/**
+ * Basic block with fixed position
+ * @param props
+ * @constructor
+ */
 export function NewBasicBlock(props: NewBasicBlockModel) {
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>

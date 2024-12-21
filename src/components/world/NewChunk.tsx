@@ -10,12 +10,13 @@ export type NewChunkProps = NewChunkModel & {
     position: Vector3Like,
 }
 export function NewChunk(props: NewChunkProps) {
-    const createChunkElement = (element: NewElementModel) => {
+    const createChunkElement = (model: NewElementModel) => {
         const position = new Vector3()
             .copy(props.position)
-            .add(element.position);
+            .add(model.position)
         ;
-        return React.createElement(allElements[element.type], {...element, position});
+        const component = allElements[model.type] ?? allElements.default;
+        return React.createElement(component, {...model, position});
     }
 
     return (
