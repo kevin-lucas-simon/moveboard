@@ -3,6 +3,7 @@ import {NewBasicBlock} from "./block/NewBasicBlock";
 import {NewFloorBlock} from "./block/NewFloorBlock";
 import {NewUnknownElement} from "./NewUnknownElement";
 import {NewBarrierBlock} from "./block/NewBarrierBlock";
+import {NewBounceBlock} from "./block/NewBounceBlock";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -14,5 +15,6 @@ export const allElements: { [key: string]: React.ComponentType<any> } = {
     default: NewUnknownElement,
     BarrierBlock: NewBarrierBlock,
     BasicBlock: NewBasicBlock,
+    BouncerBlock: NewBounceBlock,
     FloorBlock: NewFloorBlock,
 }
