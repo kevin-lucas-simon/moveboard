@@ -1,16 +1,16 @@
-import {NewBasicBlockModel} from "./NewBasicBlock";
+import {BasicBlockModel} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
 import {useDebug} from "../../hooks/useDebug";
 
-export type NewBarrierBlockModel = NewBasicBlockModel
+export type BarrierBlockModel = BasicBlockModel
 
 /**
  * Invisible block that acts as barrier for the player
  * @param props
  * @constructor
  */
-export function NewBarrierBlock(props: NewBarrierBlockModel) {
+export function BarrierBlock(props: BarrierBlockModel) {
     const debug = useDebug()
 
     return (

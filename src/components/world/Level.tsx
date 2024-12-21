@@ -1,30 +1,33 @@
-import {NewChunk} from "./NewChunk";
+import {Chunk} from "./Chunk";
 import {useState} from "react";
-import {useNewChunkRenderer} from "./hook/useNewChunkRenderer";
+import {useChunkRenderer} from "./hook/useChunkRenderer";
 import React from "react";
-import {NewLevelModel} from "../model/NewLevelModel";
+import {LevelModel} from "../model/LevelModel";
 import {ChunkCamera} from "../chunks/camera/ChunkCamera";
 import {Player} from "../entities/Player";
 
-export type NewLevelProps = NewLevelModel & {};
+export type LevelProps = LevelModel & {};
 
-export function NewLevel(props: NewLevelProps) {
+export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<string>(props.start);
     const renderedChunks
-        = useNewChunkRenderer(props.chunks, activeChunk);
+        = useChunkRenderer(props.chunks, activeChunk);
 
     if (!renderedChunks[activeChunk]) {
         return null;
     }
 
+    // TODO restructure project files to better readable format
+    // TODO Player and FloorBlock should be a tag?
+
     return (
         <>
             {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
-                <NewChunk key={key} {...renderedChunks[key].model}
-                          active={key === activeChunk}
-                          position={renderedChunks[key].renderPosition}
-                          onChunkLeave={setActiveChunk}
+                <Chunk key={key} {...renderedChunks[key].model}
+                       active={key === activeChunk}
+                       position={renderedChunks[key].renderPosition}
+                       onChunkLeave={setActiveChunk}
                 />
             ))}
 

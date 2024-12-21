@@ -1,18 +1,18 @@
-import {NewChunkModel} from "../model/NewChunkModel";
+import {ChunkModel} from "../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import React from "react";
 import {allElements} from "../element/allElements";
-import {NewJoint} from "./NewJoint";
-import {NewElementModel} from "../element/NewElementModel";
-import {NewJointModel} from "../model/NewJointModel";
+import {Joint} from "./Joint";
+import {ElementModel} from "../element/ElementModel";
+import {JointModel} from "../model/JointModel";
 
-export type NewChunkProps = NewChunkModel & {
+export type ChunkProps = ChunkModel & {
     active: boolean,
     position: Vector3Like,
     onChunkLeave: (neighbour: string) => void,
 }
-export function NewChunk(props: NewChunkProps) {
-    const createChunkElement = (model: NewElementModel) => {
+export function Chunk(props: ChunkProps) {
+    const createChunkElement = (model: ElementModel) => {
         const position = new Vector3()
             .copy(props.position)
             .add(model.position)
@@ -24,8 +24,8 @@ export function NewChunk(props: NewChunkProps) {
     return (
         <>
             {props.elements.map((element) => createChunkElement(element))}
-            {props.joints.map((joint: NewJointModel) =>
-                <NewJoint
+            {props.joints.map((joint: JointModel) =>
+                <Joint
                     {...joint}
                     key={props.name+"->"+joint.neighbour}
                     inActiveChunk={props.active}

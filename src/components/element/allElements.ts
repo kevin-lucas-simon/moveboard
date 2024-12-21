@@ -1,9 +1,9 @@
 import React from "react";
-import {NewBasicBlock} from "./block/NewBasicBlock";
-import {NewFloorBlock} from "./block/NewFloorBlock";
-import {NewUnknownElement} from "./NewUnknownElement";
-import {NewBarrierBlock} from "./block/NewBarrierBlock";
-import {NewBounceBlock} from "./block/NewBounceBlock";
+import {BasicBlock} from "./block/BasicBlock";
+import {FloorBlock} from "./block/FloorBlock";
+import {UnknownElement} from "./UnknownElement";
+import {BarrierBlock} from "./block/BarrierBlock";
+import {BounceBlock} from "./block/BounceBlock";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -12,9 +12,9 @@ import {NewBounceBlock} from "./block/NewBounceBlock";
  * Right: React component of block type
  */
 export const allElements: { [key: string]: React.ComponentType<any> } = {
-    default: NewUnknownElement,
-    BarrierBlock: NewBarrierBlock,
-    BasicBlock: NewBasicBlock,
-    BouncerBlock: NewBounceBlock,
-    FloorBlock: NewFloorBlock,
+    default: UnknownElement,
+    BarrierBlock: BarrierBlock,
+    BasicBlock: BasicBlock,
+    BouncerBlock: BounceBlock,
+    FloorBlock: FloorBlock,
 }

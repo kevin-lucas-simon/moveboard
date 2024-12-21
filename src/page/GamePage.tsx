@@ -1,7 +1,7 @@
 import {UserControls} from "../components/UserControls";
 import {Experience} from "../components/Experience";
 import {useLevelDownloader} from "../components/world/hook/useLevelDownloader";
-import {NewLevel} from "../components/world/NewLevel";
+import {Level} from "../components/world/Level";
 
 /**
  * Game page that initializes the game
@@ -14,7 +14,7 @@ export function GamePage() {
         <UserControls>
             {/* TODO Übergreifendes Menü mit Permission-Abfrage -> dann erst <UserControls> einblenden! */}
             <Experience>
-                {downloadedLevel && <NewLevel {...downloadedLevel} />}
+                {downloadedLevel && <Level {...downloadedLevel} />}
             </Experience>
         </UserControls>
     );

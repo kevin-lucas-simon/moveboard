@@ -1,4 +1,4 @@
-import {NewLevel} from "../components/world/NewLevel";
+import {Level} from "../components/world/Level";
 import {Experience} from "../components/Experience";
 import {useLevelDownloader} from "../components/world/hook/useLevelDownloader";
 
@@ -8,7 +8,7 @@ export function EditorPage() {
 
     return (
         <Experience>
-            {downloadedLevel && <NewLevel {...downloadedLevel} />}
+            {downloadedLevel && <Level {...downloadedLevel} />}
         </Experience>
     );
 }

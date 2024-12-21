@@ -1,17 +1,17 @@
-import {NewJointModel} from "../model/NewJointModel";
+import {JointModel} from "../model/JointModel";
 import {Vector3} from "three";
 import {useDebug} from "../hooks/useDebug";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../entities/Player";
 
-export type NewJointProps = NewJointModel & {
+export type JointProps = JointModel & {
     inActiveChunk: boolean,
     chunkPosition: Vector3,
     onChunkLeave: (neighbour: string) => void,
 }
 
-export function NewJoint(props: NewJointProps) {
+export function Joint(props: JointProps) {
     const debug = useDebug();
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {

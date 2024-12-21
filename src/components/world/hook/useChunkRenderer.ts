@@ -1,13 +1,13 @@
-import {NewChunkModel} from "../../model/NewChunkModel";
+import {ChunkModel} from "../../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {useEffect, useState} from "react";
-import {NewElementModel} from "../../element/NewElementModel";
-import {NewFloorBlockModel} from "../../element/block/NewFloorBlock";
-import {NewJointModel} from "../../model/NewJointModel";
+import {ElementModel} from "../../element/ElementModel";
+import {FloorBlockModel} from "../../element/block/FloorBlock";
+import {JointModel} from "../../model/JointModel";
 
-export type NewRenderedChunk = {
+export type RenderedChunk = {
     id: string,
-    model: NewChunkModel,
+    model: ChunkModel,
     renderPosition: Vector3Like,
     renderDimension: RenderDimension,
     visible: boolean,
@@ -31,12 +31,12 @@ type RenderTask = {
  * @param chunkModels
  * @param activeChunkId
  */
-export function useNewChunkRenderer(
-    chunkModels: {[key: string]: NewChunkModel},
+export function useChunkRenderer(
+    chunkModels: {[key: string]: ChunkModel},
     activeChunkId: string
-): {[key: string]: NewRenderedChunk} {
+): {[key: string]: RenderedChunk} {
     const [renderedChunks, setRenderedChunks]
-        = useState<{[key: string]: NewRenderedChunk}>({})
+        = useState<{[key: string]: RenderedChunk}>({})
     const [renderTasks, setRenderTasks]
         = useState<RenderTask[]>([])
 
@@ -91,8 +91,8 @@ export function useNewChunkRenderer(
  */
 function createRenderedChunk(
     renderTask: RenderTask,
-    chunkModels: {[key: string]: NewChunkModel}
-): NewRenderedChunk {
+    chunkModels: {[key: string]: ChunkModel}
+): RenderedChunk {
     // get chunk models
     const currentModel = chunkModels[renderTask.currentId];
     if (!currentModel) {
@@ -120,7 +120,7 @@ function createRenderedChunk(
         renderDimension: renderDimension,
         visible: renderTask.vision > 0,
         updated: renderTask.updated,
-    } as NewRenderedChunk;
+    } as RenderedChunk;
 }
 
 /**
@@ -128,7 +128,7 @@ function createRenderedChunk(
  * @param elementModels
  */
 function calculateCameraDimension(
-    elementModels: NewElementModel[],
+    elementModels: ElementModel[],
 ): RenderDimension {
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
@@ -139,7 +139,7 @@ function calculateCameraDimension(
         if (element.type !== "FloorBlock") {
             return;
         }
-        const floorBlock = element as NewFloorBlockModel;
+        const floorBlock = element as FloorBlockModel;
 
         // extract position and dimension from child
         const elementPosition = floorBlock.position;
@@ -175,12 +175,12 @@ function calculateCameraDimension(
  */
 function createRenderTasks(
     renderTask: RenderTask,
-    currentChunk: NewRenderedChunk,
-    renderChunks: {[key: string]: NewRenderedChunk},
+    currentChunk: RenderedChunk,
+    renderChunks: {[key: string]: RenderedChunk},
 ): RenderTask[] {
     // iterate through joints and add to the queue
     const newRenderTasks: RenderTask[] = []
-    currentChunk.model.joints.forEach((joint: NewJointModel) => {
+    currentChunk.model.joints.forEach((joint: JointModel) => {
         // skip if neighbour is already updated
         if (renderChunks[joint.neighbour]?.updated === renderTask.updated) {
             return;

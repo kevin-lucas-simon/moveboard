@@ -1,16 +1,16 @@
 import {useEffect, useState} from "react";
-import {NewLevelModel} from "../../model/NewLevelModel";
+import {LevelModel} from "../../model/LevelModel";
 
 export function useLevelDownloader(
     levelName: string
-): NewLevelModel|undefined {
+): LevelModel|undefined {
     const [downloadedLevel, setDownloadedLevel]
-        = useState<NewLevelModel|undefined>(undefined)
+        = useState<LevelModel|undefined>(undefined)
 
     useEffect(() => {
         fetch(window.location.origin + '/level/' + levelName + '.json')
             .then(response => response.json())
-            .then(response => setDownloadedLevel(response as NewLevelModel))
+            .then(response => setDownloadedLevel(response as LevelModel))
         ;
     }, [levelName]);
 

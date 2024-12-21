@@ -1,4 +1,4 @@
-import {NewElementModel} from "./NewElementModel";
+import {ElementModel} from "./ElementModel";
 import {Vector3} from "three";
 import {useEffect} from "react";
 
@@ -7,7 +7,7 @@ import {useEffect} from "react";
  * @param props
  * @constructor
  */
-export function NewUnknownElement(props: NewElementModel) {
+export function UnknownElement(props: ElementModel) {
     useEffect(() => {
         console.warn(`Unknown element type: ${props.type} on position (${props.position.x}, ${props.position.y}, ${props.position.z}).`);
     }, []);
