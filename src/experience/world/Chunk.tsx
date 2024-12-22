@@ -18,7 +18,11 @@ export function Chunk(props: ChunkProps) {
             .add(model.position)
         ;
         const component = allElements[model.type] ?? allElements.default;
-        return React.createElement(component, {...model, position});
+
+        return React.createElement(component, {...model,
+            key: props.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,
+            position: position,
+        });
     }
 
     return (
