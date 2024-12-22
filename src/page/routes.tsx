@@ -1,5 +1,5 @@
-import {RootPage} from "./layout/RootPage";
-import {ErrorPage} from "./layout/ErrorPage";
+import {RootPage} from "./RootPage";
+import {ErrorPage} from "./ErrorPage";
 import {GamePage} from "./GamePage";
 import {EditorPage} from "./EditorPage";
 
