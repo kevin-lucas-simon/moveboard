@@ -3,7 +3,7 @@ import {Vector3, Vector3Like} from "three";
 import {useEffect, useState} from "react";
 import {FloorBlockModel} from "../../element/block/FloorBlock";
 import {JointModel} from "../model/JointModel";
-import {GenericElementModel} from "../../element/GenericElement";
+import {ElementModel} from "../model/ElementModel";
 
 export type RenderedChunk = {
     id: string,
@@ -128,7 +128,7 @@ function createRenderedChunk(
  * @param elementModels
  */
 function calculateCameraDimension(
-    elementModels: GenericElementModel[],
+    elementModels: ElementModel[],
 ): RenderDimension {
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);

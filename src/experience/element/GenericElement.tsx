@@ -1,20 +1,12 @@
-import {Vector3, Vector3Like} from "three";
+import {Vector3} from "three";
 import {useEffect} from "react";
-
-/**
- * API data model for generic elements
- * All element implementations are descendants from this interface
- */
-export type GenericElementModel = {
-    type: string,
-    position: Vector3Like,
-}
+import {ElementModel} from "../world/model/ElementModel";
 
 /**
  * Editor default values for generic elements
  * All element implementations are descendants from this object
  */
-export const GenericElementDefault: GenericElementModel = {
+export const GenericElementDefault: ElementModel = {
     type: GenericElement.name,
     position: {x: 0, y: 0, z: 0},
 }
@@ -24,10 +16,10 @@ export const GenericElementDefault: GenericElementModel = {
  * @param props
  * @constructor
  */
-export function GenericElement(props: GenericElementModel = GenericElementDefault) {
+export function GenericElement(props: ElementModel = GenericElementDefault) {
     useEffect(() => {
         console.warn(`Unknown element type: ${props.type} on position (${props.position.x}, ${props.position.y}, ${props.position.z}).`);
-    }, []);
+    }, [props.position.x, props.position.y, props.position.z, props.type]);
 
     return (
         <group position={new Vector3().copy(props.position)}>

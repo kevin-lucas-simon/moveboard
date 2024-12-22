@@ -3,13 +3,14 @@ import {Vector3} from "three";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
 import {Player} from "../../entity/Player";
-import {GenericElementDefault, GenericElementModel} from "../GenericElement";
+import {GenericElementDefault} from "../GenericElement";
+import {ElementModel} from "../../world/model/ElementModel";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
-export type BounceBlockModel = GenericElementModel & {
+export type BounceBlockModel = ElementModel & {
     diameter: number,
     intensity: number,
 }
