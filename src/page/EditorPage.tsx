@@ -1,5 +1,5 @@
 import {Level} from "../experience/world/Level";
-import {Experience} from "../experience/Experience";
+import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
 
 export function EditorPage() {
@@ -7,8 +7,8 @@ export function EditorPage() {
         = useLevelDownloader("TestLevel");
 
     return (
-        <Experience>
+        <Environment>
             {downloadedLevel && <Level {...downloadedLevel} />}
-        </Experience>
+        </Environment>
     );
 }

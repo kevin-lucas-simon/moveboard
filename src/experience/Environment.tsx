@@ -5,7 +5,7 @@ import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
 import {useDebug} from "./misc/useDebug";
 
-export type GameExperienceProps = {
+export type EnvironmentProps = {
     children?: React.ReactNode | undefined,
 }
 
@@ -14,7 +14,7 @@ export type GameExperienceProps = {
  * @param props
  * @constructor
  */
-export function Experience(props: GameExperienceProps) {
+export function Environment(props: EnvironmentProps) {
     const deviceMotion = useContext(DeviceMotionContext)
     const debug = useDebug()
 

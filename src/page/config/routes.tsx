@@ -1,7 +1,7 @@
-import {RootPage} from "./RootPage";
-import {ErrorPage} from "./ErrorPage";
-import {GamePage} from "./GamePage";
-import {EditorPage} from "./EditorPage";
+import {RootPage} from "../RootPage";
+import {ErrorPage} from "../ErrorPage";
+import {GamePage} from "../GamePage";
+import {EditorPage} from "../EditorPage";
 
 const routes = [
     {

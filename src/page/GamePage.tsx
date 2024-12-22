@@ -1,5 +1,5 @@
 import {UserControls} from "../experience/UserControls";
-import {Experience} from "../experience/Experience";
+import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
 import {Level} from "../experience/world/Level";
 
@@ -13,9 +13,9 @@ export function GamePage() {
     return (
         <UserControls>
             {/* TODO Übergreifendes Menü mit Permission-Abfrage -> dann erst <UserControls> einblenden! */}
-            <Experience>
+            <Environment>
                 {downloadedLevel && <Level {...downloadedLevel} />}
-            </Experience>
+            </Environment>
         </UserControls>
     );
 }
