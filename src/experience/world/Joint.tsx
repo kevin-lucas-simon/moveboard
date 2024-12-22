@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {useDebug} from "../misc/useDebug";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
-import {Player} from "../element/entity/Player";
+import {Player} from "../entity/Player";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,

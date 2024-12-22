@@ -4,7 +4,7 @@ import {useChunkRenderer} from "./hook/useChunkRenderer";
 import React from "react";
 import {LevelModel} from "./model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
-import {Player} from "../element/entity/Player";
+import {Player} from "../entity/Player";
 
 export type LevelProps = LevelModel & {};
 
