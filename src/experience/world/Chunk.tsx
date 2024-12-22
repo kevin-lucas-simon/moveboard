@@ -3,8 +3,8 @@ import {Vector3, Vector3Like} from "three";
 import React from "react";
 import {allElements} from "../config/allElements";
 import {Joint} from "./Joint";
-import {ElementModel} from "../element/ElementModel";
 import {JointModel} from "./model/JointModel";
+import {GenericElementModel} from "../element/GenericElement";
 
 export type ChunkProps = ChunkModel & {
     active: boolean,
@@ -12,7 +12,7 @@ export type ChunkProps = ChunkModel & {
     onChunkLeave: (neighbour: string) => void,
 }
 export function Chunk(props: ChunkProps) {
-    const createChunkElement = (model: ElementModel) => {
+    const createChunkElement = (model: GenericElementModel) => {
         const position = new Vector3()
             .copy(props.position)
             .add(model.position)

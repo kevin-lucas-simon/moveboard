@@ -1,7 +1,7 @@
 import React from "react";
 import {BasicBlock} from "../element/block/BasicBlock";
 import {FloorBlock} from "../element/block/FloorBlock";
-import {UnknownElement} from "../element/UnknownElement";
+import {GenericElement} from "../element/GenericElement";
 import {BarrierBlock} from "../element/block/BarrierBlock";
 import {BounceBlock} from "../element/block/BounceBlock";
 
@@ -12,7 +12,7 @@ import {BounceBlock} from "../element/block/BounceBlock";
  * Right: React component of block type
  */
 export const allElements: { [key: string]: React.ComponentType<any> } = {
-    default: UnknownElement,
+    default: GenericElement,
     BarrierBlock: BarrierBlock,
     BasicBlock: BasicBlock,
     BouncerBlock: BounceBlock,

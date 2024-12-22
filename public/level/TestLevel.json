@@ -380,7 +380,8 @@
                         "x": 4,
                         "y": 1,
                         "z": 8
-                    }
+                    },
+                    "color": "grey"
                 },
                 {
                     "type": "FloorBlock",
@@ -393,7 +394,8 @@
                         "x": 2,
                         "y": 1,
                         "z": 4
-                    }
+                    },
+                    "color": "grey"
                 },
                 {
                     "type": "FloorBlock",
@@ -406,7 +408,8 @@
                         "x": 2,
                         "y": 1,
                         "z": 4
-                    }
+                    },
+                    "color": "grey"
                 },
                 {
                     "type": "BarrierBlock",

@@ -1,6 +1,11 @@
-import {BasicBlock, BasicBlockModel} from "./BasicBlock";
+import {BasicBlock, BasicBlockDefault, BasicBlockModel} from "./BasicBlock";
 
 export type FloorBlockModel = BasicBlockModel
+export const FloorBlockDefault: FloorBlockModel = {
+    ...BasicBlockDefault,
+    type: FloorBlock.name,
+    color: "red",
+}
 
 /**
  * Block that is guarantied visible in camera chunk view.
@@ -8,7 +13,7 @@ export type FloorBlockModel = BasicBlockModel
  * @param props
  * @constructor
  */
-export function FloorBlock(props: FloorBlockModel) {
+export function FloorBlock(props: FloorBlockModel = FloorBlockDefault) {
     return (
         <BasicBlock {...props} />
     );

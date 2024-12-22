@@ -1,17 +1,23 @@
 import {CollisionEnterPayload, RigidBody} from "@react-three/rapier";
-import {ElementModel} from "../ElementModel";
 import {Vector3} from "three";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
 import {Player} from "../../entity/Player";
+import {GenericElementDefault, GenericElementModel} from "../GenericElement";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
-export type BounceBlockModel = ElementModel & {
+export type BounceBlockModel = GenericElementModel & {
     diameter: number,
     intensity: number,
+}
+export const BounceBlockDefault: BounceBlockModel = {
+    ...GenericElementDefault,
+    type: BounceBlock.name,
+    diameter: 1,
+    intensity: 1,
 }
 
 /**
@@ -21,7 +27,7 @@ export type BounceBlockModel = ElementModel & {
  * @param props.intensity expected intensity of the bounce
  * @constructor
  */
-export function BounceBlock(props: BounceBlockModel) {
+export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
     const [bounceAnimation, setBounceAnimation] = useState(0)
 
     // calculate bounce animation diameter related to the intensity and diameter
