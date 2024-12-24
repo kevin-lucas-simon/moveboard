@@ -1,17 +1,34 @@
 import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
-import {JsonObjectEditor} from "../component/editor/JsonObjectEditor";
+import {useEffect, useState} from "react";
+import React from "react";
+import {ChunkModel} from "../experience/world/model/ChunkModel";
+import {ChunkElementsEditor} from "../component/editor/ChunkElementsEditor";
+import {ElementModel} from "../experience/world/model/ElementModel";
 
 export function EditorPage() {
-    const editorLevel = "TestLevel";
-    const editorChunk = "FirstChunk";
+    const levelName = "TestLevel";
+    const chunkName = "FirstChunk";
 
-    const downloadedLevel = useLevelDownloader(editorLevel);
-    const downloadedChunk = downloadedLevel?.chunks[editorChunk];
+    const editLevel = useLevelDownloader(levelName);
+    const [editChunk, setEditChunk] = useState<ChunkModel|undefined>(undefined);
 
-    if (!downloadedLevel || !downloadedChunk) {
+    useEffect(() => {
+        setEditChunk(editLevel?.chunks[chunkName]);
+    }, [editLevel]);
+
+    if (!editLevel || !editChunk) {
         return <></>;
+    }
+
+    // TODO an sich können wir das Handling von Joints, Elements und Chunk allgemein in eigene Editor Komponenten auslagern
+
+    const handleElementsChange = (elements: ElementModel[]) => {
+        setEditChunk({
+            ...editChunk,
+            elements: elements,
+        });
     }
 
     return (
@@ -19,27 +36,19 @@ export function EditorPage() {
             <div className="flex-none w-96 bg-gray-400 overflow-y-scroll">
                 <h1>
                     <span className="text-3xl font-semibold">
-                        {downloadedChunk.name}
+                        {editChunk.name}
                     </span>
                     <span className="text-lg">
-                        {downloadedLevel.name}
+                        {editLevel.name}
                     </span>
                 </h1>
 
-                <ul>
-                    {downloadedChunk.elements.map(element =>
-                        <li className="mt-2">
-                            {Object.entries(element).map(([key, value]) => (
-                                <JsonObjectEditor keyword={key} value={value} />
-                            ))}
-                        </li>
-                    )}
-                </ul>
+                <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange} />
             </div>
             <div className="grow">
                 <Environment>
-                    {downloadedLevel &&
-                        <Level {...downloadedLevel} start={editorChunk} />
+                    {editLevel &&
+                        <Level {...editLevel} start={chunkName} />
                     }
                 </Environment>
             </div>
