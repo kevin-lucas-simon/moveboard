@@ -3,32 +3,38 @@ import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
 import {useEffect, useState} from "react";
 import React from "react";
-import {ChunkModel} from "../experience/world/model/ChunkModel";
 import {ChunkElementsEditor} from "../component/editor/ChunkElementsEditor";
 import {ElementModel} from "../experience/world/model/ElementModel";
+import {LevelModel} from "../experience/world/model/LevelModel";
 
 export function EditorPage() {
     const levelName = "TestLevel";
     const chunkName = "FirstChunk";
 
-    const editLevel = useLevelDownloader(levelName);
-    const [editChunk, setEditChunk] = useState<ChunkModel|undefined>(undefined);
+    const downloadedLevel = useLevelDownloader(levelName);
+
+    const [level, setLevel] = useState<LevelModel|undefined>(undefined)
+    const editChunk = level?.chunks[chunkName];
 
     useEffect(() => {
-        setEditChunk(editLevel?.chunks[chunkName]);
-    }, [editLevel]);
+        setLevel(downloadedLevel);
+    }, [downloadedLevel]);
 
-    if (!editLevel || !editChunk) {
+    if (!level || !editChunk) {
         return <></>;
     }
 
-    // TODO an sich können wir das Handling von Joints, Elements und Chunk allgemein in eigene Editor Komponenten auslagern
-
     const handleElementsChange = (elements: ElementModel[]) => {
-        setEditChunk({
-            ...editChunk,
-            elements: elements,
-        });
+        setLevel({
+            ...level,
+            chunks: {
+                ...level.chunks,
+                [chunkName]: {
+                    ...editChunk,
+                    elements: elements,
+                }
+            }
+        })
     }
 
     return (
@@ -39,7 +45,7 @@ export function EditorPage() {
                         {editChunk.name}
                     </span>
                     <span className="text-lg">
-                        {editLevel.name}
+                        {level.name}
                     </span>
                 </h1>
 
@@ -47,8 +53,8 @@ export function EditorPage() {
             </div>
             <div className="grow">
                 <Environment>
-                    {editLevel &&
-                        <Level {...editLevel} start={chunkName} />
+                    {level &&
+                        <Level {...level} start={chunkName} />
                     }
                 </Environment>
             </div>

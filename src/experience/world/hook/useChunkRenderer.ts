@@ -40,7 +40,7 @@ export function useChunkRenderer(
     const [renderTasks, setRenderTasks]
         = useState<RenderTask[]>([])
 
-    // reset render tasks for root chunk
+    // re-trigger render pipeline if active chunk or chunk data changes
     useEffect(() => {
         setRenderTasks([{
             currentId: activeChunkId,
@@ -50,6 +50,11 @@ export function useChunkRenderer(
             updated: Date.now(),
         }])
     }, [activeChunkId, chunkModels]);
+
+    // reset rendered chunk cache if chunk data changes
+    useEffect(() => {
+        setRenderedChunks({})
+    }, [chunkModels]);
 
     // process render tasks
     useEffect(() => {
