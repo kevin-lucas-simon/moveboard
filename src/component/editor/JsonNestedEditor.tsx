@@ -26,7 +26,10 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                 {props.displayname &&
                     <>
                         <div className="h-px w-2 bg-black self-end -translate-y-2.5 mr-1"/>
-                        <div>{props.displayname}:</div>
+                        <div className="select-none">
+                            {props.displayname}
+                            {!(props.value instanceof Object) && ":"}
+                        </div>
                     </>
                 }
                 {!(props.value instanceof Object) &&

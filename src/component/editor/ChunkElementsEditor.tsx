@@ -14,8 +14,8 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
         const newElement = React.createElement(allElements["BasicBlock"], BasicBlockDefault);
 
         props.onElementsChange([
-            newElement.props,
             ...props.elements,
+            newElement.props,
         ]);
     }
 
@@ -41,6 +41,7 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
                 <JsonObjectEditor
                     key={index}
                     keyName={index.toString()}
+                    displayname={element.type}
                     value={element}
                     onChange={handleChangedElement}
                     onDelete={handleRemovedElement}

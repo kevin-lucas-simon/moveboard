@@ -1,5 +1,5 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
-import React from "react";
+import React, {useState} from "react";
 
 export type JsonObjectEditorProps = {
     keyName: string,
@@ -10,21 +10,34 @@ export type JsonObjectEditorProps = {
 }
 
 export function JsonObjectEditor(props: JsonObjectEditorProps) {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    const toggleExpand = () => {
+        setIsOpen(!isOpen);
+    }
+
     return (
-        <>
-            <li className="mt-4">
-                <JsonNestedEditor
-                    keyName={props.keyName}
-                    value={props.value}
-                    onKeyValueChange={props.onChange}
-                />
-                <button
-                    className="bg-gray-600"
-                    onClick={() => props.onDelete(props.keyName)}
-                >
-                    Delete
+        <li className="border border-gray-700">
+            <div className="w-full flex gap-2 justify-between font-bold bg-gray-600">
+                <button className="flex grow py-1 px-2 select-none gap-2" onClick={toggleExpand}>
+                    {isOpen ? <span>&#9205;</span> : <span>&#9207;</span>}
+                    <span>{props.displayname ?? props.keyName}</span>
                 </button>
-            </li>
-        </>
+
+                <button className="py-1 px-2" onClick={() => props.onDelete(props.keyName)}>
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            {isOpen &&
+                <div className="pb-2 border-t border-gray-700 bg-gray-500">
+                    <JsonNestedEditor
+                        keyName={props.keyName}
+                        value={props.value}
+                        onKeyValueChange={props.onChange}
+                    />
+                </div>
+            }
+        </li>
     );
 }
