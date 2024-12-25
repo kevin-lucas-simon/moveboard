@@ -31,7 +31,7 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
 
     return (
         <span className={props.className}>
-            Unsupported value type {typeof props.value}
+            ??
         </span>
     );
 }

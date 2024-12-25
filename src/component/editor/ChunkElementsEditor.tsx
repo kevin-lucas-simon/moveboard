@@ -39,7 +39,7 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
 
             {props.elements.map((element, index) =>
                 <li className="mt-4">
-                    <JsonObjectEditor key={index} keyword={index.toString()} value={element}
+                    <JsonObjectEditor key={index} keyName={index.toString()} value={element}
                                       onKeyValueChange={handleChangedElement}/>
                     <button className="bg-gray-600" onClick={() => handleRemovedElement(index)}>Delete</button>
                 </li>
