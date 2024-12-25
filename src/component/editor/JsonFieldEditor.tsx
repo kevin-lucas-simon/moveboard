@@ -1,6 +1,7 @@
 export type JsonFieldEditorProps = {
     value: any,
-    onChange: (value: any) => void, // TODO das any ist böse
+    onChange: (value: any) => void,
+    className?: string,
 }
 
 export function JsonFieldEditor(props: JsonFieldEditorProps) {
@@ -10,6 +11,7 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
                 type={"text"}
                 value={props.value}
                 onChange={e => props.onChange(e.target.value)}
+                className={props.className}
             />
         );
     }
@@ -20,6 +22,7 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
                 type={"number"}
                 value={props.value}
                 onChange={e => props.onChange(parseInt(e.target.value))}
+                className={props.className}
             />
         );
     }
@@ -27,6 +30,8 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
     console.warn(JsonFieldEditor.name + ": Unsupported value type ", typeof props.value);
 
     return (
-        <span>Unsupported value type {typeof props.value}</span>
+        <span className={props.className}>
+            Unsupported value type {typeof props.value}
+        </span>
     );
 }

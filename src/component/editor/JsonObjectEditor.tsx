@@ -20,18 +20,34 @@ export function JsonObjectEditor(props: JsonEditorProps) {
 
     if (props.value instanceof Object) {
         return (
-            <div>
-                {props.keyword}:
-                <div className="pl-4">
-                    {Object.entries(props.value).map(([key, value]) => (
-                        <JsonObjectEditor keyword={key} value={value} onKeyValueChange={handleObjectChange} />
-                    ))}
+            <div className="my-1">
+                <div className="flex">
+                    <div className="h-px w-2 bg-black self-end -translate-y-2.5 mr-1"/>
+                    {props.keyword}
+                </div>
+
+                <div className="flex">
+                    <div className="ml-4 bg-black w-px mt-2.5 -translate-y-2.5" />
+
+                    <div className="grow">
+                        {Object.entries(props.value).map(([key, value]) => (
+                            <JsonObjectEditor keyword={key} value={value} onKeyValueChange={handleObjectChange}/>
+                        ))}
+                    </div>
                 </div>
             </div>
         );
     }
 
     return (
-        <div>{props.keyword}: <JsonFieldEditor value={props.value} onChange={handleValueChange} /></div>
+        <div className="flex gap-1">
+            <div className="h-px w-2 bg-black self-end -translate-y-2.5" />
+            <div>{props.keyword}:</div>
+            <JsonFieldEditor
+                className="basis-2/3 bg-transparent grow"
+                value={props.value}
+                onChange={handleValueChange}
+            />
+        </div>
     );
 }
