@@ -24,6 +24,7 @@ type RenderTask = {
     position: Vector3Like,
     vision: number,
     updated: number,
+    reset?: boolean,
 }
 
 /**
@@ -40,20 +41,26 @@ export function useChunkRenderer(
     const [renderTasks, setRenderTasks]
         = useState<RenderTask[]>([])
 
-    // re-trigger render pipeline if active chunk or chunk data changes
+    // root render task starts with active chunk
+    const rootRenderTask: RenderTask = {
+        currentId: activeChunkId,
+        parentId: null,
+        position: renderedChunks[activeChunkId]?.renderPosition ?? {x: 0, y: 0, z: 0},
+        vision: Number.MAX_SAFE_INTEGER,
+        updated: Date.now(),
+    };
+
+    // trigger pipeline when active chunk changes
+    useEffect(() => {
+        setRenderTasks([rootRenderTask])
+    }, [activeChunkId]);
+
+    // reset pipeline and delete rendered chunks when chunk model data changes
     useEffect(() => {
         setRenderTasks([{
-            currentId: activeChunkId,
-            parentId: null,
-            position: renderedChunks[activeChunkId]?.renderPosition ?? {x: 0, y: 0, z: 0},
-            vision: Number.MAX_SAFE_INTEGER,
-            updated: Date.now(),
+            ...rootRenderTask,
+            reset: true,
         }])
-    }, [activeChunkId, chunkModels]);
-
-    // reset rendered chunk cache if chunk data changes
-    useEffect(() => {
-        setRenderedChunks({})
     }, [chunkModels]);
 
     // process render tasks
@@ -64,21 +71,25 @@ export function useChunkRenderer(
             return;
         }
 
+        // reset rendered chunks if requested
+        const updatedRenderedChunks = renderTask.reset ? {} : renderedChunks;
+
         // create render chunks and following tasks
         const currentChunk
-            = renderedChunks[renderTask.currentId] ?? createRenderedChunk(renderTask, chunkModels);
+            = updatedRenderedChunks[renderTask.currentId] ?? createRenderedChunk(renderTask, chunkModels);
         const nextRenderTasks
-            = createRenderTasks(renderTask, currentChunk, renderedChunks);
+            = createRenderTasks(renderTask, currentChunk, updatedRenderedChunks);
 
         // update rendered chunk visibility
-        setRenderedChunks(renderedChunks => ({
-            ...renderedChunks,
+        setRenderedChunks({
+            ...updatedRenderedChunks,
             [renderTask.currentId]: {
-                ...currentChunk, // TODO Aktualisierung von Position!
+                ...currentChunk,
                 updated: renderTask.updated,
                 visible: renderTask.vision > 0,
             }
-        }));
+        });
+
         // add new render tasks to the queue
         setRenderTasks([
             ...renderTasks,
