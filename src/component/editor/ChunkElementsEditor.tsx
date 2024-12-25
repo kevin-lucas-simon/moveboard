@@ -33,10 +33,6 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
 
     return (
         <ul>
-            <li>
-                <button className="bg-gray-600" onClick={handleAddedElement}>Add</button>
-            </li>
-
             {props.elements.map((element, index) =>
                 <JsonObjectEditor
                     key={index}
@@ -47,6 +43,15 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
                     onDelete={handleRemovedElement}
                 />
             )}
+            <li>
+                <button
+                    className="flex gap-2 w-full py-1 px-2 font-bold text-left bg-gray-600 border border-gray-700"
+                    onClick={handleAddedElement}
+                >
+                    <span>&#43;</span>
+                    <span>Add</span>
+                </button>
+            </li>
         </ul>
     );
 
