@@ -1,55 +1,30 @@
-import {JsonFieldEditor} from "./JsonFieldEditor";
+import {JsonNestedEditor} from "./JsonNestedEditor";
+import React from "react";
 
-export type JsonEditorProps = {
+export type JsonObjectEditorProps = {
     keyName: string,
     displayname?: string,
     value: any,
-    onKeyValueChange: (key: string, value: any) => void,
+    onChange: (key: string, value: any) => void,
+    onDelete: (key: string) => void,
 }
 
-export function JsonObjectEditor(props: JsonEditorProps) {
-    const handleObjectChange = (key: string, value: any) => {
-        props.onKeyValueChange(props.keyName, {
-            ...props.value,
-            [key]: value,
-        });
-    }
-
-    const handleValueChange = (value: any) => {
-        props.onKeyValueChange(props.keyName, value);
-    }
-
+export function JsonObjectEditor(props: JsonObjectEditorProps) {
     return (
         <>
-            {/* display name and value view */}
-            <div className="flex gap-1">
-                {props.displayname &&
-                    <>
-                        <div className="h-px w-2 bg-black self-end -translate-y-2.5 mr-1"/>
-                        <div>{props.displayname}:</div>
-                    </>
-                }
-                {!(props.value instanceof Object) &&
-                    <JsonFieldEditor
-                        className="basis-2/3 bg-transparent grow"
-                        value={props.value}
-                        onChange={handleValueChange}
-                    />
-                }
-            </div>
-
-            {/* object view */}
-            {props.value instanceof Object &&
-                <div className="flex">
-                    <div className="ml-4 bg-black w-px mt-2.5 -translate-y-2.5"/>
-
-                    <div className="grow">
-                        {Object.entries(props.value).map(([key, value]) => (
-                            <JsonObjectEditor keyName={key} displayname={key} value={value} onKeyValueChange={handleObjectChange}/>
-                        ))}
-                    </div>
-                </div>
-            }
+            <li className="mt-4">
+                <JsonNestedEditor
+                    keyName={props.keyName}
+                    value={props.value}
+                    onKeyValueChange={props.onChange}
+                />
+                <button
+                    className="bg-gray-600"
+                    onClick={() => props.onDelete(props.keyName)}
+                >
+                    Delete
+                </button>
+            </li>
         </>
     );
 }

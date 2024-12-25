@@ -1,8 +1,8 @@
 import {ElementModel} from "../../experience/world/model/ElementModel";
-import {JsonObjectEditor} from "./JsonObjectEditor";
 import React from "react";
 import {allElements} from "../../experience/config/allElements";
 import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
+import {JsonObjectEditor} from "./JsonObjectEditor";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
@@ -25,9 +25,9 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
         );
     }
 
-    const handleRemovedElement = (index: number) => {
+    const handleRemovedElement = (index: string) => {
         props.onElementsChange(
-            props.elements.filter((e, i) => i !== index)
+            props.elements.filter((e, i) => i !== parseInt(index))
         );
     }
 
@@ -38,11 +38,13 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
             </li>
 
             {props.elements.map((element, index) =>
-                <li className="mt-4">
-                    <JsonObjectEditor key={index} keyName={index.toString()} value={element}
-                                      onKeyValueChange={handleChangedElement}/>
-                    <button className="bg-gray-600" onClick={() => handleRemovedElement(index)}>Delete</button>
-                </li>
+                <JsonObjectEditor
+                    key={index}
+                    keyName={index.toString()}
+                    value={element}
+                    onChange={handleChangedElement}
+                    onDelete={handleRemovedElement}
+                />
             )}
         </ul>
     );
