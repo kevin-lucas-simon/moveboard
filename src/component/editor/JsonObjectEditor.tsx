@@ -17,10 +17,10 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
     }
 
     return (
-        <li className="border border-gray-700">
-            <div className="w-full flex gap-2 justify-between font-bold bg-gray-600">
+        <>
+            <div className="w-full flex gap-2 justify-between hover:bg-gray-500/10">
                 <button className="flex grow py-1 px-2 select-none gap-2" onClick={toggleExpand}>
-                    {isOpen ? <span>&#9205;</span> : <span>&#9207;</span>}
+                    {isOpen ? <span>&#9207;</span> : <span>&#9205;</span>}
                     <span>{props.displayname ?? props.keyName}</span>
                 </button>
 
@@ -30,7 +30,7 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
             </div>
 
             {isOpen &&
-                <div className="pb-2 border-t border-gray-700 bg-gray-500">
+                <div className="mb-2">
                     <JsonNestedEditor
                         keyName={props.keyName}
                         value={props.value}
@@ -38,6 +38,6 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
                     />
                 </div>
             }
-        </li>
+        </>
     );
 }

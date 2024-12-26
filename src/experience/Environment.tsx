@@ -7,6 +7,7 @@ import {useDebug} from "./misc/useDebug";
 
 export type EnvironmentProps = {
     children?: React.ReactNode | undefined,
+    className?: string,
 }
 
 /**
@@ -19,7 +20,7 @@ export function Environment(props: EnvironmentProps) {
     const debug = useDebug()
 
     return (
-        <Canvas>
+        <Canvas resize={{ debounce: 0 }} className={props.className}>
             <ambientLight intensity={Math.PI / 2} />
             <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
             <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
