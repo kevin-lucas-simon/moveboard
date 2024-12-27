@@ -2,7 +2,7 @@ import {ElementModel} from "../../experience/world/model/ElementModel";
 import React from "react";
 import {allElements} from "../../experience/config/allElements";
 import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
-import {JsonObjectEditor} from "./JsonObjectEditor";
+import {ListObjectEditor} from "./ListObjectEditor";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
@@ -41,7 +41,7 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
                 <ul>
                     {props.elements.map((element, index) =>
                         <li className="flex flex-col divide-gray-500/20">
-                            <JsonObjectEditor
+                            <ListObjectEditor
                                 key={index}
                                 keyName={index.toString()}
                                 displayname={element.type}

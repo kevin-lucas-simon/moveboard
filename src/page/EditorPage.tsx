@@ -15,6 +15,8 @@ import {
 } from "@heroicons/react/24/outline";
 import {ChunkJointsEditor} from "../component/editor/ChunkJointsEditor";
 import {JointModel} from "../experience/world/model/JointModel";
+import {ChunkGeneralEditor} from "../component/editor/ChunkGeneralEditor";
+import {ChunkModel} from "../experience/world/model/ChunkModel";
 
 enum EditorTab {
     GENERAL= "general",
@@ -41,6 +43,16 @@ export function EditorPage() {
 
     if (!level || !editChunk) {
         return <></>;
+    }
+
+    const handleGeneralChange = (chunk: ChunkModel) => {
+        setLevel({
+            ...level,
+            chunks: {
+                ...level.chunks,
+                [chunkName]: chunk,
+            }
+        })
     }
 
     const handleElementsChange = (elements: ElementModel[]) => {
@@ -108,7 +120,7 @@ export function EditorPage() {
                 {isTabOpen &&
                     <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                         {tab === EditorTab.GENERAL &&
-                            <div>GeneralEditor</div>
+                            <ChunkGeneralEditor chunk={editChunk} onChunkChange={handleGeneralChange}/>
                         }
                         {tab === EditorTab.JOINTS &&
                             <ChunkJointsEditor joints={editChunk.joints} onJointsChange={handleJointsChange}/>

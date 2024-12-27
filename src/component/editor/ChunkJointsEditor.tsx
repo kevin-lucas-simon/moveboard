@@ -1,6 +1,6 @@
 import {JointModel} from "../../experience/world/model/JointModel";
 import React from "react";
-import {JsonObjectEditor} from "./JsonObjectEditor";
+import {ListObjectEditor} from "./ListObjectEditor";
 
 export type ChunkJointsEditorProps = {
     joints: JointModel[];
@@ -30,7 +30,7 @@ export function ChunkJointsEditor(props: ChunkJointsEditorProps) {
                 <ul>
                     {props.joints.map((joint, index) =>
                         <li className="flex flex-col divide-gray-500/20">
-                            <JsonObjectEditor
+                            <ListObjectEditor
                                 key={index}
                                 keyName={index.toString()}
                                 displayname={joint.neighbour}

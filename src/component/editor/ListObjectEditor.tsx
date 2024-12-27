@@ -2,7 +2,7 @@ import {JsonNestedEditor} from "./JsonNestedEditor";
 import React, {useState} from "react";
 import {ChevronDownIcon, ChevronRightIcon, XMarkIcon} from "@heroicons/react/24/outline";
 
-export type JsonObjectEditorProps = {
+export type ListObjectEditorProps = {
     keyName: string,
     displayname?: string,
     value: any,
@@ -10,7 +10,7 @@ export type JsonObjectEditorProps = {
     onDelete: (key: string) => void,
 }
 
-export function JsonObjectEditor(props: JsonObjectEditorProps) {
+export function ListObjectEditor(props: ListObjectEditorProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     const toggleExpand = () => {
