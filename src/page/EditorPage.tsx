@@ -8,7 +8,7 @@ import {ElementModel} from "../experience/world/model/ElementModel";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {TabButton} from "../component/editor/TabButton";
 import {
-    AtSymbolIcon,
+    AtSymbolIcon, Bars2Icon, MagnifyingGlassIcon,
     PlayIcon,
     PuzzlePieceIcon,
     Square2StackIcon
@@ -95,12 +95,27 @@ export function EditorPage() {
                 <h1 className="text-2xl">{editChunk.name}</h1>
                 {/* chunk search */}
                 {/* TODO über die Chunk Suche soll man zwischen den Chunks wechseln können */}
-                <div className="grow"></div>
+                <div className="grow">
+                    <label className="max-w-sm mx-auto flex items-center gap-2 py-1 px-2 bg-gray-500/10 rounded-md">
+                        <MagnifyingGlassIcon className="h-4"/>
+                        <input type="text" className="w-full bg-transparent focus:outline-none"
+                               placeholder="Search chunk..."
+                        />
+                    </label>
+                </div>
+
                 {/* level selector */}
                 {/* TODO hier sollte man Änderungen des gesamten Levels exportieren können */}
                 {/* TODO alternativ kann man Änderungen verwerfen können (local DB drop)*/}
                 {/* TODO vlt sollte man auch wieder zum Hauptmenü kommen können (noch gar kein Design)*/}
-                <div className="">{level.name}</div>
+                {/* TODO hier sollte ein Dropdown noch kommen */}
+                <button
+                    className="h-8 flex items-center gap-1 rounded hover:bg-gray-500/10 p-1"
+                    id="menu-button" aria-expanded="true" aria-haspopup="true"
+                >
+                    <span>{level.name}</span>
+                    <Bars2Icon className="h-6" />
+                </button>
             </div>
 
             {/* body */}
