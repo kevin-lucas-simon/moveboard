@@ -17,6 +17,7 @@ import {ChunkJointsEditor} from "../component/editor/ChunkJointsEditor";
 import {JointModel} from "../experience/world/model/JointModel";
 import {ChunkGeneralEditor} from "../component/editor/ChunkGeneralEditor";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
+import {ChunkTestEditor} from "../component/editor/ChunkTestEditor";
 
 enum EditorTab {
     GENERAL= "general",
@@ -33,9 +34,10 @@ export function EditorPage() {
 
     const [level, setLevel] = useState<LevelModel|undefined>(undefined)
     const editChunk = level?.chunks[chunkName];
+    // TODO ich bin hier ein wenig unzufrieden, wie auf den Chunk über das Level Objekt zugegriffen wird, bitte auslagern!
+    // TODO der Aufruf sollte über die URL erfolgen, nach dem Motto `editor/TestLevel/FirstChunk` oder so
 
     const [tab, setTab] = useState<EditorTab>(EditorTab.GENERAL);
-    const [isTabOpen, setIsOpenTab] = useState(true);
 
     useEffect(() => {
         setLevel(downloadedLevel);
@@ -92,8 +94,12 @@ export function EditorPage() {
                 {/* chunk name */}
                 <h1 className="text-2xl">{editChunk.name}</h1>
                 {/* chunk search */}
+                {/* TODO über die Chunk Suche soll man zwischen den Chunks wechseln können */}
                 <div className="grow"></div>
                 {/* level selector */}
+                {/* TODO hier sollte man Änderungen des gesamten Levels exportieren können */}
+                {/* TODO alternativ kann man Änderungen verwerfen können (local DB drop)*/}
+                {/* TODO vlt sollte man auch wieder zum Hauptmenü kommen können (noch gar kein Design)*/}
                 <div className="">{level.name}</div>
             </div>
 
@@ -117,24 +123,24 @@ export function EditorPage() {
                 </div>
 
                 {/* tab content */}
-                {isTabOpen &&
-                    <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
-                        {tab === EditorTab.GENERAL &&
-                            <ChunkGeneralEditor chunk={editChunk} onChunkChange={handleGeneralChange}/>
-                        }
-                        {tab === EditorTab.JOINTS &&
-                            <ChunkJointsEditor joints={editChunk.joints} onJointsChange={handleJointsChange}/>
-                        }
-                        {tab === EditorTab.ELEMENTS &&
-                            <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange}/>
-                        }
-                        {tab === EditorTab.TEST &&
-                            <div>Test Debug Values</div>
-                        }
-                    </div>
-                }
+                <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
+                    {/* TODO an sich sollte ich generell schauen, ob ich Duplikate sinnvoll im Refactoring zusammenführen kann*/}
+                    {tab === EditorTab.GENERAL &&
+                        <ChunkGeneralEditor chunk={editChunk} onChunkChange={handleGeneralChange}/>
+                    }
+                    {tab === EditorTab.JOINTS &&
+                        <ChunkJointsEditor joints={editChunk.joints} onJointsChange={handleJointsChange}/>
+                    }
+                    {tab === EditorTab.ELEMENTS &&
+                        <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange}/>
+                    }
+                    {tab === EditorTab.TEST &&
+                        <ChunkTestEditor />
+                    }
+                </div>
 
                 {/* 3d canvas */}
+                {/* TODO der normale Editor sollte keinen UserInput als auch keine Physik erlauben (nur Testmodus)*/}
                 <Environment className="rounded-xl bg-gray-500/10">
                     {level &&
                         <Level {...level} start={chunkName}/>
