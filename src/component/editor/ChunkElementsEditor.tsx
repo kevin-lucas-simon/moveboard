@@ -34,11 +34,11 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
     return (
         <div className="w-full h-full flex flex-col">
             <h2 className="text-xl pt-4 px-4">Elements</h2>
-            <div className="grow overflow-hidden">
+            <div className="grow">
                 <p className="text-sm px-4 py-2">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 </p>
-                <ul className="grow">
+                <ul>
                     {props.elements.map((element, index) =>
                         <li className="flex flex-col divide-gray-500/20">
                             <JsonObjectEditor
@@ -54,10 +54,10 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
                 </ul>
             </div>
             <button
-                className="flex w-full hover:bg-gray-500/10 px-4 py-2"
+                className="flex w-full hover:bg-gray-500/10 px-4 py-2 gap-1 border-t border-gray-500/10"
                 onClick={handleAddedElement}
             >
-                <span className="w-4 bg-amber-600">&#43;</span>
+                <span className="w-4 text-left">&#43;</span>
                 <span>Add Element</span>
             </button>
         </div>

@@ -67,12 +67,12 @@ export function EditorPage() {
                 </div>
 
                 {/* properties */}
-                <div className="max-w-xs basis-1/3 h-full rounded-xl bg-gray-500/10 overflow-hidden">
+                <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange} />
                 </div>
 
                 {/* 3d editor */}
-                <Environment className="grow rounded-xl bg-gray-500/10">
+                <Environment className="rounded-xl bg-gray-500/10">
                     {level &&
                         <Level {...level} start={chunkName} />
                     }

@@ -19,7 +19,7 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
     return (
         <div className={isOpen ? "group bg-gray-500/5" : "group"}>
             <div className="w-full flex justify-between hover:bg-gray-500/10 px-2 py-1">
-                <button className="flex grow py-1 px-2 select-none gap-2" onClick={toggleExpand}>
+                <button className="flex grow py-1 px-2 select-none gap-1" onClick={toggleExpand}>
                     {isOpen
                         ? <span className="w-4 text-left">&#9207;</span>
                         : <span className="w-4 text-left">&#9205;</span>}
