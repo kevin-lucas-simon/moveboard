@@ -22,23 +22,25 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
     return (
         <>
             {/* display name and value view */}
-            <li className="flex gap-1">
-                {props.displayname &&
-                    <>
-                        <div className="h-px w-2 bg-gray-500/50 self-end -translate-y-2.5 mr-1"/>
-                        <div className="select-none">
-                            {props.displayname}
-                            {!(props.value instanceof Object) && ":"}
-                        </div>
-                    </>
-                }
-                {!(props.value instanceof Object) &&
-                    <JsonFieldEditor
-                        className="w-0 grow bg-transparent outline-none"
-                        value={props.value}
-                        onChange={handleValueChange}
-                    />
-                }
+            <li>
+                <label className="flex gap-1">
+                    {props.displayname &&
+                        <>
+                            <div className="h-px w-2 bg-gray-500/50 self-end -translate-y-2.5 mr-1"/>
+                            <div className="select-none">
+                                {props.displayname}
+                                {!(props.value instanceof Object) && ":"}
+                            </div>
+                        </>
+                    }
+                    {!(props.value instanceof Object) &&
+                        <JsonFieldEditor
+                            className="w-0 grow bg-transparent outline-none"
+                            value={props.value}
+                            onChange={handleValueChange}
+                        />
+                    }
+                </label>
             </li>
 
             {/* object view */}
