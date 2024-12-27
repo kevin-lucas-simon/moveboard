@@ -25,7 +25,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
             <li className="flex gap-1">
                 {props.displayname &&
                     <>
-                        <div className="h-px w-2 bg-black self-end -translate-y-2.5 mr-1"/>
+                        <div className="h-px w-2 bg-gray-500/50 self-end -translate-y-2.5 mr-1"/>
                         <div className="select-none">
                             {props.displayname}
                             {!(props.value instanceof Object) && ":"}
@@ -34,7 +34,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                 }
                 {!(props.value instanceof Object) &&
                     <JsonFieldEditor
-                        className="basis-2/3 bg-transparent grow"
+                        className="basis-2/3 bg-transparent grow outline-none"
                         value={props.value}
                         onChange={handleValueChange}
                     />
@@ -44,7 +44,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
             {/* object view */}
             {props.value instanceof Object &&
                 <li className="flex">
-                    <div className="ml-4 bg-black w-px mt-2.5 -translate-y-2.5"/>
+                    <div className="ml-4 bg-gray-500/50 w-px mt-2.5 -translate-y-2.5"/>
 
                     <ul className="grow">
                         {Object.entries(props.value).map(([key, value]) => (

@@ -17,20 +17,22 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
     }
 
     return (
-        <>
-            <div className="w-full flex gap-2 justify-between hover:bg-gray-500/10">
+        <div className={isOpen ? "group bg-gray-500/5" : "group"}>
+            <div className="w-full flex justify-between hover:bg-gray-500/10 px-2 py-1">
                 <button className="flex grow py-1 px-2 select-none gap-2" onClick={toggleExpand}>
-                    {isOpen ? <span>&#9207;</span> : <span>&#9205;</span>}
+                    {isOpen
+                        ? <span className="w-4 text-left">&#9207;</span>
+                        : <span className="w-4 text-left">&#9205;</span>}
                     <span>{props.displayname ?? props.keyName}</span>
                 </button>
 
-                <button className="py-1 px-2" onClick={() => props.onDelete(props.keyName)}>
+                <button className="py-1 px-2 hidden group-hover:block" onClick={() => props.onDelete(props.keyName)}>
                     <span>&times;</span>
                 </button>
             </div>
 
             {isOpen &&
-                <div className="mb-2">
+                <div className="pb-2">
                     <JsonNestedEditor
                         keyName={props.keyName}
                         value={props.value}
@@ -38,6 +40,6 @@ export function JsonObjectEditor(props: JsonObjectEditorProps) {
                     />
                 </div>
             }
-        </>
+        </div>
     );
 }

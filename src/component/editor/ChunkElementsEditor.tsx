@@ -33,9 +33,9 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
 
     return (
         <div className="w-full h-full flex flex-col">
-            <h2 className="text-xl">Elements</h2>
+            <h2 className="text-xl pt-4 px-4">Elements</h2>
             <div className="grow overflow-hidden">
-                <p className="text-sm">
+                <p className="text-sm px-4 py-2">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 </p>
                 <ul className="grow">
@@ -54,11 +54,11 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
                 </ul>
             </div>
             <button
-                className="flex gap-2 w-full py-1 pt-3 text-left border-t border-gray-500/20 hover:bg-gray-500/10"
+                className="flex w-full hover:bg-gray-500/10 px-4 py-2"
                 onClick={handleAddedElement}
             >
-                <span>&#43;</span>
-                <span>Add</span>
+                <span className="w-4 bg-amber-600">&#43;</span>
+                <span>Add Element</span>
             </button>
         </div>
     );

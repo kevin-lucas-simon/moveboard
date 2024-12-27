@@ -67,7 +67,7 @@ export function EditorPage() {
                 </div>
 
                 {/* properties */}
-                <div className="max-w-xs basis-1/3 h-full p-4 rounded-xl bg-gray-500/10 overflow-hidden">
+                <div className="max-w-xs basis-1/3 h-full rounded-xl bg-gray-500/10 overflow-hidden">
                     <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange} />
                 </div>
 
