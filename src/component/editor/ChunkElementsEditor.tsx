@@ -34,7 +34,7 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
     return (
         <div className="w-full h-full flex flex-col">
             <h2 className="text-xl pt-4 px-4">Elements</h2>
-            <div className="grow">
+            <div className="grow h-0 overflow-y-auto">
                 <p className="text-sm px-4 py-2">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 </p>

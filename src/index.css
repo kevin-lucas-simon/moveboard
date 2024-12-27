@@ -18,3 +18,16 @@ body,
 body {
   background: #f0f0f0;
 }
+
+::-webkit-scrollbar {
+  @apply bg-transparent;
+  @apply w-1.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-500/10;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500/50;
+}
