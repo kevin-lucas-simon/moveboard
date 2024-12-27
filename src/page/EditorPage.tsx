@@ -9,12 +9,12 @@ import {LevelModel} from "../experience/world/model/LevelModel";
 import {TabButton} from "../component/editor/TabButton";
 import {
     AtSymbolIcon,
-    IdentificationIcon, PlayIcon,
+    PlayIcon,
     PuzzlePieceIcon,
-    QueueListIcon,
-    RectangleGroupIcon,
     Square2StackIcon
 } from "@heroicons/react/24/outline";
+import {ChunkJointsEditor} from "../component/editor/ChunkJointsEditor";
+import {JointModel} from "../experience/world/model/JointModel";
 
 enum EditorTab {
     GENERAL= "general",
@@ -51,6 +51,19 @@ export function EditorPage() {
                 [chunkName]: {
                     ...editChunk,
                     elements: elements,
+                }
+            }
+        })
+    }
+
+    const handleJointsChange = (joints: JointModel[]) => {
+        setLevel({
+            ...level,
+            chunks: {
+                ...level.chunks,
+                [chunkName]: {
+                    ...editChunk,
+                    joints: joints,
                 }
             }
         })
@@ -98,7 +111,7 @@ export function EditorPage() {
                             <div>GeneralEditor</div>
                         }
                         {tab === EditorTab.JOINTS &&
-                            <div>JointsEditor</div>
+                            <ChunkJointsEditor joints={editChunk.joints} onJointsChange={handleJointsChange}/>
                         }
                         {tab === EditorTab.ELEMENTS &&
                             <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange}/>

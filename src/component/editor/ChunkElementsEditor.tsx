@@ -36,7 +36,7 @@ export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
             <h2 className="text-xl pt-4 px-4">Elements</h2>
             <div className="grow h-0 overflow-y-auto">
                 <p className="text-sm px-4 py-2">
-                    Here you can add, remove and edit the static elements of the chunk.
+                    Fill the chunk area with static elements.
                 </p>
                 <ul>
                     {props.elements.map((element, index) =>

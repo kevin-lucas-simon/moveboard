@@ -34,7 +34,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                 }
                 {!(props.value instanceof Object) &&
                     <JsonFieldEditor
-                        className="basis-2/3 bg-transparent grow outline-none"
+                        className="w-0 grow bg-transparent outline-none"
                         value={props.value}
                         onChange={handleValueChange}
                     />
