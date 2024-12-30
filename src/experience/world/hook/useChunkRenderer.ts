@@ -50,6 +50,10 @@ export function useChunkRenderer(
         updated: Date.now(),
     };
 
+    // TODO ich glaube die ganze useEffects brauch ich nicht zwingend, das kann ruhig in einem Frame gerendert werden
+    // TODO RenderTasks müssen in keinem State abgebildet werden
+    // TODO useMemo könnte hier auch helfen anstatt useState? (muss überlegen wie wegen Positionen!)
+
     // trigger pipeline when active chunk changes
     useEffect(() => {
         setRenderTasks([rootRenderTask])

@@ -47,6 +47,7 @@ export function EditorPage() {
         return <></>;
     }
 
+    // TODO useReducer muss hier rein!
     const handleGeneralChange = (chunk: ChunkModel) => {
         setLevel({
             ...level,
@@ -109,13 +110,37 @@ export function EditorPage() {
                 {/* TODO alternativ kann man Änderungen verwerfen können (local DB drop)*/}
                 {/* TODO vlt sollte man auch wieder zum Hauptmenü kommen können (noch gar kein Design)*/}
                 {/* TODO hier sollte ein Dropdown noch kommen */}
-                <button
-                    className="h-8 flex items-center gap-1 rounded hover:bg-gray-500/10 p-1"
-                    id="menu-button" aria-expanded="true" aria-haspopup="true"
-                >
-                    <span>{level.name}</span>
-                    <Bars2Icon className="h-6" />
-                </button>
+
+                <div className="relative inline-block text-left">
+                    <div>
+                        <button
+                            className="h-8 flex items-center gap-1 rounded hover:bg-gray-500/10 p-1"
+                            id="menu-button" aria-expanded="true" aria-haspopup="true"
+                        >
+                            <span>{level.name}</span>
+                            <Bars2Icon className="h-6"/>
+                        </button>
+                    </div>
+
+                    {/* TODO HIER WEITERMACHEN MIT DEM POPUP NERVIGEN DIM VLT AUSLAGERN IN EXTRA KOMPONENTE? */}
+                    <div
+                        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+                        role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                        <div className="py-1" role="none">
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
+                               id="menu-item-0">Account settings</a>
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
+                               id="menu-item-1">Support</a>
+                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
+                               id="menu-item-2">License</a>
+                            <form method="POST" action="#" role="none">
+                                <button type="submit" className="block w-full px-4 py-2 text-left text-sm text-gray-700"
+                                        role="menuitem" tabIndex={-1} id="menu-item-3">Sign out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* body */}
@@ -123,17 +148,17 @@ export function EditorPage() {
                 {/* tab buttons */}
                 <div className="w-8 shrink-0 flex flex-col gap-2">
                     <TabButton active={tab === EditorTab.GENERAL} onClick={() => setTab(EditorTab.GENERAL)}>
-                        <AtSymbolIcon />
+                        <AtSymbolIcon/>
                     </TabButton>
                     <TabButton active={tab === EditorTab.JOINTS} onClick={() => setTab(EditorTab.JOINTS)}>
-                        <PuzzlePieceIcon />
+                        <PuzzlePieceIcon/>
                     </TabButton>
                     <TabButton active={tab === EditorTab.ELEMENTS} onClick={() => setTab(EditorTab.ELEMENTS)}>
-                        <Square2StackIcon />
+                        <Square2StackIcon/>
                     </TabButton>
                     <div className="grow"></div>
                     <TabButton active={tab === EditorTab.TEST} onClick={() => setTab(EditorTab.TEST)}>
-                        <PlayIcon />
+                        <PlayIcon/>
                     </TabButton>
                 </div>
 
@@ -150,7 +175,7 @@ export function EditorPage() {
                         <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange}/>
                     }
                     {tab === EditorTab.TEST &&
-                        <ChunkTestEditor />
+                        <ChunkTestEditor/>
                     }
                 </div>
 
