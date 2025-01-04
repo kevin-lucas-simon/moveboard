@@ -36,70 +36,60 @@ export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
+    // TODO reset im Hinterkopf bei model Änderung
+
     const [renderedChunks, setRenderedChunks]
         = useState<{[key: string]: RenderedChunk}>({})
-    const [renderTasks, setRenderTasks]
-        = useState<RenderTask[]>([])
-
-    // root render task starts with active chunk
-    const rootRenderTask: RenderTask = {
-        currentId: activeChunkId,
-        parentId: null,
-        position: renderedChunks[activeChunkId]?.renderPosition ?? {x: 0, y: 0, z: 0},
-        vision: Number.MAX_SAFE_INTEGER,
-        updated: Date.now(),
-    };
+    // const [renderTasks, setRenderTasks]
+    //     = useState<RenderTask[]>([])
 
     // TODO ich glaube die ganze useEffects brauch ich nicht zwingend, das kann ruhig in einem Frame gerendert werden
     // TODO RenderTasks müssen in keinem State abgebildet werden
     // TODO useMemo könnte hier auch helfen anstatt useState? (muss überlegen wie wegen Positionen!)
 
-    // trigger pipeline when active chunk changes
-    useEffect(() => {
-        setRenderTasks([rootRenderTask])
-    }, [activeChunkId]);
-
-    // reset pipeline and delete rendered chunks when chunk model data changes
-    useEffect(() => {
-        setRenderTasks([{
-            ...rootRenderTask,
-            reset: true,
-        }])
-    }, [chunkModels]);
-
     // process render tasks
     useEffect(() => {
-        // take first task from pipeline queue
-        const renderTask = renderTasks.shift();
-        if (!renderTask) {
-            return;
-        }
+        console.time("useChunkRenderer");
+        // root render task starts with active chunk
+        const renderTasks: RenderTask[] = [{
+            currentId: activeChunkId,
+            parentId: null,
+            position: renderedChunks[activeChunkId]?.renderPosition ?? {x: 0, y: 0, z: 0},
+            vision: Number.MAX_SAFE_INTEGER,
+            updated: Date.now(),
+        }];
 
         // reset rendered chunks if requested
-        const updatedRenderedChunks = renderTask.reset ? {} : renderedChunks;
+        // const updatedRenderedChunks = renderTask.reset ? {} : renderedChunks; TODO
+        const updatedRenderedChunks = {...renderedChunks};
 
-        // create render chunks and following tasks
-        const currentChunk
-            = updatedRenderedChunks[renderTask.currentId] ?? createRenderedChunk(renderTask, chunkModels);
-        const nextRenderTasks
-            = createRenderTasks(renderTask, currentChunk, updatedRenderedChunks);
+        while (renderTasks.length > 0) {
+            // take first task from pipeline queue
+            const renderTask = renderTasks.shift();
+            if (!renderTask) {
+                throw new Error("Render task is undefined");
+            }
 
-        // update rendered chunk visibility
-        setRenderedChunks({
-            ...updatedRenderedChunks,
-            [renderTask.currentId]: {
+            // create render chunks and following tasks
+            const currentChunk
+                = updatedRenderedChunks[renderTask.currentId] ?? createRenderedChunk(renderTask, chunkModels);
+            const nextRenderTasks
+                = createRenderTasks(renderTask, currentChunk, updatedRenderedChunks);
+
+            // update rendered chunk visibility
+            updatedRenderedChunks[renderTask.currentId] = {
                 ...currentChunk,
                 updated: renderTask.updated,
                 visible: renderTask.vision > 0,
             }
-        });
 
-        // add new render tasks to the queue
-        setRenderTasks([
-            ...renderTasks,
-            ...nextRenderTasks,
-        ])
-    }, [renderTasks]);
+            // add new render tasks to the queue
+            renderTasks.push(...nextRenderTasks);
+        }
+
+        setRenderedChunks(updatedRenderedChunks);
+        console.timeEnd("useChunkRenderer");
+    }, [activeChunkId]);
 
     return renderedChunks;
 }
