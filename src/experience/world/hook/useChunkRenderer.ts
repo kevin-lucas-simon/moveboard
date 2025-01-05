@@ -6,10 +6,9 @@ import {ElementModel} from "../model/ElementModel";
 import {useMemo} from "react";
 
 export type RenderedChunk = {
-    id: string,
     model: ChunkModel,
-    renderPosition: Vector3Like,
-    renderDimension: RenderDimension,
+    worldPosition: Vector3Like,
+    cameraDimension: RenderDimension,
 }
 type RenderDimension = {
     dimension: Vector3Like,
@@ -153,10 +152,9 @@ function calculateChunkGeometry(
 
         // create new rendered chunk
         calculatedChunks[task.currentId] = {
-            id: task.currentId,
             model: currentModel,
-            renderPosition: renderPosition,
-            renderDimension: renderDimension,
+            worldPosition: renderPosition,
+            cameraDimension: renderDimension,
         };
 
         // add new tasks
