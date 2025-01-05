@@ -20,18 +20,21 @@ type RenderDimension = {
 /**
  * Hook to calculate and filter visible chunks based on provided chunk models
  * @param chunkModels Chunk models from API
- * @param startChunkId Start Chunk where the rendering initial starts to prevent orphan chunk issues
- * @param activeChunkId Active chunk where the vision rendering starts
+ * @param startChunkId Initial Chunk name is needed to prevent orphan chunk issues
+ * @param activeChunkId Active chunk defines which chunks neighbours should be visible
  */
 export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
     startChunkId: string,
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
-    return useMemo(() => {
-        const calculatedChunks = calculateChunkGeometry(chunkModels, startChunkId);
-        return filterVisibleChunks(calculatedChunks, activeChunkId);
-    }, [chunkModels, startChunkId, activeChunkId]);
+    // we only recalculate if the data changes
+    const calculatedChunks = useMemo(() => {
+        return calculateChunkGeometry(chunkModels, startChunkId);
+    }, [chunkModels, startChunkId]);
+
+    // we just filter our cached chunks
+    return filterVisibleChunks(calculatedChunks, activeChunkId);
 }
 
 /**
@@ -164,7 +167,7 @@ function calculateChunkGeometry(
             tasks.push({
                 currentId: joint.neighbour,
                 parentId: task.currentId,
-                position: new Vector3().copy(renderPosition).add(joint.position), // TODO notwendig?
+                position: new Vector3().copy(renderPosition).add(joint.position),
             });
         });
     }
