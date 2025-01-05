@@ -5,6 +5,7 @@ import React from "react";
 import {LevelModel} from "./model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
+import {Vector3Like} from "three";
 
 export type LevelProps = LevelModel & {};
 
@@ -12,15 +13,17 @@ export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<string>(props.start);
     const renderedChunks
-        = useChunkRenderer(props.chunks, activeChunk);
+        = useChunkRenderer(props.chunks, props.start, activeChunk);
+    const [playerPosition] =
+        useState<Vector3Like>(renderedChunks[activeChunk].model.player);
 
     if (!renderedChunks[activeChunk]) {
-        return null;
+        throw new Error("Active chunk is not rendered");
     }
 
     return (
         <>
-            {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
+            {Object.keys(renderedChunks).map(key => (
                 <Chunk key={key} {...renderedChunks[key].model}
                        active={key === activeChunk}
                        position={renderedChunks[key].renderPosition}
@@ -37,7 +40,7 @@ export function Level(props: LevelProps) {
                 marginInBlockSize={1}
             />
 
-            <Player position={renderedChunks[props.start].model.player} />
+            <Player position={playerPosition} />
         </>
     );
 }

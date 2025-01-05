@@ -1,141 +1,180 @@
 import {ChunkModel} from "../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {useEffect, useState} from "react";
 import {FloorBlockModel} from "../../element/block/FloorBlock";
 import {JointModel} from "../model/JointModel";
 import {ElementModel} from "../model/ElementModel";
+import {useMemo} from "react";
 
 export type RenderedChunk = {
     id: string,
     model: ChunkModel,
     renderPosition: Vector3Like,
     renderDimension: RenderDimension,
-    visible: boolean,
-    updated: number,
 }
 type RenderDimension = {
     dimension: Vector3Like,
     minimalPosition: Vector3Like,
     maximalPosition: Vector3Like,
 }
-type RenderTask = {
-    currentId: string,
-    parentId: string|null,
-    position: Vector3Like,
-    vision: number,
-    updated: number,
-    reset?: boolean,
-}
 
 /**
- * Hook to render new chunks
- * @param chunkModels
- * @param activeChunkId
+ * Hook to calculate and filter visible chunks based on provided chunk models
+ * @param chunkModels Chunk models from API
+ * @param startChunkId Start Chunk where the rendering initial starts to prevent orphan chunk issues
+ * @param activeChunkId Active chunk where the vision rendering starts
  */
 export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
+    startChunkId: string,
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
-    // TODO reset im Hinterkopf bei model Änderung
-
-    const [renderedChunks, setRenderedChunks]
-        = useState<{[key: string]: RenderedChunk}>({})
-    // const [renderTasks, setRenderTasks]
-    //     = useState<RenderTask[]>([])
-
-    // TODO ich glaube die ganze useEffects brauch ich nicht zwingend, das kann ruhig in einem Frame gerendert werden
-    // TODO RenderTasks müssen in keinem State abgebildet werden
-    // TODO useMemo könnte hier auch helfen anstatt useState? (muss überlegen wie wegen Positionen!)
-
-    // process render tasks
-    useEffect(() => {
-        console.time("useChunkRenderer");
-        // root render task starts with active chunk
-        const renderTasks: RenderTask[] = [{
-            currentId: activeChunkId,
-            parentId: null,
-            position: renderedChunks[activeChunkId]?.renderPosition ?? {x: 0, y: 0, z: 0},
-            vision: Number.MAX_SAFE_INTEGER,
-            updated: Date.now(),
-        }];
-
-        // reset rendered chunks if requested
-        // const updatedRenderedChunks = renderTask.reset ? {} : renderedChunks; TODO
-        const updatedRenderedChunks = {...renderedChunks};
-
-        while (renderTasks.length > 0) {
-            // take first task from pipeline queue
-            const renderTask = renderTasks.shift();
-            if (!renderTask) {
-                throw new Error("Render task is undefined");
-            }
-
-            // create render chunks and following tasks
-            const currentChunk
-                = updatedRenderedChunks[renderTask.currentId] ?? createRenderedChunk(renderTask, chunkModels);
-            const nextRenderTasks
-                = createRenderTasks(renderTask, currentChunk, updatedRenderedChunks);
-
-            // update rendered chunk visibility
-            updatedRenderedChunks[renderTask.currentId] = {
-                ...currentChunk,
-                updated: renderTask.updated,
-                visible: renderTask.vision > 0,
-            }
-
-            // add new render tasks to the queue
-            renderTasks.push(...nextRenderTasks);
-        }
-
-        setRenderedChunks(updatedRenderedChunks);
-        console.timeEnd("useChunkRenderer");
-    }, [activeChunkId]);
-
-    return renderedChunks;
+    return useMemo(() => {
+        const calculatedChunks = calculateChunkGeometry(chunkModels, startChunkId);
+        return filterVisibleChunks(calculatedChunks, activeChunkId);
+    }, [chunkModels, startChunkId, activeChunkId]);
 }
 
 /**
- * Create a new rendered chunk
- * @param renderTask
- * @param chunkModels
+ * Filter visible chunks based on active chunk
+ * @param calculatedChunks Rendered chunks to filter
+ * @param activeChunkId Active chunk where the vision starts
  */
-function createRenderedChunk(
-    renderTask: RenderTask,
-    chunkModels: {[key: string]: ChunkModel}
-): RenderedChunk {
-    // get chunk models
-    const currentModel = chunkModels[renderTask.currentId];
-    if (!currentModel) {
-        throw new Error(`Chunk model ${renderTask.currentId} not found`);
+function filterVisibleChunks(
+    calculatedChunks: {[key: string]: RenderedChunk},
+    activeChunkId: string
+): {[key: string]: RenderedChunk} {
+    type ChunkVisionTask = {
+        currentId: string,
+        parentId: string|null,
+        vision: number,
     }
 
-    // calculate dimension
-    const renderDimension = calculateCameraDimension(currentModel.elements);
+    // start with active chunk as root
+    const visionTasks: ChunkVisionTask[] = [{
+        currentId: activeChunkId,
+        parentId: null,
+        vision: Number.MAX_SAFE_INTEGER,
+    }];
+    const filteredChunks: {[key: string]: RenderedChunk} = {};
 
-    // get joint with parent name
-    const jointToParent
-        = currentModel.joints.find(joint => joint.neighbour === renderTask.parentId);
-    let renderPosition = new Vector3()
-    if (jointToParent) {
-        renderPosition = new Vector3()
-            .copy(renderTask.position)
-            .sub(jointToParent.position)
+    // run through vision pipeline from root task as tree
+    while (visionTasks.length > 0) {
+        const task = visionTasks.shift();
+        if (!task) {
+            throw new Error("ChunkVisionTask is undefined");
+        }
+
+        // skip if already filtered or vision is zero
+        if (task.vision <= 0 || filteredChunks[task.currentId]) {
+            continue;
+        }
+
+        // get current chunk
+        const currentChunk = calculatedChunks[task.currentId];
+        if (!currentChunk) {
+            throw new Error(`Chunk ${task.currentId} not found`);
+        }
+
+        // add chunk to filtered list
+        filteredChunks[task.currentId] = currentChunk;
+
+        // add neighbours to vision queue
+        currentChunk.model.joints.forEach((joint: JointModel) => {
+            if (joint.neighbour === task.parentId) {
+                return;
+            }
+            visionTasks.push({
+                currentId: joint.neighbour,
+                parentId: task.currentId,
+                vision: Math.min(task.vision - 1, joint.vision),
+            });
+        });
     }
 
-    // return new created rendered chunk
-    return {
-        id: renderTask.currentId,
-        model: currentModel,
-        renderPosition: renderPosition,
-        renderDimension: renderDimension,
-        visible: renderTask.vision > 0,
-        updated: renderTask.updated,
-    } as RenderedChunk;
+    return filteredChunks;
+}
+
+/**
+ * Calculate the geometry of all chunks based on the chunk models
+ * @param chunkModels Chunk models from API
+ * @param startChunkId Start Chunk where the rendering initial starts to prevent orphan chunk issues
+ */
+function calculateChunkGeometry(
+    chunkModels: {[key: string]: ChunkModel},
+    startChunkId: string
+): {[key: string]: RenderedChunk} {
+    type ChunkGeometryTask = {
+        currentId: string,
+        parentId: string | null,
+        position: Vector3Like,
+    }
+
+    // start with start chunk as root
+    const tasks: ChunkGeometryTask[] = [{
+        currentId: startChunkId,
+        parentId: null,
+        position: {x: 0, y: 0, z: 0},
+    }];
+    const calculatedChunks: {[key: string]: RenderedChunk} = {};
+
+    // run through geometry pipeline from root task as tree
+    while (tasks.length > 0) {
+        const task = tasks.shift();
+        if (!task) {
+            throw new Error("ChunkCalculator task is undefined");
+        }
+
+        // skip if already calculated
+        if (calculatedChunks[task.currentId]) {
+            continue;
+        }
+
+        // get chunk models
+        const currentModel = chunkModels[task.currentId];
+        if (!currentModel) {
+            throw new Error(`Chunk model ${task.currentId} not found`);
+        }
+
+        // calculate dimension
+        const renderDimension = calculateCameraDimension(currentModel.elements);
+
+        // get joint with parent name
+        const jointToParent
+            = currentModel.joints.find(joint => joint.neighbour === task.parentId);
+        let renderPosition = new Vector3()
+        if (jointToParent) {
+            renderPosition = new Vector3()
+                .copy(task.position)
+                .sub(jointToParent.position)
+        }
+
+        // create new rendered chunk
+        calculatedChunks[task.currentId] = {
+            id: task.currentId,
+            model: currentModel,
+            renderPosition: renderPosition,
+            renderDimension: renderDimension,
+        };
+
+        // add new tasks
+        currentModel.joints.forEach((joint: JointModel) => {
+            if (joint.neighbour === task.parentId) {
+                return;
+            }
+            tasks.push({
+                currentId: joint.neighbour,
+                parentId: task.currentId,
+                position: new Vector3().copy(renderPosition).add(joint.position), // TODO notwendig?
+            });
+        });
+    }
+
+    return calculatedChunks;
 }
 
 /**
  * Calculate the camera dimension based on FloorBlocks
- * @param elementModels
+ * @param elementModels chunk elements from API
  */
 function calculateCameraDimension(
     elementModels: ElementModel[],
@@ -175,41 +214,4 @@ function calculateCameraDimension(
         minimalPosition: minPosition as Vector3Like,
         maximalPosition: maxPosition as Vector3Like,
     } as RenderDimension;
-}
-
-/**
- * Create new render tasks based on the current chunk joints
- * @param renderTask
- * @param currentChunk
- * @param renderChunks
- */
-function createRenderTasks(
-    renderTask: RenderTask,
-    currentChunk: RenderedChunk,
-    renderChunks: {[key: string]: RenderedChunk},
-): RenderTask[] {
-    // iterate through joints and add to the queue
-    const newRenderTasks: RenderTask[] = []
-    currentChunk.model.joints.forEach((joint: JointModel) => {
-        // skip if neighbour is already updated
-        if (renderChunks[joint.neighbour]?.updated === renderTask.updated) {
-            return;
-        }
-
-        // calculate joint position
-        const jointPosition = new Vector3()
-            .copy(currentChunk.renderPosition)
-            .add(joint.position)
-
-        // add render task to queue
-        newRenderTasks.push({
-            currentId: joint.neighbour,
-            parentId: renderTask.currentId,
-            position: jointPosition,
-            vision: Math.min(renderTask.vision - 1, joint.vision),
-            updated: renderTask.updated
-        });
-    })
-
-    return newRenderTasks
 }
