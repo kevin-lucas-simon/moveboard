@@ -18,6 +18,9 @@ import {JointModel} from "../experience/world/model/JointModel";
 import {ChunkGeneralEditor} from "../component/editor/ChunkGeneralEditor";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
 import {ChunkTestEditor} from "../component/editor/ChunkTestEditor";
+import {EditorMenu} from "../component/editor/header/EditorMenu";
+import {EditorDropdownItem} from "../component/editor/header/EditorMenuButton";
+import {EditorDropdownDivider} from "../component/editor/header/EditorDropdownDivider";
 
 enum EditorTab {
     GENERAL= "general",
@@ -92,8 +95,12 @@ export function EditorPage() {
                 <div className="w-8 h-8 bg-black flex rounded rounded-tl-2xl">
                     <div className="w-2 h-2 mt-2 ml-4 rounded bg-white"></div>
                 </div>
-                {/* chunk name */}
-                <h1 className="text-2xl">{editChunk.name}</h1>
+                {/* editing name */}
+                <div className="flex flex-col gap-0.5">
+                    <h1 className="text-2xl leading-none">{editChunk.name}</h1>
+                    <div className="text-xs leading-none">{level.name}</div>
+                </div>
+
                 {/* chunk search */}
                 {/* TODO über die Chunk Suche soll man zwischen den Chunks wechseln können */}
                 <div className="grow">
@@ -105,42 +112,17 @@ export function EditorPage() {
                     </label>
                 </div>
 
-                {/* level selector */}
-                {/* TODO hier sollte man Änderungen des gesamten Levels exportieren können */}
-                {/* TODO alternativ kann man Änderungen verwerfen können (local DB drop)*/}
-                {/* TODO vlt sollte man auch wieder zum Hauptmenü kommen können (noch gar kein Design)*/}
-                {/* TODO hier sollte ein Dropdown noch kommen */}
-
-                <div className="relative inline-block text-left">
+                {/* menu selector */}
+                <EditorMenu>
                     <div>
-                        <button
-                            className="h-8 flex items-center gap-1 rounded hover:bg-gray-500/10 p-1"
-                            id="menu-button" aria-expanded="true" aria-haspopup="true"
-                        >
-                            <span>{level.name}</span>
-                            <Bars2Icon className="h-6"/>
-                        </button>
+                        <EditorDropdownItem>Export Level</EditorDropdownItem> {/* TODO Export level data as modal */}
+                        <EditorDropdownItem>Clear Changes</EditorDropdownItem> {/* TODO Clear level or chunk changes as Modal */}
                     </div>
-
-                    {/* TODO HIER WEITERMACHEN MIT DEM POPUP NERVIGEN DIM VLT AUSLAGERN IN EXTRA KOMPONENTE? */}
-                    <div
-                        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
-                        role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
-                        <div className="py-1" role="none">
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
-                               id="menu-item-0">Account settings</a>
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
-                               id="menu-item-1">Support</a>
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex={-1}
-                               id="menu-item-2">License</a>
-                            <form method="POST" action="#" role="none">
-                                <button type="submit" className="block w-full px-4 py-2 text-left text-sm text-gray-700"
-                                        role="menuitem" tabIndex={-1} id="menu-item-3">Sign out
-                                </button>
-                            </form>
-                        </div>
+                    <EditorDropdownDivider/>
+                    <div>
+                        <EditorDropdownItem href={"/"}>Leave Editor</EditorDropdownItem>
                     </div>
-                </div>
+                </EditorMenu>
             </div>
 
             {/* body */}
