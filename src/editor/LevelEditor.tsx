@@ -22,7 +22,7 @@ import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
-import {EditorChunkSearchBar} from "./EditorChunkSearchBar";
+import {SearchBar} from "../component/dropdown/SearchBar";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -100,10 +100,11 @@ export function LevelEditor(props: LevelEditorProps) {
 
                 {/* chunk search */}
                 <div className="grow">
-                    <EditorChunkSearchBar
-                        chunks={Object.keys(level.chunks)}
-                        activeChunk={chunkName}
-                        onChunkSelect={(chunk) => setChunkName(chunk)}
+                    <SearchBar
+                        items={Object.keys(level.chunks).filter((chunk) => chunk !== chunkName)}
+                        active={chunkName}
+                        placeholder={"Search Chunk..."}
+                        onSelect={(chunk) => setChunkName(chunk)}
                     />
                 </div>
 

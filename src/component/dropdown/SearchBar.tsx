@@ -1,0 +1,69 @@
+import {MagnifyingGlassIcon, XMarkIcon} from "@heroicons/react/24/outline";
+import React, {useState} from "react";
+import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
+
+export type SearchBarProps = {
+    items: string[];
+    active?: string|null;
+    placeholder?: string;
+    onSelect?: ((item: string) => void);
+}
+export function SearchBar(props: SearchBarProps) {
+    const [query, setQuery] = useState<string>('')
+
+    const filteredItems =
+        query === ''
+            ? props.items
+            : props.items.filter((item) => {
+                return item.toLowerCase().includes(query.toLowerCase())
+            })
+
+    const handleItemSelect = (item: string|null) => {
+        if (item && props.onSelect) {
+            props.onSelect(item)
+        }
+    }
+
+    return (
+        <Combobox
+            value={null}
+            onChange={handleItemSelect}
+            onClose={() => setQuery('')}
+        >
+            <div className="relative max-w-sm mx-auto bg-gray-200 rounded-md">
+                <ComboboxButton className="group absolute inset-y-0 left-0 m-2">
+                    <MagnifyingGlassIcon className="h-4"/>
+                </ComboboxButton>
+                <ComboboxInput
+                    className="w-full bg-transparent rounded-md py-1 pl-8 pr-2 focus:outline-none"
+                    displayValue={(item: string) => item}
+                    placeholder={props.placeholder || 'Search...'}
+                    onChange={(event) => setQuery(event.target.value)}
+                />
+                {query !== '' &&
+                    <ComboboxButton
+                        className="group absolute inset-y-0 right-0 m-2 p-0.5 rounded-full hover:bg-gray-300"
+                        onClick={() => setQuery('')}
+                    >
+                        <XMarkIcon className="h-3"/>
+                    </ComboboxButton>
+                }
+            </div>
+
+            <ComboboxOptions
+                anchor="bottom start"
+                className="w-[var(--input-width)] empty:invisible rounded-md [--anchor-gap:4px] border border-gray-300"
+            >
+                {filteredItems.map((item) => (
+                    <ComboboxOption
+                        key={item}
+                        value={item}
+                        className="bg-gray-200 data-[focus]:bg-gray-300 py-1 pl-8 pr-2"
+                    >
+                        {item}
+                    </ComboboxOption>
+                ))}
+            </ComboboxOptions>
+        </Combobox>
+    );
+}
