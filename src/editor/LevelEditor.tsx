@@ -6,7 +6,7 @@ import {EditorElementsTab} from "./tabs/EditorElementsTab";
 import {ElementModel} from "../experience/world/model/ElementModel";
 import {TabButton} from "./tabs/TabButton";
 import {
-    AtSymbolIcon, Bars3Icon, MagnifyingGlassIcon,
+    AtSymbolIcon, Bars3Icon,
     PlayIcon,
     PuzzlePieceIcon,
     Square2StackIcon
@@ -22,6 +22,7 @@ import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
+import {EditorChunkSearchBar} from "./EditorChunkSearchBar";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -98,14 +99,12 @@ export function LevelEditor(props: LevelEditorProps) {
                 </div>
 
                 {/* chunk search */}
-                {/* TODO über die Chunk Suche soll man zwischen den Chunks wechseln können */}
                 <div className="grow">
-                    <label className="max-w-sm mx-auto flex items-center gap-2 py-1 px-2 bg-gray-500/10 rounded-md">
-                        <MagnifyingGlassIcon className="h-4"/>
-                        <input type="text" className="w-full bg-transparent focus:outline-none"
-                               placeholder="Search chunk..."
-                        />
-                    </label>
+                    <EditorChunkSearchBar
+                        chunks={Object.keys(level.chunks)}
+                        activeChunk={chunkName}
+                        onChunkSelect={(chunk) => setChunkName(chunk)}
+                    />
                 </div>
 
                 {/* menu selector */}
