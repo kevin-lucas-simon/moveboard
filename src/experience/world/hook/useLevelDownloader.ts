@@ -8,10 +8,19 @@ export function useLevelDownloader(
         = useState<LevelModel|undefined>(undefined)
 
     useEffect(() => {
+        let ignore = false;
+        setDownloadedLevel(undefined);
         fetch(window.location.origin + '/level/' + levelName + '.json')
             .then(response => response.json())
-            .then(response => setDownloadedLevel(response as LevelModel))
+            .then(response => {
+                if (!ignore) {
+                    setDownloadedLevel(response as LevelModel)
+                }
+            })
         ;
+        return () => {
+            ignore = true;
+        }
     }, [levelName]);
 
     return downloadedLevel;

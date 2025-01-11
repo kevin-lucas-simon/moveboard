@@ -1,30 +1,14 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useState } from 'react'
 
-export default function EditorDialog() {
-    // TODO das wird die Basis Klasse für die Modals, isOpen wird im Parent vom Enum verwaltet
-    // TODO die Dialoge selbst werden in eigene Komponenten ausgelagert werden
-
-    let [isOpen, setIsOpen] = useState(false)
-
-    function open() {
-        setIsOpen(true)
-    }
-
-    function close() {
-        setIsOpen(false)
-    }
-
+export type EditorDialogProps = {
+    isOpen: boolean
+    onClose: () => void
+}
+export function EditorDialog(props: EditorDialogProps) {
     return (
         <>
-            <Button
-                onClick={open}
-                className="rounded-md bg-black/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
-            >
-                Open dialog
-            </Button>
-
-            <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={close} __demoMode>
+            <Dialog open={props.isOpen} as="div" className="relative z-10 focus:outline-none" onClose={props.onClose} __demoMode>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
                         <DialogPanel
@@ -41,7 +25,7 @@ export default function EditorDialog() {
                             <div className="mt-4">
                                 <Button
                                     className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                                    onClick={close}
+                                    onClick={props.onClose}
                                 >
                                     Got it, thanks!
                                 </Button>
