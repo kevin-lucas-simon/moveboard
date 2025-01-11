@@ -6,7 +6,7 @@ import {EditorElementsTab} from "./tabs/EditorElementsTab";
 import {ElementModel} from "../experience/world/model/ElementModel";
 import {TabButton} from "./tabs/TabButton";
 import {
-    AtSymbolIcon, MagnifyingGlassIcon,
+    AtSymbolIcon, Bars3Icon, MagnifyingGlassIcon,
     PlayIcon,
     PuzzlePieceIcon,
     Square2StackIcon
@@ -23,7 +23,7 @@ import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
 
-enum EditorTab {
+enum EditorTabs {
     GENERAL= "general",
     JOINTS = "joints",
     ELEMENTS = "elements",
@@ -31,8 +31,8 @@ enum EditorTab {
 }
 
 enum EditorDialogs {
-    EXPORT_LEVEL = "export_level",
-    CLEAR_CHANGES = "clear_changes",
+    LEVEL_EXPORT = "level_export",
+    LEVEL_CHANGES_CLEAR = "level_changes_clear",
 }
 
 export type LevelEditorProps = {
@@ -43,7 +43,7 @@ export function LevelEditor(props: LevelEditorProps) {
     const [chunkName, setChunkName] = useState<string>(level.start);
     const editChunk = level.chunks[chunkName];
 
-    const [tab, setTab] = useState<EditorTab>(EditorTab.GENERAL);
+    const [tab, setTab] = useState<EditorTabs>(EditorTabs.GENERAL);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
 
     // TODO useReducer muss hier rein!
@@ -109,12 +109,12 @@ export function LevelEditor(props: LevelEditorProps) {
                 </div>
 
                 {/* menu selector */}
-                <BasicDropdown>
+                <BasicDropdown button={<Bars3Icon className="h-6"/>}>
                     <div>
-                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.EXPORT_LEVEL)}>
+                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_EXPORT)}>
                             Export Level
                         </BasicDropdownItem>
-                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.CLEAR_CHANGES)}>
+                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_CHANGES_CLEAR)}>
                             Clear Changes
                         </BasicDropdownItem>
                     </div>
@@ -127,7 +127,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* export dialog */}
                 <BasicDialog
                     title="Export Level"
-                    isOpen={dialog === EditorDialogs.EXPORT_LEVEL}
+                    isOpen={dialog === EditorDialogs.LEVEL_EXPORT}
                     onClose={() => setDialog(null)}
                 >
                     <div>Export the JSON data of the current edited level.</div>
@@ -139,7 +139,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* clear dialog */}
                 <BasicDialog
                     title={"Clear Changes"}
-                    isOpen={dialog === EditorDialogs.CLEAR_CHANGES}
+                    isOpen={dialog === EditorDialogs.LEVEL_CHANGES_CLEAR}
                     onClose={() => setDialog(null)}
                     submitButton={"Clear Changes"}
                     onSubmit={() => {
@@ -155,17 +155,17 @@ export function LevelEditor(props: LevelEditorProps) {
             <div className="grow flex gap-4">
                 {/* tab buttons */}
                 <div className="w-8 shrink-0 flex flex-col gap-2">
-                    <TabButton active={tab === EditorTab.GENERAL} onClick={() => setTab(EditorTab.GENERAL)}>
+                    <TabButton active={tab === EditorTabs.GENERAL} onClick={() => setTab(EditorTabs.GENERAL)}>
                         <AtSymbolIcon/>
                     </TabButton>
-                    <TabButton active={tab === EditorTab.JOINTS} onClick={() => setTab(EditorTab.JOINTS)}>
+                    <TabButton active={tab === EditorTabs.JOINTS} onClick={() => setTab(EditorTabs.JOINTS)}>
                         <PuzzlePieceIcon/>
                     </TabButton>
-                    <TabButton active={tab === EditorTab.ELEMENTS} onClick={() => setTab(EditorTab.ELEMENTS)}>
+                    <TabButton active={tab === EditorTabs.ELEMENTS} onClick={() => setTab(EditorTabs.ELEMENTS)}>
                         <Square2StackIcon/>
                     </TabButton>
                     <div className="grow"></div>
-                    <TabButton active={tab === EditorTab.TEST} onClick={() => setTab(EditorTab.TEST)}>
+                    <TabButton active={tab === EditorTabs.TEST} onClick={() => setTab(EditorTabs.TEST)}>
                         <PlayIcon/>
                     </TabButton>
                 </div>
@@ -173,16 +173,16 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* tab content */}
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     {/* TODO an sich sollte ich generell schauen, ob ich Duplikate sinnvoll im Refactoring zusammenführen kann*/}
-                    {tab === EditorTab.GENERAL &&
+                    {tab === EditorTabs.GENERAL &&
                         <EditorGeneralTab chunk={editChunk} onChunkChange={handleGeneralChange}/>
                     }
-                    {tab === EditorTab.JOINTS &&
+                    {tab === EditorTabs.JOINTS &&
                         <EditorJointsTab joints={editChunk.joints} onJointsChange={handleJointsChange}/>
                     }
-                    {tab === EditorTab.ELEMENTS &&
+                    {tab === EditorTabs.ELEMENTS &&
                         <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>
                     }
-                    {tab === EditorTab.TEST &&
+                    {tab === EditorTabs.TEST &&
                         <EditorTestTab/>
                     }
                 </div>
