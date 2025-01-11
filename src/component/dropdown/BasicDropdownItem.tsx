@@ -1,12 +1,12 @@
 import React, {ReactNode} from "react";
 import {MenuItem} from "@headlessui/react";
 
-export type EditorDropdownItemProps = {
+export type BasicDropdownItemProps = {
     href?: string|undefined;
     onClick?: () => void;
     children: ReactNode;
 }
-export function EditorDropdownItem(props: EditorDropdownItemProps) {
+export function BasicDropdownItem(props: BasicDropdownItemProps) {
     return (
         <MenuItem>
             {props.href ? (

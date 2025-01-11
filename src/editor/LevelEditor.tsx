@@ -16,9 +16,9 @@ import {JointModel} from "../experience/world/model/JointModel";
 import {EditorGeneralTab} from "./tabs/EditorGeneralTab";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
 import {EditorTestTab} from "./tabs/EditorTestTab";
-import {EditorMenu} from "./header/EditorMenu";
-import {EditorDropdownItem} from "./header/EditorMenuButton";
-import {EditorDropdownDivider} from "./header/EditorDropdownDivider";
+import {BasicDropdown} from "../component/dropdown/BasicDropdown";
+import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
+import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
@@ -109,20 +109,20 @@ export function LevelEditor(props: LevelEditorProps) {
                 </div>
 
                 {/* menu selector */}
-                <EditorMenu>
+                <BasicDropdown>
                     <div>
-                        <EditorDropdownItem onClick={() => setDialog(EditorDialogs.EXPORT_LEVEL)}>
+                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.EXPORT_LEVEL)}>
                             Export Level
-                        </EditorDropdownItem>
-                        <EditorDropdownItem onClick={() => setDialog(EditorDialogs.CLEAR_CHANGES)}>
+                        </BasicDropdownItem>
+                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.CLEAR_CHANGES)}>
                             Clear Changes
-                        </EditorDropdownItem>
+                        </BasicDropdownItem>
                     </div>
-                    <EditorDropdownDivider/>
+                    <BasicDropdownDivider/>
                     <div>
-                        <EditorDropdownItem href={"/"}>Leave Editor</EditorDropdownItem>
+                        <BasicDropdownItem href={"/"}>Leave Editor</BasicDropdownItem>
                     </div>
-                </EditorMenu>
+                </BasicDropdown>
 
                 {/* export dialog */}
                 <BasicDialog

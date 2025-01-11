@@ -2,11 +2,11 @@ import {Bars3Icon} from "@heroicons/react/24/outline";
 import React from "react";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 
-type EditorNavigationMenuProps = {
+type BasicDropdownProps = {
     children: React.ReactNode;
 }
 
-export function EditorMenu(props: EditorNavigationMenuProps) {
+export function BasicDropdown(props: BasicDropdownProps) {
     return (
         <Menu as={"div"} className="relative">
             <MenuButton className="h-8 flex items-center gap-1 rounded hover:bg-gray-500/10 p-2">
