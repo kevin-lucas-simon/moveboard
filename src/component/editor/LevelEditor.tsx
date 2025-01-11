@@ -21,6 +21,7 @@ import {EditorDropdownItem} from "./header/EditorMenuButton";
 import {EditorDropdownDivider} from "./header/EditorDropdownDivider";
 import {EditorDialog} from "./dialog/EditorDialog";
 import {LevelModel} from "../../experience/world/model/LevelModel";
+import {Button, Textarea} from "@headlessui/react";
 
 enum EditorTab {
     GENERAL= "general",
@@ -41,11 +42,6 @@ export function LevelEditor(props: LevelEditorProps) {
     const [level, setLevel] = useState<LevelModel>(props.downloadedLevel);
     const [chunkName, setChunkName] = useState<string>(level.start);
     const editChunk = level.chunks[chunkName];
-
-
-
-    // TODO ich bin hier ein wenig unzufrieden, wie auf den Chunk über das Level Objekt zugegriffen wird, bitte auslagern!
-    // TODO der Aufruf sollte über die URL erfolgen, nach dem Motto `editor/TestLevel/FirstChunk` oder so
 
     const [tab, setTab] = useState<EditorTab>(EditorTab.GENERAL);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
@@ -118,7 +114,9 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditorDropdownItem onClick={() => setDialog(EditorDialogs.EXPORT_LEVEL)}>
                             Export Level
                         </EditorDropdownItem>
-                        <EditorDropdownItem>Clear Changes</EditorDropdownItem> {/* TODO Clear level or chunk changes as Modal */}
+                        <EditorDropdownItem onClick={() => setDialog(EditorDialogs.CLEAR_CHANGES)}>
+                            Clear Changes
+                        </EditorDropdownItem>
                     </div>
                     <EditorDropdownDivider/>
                     <div>
@@ -126,11 +124,34 @@ export function LevelEditor(props: LevelEditorProps) {
                     </div>
                 </EditorMenu>
 
-                {/* menu dialogs */}
+                {/* export dialog */}
                 <EditorDialog
+                    title="Export Level"
                     isOpen={dialog === EditorDialogs.EXPORT_LEVEL}
                     onClose={() => setDialog(null)}
-                />
+                >
+                    <div>Export the JSON data of the current edited level.</div>
+                    <Textarea className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs" readOnly>
+                        {JSON.stringify(level)}
+                    </Textarea>
+                </EditorDialog>
+
+                {/* clear dialog */}
+                <EditorDialog
+                    title={"Clear Changes"}
+                    isOpen={dialog === EditorDialogs.CLEAR_CHANGES}
+                    onClose={() => setDialog(null)}>
+                    <div>Do you really want to clear all changes?</div>
+                    <Button
+                        className="p-1.5 bg-red-500 hover:bg-red-600 text-white rounded"
+                        onClick={() => {
+                            setDialog(null);
+                            setLevel(props.downloadedLevel);
+                        }}
+                    >
+                        Clear Changes
+                    </Button>
+                </EditorDialog>
             </div>
 
             {/* body */}
