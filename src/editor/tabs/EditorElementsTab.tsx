@@ -1,7 +1,7 @@
-import {ElementModel} from "../../../experience/world/model/ElementModel";
+import {ElementModel} from "../../experience/world/model/ElementModel";
 import React from "react";
-import {allElements} from "../../../experience/config/allElements";
-import {BasicBlockDefault} from "../../../experience/element/block/BasicBlock";
+import {allElements} from "../../experience/config/allElements";
+import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
 import {ListObjectEditor} from "../ListObjectEditor";
 
 export type ChunkElementsEditorProps = {

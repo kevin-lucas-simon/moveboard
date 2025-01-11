@@ -1,4 +1,4 @@
-import {JointModel} from "../../../experience/world/model/JointModel";
+import {JointModel} from "../../experience/world/model/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../ListObjectEditor";
 

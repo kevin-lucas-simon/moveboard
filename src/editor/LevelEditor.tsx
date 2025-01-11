@@ -1,9 +1,9 @@
-import {Level} from "../../experience/world/Level";
-import {Environment} from "../../experience/Environment";
+import {Level} from "../experience/world/Level";
+import {Environment} from "../experience/Environment";
 import {useState} from "react";
 import React from "react";
 import {EditorElementsTab} from "./tabs/EditorElementsTab";
-import {ElementModel} from "../../experience/world/model/ElementModel";
+import {ElementModel} from "../experience/world/model/ElementModel";
 import {TabButton} from "./tabs/TabButton";
 import {
     AtSymbolIcon, MagnifyingGlassIcon,
@@ -12,16 +12,16 @@ import {
     Square2StackIcon
 } from "@heroicons/react/24/outline";
 import {EditorJointsTab} from "./tabs/EditorJointsTab";
-import {JointModel} from "../../experience/world/model/JointModel";
+import {JointModel} from "../experience/world/model/JointModel";
 import {EditorGeneralTab} from "./tabs/EditorGeneralTab";
-import {ChunkModel} from "../../experience/world/model/ChunkModel";
+import {ChunkModel} from "../experience/world/model/ChunkModel";
 import {EditorTestTab} from "./tabs/EditorTestTab";
 import {EditorMenu} from "./header/EditorMenu";
 import {EditorDropdownItem} from "./header/EditorMenuButton";
 import {EditorDropdownDivider} from "./header/EditorDropdownDivider";
-import {EditorDialog} from "./dialog/EditorDialog";
-import {LevelModel} from "../../experience/world/model/LevelModel";
-import {Button, Textarea} from "@headlessui/react";
+import {BasicDialog} from "../component/dialog/BasicDialog";
+import {LevelModel} from "../experience/world/model/LevelModel";
+import {Textarea} from "@headlessui/react";
 
 enum EditorTab {
     GENERAL= "general",
@@ -125,7 +125,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 </EditorMenu>
 
                 {/* export dialog */}
-                <EditorDialog
+                <BasicDialog
                     title="Export Level"
                     isOpen={dialog === EditorDialogs.EXPORT_LEVEL}
                     onClose={() => setDialog(null)}
@@ -134,24 +134,21 @@ export function LevelEditor(props: LevelEditorProps) {
                     <Textarea className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs" readOnly>
                         {JSON.stringify(level)}
                     </Textarea>
-                </EditorDialog>
+                </BasicDialog>
 
                 {/* clear dialog */}
-                <EditorDialog
+                <BasicDialog
                     title={"Clear Changes"}
                     isOpen={dialog === EditorDialogs.CLEAR_CHANGES}
-                    onClose={() => setDialog(null)}>
-                    <div>Do you really want to clear all changes?</div>
-                    <Button
-                        className="p-1.5 bg-red-500 hover:bg-red-600 text-white rounded"
-                        onClick={() => {
-                            setDialog(null);
-                            setLevel(props.downloadedLevel);
-                        }}
-                    >
-                        Clear Changes
-                    </Button>
-                </EditorDialog>
+                    onClose={() => setDialog(null)}
+                    submitButton={"Clear Changes"}
+                    onSubmit={() => {
+                        setDialog(null);
+                        setLevel(props.downloadedLevel);
+                    }}
+                >
+                    Do you really want to clear all changes? All unsaved changes will be lost.
+                </BasicDialog>
             </div>
 
             {/* body */}

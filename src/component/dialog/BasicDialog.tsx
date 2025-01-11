@@ -1,16 +1,20 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import {Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle} from '@headlessui/react'
 import React from 'react'
 
 export type EditorDialogProps = {
     title: string,
+    closeButton?: string,
+    submitButton?: string,
     isOpen: boolean,
     onClose: () => void,
+    onSubmit?: () => void,
     children: React.ReactNode,
 }
-export function EditorDialog(props: EditorDialogProps) {
+export function BasicDialog(props: EditorDialogProps) {
     return (
         <>
             <Dialog open={props.isOpen} as="div" className="relative z-10 focus:outline-none" onClose={props.onClose}>
+                <DialogBackdrop className="fixed inset-0 bg-black/50" />
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-6">
                         <DialogPanel
@@ -23,13 +27,22 @@ export function EditorDialog(props: EditorDialogProps) {
                             <div className="text-sm space-y-2">
                                 {props.children}
                             </div>
-                            <div className="mt-4">
+                            <div className="mt-4 space-x-2">
                                 <Button
                                     onClick={props.onClose}
                                     className="inline-flex items-center gap-2 rounded-md py-1.5 px-3 text-sm text-white bg-gray-700 hover:bg-gray-600 open:bg-gray-700"
                                 >
-                                    Close
+                                    {props.closeButton ?? "Close"}
                                 </Button>
+                                {/* TODO: Convert Close Button to general SecondaryButton (here conditional Primary when no submit button) */}
+                                {props.submitButton &&
+                                    <Button
+                                        onClick={props.onSubmit}
+                                        className="inline-flex items-center gap-2 rounded-md py-1.5 px-3 text-sm text-white bg-gray-700 hover:bg-gray-600 open:bg-gray-700"
+                                    >
+                                        {props.submitButton}
+                                    </Button> // TODO: Convert Submit Button to general PrimaryButton
+                                }
                             </div>
                         </DialogPanel>
                     </div>

@@ -1,5 +1,5 @@
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
-import {LevelEditor} from "../component/editor/LevelEditor";
+import {LevelEditor} from "../editor/LevelEditor";
 
 export function EditorPage() {
     // TODO der Aufruf sollte über die URL erfolgen, nach dem Motto `editor/TestLevel/FirstChunk` oder so
