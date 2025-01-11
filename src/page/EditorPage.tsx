@@ -3,30 +3,36 @@ import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
 import {useEffect, useState} from "react";
 import React from "react";
-import {ChunkElementsEditor} from "../component/editor/ChunkElementsEditor";
+import {EditorElementsTab} from "../component/editor/tabs/EditorElementsTab";
 import {ElementModel} from "../experience/world/model/ElementModel";
 import {LevelModel} from "../experience/world/model/LevelModel";
-import {TabButton} from "../component/editor/TabButton";
+import {TabButton} from "../component/editor/tabs/TabButton";
 import {
     AtSymbolIcon, Bars2Icon, MagnifyingGlassIcon,
     PlayIcon,
     PuzzlePieceIcon,
     Square2StackIcon
 } from "@heroicons/react/24/outline";
-import {ChunkJointsEditor} from "../component/editor/ChunkJointsEditor";
+import {EditorJointsTab} from "../component/editor/tabs/EditorJointsTab";
 import {JointModel} from "../experience/world/model/JointModel";
-import {ChunkGeneralEditor} from "../component/editor/ChunkGeneralEditor";
+import {EditorGeneralTab} from "../component/editor/tabs/EditorGeneralTab";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
-import {ChunkTestEditor} from "../component/editor/ChunkTestEditor";
+import {EditorTestTab} from "../component/editor/tabs/EditorTestTab";
 import {EditorMenu} from "../component/editor/header/EditorMenu";
 import {EditorDropdownItem} from "../component/editor/header/EditorMenuButton";
 import {EditorDropdownDivider} from "../component/editor/header/EditorDropdownDivider";
+import EditorDialog from "../component/editor/dialog/EditorDialog";
 
 enum EditorTab {
     GENERAL= "general",
     JOINTS = "joints",
     ELEMENTS = "elements",
     TEST = "test",
+}
+
+enum EditorDialogs {
+    EXPORT_LEVEL = "export_level",
+    CLEAR_CHANGES = "clear_changes",
 }
 
 export function EditorPage() {
@@ -41,6 +47,7 @@ export function EditorPage() {
     // TODO der Aufruf sollte über die URL erfolgen, nach dem Motto `editor/TestLevel/FirstChunk` oder so
 
     const [tab, setTab] = useState<EditorTab>(EditorTab.GENERAL);
+    const [dialog, setDialog] = useState<EditorDialogs|undefined>(undefined);
 
     useEffect(() => {
         setLevel(downloadedLevel);
@@ -112,6 +119,7 @@ export function EditorPage() {
                     </label>
                 </div>
 
+                <EditorDialog/> {/* TODO implement dialog for "export level" */}
                 {/* menu selector */}
                 <EditorMenu>
                     <div>
@@ -148,16 +156,16 @@ export function EditorPage() {
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     {/* TODO an sich sollte ich generell schauen, ob ich Duplikate sinnvoll im Refactoring zusammenführen kann*/}
                     {tab === EditorTab.GENERAL &&
-                        <ChunkGeneralEditor chunk={editChunk} onChunkChange={handleGeneralChange}/>
+                        <EditorGeneralTab chunk={editChunk} onChunkChange={handleGeneralChange}/>
                     }
                     {tab === EditorTab.JOINTS &&
-                        <ChunkJointsEditor joints={editChunk.joints} onJointsChange={handleJointsChange}/>
+                        <EditorJointsTab joints={editChunk.joints} onJointsChange={handleJointsChange}/>
                     }
                     {tab === EditorTab.ELEMENTS &&
-                        <ChunkElementsEditor elements={editChunk.elements} onElementsChange={handleElementsChange}/>
+                        <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>
                     }
                     {tab === EditorTab.TEST &&
-                        <ChunkTestEditor/>
+                        <EditorTestTab/>
                     }
                 </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function ChunkTestEditor() {
+export function EditorTestTab() {
     // TODO isDebug nur auf diesen Screen ummünzen, im Basisspiel soll die Logik nicht mehr vorhanden sein
     // TODO zudem soll in diesem Modus die Physik ausgeführt werden, die sonst im Editor deaktiviert ist
     // TODO des weiteren sollen entities zurückgesetzt werden wenn dieser Screen verlassen wird

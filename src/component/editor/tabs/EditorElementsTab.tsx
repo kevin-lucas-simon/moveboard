@@ -1,15 +1,15 @@
-import {ElementModel} from "../../experience/world/model/ElementModel";
+import {ElementModel} from "../../../experience/world/model/ElementModel";
 import React from "react";
-import {allElements} from "../../experience/config/allElements";
-import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
-import {ListObjectEditor} from "./ListObjectEditor";
+import {allElements} from "../../../experience/config/allElements";
+import {BasicBlockDefault} from "../../../experience/element/block/BasicBlock";
+import {ListObjectEditor} from "../ListObjectEditor";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
     onElementsChange: (elements: ElementModel[]) => void;
 }
 
-export function ChunkElementsEditor(props: ChunkElementsEditorProps) {
+export function EditorElementsTab(props: ChunkElementsEditorProps) {
     const handleAddedElement = () => {
         const newElement = React.createElement(allElements["BasicBlock"], BasicBlockDefault);
 

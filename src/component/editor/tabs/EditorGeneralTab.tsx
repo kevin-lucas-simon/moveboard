@@ -1,13 +1,13 @@
-import {ChunkModel} from "../../experience/world/model/ChunkModel";
+import {ChunkModel} from "../../../experience/world/model/ChunkModel";
 import React from "react";
-import {SingleObjectEditor} from "./SingleObjectEditor";
+import {SingleObjectEditor} from "../SingleObjectEditor";
 
 export type ChunkGeneralEditorProps = {
     chunk: ChunkModel;
     onChunkChange: (chunk: ChunkModel) => void;
 }
 
-export function ChunkGeneralEditor(props: ChunkGeneralEditorProps) {
+export function EditorGeneralTab(props: ChunkGeneralEditorProps) {
     const handleChangedChunk = (key: string, value: any) => {
         props.onChunkChange({
             ...props.chunk,

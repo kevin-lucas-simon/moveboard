@@ -1,13 +1,13 @@
-import {JointModel} from "../../experience/world/model/JointModel";
+import {JointModel} from "../../../experience/world/model/JointModel";
 import React from "react";
-import {ListObjectEditor} from "./ListObjectEditor";
+import {ListObjectEditor} from "../ListObjectEditor";
 
 export type ChunkJointsEditorProps = {
     joints: JointModel[];
     onJointsChange: (joints: JointModel[]) => void;
 }
 
-export function ChunkJointsEditor(props: ChunkJointsEditorProps) {
+export function EditorJointsTab(props: ChunkJointsEditorProps) {
     const handleChangedJoint = (index: string, value: JointModel) => { // TODO index ist unschön
         props.onJointsChange(
             props.joints.map((el, i) => i !== parseInt(index) ? el : value)
