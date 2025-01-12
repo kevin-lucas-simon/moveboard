@@ -27,13 +27,13 @@ export function SingleObjectEditor(props: SingleObjectEditorProps) {
             </label>
 
             {props.value instanceof Object &&
-                <div className="pb-3 group-hover:bg-gray-500/10">
+                <ul className="pb-3 group-hover:bg-gray-500/10">
                     <JsonNestedEditor
                         keyName={props.keyName}
                         value={props.value}
                         onKeyValueChange={props.onChange}
                     />
-                </div>
+                </ul>
             }
         </div>
     );

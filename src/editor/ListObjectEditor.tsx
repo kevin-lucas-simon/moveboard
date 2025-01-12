@@ -33,13 +33,13 @@ export function ListObjectEditor(props: ListObjectEditorProps) {
             </div>
 
             {isOpen &&
-                <div className="pb-3 border-b border-gray-500/5">
+                <ul className="pb-3 border-b border-gray-500/5">
                     <JsonNestedEditor
                         keyName={props.keyName}
                         value={props.value}
                         onKeyValueChange={props.onChange}
                     />
-                </div>
+                </ul>
             }
         </div>
     );
