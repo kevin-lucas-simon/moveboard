@@ -10,7 +10,7 @@ export type BaseTabProps = {
 export function BaseTab(props: BaseTabProps) {
     return (
         <div className="w-full h-full flex flex-col">
-            <h2 className="text-xl pt-4 px-4">Test Play</h2>
+            <h2 className="text-xl pt-4 px-4">{props.title}</h2>
             <div className="grow h-0 overflow-y-auto">
                 {props.description &&
                     <p className="text-sm px-4 py-2">
