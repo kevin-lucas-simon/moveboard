@@ -15,7 +15,7 @@ export const BarrierBlockDefault: BarrierBlockModel = {
  * @constructor
  */
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
-    const isVisible = useDebugSettings().visibleBarrier;
+    const isVisible = useDebugSettings().displayEditorFeatures;
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>

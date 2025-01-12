@@ -27,17 +27,17 @@ export function Environment(props: EnvironmentProps) {
 
             <Physics
                 gravity={[gravityVector.x, gravityVector.y, gravityVector.z]}
-                paused={debug.disablePhysics}
+                paused={debug.pauseSimulation}
             >
                 {props.children}
             </Physics>
 
-            {debug.displayGizmo &&
+            {debug.displayEditorFeatures &&
                 <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
                 </GizmoHelper>
             }
-            {debug.displayStats &&
+            {debug.displayPerformanceStats &&
                 <Stats />
             }
         </Canvas>

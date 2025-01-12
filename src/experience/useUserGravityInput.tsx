@@ -16,13 +16,13 @@ export function useUserGravityInput(): [
 ] {
     const keyboardVector = useKeyboardControls();
     const [deviceMotionVector, requestDeviceMotionPermission] = useDeviceMotionControls();
-    const isUserInputDisabled = useDebugSettings().disableUserInput;
+    const isDisabled = useDebugSettings().pauseSimulation;
 
     // add gravity as default input
     const combinedVector = new Vector3(0, -GRAVITATION, 0);
 
     // disable user input if requested
-    if (isUserInputDisabled) {
+    if (isDisabled) {
         return [combinedVector, requestDeviceMotionPermission];
     }
 

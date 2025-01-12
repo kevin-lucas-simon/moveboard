@@ -9,6 +9,8 @@ export function GamePage() {
     const downloadedLevel
         = useLevelDownloader("TestLevel");
 
+    // TODO user modal to request permission
+
     return (
         <Environment>
             {downloadedLevel && <Level {...downloadedLevel} />}

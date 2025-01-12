@@ -1,22 +1,16 @@
 import {createContext, useContext} from "react";
 
 export type DebugSettings = {
-    disablePhysics: boolean,
-    disableUserInput: boolean,
-    displayStats: boolean,
-    displayGizmo: boolean,
+    displayEditorFeatures: boolean,
+    displayPerformanceStats: boolean,
     moveableCamera: boolean,
-    visibleJoint: boolean,
-    visibleBarrier: boolean,
+    pauseSimulation: boolean,
 }
 export const DebugSettingsDefault: DebugSettings = {
-    disablePhysics: false,
-    disableUserInput: false,
-    displayStats: false,
-    displayGizmo: false,
+    displayEditorFeatures: false,
+    displayPerformanceStats: false,
     moveableCamera: false,
-    visibleJoint: false,
-    visibleBarrier: false,
+    pauseSimulation: false,
 }
 
 const DebugSettingsContext = createContext<DebugSettings>(DebugSettingsDefault);

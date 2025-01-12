@@ -12,7 +12,7 @@ export type JointProps = JointModel & {
 }
 
 export function Joint(props: JointProps) {
-    const isVisible = useDebugSettings().visibleJoint;
+    const isVisible = useDebugSettings().displayEditorFeatures;
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {
         // if we are the neighbour chunk joint we do nothing

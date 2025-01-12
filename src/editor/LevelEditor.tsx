@@ -42,13 +42,14 @@ export type LevelEditorProps = {
 }
 export function LevelEditor(props: LevelEditorProps) {
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
+    const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
+
     const [level, setLevel] = useState<LevelModel>(props.downloadedLevel);
     const [chunkName, setChunkName] = useState<string>(level.start);
     const editChunk = level.chunks[chunkName];
 
     const [tab, setTab] = useState<EditorTabs>(EditorTabs.GENERAL);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
-    const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
     // TODO useReducer muss hier rein!
     const handleGeneralChange = (chunk: ChunkModel) => {
@@ -202,14 +203,15 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* 3d canvas */}
                 <DebugSettingsProvider debugSettings={{
                     ...debugSettings,
+                    displayEditorFeatures: tab === EditorTabs.TEST ? debugSettings.displayEditorFeatures : true,
                     moveableCamera: tab === EditorTabs.TEST ? debugSettings.moveableCamera : true,
-                    disablePhysics: tab === EditorTabs.TEST ? debugSettings.disablePhysics : true,
+                    pauseSimulation: tab === EditorTabs.TEST ? debugSettings.pauseSimulation : true,
                 }}>
                     {/* TODO user controls should be toggle able too! */}
                     {/* TODO editor mode automatic for joint etc */}
                     <Environment
                         className="rounded-xl bg-gray-500/10"
-                        key={tab === EditorTabs.TEST ? simulatorInstance : chunkName}
+                        key={tab === EditorTabs.TEST ? chunkName + simulatorInstance : chunkName}
                     >
                         {level &&
                             <Level {...level} start={chunkName}/>
