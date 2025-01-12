@@ -26,11 +26,13 @@ export function Environment(props: EnvironmentProps) {
             <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
-            <Physics gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]}>
+            <Physics
+                gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]}
+                paused={debug.disablePhysics}
+            >
                 {props.children}
             </Physics>
 
-            {/* debug tools */}
             {debug.displayGizmo &&
                 <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />

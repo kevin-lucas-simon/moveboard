@@ -38,7 +38,7 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
                 className={clsx(
                     "group relative flex h-5 w-9 cursor-pointer rounded-full bg-gray-500/25 p-1 place-self-center",
                     "transition-colors duration-200 ease-in-out focus:outline-none",
-                    "data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-gray-500/10",
+                    "data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-gray-500/15",
                 )}
             >
                 <span

@@ -200,8 +200,11 @@ export function LevelEditor(props: LevelEditorProps) {
                 </div>
 
                 {/* 3d canvas */}
-                {/* TODO der normale Editor sollte keinen UserInput als auch keine Physik erlauben (nur Testmodus)*/}
-                <DebugSettingsProvider debugSettings={debugSettings}>
+                <DebugSettingsProvider debugSettings={{
+                    ...debugSettings,
+                    moveableCamera: tab === EditorTabs.TEST ? debugSettings.moveableCamera : true,
+                    disablePhysics: tab === EditorTabs.TEST ? debugSettings.disablePhysics : true,
+                }}>
                     <Environment className="rounded-xl bg-gray-500/10">
                         {level &&
                             <Level {...level} start={chunkName} key={simulatorInstance}/>
