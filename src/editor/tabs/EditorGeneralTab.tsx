@@ -23,14 +23,14 @@ export function EditorGeneralTab(props: ChunkGeneralEditorProps) {
                     Edit the general information of the chunk.
                 </p>
                 <ul>
-                    {Object.entries(props.chunk).map(([key, value]) => {
-                        if (value instanceof Array) {
-                            return <></>;
-                        }
-                        return (
-                            <SingleObjectEditor keyName={key} value={value} onChange={handleChangedChunk}/>
-                        )
-                    })}
+                    {Object.entries(props.chunk)
+                        .filter(([_, value]) => !(value instanceof Array))
+                        .map(([key, value]) => {
+                            return (
+                                <SingleObjectEditor key={key} keyName={key} value={value} onChange={handleChangedChunk}/>
+                            )
+                        })
+                    }
                 </ul>
             </div>
         </div>

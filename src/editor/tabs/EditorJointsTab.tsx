@@ -29,7 +29,7 @@ export function EditorJointsTab(props: ChunkJointsEditorProps) {
                 </p>
                 <ul>
                     {props.joints.map((joint, index) =>
-                        <li className="flex flex-col divide-gray-500/20">
+                        <li key={index} className="flex flex-col divide-gray-500/20">
                             <ListObjectEditor
                                 key={index}
                                 keyName={index.toString()}

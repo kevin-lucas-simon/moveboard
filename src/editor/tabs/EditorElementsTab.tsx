@@ -40,7 +40,7 @@ export function EditorElementsTab(props: ChunkElementsEditorProps) {
                 </p>
                 <ul>
                     {props.elements.map((element, index) =>
-                        <li className="flex flex-col divide-gray-500/20">
+                        <li key={index} className="flex flex-col divide-gray-500/20">
                             <ListObjectEditor
                                 key={index}
                                 keyName={index.toString()}

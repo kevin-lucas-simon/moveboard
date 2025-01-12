@@ -50,7 +50,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
 
                     <ul className="grow">
                         {Object.entries(props.value).map(([key, value]) => (
-                            <JsonNestedEditor keyName={key} displayname={key} value={value} onKeyValueChange={handleObjectChange}/>
+                            <JsonNestedEditor key={key} keyName={key} displayname={key} value={value} onKeyValueChange={handleObjectChange}/>
                         ))}
                     </ul>
                 </li>
