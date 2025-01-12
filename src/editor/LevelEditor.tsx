@@ -11,9 +11,9 @@ import {
     PuzzlePieceIcon,
     Square2StackIcon
 } from "@heroicons/react/24/outline";
-import {EditorJointsTab} from "./tabs/EditorJointsTab";
+import {EditJointsTab} from "./tabs/EditJointsTab";
 import {JointModel} from "../experience/world/model/JointModel";
-import {EditorGeneralTab} from "./tabs/EditorGeneralTab";
+import {EditGeneralTab} from "./tabs/EditGeneralTab";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
 import {EditTestTab} from "./tabs/EditTestTab";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
@@ -186,10 +186,10 @@ export function LevelEditor(props: LevelEditorProps) {
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     {/* TODO an sich sollte ich generell schauen, ob ich Duplikate sinnvoll im Refactoring zusammenführen kann*/}
                     {tab === EditorTabs.GENERAL &&
-                        <EditorGeneralTab chunk={editChunk} onChunkChange={handleGeneralChange}/>
+                        <EditGeneralTab chunk={editChunk} onChunkChange={handleGeneralChange}/>
                     }
                     {tab === EditorTabs.JOINTS &&
-                        <EditorJointsTab joints={editChunk.joints} onJointsChange={handleJointsChange}/>
+                        <EditJointsTab joints={editChunk.joints} onJointsChange={handleJointsChange}/>
                     }
                     {tab === EditorTabs.ELEMENTS &&
                         <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>

@@ -3,6 +3,8 @@ import React from "react";
 import {allElements} from "../../experience/config/allElements";
 import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
 import {ListObjectEditor} from "../ListObjectEditor";
+import {BaseTab} from "./BaseTab";
+import {PlusIcon} from "@heroicons/react/24/outline";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
@@ -32,35 +34,27 @@ export function EditorElementsTab(props: ChunkElementsEditorProps) {
     }
 
     return (
-        <div className="w-full h-full flex flex-col">
-            <h2 className="text-xl pt-4 px-4">Elements</h2>
-            <div className="grow h-0 overflow-y-auto">
-                <p className="text-sm px-4 py-2">
-                    Fill the chunk area with static elements.
-                </p>
-                <ul>
-                    {props.elements.map((element, index) =>
-                        <li key={index} className="flex flex-col divide-gray-500/20">
-                            <ListObjectEditor
-                                key={index}
-                                keyName={index.toString()}
-                                displayname={element.type}
-                                value={element}
-                                onChange={handleChangedElement}
-                                onDelete={handleRemovedElement}
-                            />
-                        </li>
-                    )}
-                </ul>
-            </div>
-            <button
-                className="flex w-full hover:bg-gray-500/10 px-4 py-2 gap-1 border-t border-gray-500/10"
-                onClick={handleAddedElement}
-            >
-                <span className="w-4 text-left">&#43;</span>
-                <span>Add Element</span>
-            </button>
-        </div>
+        <BaseTab
+            title={"Elements"}
+            description={"Fill the chunk area with static elements."}
+            button={<><PlusIcon className="h-4"/>Add Element</>}
+            onButtonClick={handleAddedElement}
+        >
+            <ul>
+                {props.elements.map((element, index) =>
+                    <li key={index} className="flex flex-col divide-gray-500/20">
+                        <ListObjectEditor
+                            key={index}
+                            keyName={index.toString()}
+                            displayname={element.type}
+                            value={element}
+                            onChange={handleChangedElement}
+                            onDelete={handleRemovedElement}
+                        />
+                    </li>
+                )}
+            </ul>
+        </BaseTab>
     );
 
 }
