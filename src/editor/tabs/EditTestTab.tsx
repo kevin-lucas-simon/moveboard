@@ -10,9 +10,6 @@ export type EditTestTabProps = {
     onRestart: () => void;
 }
 export function EditTestTab(props: EditTestTabProps) {
-    // TODO zudem soll in diesem Modus die Physik ausgeführt werden, die sonst im Editor deaktiviert ist
-    // TODO des weiteren sollen entities zurückgesetzt werden wenn dieser Screen verlassen wird
-
     return (
         <BaseTab
             title={"Test Play"}
