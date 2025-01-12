@@ -2,6 +2,7 @@ import {createContext, useContext} from "react";
 
 export type DebugSettings = {
     disablePhysics: boolean,
+    disableUserInput: boolean,
     displayStats: boolean,
     displayGizmo: boolean,
     moveableCamera: boolean,
@@ -10,6 +11,7 @@ export type DebugSettings = {
 }
 export const DebugSettingsDefault: DebugSettings = {
     disablePhysics: false,
+    disableUserInput: false,
     displayStats: false,
     displayGizmo: false,
     moveableCamera: false,

@@ -205,6 +205,8 @@ export function LevelEditor(props: LevelEditorProps) {
                     moveableCamera: tab === EditorTabs.TEST ? debugSettings.moveableCamera : true,
                     disablePhysics: tab === EditorTabs.TEST ? debugSettings.disablePhysics : true,
                 }}>
+                    {/* TODO user controls should be toggle able too! */}
+                    {/* TODO editor mode automatic for joint etc */}
                     <Environment className="rounded-xl bg-gray-500/10">
                         {level &&
                             <Level {...level} start={chunkName} key={simulatorInstance}/>

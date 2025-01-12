@@ -1,9 +1,8 @@
-import {useContext} from "react";
-import {DeviceMotionContext} from "./UserControls";
 import {Physics} from "@react-three/rapier";
 import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
 import {useDebugSettings} from "./DebugSettingsProvider";
+import {useUserGravityInput} from "./useUserGravityInput";
 
 export type EnvironmentProps = {
     children?: React.ReactNode | undefined,
@@ -16,7 +15,7 @@ export type EnvironmentProps = {
  * @constructor
  */
 export function Environment(props: EnvironmentProps) {
-    const deviceMotion = useContext(DeviceMotionContext)
+    const [gravityVector, requestMotionVector] = useUserGravityInput();
     const debug = useDebugSettings()
 
     return (
@@ -27,7 +26,7 @@ export function Environment(props: EnvironmentProps) {
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
             <Physics
-                gravity={[deviceMotion.x, deviceMotion.y, deviceMotion.z]}
+                gravity={[gravityVector.x, gravityVector.y, gravityVector.z]}
                 paused={debug.disablePhysics}
             >
                 {props.children}
