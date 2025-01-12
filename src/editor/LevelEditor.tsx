@@ -132,9 +132,11 @@ export function LevelEditor(props: LevelEditorProps) {
                     onClose={() => setDialog(null)}
                 >
                     <div>Export the JSON data of the current edited level.</div>
-                    <Textarea className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs" readOnly>
-                        {JSON.stringify(level)}
-                    </Textarea>
+                    <Textarea
+                        className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs"
+                        value={JSON.stringify(level)}
+                        readOnly
+                    />
                 </BasicDialog>
 
                 {/* clear dialog */}
