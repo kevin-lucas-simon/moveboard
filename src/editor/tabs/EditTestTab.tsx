@@ -1,15 +1,16 @@
 import React from "react";
 import {DebugSettings} from "../../experience/DebugSettingsProvider";
 import {SingleObjectEditor} from "../SingleObjectEditor";
+import {ArrowPathIcon} from "@heroicons/react/24/outline";
 
 export type EditTestTabProps = {
     settings: DebugSettings;
     onSettingChange: (key: string, value: any) => void;
+    onRestart: () => void;
 }
 export function EditTestTab(props: EditTestTabProps) {
     // TODO zudem soll in diesem Modus die Physik ausgeführt werden, die sonst im Editor deaktiviert ist
     // TODO des weiteren sollen entities zurückgesetzt werden wenn dieser Screen verlassen wird
-    // TODO eine Neustart Option soll es auch geben
 
     return (
         <div className="w-full h-full flex flex-col">
@@ -26,6 +27,13 @@ export function EditTestTab(props: EditTestTabProps) {
                     })}
                 </ul>
             </div>
+            <button
+                className="flex w-full hover:bg-gray-500/10 px-4 py-2 gap-2 border-t border-gray-500/10 items-center"
+                onClick={props.onRestart}
+            >
+                <ArrowPathIcon className="h-4"/>
+                Restart
+            </button>
         </div>
     );
 }

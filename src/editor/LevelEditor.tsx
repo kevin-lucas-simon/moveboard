@@ -48,6 +48,7 @@ export function LevelEditor(props: LevelEditorProps) {
 
     const [tab, setTab] = useState<EditorTabs>(EditorTabs.GENERAL);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
+    const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
     // TODO useReducer muss hier rein!
     const handleGeneralChange = (chunk: ChunkModel) => {
@@ -194,7 +195,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>
                     }
                     {tab === EditorTabs.TEST &&
-                        <EditTestTab settings={debugSettings} onSettingChange={handleSettingsChange} />
+                        <EditTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
                     }
                 </div>
 
@@ -203,7 +204,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 <DebugSettingsProvider debugSettings={debugSettings}>
                     <Environment className="rounded-xl bg-gray-500/10">
                         {level &&
-                            <Level {...level} start={chunkName}/>
+                            <Level {...level} start={chunkName} key={simulatorInstance}/>
                         }
                     </Environment>
                 </DebugSettingsProvider>
