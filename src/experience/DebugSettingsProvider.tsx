@@ -7,7 +7,7 @@ export type DebugSettings = {
     visibleJoint: boolean,
     visibleBarrier: boolean,
 }
-export const DefaultDebugSettings: DebugSettings = {
+export const DebugSettingsDefault: DebugSettings = {
     displayStats: false,
     displayGizmo: false,
     moveableCamera: false,
@@ -15,7 +15,7 @@ export const DefaultDebugSettings: DebugSettings = {
     visibleBarrier: false,
 }
 
-const DebugSettingsContext = createContext<DebugSettings>(DefaultDebugSettings);
+const DebugSettingsContext = createContext<DebugSettings>(DebugSettingsDefault);
 
 export type DebugSettingsProviderProps = {
     debugSettings: DebugSettings,

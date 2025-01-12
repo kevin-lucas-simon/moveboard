@@ -15,7 +15,7 @@ import {EditorJointsTab} from "./tabs/EditorJointsTab";
 import {JointModel} from "../experience/world/model/JointModel";
 import {EditorGeneralTab} from "./tabs/EditorGeneralTab";
 import {ChunkModel} from "../experience/world/model/ChunkModel";
-import {EditorTestTab} from "./tabs/EditorTestTab";
+import {EditTestTab} from "./tabs/EditTestTab";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
 import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
 import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
@@ -23,7 +23,7 @@ import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
 import {SearchBar} from "../component/dropdown/SearchBar";
-import {DebugSettingsProvider} from "../experience/DebugSettingsProvider";
+import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/DebugSettingsProvider";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -41,6 +41,7 @@ export type LevelEditorProps = {
     downloadedLevel: LevelModel
 }
 export function LevelEditor(props: LevelEditorProps) {
+    const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [level, setLevel] = useState<LevelModel>(props.downloadedLevel);
     const [chunkName, setChunkName] = useState<string>(level.start);
     const editChunk = level.chunks[chunkName];
@@ -82,6 +83,13 @@ export function LevelEditor(props: LevelEditorProps) {
                     joints: joints,
                 }
             }
+        })
+    }
+
+    const handleSettingsChange = (key: string, value: any) => {
+        setDebugSettings({
+            ...debugSettings,
+            [key]: value,
         })
     }
 
@@ -186,19 +194,13 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>
                     }
                     {tab === EditorTabs.TEST &&
-                        <EditorTestTab/>
+                        <EditTestTab settings={debugSettings} onSettingChange={handleSettingsChange} />
                     }
                 </div>
 
                 {/* 3d canvas */}
                 {/* TODO der normale Editor sollte keinen UserInput als auch keine Physik erlauben (nur Testmodus)*/}
-                <DebugSettingsProvider debugSettings={{
-                    displayGizmo: true,
-                    displayStats: false,
-                    moveableCamera: true,
-                    visibleBarrier: true,
-                    visibleJoint: true,
-                }}>
+                <DebugSettingsProvider debugSettings={debugSettings}>
                     <Environment className="rounded-xl bg-gray-500/10">
                         {level &&
                             <Level {...level} start={chunkName}/>
