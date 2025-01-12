@@ -207,9 +207,12 @@ export function LevelEditor(props: LevelEditorProps) {
                 }}>
                     {/* TODO user controls should be toggle able too! */}
                     {/* TODO editor mode automatic for joint etc */}
-                    <Environment className="rounded-xl bg-gray-500/10">
+                    <Environment
+                        className="rounded-xl bg-gray-500/10"
+                        key={tab === EditorTabs.TEST ? simulatorInstance : chunkName}
+                    >
                         {level &&
-                            <Level {...level} start={chunkName} key={simulatorInstance}/>
+                            <Level {...level} start={chunkName}/>
                         }
                     </Environment>
                 </DebugSettingsProvider>

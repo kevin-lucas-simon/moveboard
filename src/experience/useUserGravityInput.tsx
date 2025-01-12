@@ -84,43 +84,16 @@ function useDeviceMotionControls() {
 function useKeyboardControls() {
     const [keysDown, setKeysDown]
         = useState<string[]>([])
-    const [keyboardVector, setKeyboardVector]
-        = useState(new Vector3(0, 0, 0))
 
     useEffect(() => {
-        const calculateKeyboardVector = () => {
-            const newKeyboardVector = new Vector3(0, 0, 0)
-
-            if (keysDown.includes('ArrowUp') || keysDown.includes('w')) {
-                newKeyboardVector.add(new Vector3(0, 0, -1))
-            }
-            if (keysDown.includes('ArrowDown') || keysDown.includes('s')) {
-                newKeyboardVector.add(new Vector3(0, 0, 1))
-            }
-            if (keysDown.includes('ArrowLeft') || keysDown.includes('a')) {
-                newKeyboardVector.add(new Vector3(-1, 0, 0))
-            }
-            if (keysDown.includes('ArrowRight') || keysDown.includes('d')) {
-                newKeyboardVector.add(new Vector3(1, 0, 0))
-            }
-            if (keysDown.includes(' ')) {
-                newKeyboardVector.add(new Vector3(0, 1, 0))
-            }
-
-            newKeyboardVector.normalize()
-            setKeyboardVector(newKeyboardVector)
-        }
-
         const handleKeyDown = (event: KeyboardEvent) => {
             if (!keysDown.includes(event.key)) {
                 setKeysDown([...keysDown, event.key])
-                calculateKeyboardVector()
             }
         }
         const handleKeyUp = (event: KeyboardEvent) => {
             if (keysDown.includes(event.key)) {
                 setKeysDown(keysDown.filter(key => key !== event.key))
-                calculateKeyboardVector()
             }
         }
 
@@ -131,6 +104,26 @@ function useKeyboardControls() {
             window.removeEventListener('keyup', handleKeyUp)
         }
     }, [keysDown])
+
+    const keyboardVector = new Vector3(0, 0, 0)
+
+    if (keysDown.includes('ArrowUp') || keysDown.includes('w')) {
+        keyboardVector.add(new Vector3(0, 0, -1))
+    }
+    if (keysDown.includes('ArrowDown') || keysDown.includes('s')) {
+        keyboardVector.add(new Vector3(0, 0, 1))
+    }
+    if (keysDown.includes('ArrowLeft') || keysDown.includes('a')) {
+        keyboardVector.add(new Vector3(-1, 0, 0))
+    }
+    if (keysDown.includes('ArrowRight') || keysDown.includes('d')) {
+        keyboardVector.add(new Vector3(1, 0, 0))
+    }
+    if (keysDown.includes(' ')) {
+        keyboardVector.add(new Vector3(0, 1, 0))
+    }
+
+    keyboardVector.normalize()
 
     return keyboardVector
 }
