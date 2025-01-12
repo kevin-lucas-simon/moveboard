@@ -191,11 +191,11 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* 3d canvas */}
                 {/* TODO der normale Editor sollte keinen UserInput als auch keine Physik erlauben (nur Testmodus)*/}
                 <DebugSettingsProvider debugSettings={{
-                    gizmo: true,
-                    stats: false,
-                    camera: true,
-                    visible_barrier: true,
-                    visible_joint: true,
+                    displayGizmo: true,
+                    displayStats: false,
+                    moveableCamera: true,
+                    visibleBarrier: true,
+                    visibleJoint: true,
                 }}>
                     <Environment className="rounded-xl bg-gray-500/10">
                         {level &&
