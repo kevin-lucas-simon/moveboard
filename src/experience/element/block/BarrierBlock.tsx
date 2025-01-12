@@ -1,7 +1,7 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
-import {useDebug} from "../../misc/useDebug";
+import {useDebugSettings} from "../../DebugSettingsProvider";
 
 export type BarrierBlockModel = BasicBlockModel
 export const BarrierBlockDefault: BarrierBlockModel = {
@@ -15,13 +15,13 @@ export const BarrierBlockDefault: BarrierBlockModel = {
  * @constructor
  */
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
-    const debug = useDebug()
+    const isVisible = useDebugSettings().visible_barrier;
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>
             <mesh>
                 <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                <meshPhongMaterial color={'lightblue'} opacity={debug?.visible_barrier ? 0.25 : 0} transparent={true}/>
+                <meshPhongMaterial color={'lightblue'} opacity={isVisible ? 0.25 : 0} transparent={true}/>
             </mesh>
         </RigidBody>
     );

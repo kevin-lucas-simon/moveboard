@@ -3,7 +3,7 @@ import {DeviceMotionContext} from "./UserControls";
 import {Physics} from "@react-three/rapier";
 import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
-import {useDebug} from "./misc/useDebug";
+import {useDebugSettings} from "./DebugSettingsProvider";
 
 export type EnvironmentProps = {
     children?: React.ReactNode | undefined,
@@ -17,7 +17,7 @@ export type EnvironmentProps = {
  */
 export function Environment(props: EnvironmentProps) {
     const deviceMotion = useContext(DeviceMotionContext)
-    const debug = useDebug()
+    const debug = useDebugSettings()
 
     return (
         <Canvas resize={{ debounce: 0 }} className={props.className}>
@@ -31,12 +31,12 @@ export function Environment(props: EnvironmentProps) {
             </Physics>
 
             {/* debug tools */}
-            {debug?.gizmo &&
+            {debug.gizmo &&
                 <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
                 </GizmoHelper>
             }
-            {debug?.stats &&
+            {debug.stats &&
                 <Stats />
             }
         </Canvas>

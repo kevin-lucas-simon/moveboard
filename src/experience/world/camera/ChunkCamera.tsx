@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
-import {useDebug} from "../../misc/useDebug";
+import {useDebugSettings} from "../../DebugSettingsProvider";
 
 export type ChunkCameraProps = {
     chunkPosition: Vector3Like,
@@ -26,7 +26,7 @@ export type ChunkCameraProps = {
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
-    const debug = useDebug()
+    const isMoveableCamera = useDebugSettings().camera
 
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
@@ -50,7 +50,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
                 rotation={[-Math.PI/2, 0, 0]}
                 fov={props.cameraFov}
             />
-            {debug?.camera &&
+            {isMoveableCamera &&
                 <OrbitControls
                     ref={orbitControlRef}
                 />

@@ -23,6 +23,7 @@ import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
 import {SearchBar} from "../component/dropdown/SearchBar";
+import {DebugSettingsProvider} from "../experience/DebugSettingsProvider";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -189,11 +190,19 @@ export function LevelEditor(props: LevelEditorProps) {
 
                 {/* 3d canvas */}
                 {/* TODO der normale Editor sollte keinen UserInput als auch keine Physik erlauben (nur Testmodus)*/}
-                <Environment className="rounded-xl bg-gray-500/10">
-                    {level &&
-                        <Level {...level} start={chunkName}/>
-                    }
-                </Environment>
+                <DebugSettingsProvider debugSettings={{
+                    gizmo: true,
+                    stats: false,
+                    camera: true,
+                    visible_barrier: true,
+                    visible_joint: true,
+                }}>
+                    <Environment className="rounded-xl bg-gray-500/10">
+                        {level &&
+                            <Level {...level} start={chunkName}/>
+                        }
+                    </Environment>
+                </DebugSettingsProvider>
             </div>
         </div>
     );
