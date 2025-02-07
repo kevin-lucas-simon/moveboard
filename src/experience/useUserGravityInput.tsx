@@ -1,7 +1,6 @@
-import {useEffect, useState} from "react";
 import {Vector3, Vector3Like} from "three";
 import {useDebugSettings} from "./DebugSettingsProvider";
-import {useDeviceMotionApi} from "../component/api/DeviceApiProvider";
+import {useDeviceMotionContext, useKeyboardKeysContext} from "../component/api/DeviceApiProvider";
 
 const GRAVITATION = 9.81;
 const KEYBOARD_SPEED = 2;
@@ -12,8 +11,9 @@ const DEVICE_MOTION_SPEED = 7.5;
  * Hook to get the current user gravity input vector
  */
 export function useUserGravityInput(): Vector3Like {
-    const keyboardVector = useKeyboardControls();
-    const deviceMotionVector = useDeviceMotionApi();
+    const keyboardVector = useKeyboardVector();
+    const deviceMotionVector = useDeviceMotionContext();
+
     const isDisabled = useDebugSettings().pauseSimulation;
 
     // add gravity as default input
@@ -44,29 +44,8 @@ export function useUserGravityInput(): Vector3Like {
 /**
  * Hook to get the current keyboard input vector
  */
-function useKeyboardControls() {
-    const [keysDown, setKeysDown]
-        = useState<string[]>([])
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (!keysDown.includes(event.key)) {
-                setKeysDown([...keysDown, event.key])
-            }
-        }
-        const handleKeyUp = (event: KeyboardEvent) => {
-            if (keysDown.includes(event.key)) {
-                setKeysDown(keysDown.filter(key => key !== event.key))
-            }
-        }
-
-        window.addEventListener('keydown', handleKeyDown)
-        window.addEventListener('keyup', handleKeyUp)
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown)
-            window.removeEventListener('keyup', handleKeyUp)
-        }
-    }, [keysDown])
+function useKeyboardVector() {
+    const keysDown = useKeyboardKeysContext();
 
     const keyboardVector = new Vector3(0, 0, 0)
 

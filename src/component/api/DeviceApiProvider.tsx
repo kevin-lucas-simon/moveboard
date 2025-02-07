@@ -1,8 +1,9 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import {BasicDialog} from "../dialog/BasicDialog";
 import {Vector3} from "three";
 
 const DeviceMotionContext = createContext<Vector3|null>(null);
+const KeyboardKeysContext = createContext<string[]>([]);
 
 export type DeviceApiProviderProps = {
     children: React.ReactNode,
@@ -13,6 +14,7 @@ export type DeviceApiProviderProps = {
  * @constructor
  */
 export function DeviceApiProvider(props: DeviceApiProviderProps) {
+    const keysDown = useKeyboardControlsApi();
     const [deviceMotionVector, startDeviceMotionApiRequest] = useAndRequestDeviceMotionApi();
     const [isGranted, setGranted] = useState<boolean>(false)
 
@@ -38,9 +40,11 @@ export function DeviceApiProvider(props: DeviceApiProviderProps) {
                 Please use your smartphone.
             </BasicDialog>
 
-            <DeviceMotionContext.Provider value={deviceMotionVector}>
-                {props.children}
-            </DeviceMotionContext.Provider>
+            <KeyboardKeysContext.Provider value={keysDown}>
+                <DeviceMotionContext.Provider value={deviceMotionVector}>
+                    {props.children}
+                </DeviceMotionContext.Provider>
+            </KeyboardKeysContext.Provider>
         </>
     );
 }
@@ -49,8 +53,16 @@ export function DeviceApiProvider(props: DeviceApiProviderProps) {
  * Hook to access the device motion api (access modal needed)
  * @return
  */
-export function useDeviceMotionApi(): Vector3|null {
+export function useDeviceMotionContext(): Vector3|null {
     return useContext(DeviceMotionContext);
+}
+
+/**
+ * Hook to access the keyboard keys
+ * @return
+ */
+export function useKeyboardKeysContext(): string[] {
+    return useContext(KeyboardKeysContext);
 }
 
 /**
@@ -89,4 +101,35 @@ function useAndRequestDeviceMotionApi() {
     };
 
     return [deviceMotionVector, startDeviceMotionApiRequest] as const;
+}
+
+/**
+ * Hook to access the keyboard controls
+ * @return keysDown
+ */
+function useKeyboardControlsApi() {
+    const [keysDown, setKeysDown]
+        = useState<string[]>([])
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (!keysDown.includes(event.key)) {
+                setKeysDown([...keysDown, event.key])
+            }
+        }
+        const handleKeyUp = (event: KeyboardEvent) => {
+            if (keysDown.includes(event.key)) {
+                setKeysDown(keysDown.filter(key => key !== event.key))
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+        window.addEventListener('keyup', handleKeyUp)
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+            window.removeEventListener('keyup', handleKeyUp)
+        }
+    }, [keysDown])
+
+    return keysDown;
 }
