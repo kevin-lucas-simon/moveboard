@@ -1,21 +1,19 @@
 import {useEffect, useState} from "react";
 import {Vector3, Vector3Like} from "three";
 import {useDebugSettings} from "./DebugSettingsProvider";
+import {useDeviceMotionApi} from "../component/api/DeviceApiProvider";
 
 const GRAVITATION = 9.81;
 const KEYBOARD_SPEED = 2;
-const DEVICE_MOTION_SPEED = 5;
+const DEVICE_MOTION_SPEED = 7.5;
 // TODO into config
 
 /**
  * Hook to get the current user gravity input vector
  */
-export function useUserGravityInput(): [
-    Vector3Like,
-    () => void,
-] {
+export function useUserGravityInput(): Vector3Like {
     const keyboardVector = useKeyboardControls();
-    const [deviceMotionVector, requestDeviceMotionPermission] = useDeviceMotionControls();
+    const deviceMotionVector = useDeviceMotionApi();
     const isDisabled = useDebugSettings().pauseSimulation;
 
     // add gravity as default input
@@ -23,7 +21,7 @@ export function useUserGravityInput(): [
 
     // disable user input if requested
     if (isDisabled) {
-        return [combinedVector, requestDeviceMotionPermission];
+        return combinedVector;
     }
 
     // replace with device sensor input if available
@@ -40,42 +38,7 @@ export function useUserGravityInput(): [
             .multiplyScalar(KEYBOARD_SPEED*GRAVITATION)
     )
 
-    return [combinedVector, requestDeviceMotionPermission];
-}
-
-/**
- * Hook to get the current device motion vector (mobile devices)
- */
-function useDeviceMotionControls() {
-    const [deviceMotionVector, setDeviceMotionVector]
-        = useState<Vector3|null>(null);
-
-    const handleDeviceMotion = (event: any) => {
-        if (deviceMotionVector) {
-            setDeviceMotionVector(new Vector3(
-                event.accelerationIncludingGravity.x,
-                event.accelerationIncludingGravity.z,
-                -event.accelerationIncludingGravity.y
-            ));
-        }
-    };
-
-    const requestDeviceMotionPermission = () => {
-        // request permission for device motion on apple devices
-        if (typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
-            (DeviceMotionEvent as any).requestPermission()
-                .then((permissionState: string) => {
-                    if (permissionState === 'granted') {
-                        window.addEventListener('devicemotion', handleDeviceMotion);
-                    }
-                })
-        } else {
-            // fallback for browsers who do not need an authorisation
-            window.addEventListener('devicemotion', handleDeviceMotion);
-        }
-    };
-
-    return [deviceMotionVector, requestDeviceMotionPermission] as const;
+    return combinedVector;
 }
 
 /**

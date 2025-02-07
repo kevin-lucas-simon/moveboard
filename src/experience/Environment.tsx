@@ -15,11 +15,12 @@ export type EnvironmentProps = {
  * @constructor
  */
 export function Environment(props: EnvironmentProps) {
-    const [gravityVector, requestMotionVector] = useUserGravityInput();
     const debug = useDebugSettings()
+    const gravityVector = useUserGravityInput();
 
     return (
-        <Canvas resize={{ debounce: 0 }} className={props.className}>
+        <Canvas
+            resize={{ debounce: 0 }} className={props.className}>
             <ambientLight intensity={Math.PI / 2} />
             <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
             <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
@@ -37,9 +38,9 @@ export function Environment(props: EnvironmentProps) {
                     <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
                 </GizmoHelper>
             }
-            {debug.displayPerformanceStats &&
+            {/*{debug.displayPerformanceStats &&*/}
                 <Stats />
-            }
+            {/*}*/}
         </Canvas>
     )
 }
