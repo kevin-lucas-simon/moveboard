@@ -1,6 +1,7 @@
 import {Vector3, Vector3Like} from "three";
 import {useDebugSettings} from "./DebugSettingsProvider";
-import {useDeviceMotionContext, useKeyboardKeysContext} from "../component/api/DeviceApiProvider";
+import {useDeviceMotionContext} from "../component/api/DeviceMotionProvider";
+import {useKeyboardKeysContext} from "../component/api/KeyboardKeysProvider";
 
 const GRAVITATION = 9.81;
 const KEYBOARD_SPEED = 2;
