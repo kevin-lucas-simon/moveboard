@@ -53,6 +53,10 @@ export function useDeviceMotionApi(): Vector3|null {
     return useContext(DeviceMotionContext);
 }
 
+/**
+ * Hook to access the device motion api and request permission (needed for iOS devices)
+ * @return
+ */
 function useAndRequestDeviceMotionApi() {
     const [deviceMotionVector, setDeviceMotionVector]
         = useState<Vector3|null>(null);
@@ -66,19 +70,22 @@ function useAndRequestDeviceMotionApi() {
     };
 
     const startDeviceMotionApiRequest = () => {
-        // TODO refactor if else to a more readable code
-        // request permission for device motion on apple devices
-        if (typeof (DeviceMotionEvent as any)?.requestPermission === 'function') {
-            (DeviceMotionEvent as any).requestPermission()
-                .then((permissionState: string) => {
-                    if (permissionState === 'granted') {
-                        window.addEventListener('devicemotion', handleDeviceMotion);
-                    }
-                })
-        } else {
-            // fallback for browsers who do not need an authorisation
+        const isPermissionRequestNeeded = typeof (DeviceMotionEvent as any)?.requestPermission === 'function';
+
+        // no permission needed
+        if (!isPermissionRequestNeeded) {
             window.addEventListener('devicemotion', handleDeviceMotion);
+            return;
         }
+
+        // permission needed (iOS devices)
+        (DeviceMotionEvent as any)
+            .requestPermission()
+            .then((permissionState: string) => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('devicemotion', handleDeviceMotion);
+                }
+            });
     };
 
     return [deviceMotionVector, startDeviceMotionApiRequest] as const;
