@@ -24,6 +24,7 @@ import {LevelModel} from "../experience/world/model/LevelModel";
 import {Textarea} from "@headlessui/react";
 import {SearchBar} from "../component/dropdown/SearchBar";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/DebugSettingsProvider";
+import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -100,9 +101,7 @@ export function LevelEditor(props: LevelEditorProps) {
             {/* header */}
             <div className="flex gap-4 h-8 items-center">
                 {/* logo */}
-                <div className="w-8 h-8 bg-black flex rounded rounded-tl-2xl">
-                    <div className="w-2 h-2 mt-2 ml-4 rounded bg-white"></div>
-                </div>
+                <MoveBoardLogo />
                 {/* editing name */}
                 <div className="flex flex-col gap-0.5">
                     <h1 className="text-2xl leading-none">{editChunk.name}</h1>
