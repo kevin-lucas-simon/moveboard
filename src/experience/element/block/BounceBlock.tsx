@@ -4,7 +4,7 @@ import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
 import {Player} from "../../entity/Player";
 import {GenericElementDefault} from "../GenericElement";
-import {ElementModel} from "../../world/model/ElementModel";
+import {ElementModel} from "../../../model/ElementModel";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10

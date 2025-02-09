@@ -1,5 +1,5 @@
 import React from "react";
-import {DebugSettings} from "../../experience/DebugSettingsProvider";
+import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
 import {SingleObjectEditor} from "../SingleObjectEditor";
 import {ArrowPathIcon} from "@heroicons/react/24/outline";
 import {BaseTab} from "./BaseTab";

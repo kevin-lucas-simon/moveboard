@@ -1,7 +1,7 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
-import {useDebugSettings} from "../../DebugSettingsProvider";
+import {useDebugSettings} from "../../input/DebugSettingsProvider";
 
 export type BarrierBlockModel = BasicBlockModel
 export const BarrierBlockDefault: BarrierBlockModel = {

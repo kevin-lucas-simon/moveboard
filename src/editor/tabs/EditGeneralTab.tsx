@@ -1,4 +1,4 @@
-import {ChunkModel} from "../../experience/world/model/ChunkModel";
+import {ChunkModel} from "../../model/ChunkModel";
 import React from "react";
 import {SingleObjectEditor} from "../SingleObjectEditor";
 import {BaseTab} from "./BaseTab";

@@ -1,9 +1,9 @@
-import {JointModel} from "./model/JointModel";
+import {JointModel} from "../../model/JointModel";
 import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../entity/Player";
-import {useDebugSettings} from "../DebugSettingsProvider";
+import {useDebugSettings} from "../input/DebugSettingsProvider";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,

@@ -4,17 +4,17 @@ import {LevelModel} from "../model/LevelModel";
 export function useLevelDownloader(
     levelName: string
 ): LevelModel|undefined {
-    const [downloadedLevel, setDownloadedLevel]
+    const [level, setLevel]
         = useState<LevelModel|undefined>(undefined)
 
     useEffect(() => {
         let ignore = false;
-        setDownloadedLevel(undefined);
+        setLevel(undefined);
         fetch(window.location.origin + '/level/' + levelName + '.json')
             .then(response => response.json())
             .then(response => {
                 if (!ignore) {
-                    setDownloadedLevel(response as LevelModel)
+                    setLevel(response as LevelModel)
                 }
             })
         ;
@@ -23,5 +23,5 @@ export function useLevelDownloader(
         }
     }, [levelName]);
 
-    return downloadedLevel;
+    return level;
 }

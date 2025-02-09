@@ -1,17 +1,31 @@
+import React from "react";
+import {Physics} from "@react-three/rapier";
+import {useDeviceMotionContext} from "../../input/DeviceMotionProvider";
 import {Vector3, Vector3Like} from "three";
-import {useDebugSettings} from "./DebugSettingsProvider";
-import {useDeviceMotionContext} from "../component/api/DeviceMotionProvider";
-import {useKeyboardKeysContext} from "../component/api/KeyboardKeysProvider";
+import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {useKeyboardKeysContext} from "../../input/KeyboardKeysProvider";
 
 const GRAVITATION = 9.81;
 const KEYBOARD_SPEED = 2;
-const DEVICE_MOTION_SPEED = 7.5;
-// TODO into config
+const DEVICE_MOTION_SPEED = 10;
+
+export type EnvironmentPhysicsProps = {
+    children: React.ReactNode | undefined,
+}
+export function EnvironmentPhysics(props: EnvironmentPhysicsProps) {
+    const gravityVector = useUserGravityInput();
+
+    return (
+        <Physics gravity={[gravityVector.x, gravityVector.y, gravityVector.z]}>
+            {props.children}
+        </Physics>
+    )
+}
 
 /**
  * Hook to get the current user gravity input vector
  */
-export function useUserGravityInput(): Vector3Like {
+function useUserGravityInput(): Vector3Like {
     const keyboardVector = useKeyboardVector();
     const deviceMotionVector = useDeviceMotionContext();
 

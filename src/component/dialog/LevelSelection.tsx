@@ -2,18 +2,22 @@ import React from "react";
 import {Dialog, DialogPanel} from "@headlessui/react";
 import {BasicButton} from "../button/BasicButton";
 import {MoveBoardLogo} from "../asset/MoveBoardLogo";
+import {useLevelOverviewDownloader} from "../../repository/useLevelOverviewDownloader";
 
 export type StartupModalProps = {
     isStarted: boolean,
-    onStart: () => void,
+    onStart: (level: string) => void,
 }
-export function StartupModal(props: StartupModalProps) {
+export function LevelSelection(props: StartupModalProps) {
+    const levelOverview = useLevelOverviewDownloader();
+    console.log(levelOverview);
+
     return (
         <Dialog
             open={!props.isStarted}
             as="div"
             className="fixed inset-0 z-10 w-full h-full overflow-y-auto"
-            onClose={props.onStart}
+            onClose={() => {}}
         >
             <DialogPanel
                 transition
@@ -29,9 +33,21 @@ export function StartupModal(props: StartupModalProps) {
                         <br/>
                         Please use your smartphone.
                     </div>
-                    <div className="text-center">
-                        <BasicButton type={"primary"} onClick={props.onStart}>Go into the experience</BasicButton>
-                    </div>
+                    {levelOverview &&
+                        <div className="flex flex-col gap-2 text-center">
+                            {levelOverview.map((level) => (
+                                <div>
+                                    <BasicButton
+                                        key={level.id}
+                                        type={"primary"}
+                                        onClick={() => props.onStart(level.id)}
+                                    >
+                                        {level.name}
+                                    </BasicButton>
+                                </div>
+                            ))}
+                        </div>
+                    }
                 </div>
             </DialogPanel>
         </Dialog>

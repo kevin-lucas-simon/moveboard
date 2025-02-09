@@ -1,8 +1,8 @@
 import {Chunk} from "./Chunk";
 import {useState} from "react";
-import {useChunkRenderer} from "./hook/useChunkRenderer";
+import {useChunkRenderer} from "./render/useChunkRenderer";
 import React from "react";
-import {LevelModel} from "./model/LevelModel";
+import {LevelModel} from "../../model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 

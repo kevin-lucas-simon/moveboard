@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import {useEffect} from "react";
-import {ElementModel} from "../world/model/ElementModel";
+import {ElementModel} from "../../model/ElementModel";
 
 /**
  * Editor default values for generic elements

@@ -1,4 +1,4 @@
-import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
+import {useLevelDownloader} from "../repository/useLevelDownloader";
 import {LevelEditor} from "../editor/LevelEditor";
 
 export function EditorPage() {

@@ -3,7 +3,7 @@ import {Environment} from "../experience/Environment";
 import {useState} from "react";
 import React from "react";
 import {EditorElementsTab} from "./tabs/EditorElementsTab";
-import {ElementModel} from "../experience/world/model/ElementModel";
+import {ElementModel} from "../model/ElementModel";
 import {TabButton} from "./tabs/TabButton";
 import {
     AtSymbolIcon, Bars3Icon,
@@ -12,18 +12,18 @@ import {
     Square2StackIcon
 } from "@heroicons/react/24/outline";
 import {EditJointsTab} from "./tabs/EditJointsTab";
-import {JointModel} from "../experience/world/model/JointModel";
+import {JointModel} from "../model/JointModel";
 import {EditGeneralTab} from "./tabs/EditGeneralTab";
-import {ChunkModel} from "../experience/world/model/ChunkModel";
+import {ChunkModel} from "../model/ChunkModel";
 import {EditTestTab} from "./tabs/EditTestTab";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
 import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
 import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
-import {LevelModel} from "../experience/world/model/LevelModel";
+import {LevelModel} from "../model/LevelModel";
 import {Textarea} from "@headlessui/react";
 import {SearchBar} from "../component/dropdown/SearchBar";
-import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/DebugSettingsProvider";
+import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 
 enum EditorTabs {
@@ -211,6 +211,7 @@ export function LevelEditor(props: LevelEditorProps) {
                     <Environment
                         className="rounded-xl bg-gray-500/10"
                         key={tab === EditorTabs.TEST ? chunkName + simulatorInstance : chunkName}
+                        isGranted={tab === EditorTabs.TEST}
                     >
                         {level &&
                             <Level {...level} start={chunkName}/>
