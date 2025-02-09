@@ -10,7 +10,6 @@ export type StartupModalProps = {
 }
 export function LevelSelection(props: StartupModalProps) {
     const levelOverview = useLevelOverviewDownloader();
-    console.log(levelOverview);
 
     return (
         <Dialog
@@ -36,7 +35,7 @@ export function LevelSelection(props: StartupModalProps) {
                     {levelOverview &&
                         <div className="flex flex-col gap-2 text-center">
                             {levelOverview.map((level) => (
-                                <div>
+                                <div key={level.id}>
                                     <BasicButton
                                         key={level.id}
                                         type={"primary"}
