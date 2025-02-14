@@ -1,7 +1,7 @@
 import {ChunkModel} from "../../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import React from "react";
-import {allElements} from "../config/allElements";
+import {elementDefinition, elementFallback} from "../config/elementDefinition";
 import {Joint} from "./Joint";
 import {JointModel} from "../../model/JointModel";
 import {ElementModel} from "../../model/ElementModel";
@@ -17,7 +17,7 @@ export function Chunk(props: ChunkProps) {
             .copy(props.position)
             .add(model.position)
         ;
-        const component = allElements[model.type] ?? allElements.default;
+        const component = elementDefinition[model.type]?.experienceComponent ?? elementFallback.experienceComponent;
 
         return React.createElement(component, {...model,
             key: props.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,

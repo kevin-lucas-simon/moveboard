@@ -2,7 +2,6 @@ import {JointModel} from "../../model/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../ListObjectEditor";
 import {BaseTab} from "./BaseTab";
-import {PlusIcon} from "@heroicons/react/24/outline";
 
 export type EditJointsTabProps = {
     joints: JointModel[];
@@ -26,8 +25,6 @@ export function EditJointsTab(props: EditJointsTabProps) {
         <BaseTab
             title={"Joints"}
             description={"Connect the chunk to other chunks using joints."}
-            button={<><PlusIcon className="h-4"/>Add Joint</>}
-            onButtonClick={() => null}
         >
             <ul>
                 {props.joints.map((joint, index) =>

@@ -1,16 +1,37 @@
 import React from "react";
+import {PlusCircleIcon} from "@heroicons/react/24/outline";
+import {Menu, MenuButton, MenuItems} from "@headlessui/react";
+import {BasicDropdownItem} from "../../component/dropdown/BasicDropdownItem";
 
 export type BaseTabProps = {
     children?: React.ReactNode;
     title: string;
     description?: string;
-    button?: React.ReactNode|string;
-    onButtonClick?: () => void;
+    addOptions?: string[];
+    onAdd?: (selected: string) => void;
 }
 export function BaseTab(props: BaseTabProps) {
     return (
         <div className="w-full h-full flex flex-col">
-            <h2 className="text-xl pt-4 px-4">{props.title}</h2>
+            <div className="pt-4 px-4 flex justify-between">
+                <h2 className="text-xl">{props.title}</h2>
+                {props.addOptions &&
+                    <Menu>
+                        <MenuButton
+                            className="relative hover:bg-gray-500/15 p-1 -mr-1.5 rounded-full"
+                        >
+                            <PlusCircleIcon className="h-6"/>
+                        </MenuButton>
+                        <MenuItems anchor="bottom end" className="mt-0.5 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                            {props.addOptions?.map((option, index) =>
+                                <BasicDropdownItem key={index} onClick={() => props.onAdd?.(option)}>
+                                    {option}
+                                </BasicDropdownItem>
+                            )}
+                        </MenuItems>
+                    </Menu>
+                }
+            </div>
             <div className="grow h-0 overflow-y-auto">
                 {props.description &&
                     <p className="text-sm px-4 py-2">
@@ -19,14 +40,6 @@ export function BaseTab(props: BaseTabProps) {
                 }
                 {props.children}
             </div>
-            {props.button &&
-                <button
-                    className="flex w-full hover:bg-gray-500/10 px-4 py-2 gap-2 border-t border-gray-500/10 items-center"
-                    onClick={props.onButtonClick}
-                >
-                    {props.button}
-                </button>
-            }
         </div>
     );
 }

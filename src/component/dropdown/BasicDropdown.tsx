@@ -13,7 +13,7 @@ export function BasicDropdown(props: BasicDropdownProps) {
                 {props.button}
             </MenuButton>
 
-            <MenuItems className="absolute right-0 z-10 mt-2 max-w-56 text-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-hidden">
+            <MenuItems className="absolute right-0 z-10 mt-1.5 max-w-56 text-nowrap origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-hidden">
                 {props.children}
             </MenuItems>
         </Menu>

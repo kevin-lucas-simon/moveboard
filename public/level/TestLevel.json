@@ -69,7 +69,7 @@
                     "color": "lightblue"
                 },
                 {
-                    "type": "BouncerBlock",
+                    "type": "BounceBlock",
                     "position": {
                         "x": 0,
                         "y": 1,
@@ -79,7 +79,7 @@
                     "intensity": 2
                 },
                 {
-                    "type": "BouncerBlock",
+                    "type": "BounceBlock",
                     "position": {
                         "x": 4,
                         "y": 1,
@@ -89,7 +89,7 @@
                     "intensity": 3
                 },
                 {
-                    "type": "BouncerBlock",
+                    "type": "BounceBlock",
                     "position": {
                         "x": 0,
                         "y": 1,
@@ -99,7 +99,7 @@
                     "intensity": 1
                 },
                 {
-                    "type": "BouncerBlock",
+                    "type": "BounceBlock",
                     "position": {
                         "x": -2,
                         "y": 1,

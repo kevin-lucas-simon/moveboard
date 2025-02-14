@@ -1,10 +1,8 @@
 import {ElementModel} from "../../model/ElementModel";
 import React from "react";
-import {allElements} from "../../experience/config/allElements";
-import {BasicBlockDefault} from "../../experience/element/block/BasicBlock";
+import {elementDefinition} from "../../experience/config/elementDefinition";
 import {ListObjectEditor} from "../ListObjectEditor";
 import {BaseTab} from "./BaseTab";
-import {PlusIcon} from "@heroicons/react/24/outline";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
@@ -12,8 +10,11 @@ export type ChunkElementsEditorProps = {
 }
 
 export function EditorElementsTab(props: ChunkElementsEditorProps) {
-    const handleAddedElement = () => {
-        const newElement = React.createElement(allElements["BasicBlock"], BasicBlockDefault);
+    const handleAddedElement = (type: string) => {
+        const newElement = React.createElement(
+            elementDefinition[type].experienceComponent,
+            elementDefinition[type].defaultProps
+        );
 
         props.onElementsChange([
             ...props.elements,
@@ -37,8 +38,8 @@ export function EditorElementsTab(props: ChunkElementsEditorProps) {
         <BaseTab
             title={"Elements"}
             description={"Fill the chunk area with static elements."}
-            button={<><PlusIcon className="h-4"/>Add Element</>}
-            onButtonClick={handleAddedElement}
+            addOptions={Object.keys(elementDefinition)}
+            onAdd={handleAddedElement}
         >
             <ul>
                 {props.elements.map((element, index) =>
