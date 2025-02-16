@@ -3,7 +3,7 @@ import {Environment} from "../experience/Environment";
 import {useReducer, useState} from "react";
 import React from "react";
 import {EditorElementsTab} from "./tabs/EditorElementsTab";
-import {TabButton} from "./tabs/TabButton";
+import {TabButton} from "./component/TabButton";
 import {
     AtSymbolIcon, Bars3Icon,
     PlayIcon,

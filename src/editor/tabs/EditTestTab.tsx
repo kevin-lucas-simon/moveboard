@@ -1,6 +1,6 @@
 import React from "react";
 import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
-import {SingleObjectEditor} from "../SingleObjectEditor";
+import {SingleObjectEditor} from "../input/SingleObjectEditor";
 import {BaseTab} from "./BaseTab";
 
 export type EditTestTabProps = {

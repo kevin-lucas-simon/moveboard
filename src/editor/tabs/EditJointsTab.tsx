@@ -1,6 +1,6 @@
 import {JointModel} from "../../model/JointModel";
 import React from "react";
-import {ListObjectEditor} from "../ListObjectEditor";
+import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 

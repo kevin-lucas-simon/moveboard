@@ -1,7 +1,7 @@
 import {ElementModel} from "../../model/ElementModel";
 import React from "react";
 import {elementDefinition} from "../../experience/config/elementDefinition";
-import {ListObjectEditor} from "../ListObjectEditor";
+import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 

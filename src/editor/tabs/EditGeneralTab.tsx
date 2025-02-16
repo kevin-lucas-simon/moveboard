@@ -1,6 +1,6 @@
 import {ChunkModel} from "../../model/ChunkModel";
 import React from "react";
-import {SingleObjectEditor} from "../SingleObjectEditor";
+import {SingleObjectEditor} from "../input/SingleObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 
