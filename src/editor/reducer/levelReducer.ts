@@ -7,10 +7,10 @@ export type LevelReducerState = {
 };
 
 export type LevelReducerActions = ChunkReducerActions | {
-    type: 'select_chunk',
+    type: 'level_select_chunk',
     payload: string,
 } | {
-    type: 'reset_level',
+    type: 'level_reset',
     payload: LevelModel,
 };
 
@@ -19,12 +19,12 @@ export function levelReducer(
     action: LevelReducerActions,
 ): LevelReducerState {
     switch (action.type) {
-        case 'select_chunk':
+        case 'level_select_chunk':
             return {
                 ...state,
                 active: action.payload,
             };
-        case 'reset_level':
+        case 'level_reset':
             // use current active, if not available use level start;
             return {
                 ...state,

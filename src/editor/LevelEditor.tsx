@@ -79,7 +79,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         active={editor.active}
                         placeholder={"Search Chunk..."}
                         onSelect={(chunk) => dispatchEditor({
-                            type: 'select_chunk',
+                            type: 'level_select_chunk',
                             payload: chunk,
                         })}
                     />
@@ -124,7 +124,7 @@ export function LevelEditor(props: LevelEditorProps) {
                     onSubmit={() => {
                         setDialog(null);
                         dispatchEditor({
-                            type: 'reset_level',
+                            type: 'level_reset',
                             payload: props.downloadedLevel,
                         });
                     }}
@@ -158,7 +158,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditGeneralTab chunk={editChunk} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.JOINTS &&
-                        <EditJointsTab joints={editChunk.joints} chunkDispatcher={dispatchEditor}/>
+                        <EditJointsTab joints={editChunk.joints} chunkNames={Object.keys(editLevel.chunks)} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.ELEMENTS &&
                         <EditorElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>
