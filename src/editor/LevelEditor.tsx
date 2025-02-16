@@ -1,9 +1,8 @@
 import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
-import {useState} from "react";
+import {useReducer, useState} from "react";
 import React from "react";
 import {EditorElementsTab} from "./tabs/EditorElementsTab";
-import {ElementModel} from "../model/ElementModel";
 import {TabButton} from "./tabs/TabButton";
 import {
     AtSymbolIcon, Bars3Icon,
@@ -12,9 +11,7 @@ import {
     Square2StackIcon
 } from "@heroicons/react/24/outline";
 import {EditJointsTab} from "./tabs/EditJointsTab";
-import {JointModel} from "../model/JointModel";
 import {EditGeneralTab} from "./tabs/EditGeneralTab";
-import {ChunkModel} from "../model/ChunkModel";
 import {EditTestTab} from "./tabs/EditTestTab";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
 import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
@@ -25,6 +22,7 @@ import {Textarea} from "@headlessui/react";
 import {SearchBar} from "../component/dropdown/SearchBar";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
+import {levelReducer} from "./reducer/levelReducer";
 
 enum EditorTabs {
     GENERAL= "general",
@@ -45,49 +43,15 @@ export function LevelEditor(props: LevelEditorProps) {
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
-    const [level, setLevel] = useState<LevelModel>(props.downloadedLevel);
-    const [chunkName, setChunkName] = useState<string>(level.start);
-    const editChunk = level.chunks[chunkName];
+    const[editor, dispatchEditor] = useReducer(levelReducer, {
+        level: props.downloadedLevel,
+        active: props.downloadedLevel.start,
+    })
+    const editLevel = editor.level;
+    const editChunk = editLevel.chunks[editor.active];
 
     const [tab, setTab] = useState<EditorTabs>(EditorTabs.GENERAL);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
-
-    // TODO useReducer muss hier rein!
-    const handleGeneralChange = (chunk: ChunkModel) => {
-        setLevel({
-            ...level,
-            chunks: {
-                ...level.chunks,
-                [chunkName]: chunk,
-            }
-        })
-    }
-
-    const handleElementsChange = (elements: ElementModel[]) => {
-        setLevel({
-            ...level,
-            chunks: {
-                ...level.chunks,
-                [chunkName]: {
-                    ...editChunk,
-                    elements: elements,
-                }
-            }
-        })
-    }
-
-    const handleJointsChange = (joints: JointModel[]) => {
-        setLevel({
-            ...level,
-            chunks: {
-                ...level.chunks,
-                [chunkName]: {
-                    ...editChunk,
-                    joints: joints,
-                }
-            }
-        })
-    }
 
     const handleSettingsChange = (key: string, value: any) => {
         setDebugSettings({
@@ -105,16 +69,19 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* editing name */}
                 <div className="flex flex-col gap-0.5">
                     <h1 className="text-2xl leading-none">{editChunk.name}</h1>
-                    <div className="text-xs leading-none">{level.name}</div>
+                    <div className="text-xs leading-none">{editLevel.name}</div>
                 </div>
 
                 {/* chunk search */}
                 <div className="grow">
                     <SearchBar
-                        items={Object.keys(level.chunks).filter((chunk) => chunk !== chunkName)}
-                        active={chunkName}
+                        items={Object.keys(editLevel.chunks).filter((chunk) => chunk !== editor.active)}
+                        active={editor.active}
                         placeholder={"Search Chunk..."}
-                        onSelect={(chunk) => setChunkName(chunk)}
+                        onSelect={(chunk) => dispatchEditor({
+                            type: 'select_chunk',
+                            payload: chunk,
+                        })}
                     />
                 </div>
 
@@ -143,7 +110,7 @@ export function LevelEditor(props: LevelEditorProps) {
                     <div>Export the JSON data of the current edited level.</div>
                     <Textarea
                         className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs"
-                        value={JSON.stringify(level)}
+                        value={JSON.stringify(editLevel)}
                         readOnly
                     />
                 </BasicDialog>
@@ -156,7 +123,10 @@ export function LevelEditor(props: LevelEditorProps) {
                     submitButton={"Clear Changes"}
                     onSubmit={() => {
                         setDialog(null);
-                        setLevel(props.downloadedLevel);
+                        dispatchEditor({
+                            type: 'reset_level',
+                            payload: props.downloadedLevel,
+                        });
                     }}
                 >
                     Do you really want to clear all changes? All unsaved changes will be lost.
@@ -184,15 +154,14 @@ export function LevelEditor(props: LevelEditorProps) {
 
                 {/* tab content */}
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
-                    {/* TODO an sich sollte ich generell schauen, ob ich Duplikate sinnvoll im Refactoring zusammenführen kann*/}
                     {tab === EditorTabs.GENERAL &&
-                        <EditGeneralTab chunk={editChunk} onChunkChange={handleGeneralChange}/>
+                        <EditGeneralTab chunk={editChunk} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.JOINTS &&
-                        <EditJointsTab joints={editChunk.joints} onJointsChange={handleJointsChange}/>
+                        <EditJointsTab joints={editChunk.joints} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.ELEMENTS &&
-                        <EditorElementsTab elements={editChunk.elements} onElementsChange={handleElementsChange}/>
+                        <EditorElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.TEST &&
                         <EditTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
@@ -210,11 +179,11 @@ export function LevelEditor(props: LevelEditorProps) {
                     {/* TODO editor mode automatic for joint etc */}
                     <Environment
                         className="rounded-xl bg-gray-500/10"
-                        key={tab === EditorTabs.TEST ? chunkName + simulatorInstance : chunkName}
+                        key={tab === EditorTabs.TEST ? editor.active + simulatorInstance : editor.active}
                         isGranted={tab === EditorTabs.TEST}
                     >
-                        {level &&
-                            <Level {...level} start={chunkName}/>
+                        {editLevel &&
+                            <Level {...editLevel} start={editor.active}/>
                         }
                     </Environment>
                 </DebugSettingsProvider>

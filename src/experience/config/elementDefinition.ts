@@ -4,10 +4,11 @@ import {FloorBlock, FloorBlockDefault} from "../element/block/FloorBlock";
 import {GenericElement, GenericElementDefault} from "../element/GenericElement";
 import {BarrierBlock, BarrierBlockDefault} from "../element/block/BarrierBlock";
 import {BounceBlock, BounceBlockDefault} from "../element/block/BounceBlock";
+import {ElementModel} from "../../model/ElementModel";
 
 export type ElementDefinition = {
     experienceComponent: React.ComponentType<any>,
-    defaultProps: any,
+    defaultProps: ElementModel,
 }
 
 /**

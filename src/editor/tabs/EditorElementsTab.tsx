@@ -3,35 +3,36 @@ import React from "react";
 import {elementDefinition} from "../../experience/config/elementDefinition";
 import {ListObjectEditor} from "../ListObjectEditor";
 import {BaseTab} from "./BaseTab";
+import {ChunkReducerActions} from "../reducer/chunkReducer";
 
 export type ChunkElementsEditorProps = {
     elements: ElementModel[];
-    onElementsChange: (elements: ElementModel[]) => void;
+    chunkDispatcher: React.Dispatch<ChunkReducerActions>;
 }
 
 export function EditorElementsTab(props: ChunkElementsEditorProps) {
-    const handleAddedElement = (type: string) => {
-        const newElement = React.createElement(
-            elementDefinition[type].experienceComponent,
-            elementDefinition[type].defaultProps
-        );
-
-        props.onElementsChange([
-            ...props.elements,
-            newElement.props,
-        ]);
+    const addElement = (type: string) => {
+        props.chunkDispatcher({
+            type: 'chunk_add_element',
+            payload: elementDefinition[type].defaultProps,
+        });
     }
 
-    const handleChangedElement = (index: string, value: ElementModel) => { // TODO index ist unschön
-        props.onElementsChange(
-            props.elements.map((el, i) => i !== parseInt(index) ? el : value)
-        );
+    const changeElement = (index: string, value: ElementModel) => {
+        props.chunkDispatcher({
+            type: 'chunk_update_element',
+            payload: {
+                index: index,
+                element: value,
+            }
+        });
     }
 
-    const handleRemovedElement = (index: string) => {
-        props.onElementsChange(
-            props.elements.filter((e, i) => i !== parseInt(index))
-        );
+    const removeElement = (index: string) => {
+        props.chunkDispatcher({
+            type: 'chunk_remove_element',
+            payload: index,
+        });
     }
 
     return (
@@ -39,7 +40,7 @@ export function EditorElementsTab(props: ChunkElementsEditorProps) {
             title={"Elements"}
             description={"Fill the chunk area with static elements."}
             addOptions={Object.keys(elementDefinition)}
-            onAdd={handleAddedElement}
+            onAdd={addElement}
         >
             <ul>
                 {props.elements.map((element, index) =>
@@ -49,8 +50,8 @@ export function EditorElementsTab(props: ChunkElementsEditorProps) {
                             keyName={index.toString()}
                             displayname={element.type}
                             value={element}
-                            onChange={handleChangedElement}
-                            onDelete={handleRemovedElement}
+                            onChange={changeElement}
+                            onDelete={removeElement}
                         />
                     </li>
                 )}

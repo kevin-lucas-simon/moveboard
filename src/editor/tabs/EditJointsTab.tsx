@@ -2,23 +2,29 @@ import {JointModel} from "../../model/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../ListObjectEditor";
 import {BaseTab} from "./BaseTab";
+import {ChunkReducerActions} from "../reducer/chunkReducer";
 
 export type EditJointsTabProps = {
     joints: JointModel[];
-    onJointsChange: (joints: JointModel[]) => void;
+    chunkDispatcher: React.Dispatch<ChunkReducerActions>;
 }
 
 export function EditJointsTab(props: EditJointsTabProps) {
-    const handleChangedJoint = (index: string, value: JointModel) => { // TODO index ist unschön
-        props.onJointsChange(
-            props.joints.map((el, i) => i !== parseInt(index) ? el : value)
-        );
+    const updateJoint = (index: string, value: JointModel) => {
+        props.chunkDispatcher({
+            type: 'chunk_update_joint',
+            payload: {
+                index: index,
+                joint: value,
+            }
+        });
     }
 
-    const handleRemovedJoint = (index: string) => {
-        props.onJointsChange(
-            props.joints.filter((e, i) => i !== parseInt(index))
-        );
+    const removeJoint = (index: string) => {
+        props.chunkDispatcher({
+            type: 'chunk_remove_joint',
+            payload: index,
+        });
     }
 
     return (
@@ -34,8 +40,8 @@ export function EditJointsTab(props: EditJointsTabProps) {
                             keyName={index.toString()}
                             displayname={joint.neighbour}
                             value={joint}
-                            onChange={handleChangedJoint}
-                            onDelete={handleRemovedJoint}
+                            onChange={updateJoint}
+                            onDelete={removeJoint}
                         />
                     </li>
                 )}
