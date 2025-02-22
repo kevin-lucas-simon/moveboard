@@ -66,6 +66,8 @@ export function chunkReducer(
                 elements: state.elements.filter((e, i) => i !== parseInt(action.payload))
             }
         case 'chunk_add_joint':
+            // TODO hier könnte ich validatoren einbauen, die prüfen, ob die joints gültig sind
+            // TODO vlt könnte ich das eine Ebene höher machen, damit ich die Joints auch zwischen den Chunks prüfen kann
             return {
                 ...state,
                 joints: [
