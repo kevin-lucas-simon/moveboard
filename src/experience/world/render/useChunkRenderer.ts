@@ -77,14 +77,23 @@ function filterVisibleChunks(
             continue;
         }
 
+        // skip if it does not have a joint connecting it to the parent
+        const jointToParent = currentChunk.model.joints
+            .find(joint => joint.neighbour === task.parentId);
+        if (task.parentId && !jointToParent) {
+            continue;
+        }
+
         // add chunk to filtered list
         filteredChunks[task.currentId] = currentChunk;
 
         // add neighbours to vision queue
         currentChunk.model.joints.forEach((joint: JointModel) => {
+            // skip if already visited in queue
             if (joint.neighbour === task.parentId) {
                 return;
             }
+            // push new task to queue
             visionTasks.push({
                 currentId: joint.neighbour,
                 parentId: task.currentId,
