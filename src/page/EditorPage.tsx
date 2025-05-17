@@ -1,12 +1,11 @@
 import {useLevelDownloader} from "../repository/useLevelDownloader";
 import {LevelEditor} from "../editor/LevelEditor";
+import {useParams} from "react-router-dom";
 
 export function EditorPage() {
-    // TODO der Aufruf sollte über die URL erfolgen, nach dem Motto `editor/TestLevel/FirstChunk` oder so
-    const levelName = "TestLevel";
+    const {levelName} = useParams();
 
-    const downloadedLevel = useLevelDownloader(levelName);
-
+    const downloadedLevel = useLevelDownloader(levelName ?? "");
     if (!downloadedLevel) {
         return <></>;
     }
