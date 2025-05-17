@@ -74,7 +74,7 @@ function filterVisibleChunks(
         // get current chunk
         const currentChunk = calculatedChunks[task.currentId];
         if (!currentChunk) {
-            throw new Error(`Chunk ${task.currentId} not found`);
+            continue;
         }
 
         // add chunk to filtered list
@@ -134,7 +134,7 @@ function calculateChunkGeometry(
         // get chunk models
         const currentModel = chunkModels[task.currentId];
         if (!currentModel) {
-            throw new Error(`Chunk model ${task.currentId} not found`);
+            continue;
         }
 
         // calculate dimension
