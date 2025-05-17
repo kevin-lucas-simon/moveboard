@@ -1,5 +1,7 @@
 import {LevelModel} from "../../model/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
+import {ChunkModel} from "../../model/ChunkModel";
+import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -8,6 +10,9 @@ export type LevelReducerState = {
 
 export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_select_chunk',
+    payload: string,
+} | {
+    type: 'level_add_chunk',
     payload: string,
 } | {
     type: 'level_reset',
@@ -23,6 +28,41 @@ export function levelReducer(
             return {
                 ...state,
                 active: action.payload,
+            };
+        case "level_add_chunk":
+            return {
+                ...state,
+                level: {
+                    ...state.level,
+                    chunks: {
+                        ...state.level.chunks,
+                        [action.payload]: {
+                            name: action.payload,
+                            player: {
+                                x: 0,
+                                y: 1,
+                                z: 0,
+                            },
+                            elements: [
+                                {
+                                    type: 'FloorBlock',
+                                    position: {
+                                        x: 0,
+                                        y: 0,
+                                        z: 0,
+                                    },
+                                    dimension: {
+                                        x: 3,
+                                        y: 1,
+                                        z: 3,
+                                    },
+                                    color: "blue",
+                                } as FloorBlockModel
+                            ],
+                            joints: [],
+                        } as ChunkModel,
+                    },
+                },
             };
         case 'level_reset':
             // use current active, if not available use level start;

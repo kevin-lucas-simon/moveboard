@@ -82,6 +82,16 @@ export function LevelEditor(props: LevelEditorProps) {
                             type: 'level_select_chunk',
                             payload: chunk,
                         })}
+                        onCreate={(chunk) => {
+                            dispatchEditor({
+                                type: 'level_add_chunk',
+                                payload: chunk,
+                            })
+                            dispatchEditor({
+                                type: 'level_select_chunk',
+                                payload: chunk,
+                            })
+                        }}
                     />
                 </div>
 

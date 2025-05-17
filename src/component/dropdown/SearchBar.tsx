@@ -7,6 +7,7 @@ export type SearchBarProps = {
     active?: string|null;
     placeholder?: string;
     onSelect?: ((item: string) => void);
+    onCreate?: ((item: string) => void);
 }
 export function SearchBar(props: SearchBarProps) {
     const [query, setQuery] = useState<string>('')
@@ -19,8 +20,18 @@ export function SearchBar(props: SearchBarProps) {
             })
 
     const handleItemSelect = (item: string|null) => {
-        if (item && props.onSelect) {
+        if (item === null) {
+            return;
+        }
+
+        if (filteredItems.includes(item) && props.onSelect) {
             props.onSelect(item)
+            return;
+        }
+
+        if (props.onCreate) {
+            props.onCreate(item)
+            return;
         }
     }
 
@@ -63,6 +74,15 @@ export function SearchBar(props: SearchBarProps) {
                         {item}
                     </ComboboxOption>
                 ))}
+
+                {query !== '' && !filteredItems.includes(query) &&
+                    <ComboboxOption
+                        value={query}
+                        className="bg-gray-200 data-[focus]:bg-gray-300 py-1 pl-8 pr-2 italic"
+                    >
+                        Create "{query}"
+                    </ComboboxOption>
+                }
             </ComboboxOptions>
         </Combobox>
     );
