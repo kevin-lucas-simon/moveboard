@@ -45,11 +45,13 @@ function useAndRequestDeviceMotionApi() {
         = useState<Vector3|null>(null);
 
     const handleDeviceMotion = (event: any) => {
-        setDeviceMotionVector(new Vector3(
-            event.accelerationIncludingGravity.x,
-            event.accelerationIncludingGravity.z,
-            -event.accelerationIncludingGravity.y
-        ));
+        if (event.accelerationIncludingGravity.x !== null) {
+            setDeviceMotionVector(new Vector3(
+                event.accelerationIncludingGravity.x,
+                event.accelerationIncludingGravity.z,
+                -event.accelerationIncludingGravity.y
+            ));
+        }
     };
 
     const startDeviceMotionApiRequest = () => {
