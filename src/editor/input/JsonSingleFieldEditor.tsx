@@ -36,7 +36,12 @@ export function JsonSingleFieldEditor(props: JsonFieldEditorProps) {
             <input
                 type={"number"}
                 value={props.value}
-                onChange={e => props.onChange(parseInt(e.target.value))}
+                onChange={e => {
+                    if (isNaN(e.target.valueAsNumber)) {
+                        return;
+                    }
+                    props.onChange(e.target.valueAsNumber);
+                }}
                 className={props.className}
             />
         );
