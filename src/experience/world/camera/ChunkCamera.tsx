@@ -27,6 +27,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
     const isMoveableCamera = useDebugSettings().moveableCamera
+    const isInterpolationProhibited = useDebugSettings().pauseSimulation
 
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
@@ -39,8 +40,8 @@ export function ChunkCamera(props: ChunkCameraProps) {
     );
 
     // interpolate position values to refs
-    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds)
-    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds)
+    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, isInterpolationProhibited)
+    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds, isInterpolationProhibited)
 
     return (
         <>
@@ -152,11 +153,13 @@ function getAspectRatioBasedChunkLength(
  * @param refPositionToInterpolate
  * @param targetPosition
  * @param transitionSeconds
+ * @param prohibitInterpolation
  */
 function usePositionInterpolation(
     refPositionToInterpolate: Vector3|undefined,
     targetPosition: Vector3,
     transitionSeconds: number,
+    prohibitInterpolation: boolean,
 ) {
     const [transitionTime, setTransitionTime]
         = useState<number>(0)
@@ -167,13 +170,23 @@ function usePositionInterpolation(
     useEffect(() => {
         setTransitionTime(transitionSeconds)
         setLastPosition(refPositionToInterpolate ?? new Vector3(0, 0, 0))
-    }, [targetPosition])
+    }, [prohibitInterpolation, targetPosition])
 
     // update transition if active
     useFrame((state, delta) => {
+        // if no transition is active, do nothing
         if (transitionTime <= 0 || !refPositionToInterpolate) {
             return
         }
+        // if transition is prohibited, stop interpolation
+        if (prohibitInterpolation) {
+            if (refPositionToInterpolate.equals(new Vector3(0, 0, 0))) {
+                refPositionToInterpolate.copy(targetPosition)
+            }
+            setTransitionTime(0)
+            return
+        }
+        // interpolate position
         const newTransitionTime = Math.max(transitionTime - delta, 0)
         refPositionToInterpolate.copy(
             lastPosition.clone().lerp(
