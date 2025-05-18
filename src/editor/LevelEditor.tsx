@@ -180,6 +180,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* 3d canvas */}
                 <DebugSettingsProvider debugSettings={{
                     ...debugSettings,
+                    isEditingMode: tab === EditorTabs.TEST ? debugSettings.isEditingMode : true,
                     displayEditorFeatures: tab === EditorTabs.TEST ? debugSettings.displayEditorFeatures : true,
                     moveableCamera: tab === EditorTabs.TEST ? debugSettings.moveableCamera : true,
                     pauseSimulation: tab === EditorTabs.TEST ? debugSettings.pauseSimulation : true,

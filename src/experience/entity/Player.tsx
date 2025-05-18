@@ -1,5 +1,6 @@
 import {RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
+import {useDebugSettings} from "../input/DebugSettingsProvider";
 
 export type PlayerProps = {
     position: Vector3Like,
@@ -11,6 +12,17 @@ export type PlayerProps = {
  * @constructor
  */
 export function Player(props: PlayerProps) {
+    const isEditingMode = useDebugSettings().isEditingMode
+
+    if (isEditingMode) {
+        return (
+            <mesh position={new Vector3().copy(props.position)}>
+                <sphereGeometry args={[0.5]}/>
+                <meshPhongMaterial color={"hotpink"} opacity={0.8} transparent/>
+            </mesh>
+        )
+    }
+
     return (
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */
         <RigidBody

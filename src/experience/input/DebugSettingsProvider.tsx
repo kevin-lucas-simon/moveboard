@@ -1,12 +1,14 @@
 import {createContext, useContext} from "react";
 
 export type DebugSettings = {
+    isEditingMode: boolean,
     displayEditorFeatures: boolean,
     displayPerformanceStats: boolean,
     moveableCamera: boolean,
     pauseSimulation: boolean,
 }
 export const DebugSettingsDefault: DebugSettings = {
+    isEditingMode: false,
     displayEditorFeatures: false,
     displayPerformanceStats: false,
     moveableCamera: false,

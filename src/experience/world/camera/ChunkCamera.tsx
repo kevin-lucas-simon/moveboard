@@ -27,7 +27,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
     const isMoveableCamera = useDebugSettings().moveableCamera
-    const isInterpolationProhibited = useDebugSettings().pauseSimulation
+    const isInterpolationProhibited = useDebugSettings().isEditingMode
 
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
