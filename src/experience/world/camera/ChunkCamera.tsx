@@ -161,21 +161,21 @@ function usePositionInterpolation(
     transitionSeconds: number,
     prohibitInterpolation: boolean,
 ) {
-    const [transitionTime, setTransitionTime]
+    const [remainingTransitionTime, setRemainingTransitionTime]
         = useState<number>(0)
     const [lastPosition, setLastPosition]
         = useState<Vector3>(new Vector3(0, 0, 0))
 
     // start interpolation if target position changes
     useEffect(() => {
-        setTransitionTime(transitionSeconds)
+        setRemainingTransitionTime(transitionSeconds)
         setLastPosition(refPositionToInterpolate ?? new Vector3(0, 0, 0))
-    }, [prohibitInterpolation, targetPosition])
+    }, [refPositionToInterpolate, prohibitInterpolation, transitionSeconds, targetPosition])
 
     // update transition if active
     useFrame((state, delta) => {
         // if no transition is active, do nothing
-        if (transitionTime <= 0 || !refPositionToInterpolate) {
+        if (remainingTransitionTime <= 0 || !refPositionToInterpolate) {
             return
         }
         // if transition is prohibited, stop interpolation
@@ -183,17 +183,17 @@ function usePositionInterpolation(
             if (refPositionToInterpolate.equals(new Vector3(0, 0, 0))) {
                 refPositionToInterpolate.copy(targetPosition)
             }
-            setTransitionTime(0)
+            setRemainingTransitionTime(0)
             return
         }
         // interpolate position
-        const newTransitionTime = Math.max(transitionTime - delta, 0)
+        const newTransitionTime = Math.max(remainingTransitionTime - delta, 0)
         refPositionToInterpolate.copy(
             lastPosition.clone().lerp(
                 targetPosition,
                 Math.pow(1 - newTransitionTime / transitionSeconds, 3)
             )
         )
-        setTransitionTime(newTransitionTime)
+        setRemainingTransitionTime(newTransitionTime)
     });
 }
