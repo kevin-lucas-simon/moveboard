@@ -161,21 +161,19 @@ function usePositionInterpolation(
     transitionSeconds: number,
     prohibitInterpolation: boolean,
 ) {
-    const [remainingTransitionTime, setRemainingTransitionTime]
-        = useState<number>(0)
-    const [lastPosition, setLastPosition]
-        = useState<Vector3>(new Vector3(0, 0, 0))
+    const remainingTransitionTime = useRef<number>(0)
+    const lastPosition = useRef<Vector3>(new Vector3(0, 0, 0))
 
     // start interpolation if target position changes
     useEffect(() => {
-        setRemainingTransitionTime(transitionSeconds)
-        setLastPosition(refPositionToInterpolate ?? new Vector3(0, 0, 0))
+        remainingTransitionTime.current = transitionSeconds
+        lastPosition.current = refPositionToInterpolate ?? new Vector3(0, 0, 0)
     }, [refPositionToInterpolate, prohibitInterpolation, transitionSeconds, targetPosition])
 
     // update transition if active
     useFrame((state, delta) => {
         // if no transition is active, do nothing
-        if (remainingTransitionTime <= 0 || !refPositionToInterpolate) {
+        if (remainingTransitionTime.current <= 0 || !refPositionToInterpolate) {
             return
         }
         // if transition is prohibited, stop interpolation
@@ -183,17 +181,17 @@ function usePositionInterpolation(
             if (refPositionToInterpolate.equals(new Vector3(0, 0, 0))) {
                 refPositionToInterpolate.copy(targetPosition)
             }
-            setRemainingTransitionTime(0)
+            remainingTransitionTime.current = 0;
             return
         }
         // interpolate position
-        const newTransitionTime = Math.max(remainingTransitionTime - delta, 0)
+        const newTransitionTime = Math.max(remainingTransitionTime.current - delta, 0)
         refPositionToInterpolate.copy(
-            lastPosition.clone().lerp(
+            lastPosition.current.clone().lerp(
                 targetPosition,
                 Math.pow(1 - newTransitionTime / transitionSeconds, 3)
             )
         )
-        setRemainingTransitionTime(newTransitionTime)
+        remainingTransitionTime.current = newTransitionTime
     });
 }
