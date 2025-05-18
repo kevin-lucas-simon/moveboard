@@ -1,13 +1,25 @@
 import {Switch} from "@headlessui/react";
 import clsx from "clsx";
+import {JsonSingleSelectionEditor} from "./JsonSingleSelectionEditor";
 
 export type JsonFieldEditorProps = {
     value: any,
     onChange: (value: any) => void,
     className?: string,
+    selection?: any[],
 }
 
-export function JsonFieldEditor(props: JsonFieldEditorProps) {
+export function JsonSingleFieldEditor(props: JsonFieldEditorProps) {
+    if (props.selection) {
+        return (
+            <JsonSingleSelectionEditor
+                value={props.value}
+                onChange={props.onChange}
+                options={props.selection}
+            />
+        );
+    }
+
     if (typeof props.value === "string") {
         return (
             <input
@@ -53,7 +65,7 @@ export function JsonFieldEditor(props: JsonFieldEditorProps) {
         );
     }
 
-    console.warn(JsonFieldEditor.name + ": Unsupported value type ", typeof props.value);
+    console.warn(JsonSingleFieldEditor.name + ": Unsupported value type ", typeof props.value);
 
     return (
         <span className={props.className}>

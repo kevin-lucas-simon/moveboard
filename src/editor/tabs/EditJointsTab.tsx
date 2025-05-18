@@ -6,16 +6,22 @@ import {ChunkReducerActions} from "../reducer/chunkReducer";
 
 export type EditJointsTabProps = {
     joints: JointModel[];
+    currentChunk: string;
     chunkNames: string[];
     chunkDispatcher: React.Dispatch<ChunkReducerActions>;
 }
 
 export function EditJointsTab(props: EditJointsTabProps) {
-    const addJoint = (neighbour: string) => {
+    const validChunksForNewJoints = props.chunkNames
+        .filter((chunkName) => !props.joints.some((joint) => joint.neighbour === chunkName))
+        .filter((chunkName) => chunkName !== props.currentChunk)
+    ;
+
+    const addJoint = () => {
         props.chunkDispatcher({
             type: 'chunk_add_joint',
             payload: {
-                neighbour: neighbour,
+                neighbour: "",
                 position: {x: 0, y: 1, z: 0},
                 dimension: {x: 1, y: 1, z: 1},
                 vision: 1,
@@ -44,7 +50,6 @@ export function EditJointsTab(props: EditJointsTabProps) {
         <BaseTab
             title={"Joints"}
             description={"Connect the chunk to other chunks using joints."}
-            addOptions={props.chunkNames}
             onAdd={addJoint}
         >
             <ul>
@@ -53,10 +58,13 @@ export function EditJointsTab(props: EditJointsTabProps) {
                         <ListObjectEditor
                             key={index}
                             keyName={index.toString()}
-                            displayname={joint.neighbour}
+                            displayname={joint.neighbour ? joint.neighbour : "Joint without Chunk"}
                             value={joint}
                             onChange={updateJoint}
                             onDelete={removeJoint}
+                            selectionOnKey={{
+                                "neighbour": validChunksForNewJoints,
+                            }}
                         />
                     </li>
                 )}

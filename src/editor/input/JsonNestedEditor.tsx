@@ -1,10 +1,11 @@
-import {JsonFieldEditor} from "./JsonFieldEditor";
+import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
 
 export type JsonNestedEditorProps = {
     keyName: string,
     displayname?: string,
     value: any,
     onKeyValueChange: (key: string, value: any) => void,
+    selectionOnKey?: {[key: string]: string[]}
 }
 
 export function JsonNestedEditor(props: JsonNestedEditorProps) {
@@ -34,10 +35,11 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                         </>
                     }
                     {!(props.value instanceof Object) &&
-                        <JsonFieldEditor
+                        <JsonSingleFieldEditor
                             className="w-0 grow bg-transparent outline-none"
                             value={props.value}
-                            onChange={handleValueChange}
+                            onChange={(value: any) => handleValueChange(value)}
+                            selection={props.selectionOnKey?.[props.keyName]}
                         />
                     }
                 </label>
@@ -49,9 +51,18 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                     <div className="ml-4 bg-gray-500/50 w-px mt-2.5 -translate-y-2.5"/>
 
                     <ul className="grow">
-                        {Object.entries(props.value).map(([key, value]) => (
-                            <JsonNestedEditor key={key} keyName={key} displayname={key} value={value} onKeyValueChange={handleObjectChange}/>
-                        ))}
+                        {Object
+                            .entries(props.value)
+                            .map(([key, value]) => (
+                                <JsonNestedEditor
+                                    key={key}
+                                    keyName={key}
+                                    displayname={key}
+                                    value={value}
+                                    onKeyValueChange={handleObjectChange}
+                                    selectionOnKey={props.selectionOnKey} // TODO trim first row if part of key in foreach
+                                />
+                            ))}
                     </ul>
                 </li>
             }

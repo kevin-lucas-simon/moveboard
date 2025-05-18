@@ -1,6 +1,6 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
 import React from "react";
-import {JsonFieldEditor} from "./JsonFieldEditor";
+import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
 
 export type SingleObjectEditorProps = {
     keyName: string,
@@ -18,7 +18,7 @@ export function SingleObjectEditor(props: SingleObjectEditorProps) {
                     {!(props.value instanceof Object) && ":"}
                 </span>
                 {!(props.value instanceof Object) &&
-                    <JsonFieldEditor
+                    <JsonSingleFieldEditor
                         value={props.value}
                         onChange={(value: any) => props.onChange(props.keyName, value)}
                         className="w-0 grow bg-transparent outline-none"

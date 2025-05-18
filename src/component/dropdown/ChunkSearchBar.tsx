@@ -8,7 +8,7 @@ import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
 
 export type ChunkSearchBarProps = {
-    items: string[];
+    options: string[];
     active?: string|null;
     onSelect?: ((item: string) => void);
     onCreate?: ((item: string) => void);
@@ -17,9 +17,9 @@ export function ChunkSearchBar(props: ChunkSearchBarProps) {
     const [query, setQuery] = useState<string>('')
 
     const filteredItems = query === ''
-        ? props.items
+        ? props.options
             .slice(0, 12)
-        : props.items
+        : props.options
             .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
             .slice(0, 12)
 

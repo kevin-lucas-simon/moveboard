@@ -75,7 +75,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* chunk search */}
                 <div className="grow">
                     <ChunkSearchBar
-                        items={Object.keys(editLevel.chunks)}
+                        options={Object.keys(editLevel.chunks)}
                         active={editor.active}
                         onSelect={(chunk) => dispatchEditor({
                             type: 'level_select_chunk',
@@ -167,7 +167,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditGeneralTab chunk={editChunk} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.JOINTS &&
-                        <EditJointsTab joints={editChunk.joints} chunkNames={Object.keys(editLevel.chunks)} chunkDispatcher={dispatchEditor}/>
+                        <EditJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.ELEMENTS &&
                         <EditorElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>

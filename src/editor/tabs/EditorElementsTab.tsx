@@ -11,7 +11,10 @@ export type ChunkElementsEditorProps = {
 }
 
 export function EditorElementsTab(props: ChunkElementsEditorProps) {
-    const addElement = (type: string) => {
+    const addElement = (type?: string) => {
+        if (!type || !(type in elementDefinition)) {
+            return;
+        }
         props.chunkDispatcher({
             type: 'chunk_add_element',
             payload: elementDefinition[type].defaultProps,

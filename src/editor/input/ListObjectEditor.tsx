@@ -8,6 +8,7 @@ export type ListObjectEditorProps = {
     value: any,
     onChange: (key: string, value: any) => void,
     onDelete: (key: string) => void,
+    selectionOnKey?: {[key: string]: string[]}
 }
 
 export function ListObjectEditor(props: ListObjectEditorProps) {
@@ -38,6 +39,7 @@ export function ListObjectEditor(props: ListObjectEditorProps) {
                         keyName={props.keyName}
                         value={props.value}
                         onKeyValueChange={props.onChange}
+                        selectionOnKey={props.selectionOnKey}
                     />
                 </ul>
             }
