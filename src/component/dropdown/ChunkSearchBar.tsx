@@ -1,23 +1,27 @@
-import {MagnifyingGlassIcon, XMarkIcon} from "@heroicons/react/24/outline";
+import {
+    CheckIcon,
+    MagnifyingGlassIcon,
+    PlusIcon,
+    XMarkIcon
+} from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
 
-export type SearchBarProps = {
+export type ChunkSearchBarProps = {
     items: string[];
     active?: string|null;
-    placeholder?: string;
     onSelect?: ((item: string) => void);
     onCreate?: ((item: string) => void);
 }
-export function SearchBar(props: SearchBarProps) {
+export function ChunkSearchBar(props: ChunkSearchBarProps) {
     const [query, setQuery] = useState<string>('')
 
-    const filteredItems =
-        query === ''
-            ? props.items
-            : props.items.filter((item) => {
-                return item.toLowerCase().includes(query.toLowerCase())
-            })
+    const filteredItems = query === ''
+        ? props.items
+            .slice(0, 12)
+        : props.items
+            .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+            .slice(0, 12)
 
     const handleItemSelect = (item: string|null) => {
         if (item === null) {
@@ -40,6 +44,7 @@ export function SearchBar(props: SearchBarProps) {
             value={null}
             onChange={handleItemSelect}
             onClose={() => setQuery('')}
+            immediate={true}
         >
             <div className="relative max-w-sm mx-auto bg-gray-200 rounded-md">
                 <ComboboxButton className="group absolute inset-y-0 left-0 m-2">
@@ -48,7 +53,7 @@ export function SearchBar(props: SearchBarProps) {
                 <ComboboxInput
                     className="w-full bg-transparent rounded-md py-1 pl-8 pr-2 focus:outline-none"
                     displayValue={(item: string) => item}
-                    placeholder={props.placeholder || 'Search...'}
+                    placeholder={"Search or create chunk..."}
                     onChange={(event) => setQuery(event.target.value)}
                 />
                 {query !== '' &&
@@ -69,18 +74,34 @@ export function SearchBar(props: SearchBarProps) {
                     <ComboboxOption
                         key={item}
                         value={item}
-                        className="bg-gray-200 data-[focus]:bg-gray-300 py-1 pl-8 pr-2"
+                        className="flex gap-2 items-center bg-gray-200 data-[focus]:bg-gray-300 py-1 px-2"
                     >
+                        {item === props.active ?
+                            <CheckIcon className="w-4"/>
+                            :
+                            <span className="w-4"/>
+                        }
                         {item}
                     </ComboboxOption>
                 ))}
 
-                {query !== '' && !filteredItems.includes(query) &&
+                {!filteredItems.includes(query) &&
                     <ComboboxOption
                         value={query}
-                        className="bg-gray-200 data-[focus]:bg-gray-300 py-1 pl-8 pr-2 italic"
+                        className="flex gap-2 items-center bg-gray-200 data-[focus]:bg-gray-300 py-1 px-2"
+                        disabled={query === ""}
                     >
-                        Create "{query}"
+                        {query === "" ?
+                            <>
+                                <PlusIcon className="w-4 text-gray-600"/>
+                                <i className="text-gray-600">Create Chunk by typing...</i>
+                            </>
+                            :
+                            <>
+                                <PlusIcon className="w-4"/>
+                                <i>Create Chunk "{query}"</i>
+                            </>
+                        }
                     </ComboboxOption>
                 }
             </ComboboxOptions>

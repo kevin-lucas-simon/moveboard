@@ -19,7 +19,7 @@ import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../model/LevelModel";
 import {Textarea} from "@headlessui/react";
-import {SearchBar} from "../component/dropdown/SearchBar";
+import {ChunkSearchBar} from "../component/dropdown/ChunkSearchBar";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {levelReducer} from "./reducer/levelReducer";
@@ -74,10 +74,9 @@ export function LevelEditor(props: LevelEditorProps) {
 
                 {/* chunk search */}
                 <div className="grow">
-                    <SearchBar
-                        items={Object.keys(editLevel.chunks).filter((chunk) => chunk !== editor.active)}
+                    <ChunkSearchBar
+                        items={Object.keys(editLevel.chunks)}
                         active={editor.active}
-                        placeholder={"Search Chunk..."}
                         onSelect={(chunk) => dispatchEditor({
                             type: 'level_select_chunk',
                             payload: chunk,
