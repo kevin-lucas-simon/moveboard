@@ -30,6 +30,8 @@ export function levelReducer(
                 active: action.payload,
             };
         case "level_add_chunk":
+            const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+
             return {
                 ...state,
                 level: {
@@ -56,7 +58,7 @@ export function levelReducer(
                                         y: 1,
                                         z: 3,
                                     },
-                                    color: "blue",
+                                    color: randomColor,
                                 } as FloorBlockModel
                             ],
                             joints: [],
