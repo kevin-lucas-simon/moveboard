@@ -60,6 +60,24 @@ export function LevelEditor(props: LevelEditorProps) {
         })
     }
 
+    const handleChunkChange = (chunkName: string) => {
+        dispatchEditor({
+            type: 'level_select_chunk',
+            payload: chunkName,
+        })
+    }
+
+    const handleChunkCreate = (chunkName: string) => {
+        dispatchEditor({
+            type: 'level_add_chunk',
+            payload: chunkName,
+        })
+        dispatchEditor({
+            type: 'level_select_chunk',
+            payload: chunkName,
+        })
+    }
+
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
             {/* header */}
@@ -77,20 +95,8 @@ export function LevelEditor(props: LevelEditorProps) {
                     <ChunkSearchBar
                         options={Object.keys(editLevel.chunks)}
                         active={editor.active}
-                        onSelect={(chunk) => dispatchEditor({
-                            type: 'level_select_chunk',
-                            payload: chunk,
-                        })}
-                        onCreate={(chunk) => {
-                            dispatchEditor({
-                                type: 'level_add_chunk',
-                                payload: chunk,
-                            })
-                            dispatchEditor({
-                                type: 'level_select_chunk',
-                                payload: chunk,
-                            })
-                        }}
+                        onSelect={handleChunkChange}
+                        onCreate={handleChunkCreate}
                     />
                 </div>
 
@@ -167,7 +173,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditGeneralTab chunk={editChunk} chunkDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.JOINTS &&
-                        <EditJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} chunkDispatcher={dispatchEditor}/>
+                        <EditJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} levelDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.ELEMENTS &&
                         <EditorElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>

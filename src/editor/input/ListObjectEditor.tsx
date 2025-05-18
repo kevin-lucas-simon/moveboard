@@ -9,6 +9,7 @@ export type ListObjectEditorProps = {
     onChange: (key: string, value: any) => void,
     onDelete: (key: string) => void,
     selectionOnKey?: {[key: string]: string[]}
+    children?: React.ReactNode;
 }
 
 export function ListObjectEditor(props: ListObjectEditorProps) {
@@ -41,6 +42,7 @@ export function ListObjectEditor(props: ListObjectEditorProps) {
                         onKeyValueChange={props.onChange}
                         selectionOnKey={props.selectionOnKey}
                     />
+                    {props.children}
                 </ul>
             }
         </div>

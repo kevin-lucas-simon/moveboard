@@ -2,13 +2,14 @@ import {JointModel} from "../../model/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
-import {ChunkReducerActions} from "../reducer/chunkReducer";
+import {ArrowRightCircleIcon} from "@heroicons/react/24/outline";
+import {LevelReducerActions} from "../reducer/levelReducer";
 
 export type EditJointsTabProps = {
     joints: JointModel[];
     currentChunk: string;
     chunkNames: string[];
-    chunkDispatcher: React.Dispatch<ChunkReducerActions>;
+    levelDispatcher: React.Dispatch<LevelReducerActions>;
 }
 
 export function EditJointsTab(props: EditJointsTabProps) {
@@ -18,7 +19,7 @@ export function EditJointsTab(props: EditJointsTabProps) {
     ;
 
     const addJoint = () => {
-        props.chunkDispatcher({
+        props.levelDispatcher({
             type: 'chunk_add_joint',
             payload: {
                 neighbour: "",
@@ -30,7 +31,7 @@ export function EditJointsTab(props: EditJointsTabProps) {
     }
 
     const updateJoint = (index: string, value: JointModel) => {
-        props.chunkDispatcher({
+        props.levelDispatcher({
             type: 'chunk_update_joint',
             payload: {
                 index: index,
@@ -40,8 +41,15 @@ export function EditJointsTab(props: EditJointsTabProps) {
     }
 
     const removeJoint = (index: string) => {
-        props.chunkDispatcher({
+        props.levelDispatcher({
             type: 'chunk_remove_joint',
+            payload: index,
+        });
+    }
+
+    const changeChunk = (index: string) => {
+        props.levelDispatcher({
+            type: 'level_select_chunk',
             payload: index,
         });
     }
@@ -65,7 +73,19 @@ export function EditJointsTab(props: EditJointsTabProps) {
                             selectionOnKey={{
                                 "neighbour": validChunksForNewJoints,
                             }}
-                        />
+                        >
+                            <li className="mt-2 mx-2">
+                                {joint.neighbour &&
+                                    <button
+                                        className="flex gap-1 px-2 py-1 hover:bg-gray-500/10 rounded-full text-sm"
+                                        onClick={() => changeChunk(joint.neighbour)}
+                                    >
+                                        <ArrowRightCircleIcon className="w-4"/>
+                                        Change Chunk
+                                    </button>
+                                }
+                            </li>
+                        </ListObjectEditor>
                     </li>
                 )}
             </ul>
