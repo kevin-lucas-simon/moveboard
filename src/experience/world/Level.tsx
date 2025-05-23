@@ -12,7 +12,7 @@ export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<string>(props.start);
     const renderedChunks
-        = useChunkRenderer(props.chunks, props.start, activeChunk);
+        = useChunkRenderer(props.chunks, activeChunk);
 
     if (!renderedChunks[activeChunk]) {
         throw new Error("Active chunk is not rendered");

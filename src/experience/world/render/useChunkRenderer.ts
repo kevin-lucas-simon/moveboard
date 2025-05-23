@@ -3,7 +3,7 @@ import {Vector3, Vector3Like} from "three";
 import {FloorBlockModel} from "../../element/block/FloorBlock";
 import {JointModel} from "../../../model/JointModel";
 import {ElementModel} from "../../../model/ElementModel";
-import {useMemo} from "react";
+import {useRef} from "react";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -20,21 +20,20 @@ type RenderDimension = {
 /**
  * Hook to calculate and filter visible chunks based on provided chunk models
  * @param chunkModels Chunk models from API
- * @param startChunkId Initial Chunk name is needed to prevent orphan chunk issues
  * @param activeChunkId Active chunk defines which chunks neighbours should be visible
  */
 export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
-    startChunkId: string,
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
-    // we only recalculate if the data changes
-    const calculatedChunks = useMemo(() => {
-        return calculateChunkGeometry(chunkModels, startChunkId);
-    }, [chunkModels, startChunkId]);
+    const calculatedChunks = useRef<{[key: string]: RenderedChunk}|undefined>(undefined);
+
+    const activePosition = calculatedChunks.current?.[activeChunkId]?.worldPosition ?? new Vector3(0, 0, 0);
+
+    calculatedChunks.current = calculateChunkGeometry(chunkModels, activeChunkId, activePosition);
 
     // we just filter our cached chunks
-    return filterVisibleChunks(calculatedChunks, activeChunkId);
+    return filterVisibleChunks(calculatedChunks.current, activeChunkId);
 }
 
 /**
@@ -109,11 +108,13 @@ function filterVisibleChunks(
 /**
  * Calculate the geometry of all chunks based on the chunk models
  * @param chunkModels Chunk models from API
- * @param startChunkId Start Chunk where the rendering initial starts to prevent orphan chunk issues
+ * @param rootChunkId Chunk where the rendering initial starts to prevent orphan chunk issues
+ * @param rootChunkPosition Position of the Root Chunk
  */
 function calculateChunkGeometry(
     chunkModels: {[key: string]: ChunkModel},
-    startChunkId: string
+    rootChunkId: string,
+    rootChunkPosition: Vector3Like,
 ): {[key: string]: RenderedChunk} {
     type ChunkGeometryTask = {
         currentId: string,
@@ -121,11 +122,11 @@ function calculateChunkGeometry(
         position: Vector3Like,
     }
 
-    // start with start chunk as root
+    // start root chunk as root task
     const tasks: ChunkGeometryTask[] = [{
-        currentId: startChunkId,
+        currentId: rootChunkId,
         parentId: null,
-        position: {x: 0, y: 0, z: 0},
+        position: rootChunkPosition,
     }];
     const calculatedChunks: {[key: string]: RenderedChunk} = {};
 
@@ -153,7 +154,7 @@ function calculateChunkGeometry(
         // get joint with parent name
         const jointToParent
             = currentModel.joints.find(joint => joint.neighbour === task.parentId);
-        let renderPosition = new Vector3()
+        let renderPosition = new Vector3().copy(task.position);
         if (jointToParent) {
             renderPosition = new Vector3()
                 .copy(task.position)
