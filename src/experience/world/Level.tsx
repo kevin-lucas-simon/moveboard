@@ -29,7 +29,7 @@ export function Level(props: LevelProps) {
             ))}
 
             <ChunkCamera
-                chunkPosition={renderedChunks[activeChunk].worldPosition}
+                chunkPosition={renderedChunks[activeChunk].cameraDimension.centerWorldPosition}
                 chunkDimension={renderedChunks[activeChunk].cameraDimension.dimension}
                 chunkMaxY={renderedChunks[activeChunk].cameraDimension.maximalPosition.y}
                 cameraFov={45}

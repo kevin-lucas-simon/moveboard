@@ -12,6 +12,7 @@ export type RenderedChunk = {
 }
 type RenderDimension = {
     dimension: Vector3Like,
+    centerWorldPosition: Vector3Like,
     minimalPosition: Vector3Like,
     maximalPosition: Vector3Like,
 }
@@ -159,11 +160,21 @@ function calculateChunkGeometry(
                 .sub(jointToParent.position)
         }
 
+        // calculate camera center position
+        const centerWorldPosition = calculateCameraCenterWorldPosition(
+            renderPosition,
+            renderDimension.minimalPosition,
+            renderDimension.maximalPosition,
+        );
+
         // create new rendered chunk
         calculatedChunks[task.currentId] = {
             model: currentModel,
             worldPosition: renderPosition,
-            cameraDimension: renderDimension,
+            cameraDimension: {
+                ...renderDimension,
+                centerWorldPosition: centerWorldPosition
+            },
         };
 
         // add new tasks
@@ -188,7 +199,11 @@ function calculateChunkGeometry(
  */
 function calculateCameraDimension(
     elementModels: ElementModel[],
-): RenderDimension {
+): {
+    dimension: Vector3Like,
+    minimalPosition: Vector3Like,
+    maximalPosition: Vector3Like,
+} {
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
 
@@ -223,5 +238,26 @@ function calculateCameraDimension(
         dimension: dimension as Vector3Like,
         minimalPosition: minPosition as Vector3Like,
         maximalPosition: maxPosition as Vector3Like,
-    } as RenderDimension;
+    };
+}
+
+/**
+ * Calculate the camera center world position based on the chunk position and dimension
+ * @param worldPosition
+ * @param minPosition
+ * @param maxPosition
+ */
+function calculateCameraCenterWorldPosition(
+    worldPosition: Vector3Like,
+    minPosition: Vector3Like,
+    maxPosition: Vector3Like,
+): Vector3Like {
+    const worldMin = new Vector3().copy(worldPosition).add(minPosition);
+    const worldMax = new Vector3().copy(worldPosition).add(maxPosition);
+
+    return new Vector3(
+        (worldMin.x + worldMax.x) / 2,
+        (worldMin.y + worldMax.y) / 2,
+        (worldMin.z + worldMax.z) / 2,
+    ) as Vector3Like;
 }

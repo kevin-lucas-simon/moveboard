@@ -74,6 +74,12 @@ export function EditJointsTab(props: EditJointsTabProps) {
                                 "neighbour": validChunksForNewJoints,
                             }}
                         >
+                            {/* TODO swap current delete button with new "Action" button which is here the change chunk badge */}
+                            {/* TODO in addition we can add clone and hide functionality here */}
+                            {/* TODO display which element is currently selected in 3D engine*/}
+
+                            {/* TODO cycle level has issues in chunk camera */}
+                            {/* TODO cycle level has issues in chunk generation order */}
                             <li className="mt-2 mx-2">
                                 {joint.neighbour &&
                                     <button
