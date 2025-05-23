@@ -18,7 +18,7 @@ type RenderDimension = {
 }
 
 /**
- * Hook to calculate and filter visible chunks based on provided chunk models
+ * Calculate visible chunks based on provided chunk models starting from the active chunk
  * @param chunkModels Chunk models from API
  * @param activeChunkId Active chunk defines which chunks neighbours should be visible
  */
@@ -26,107 +26,77 @@ export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
+    // reuse calculated position of active chunk
     const calculatedChunks = useRef<{[key: string]: RenderedChunk}|undefined>(undefined);
-
     const activePosition = calculatedChunks.current?.[activeChunkId]?.worldPosition ?? new Vector3(0, 0, 0);
 
-    calculatedChunks.current = calculateChunkGeometry(chunkModels, activeChunkId, activePosition);
+    // calculate chunks from active chunk as root
+    calculatedChunks.current = calculateChunks(
+        chunkModels,
+        activeChunkId,
+        activePosition,
+        true
+    );
 
-    // we just filter our cached chunks
-    return filterVisibleChunks(calculatedChunks.current, activeChunkId);
+    // filter out all chunks that are not visible
+    return filterNotVisibleChunkNeighbours(
+        calculatedChunks.current,
+        activeChunkId,
+    );
 }
 
 /**
- * Filter visible chunks based on active chunk
- * @param calculatedChunks Rendered chunks to filter
- * @param activeChunkId Active chunk where the vision starts
+ * Filter out invisible chunks from chunk, e.g. to previous keep rendering positions of invisible neighbours
+ * @param renderedChunks
+ * @param chunkId
  */
-function filterVisibleChunks(
-    calculatedChunks: {[key: string]: RenderedChunk},
-    activeChunkId: string
-): {[key: string]: RenderedChunk} {
-    type ChunkVisionTask = {
-        currentId: string,
-        parentId: string|null,
-        vision: number,
+function filterNotVisibleChunkNeighbours(
+    renderedChunks: {[key: string]: RenderedChunk},
+    chunkId: string,
+) {
+    // skip if chunk is not rendered
+    const activeChunk = renderedChunks[chunkId];
+    if (!activeChunk) {
+        return renderedChunks;
     }
 
-    // start with active chunk as root
-    const visionTasks: ChunkVisionTask[] = [{
-        currentId: activeChunkId,
-        parentId: null,
-        vision: Number.MAX_SAFE_INTEGER,
-    }];
-    const filteredChunks: {[key: string]: RenderedChunk} = {};
+    // get all invisible root neighbours
+    const invisibleRootNeighbours = activeChunk.model.joints
+        .filter(joint => joint.vision <= 0)
+        .map(joint => joint.neighbour);
 
-    // run through vision pipeline from root task as tree
-    while (visionTasks.length > 0) {
-        const task = visionTasks.shift();
-        if (!task) {
-            throw new Error("ChunkVisionTask is undefined");
-        }
-
-        // skip if already filtered or vision is zero
-        if (task.vision <= 0 || filteredChunks[task.currentId]) {
-            continue;
-        }
-
-        // get current chunk
-        const currentChunk = calculatedChunks[task.currentId];
-        if (!currentChunk) {
-            continue;
-        }
-
-        // skip if it does not have a joint connecting it to the parent
-        const jointToParent = currentChunk.model.joints
-            .find(joint => joint.neighbour === task.parentId);
-        if (task.parentId && !jointToParent) {
-            continue;
-        }
-
-        // add chunk to filtered list
-        filteredChunks[task.currentId] = currentChunk;
-
-        // add neighbours to vision queue
-        currentChunk.model.joints.forEach((joint: JointModel) => {
-            // skip if already visited in queue
-            if (joint.neighbour === task.parentId) {
-                return;
-            }
-            // push new task to queue
-            visionTasks.push({
-                currentId: joint.neighbour,
-                parentId: task.currentId,
-                vision: Math.min(task.vision - 1, joint.vision),
-            });
-        });
-    }
-
-    return filteredChunks;
+    // filter out invisible root neighbours
+    return Object.fromEntries(
+        Object.entries(renderedChunks).filter(([key]) => !invisibleRootNeighbours.includes(key))
+    );
 }
 
 /**
- * Calculate the geometry of all chunks based on the chunk models
+ * Calculate the geometry of the visible chunks based on the chunk models starting from root chunk
  * @param chunkModels Chunk models from API
  * @param rootChunkId Chunk where the rendering initial starts to prevent orphan chunk issues
  * @param rootChunkPosition Position of the Root Chunk
+ * @param renderRootNeighbour If enabled, additionally render all hidden root joint neighbours, e.g. for position access
  */
-function calculateChunkGeometry(
+function calculateChunks(
     chunkModels: {[key: string]: ChunkModel},
     rootChunkId: string,
     rootChunkPosition: Vector3Like,
+    renderRootNeighbour: boolean = false,
 ): {[key: string]: RenderedChunk} {
-    type ChunkGeometryTask = {
+    type ChunkRenderTask = {
         currentId: string,
         parentId: string | null,
         position: Vector3Like,
+        vision: number,
     }
 
     // start root chunk as root task
-    const tasks: ChunkGeometryTask[] = [{
+    const tasks: ChunkRenderTask[] = [{
         currentId: rootChunkId,
         parentId: null,
         position: rootChunkPosition,
+        vision: Number.MAX_SAFE_INTEGER,
     }];
     const calculatedChunks: {[key: string]: RenderedChunk} = {};
 
@@ -134,11 +104,15 @@ function calculateChunkGeometry(
     while (tasks.length > 0) {
         const task = tasks.shift();
         if (!task) {
-            throw new Error("ChunkCalculator task is undefined");
+            throw new Error("Chunk task is undefined");
         }
 
-        // skip if already calculated
-        if (calculatedChunks[task.currentId]) {
+        // skip task if already calculated or vision is zero
+        const isNotVisible = task.vision <= 0;
+        const isChunkCalculated = calculatedChunks[task.currentId];
+        const ignoreCheck = renderRootNeighbour && task.parentId === rootChunkId
+
+        if ((isNotVisible || isChunkCalculated) && !ignoreCheck) {
             continue;
         }
 
@@ -187,6 +161,7 @@ function calculateChunkGeometry(
                 currentId: joint.neighbour,
                 parentId: task.currentId,
                 position: new Vector3().copy(renderPosition).add(joint.position),
+                vision: Math.min(task.vision - 1, joint.vision),
             });
         });
     }
