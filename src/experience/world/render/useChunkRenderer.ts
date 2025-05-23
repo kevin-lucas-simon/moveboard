@@ -3,7 +3,7 @@ import {Vector3, Vector3Like} from "three";
 import {FloorBlockModel} from "../../element/block/FloorBlock";
 import {JointModel} from "../../../model/JointModel";
 import {ElementModel} from "../../../model/ElementModel";
-import {useRef} from "react";
+import {useMemo, useRef} from "react";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -26,23 +26,28 @@ export function useChunkRenderer(
     chunkModels: {[key: string]: ChunkModel},
     activeChunkId: string
 ): {[key: string]: RenderedChunk} {
-    // reuse calculated position of active chunk
+    // save rendering for next active chunk position reuse
     const calculatedChunks = useRef<{[key: string]: RenderedChunk}|undefined>(undefined);
-    const activePosition = calculatedChunks.current?.[activeChunkId]?.worldPosition ?? new Vector3(0, 0, 0);
 
-    // calculate chunks from active chunk as root
-    calculatedChunks.current = calculateChunks(
-        chunkModels,
-        activeChunkId,
-        activePosition,
-        true
-    );
+    // cache active chunk rendering
+    return useMemo(() => {
+        // reuse previous calculated position
+        const activePosition = calculatedChunks.current?.[activeChunkId]?.worldPosition ?? new Vector3(0, 0, 0);
 
-    // filter out all chunks that are not visible
-    return filterNotVisibleChunkNeighbours(
-        calculatedChunks.current,
-        activeChunkId,
-    );
+        // calculate chunks from active chunk as root
+        calculatedChunks.current = calculateChunks(
+            chunkModels,
+            activeChunkId,
+            activePosition,
+            true // render root neighbour else we do not know their position
+        );
+
+        // filter out all chunks that are not visible
+        return filterNotVisibleChunkNeighbours(
+            calculatedChunks.current,
+            activeChunkId,
+        );
+    }, [chunkModels, activeChunkId]);
 }
 
 /**
