@@ -9,6 +9,8 @@ import {BasicBlockModel} from "../../element/block/BasicBlock";
 export type RenderedChunk = {
     model: ChunkModel,
     worldPosition: Vector3Like,
+    playerSpawnPosition: Vector3Like,
+    chunkDimension: RenderDimension,
     cameraDimension: RenderDimension,
 }
 type RenderDimension = {
@@ -113,14 +115,23 @@ function calculateChunks(
         }
 
         // calculate dimensions
-        const cameraElements = currentModel.elements
-            .filter(element => element.type === FloorBlock.name)
-        const cameraDimension = calculateRenderDimension(cameraElements, renderPosition);
+        const chunkDimension = calculateRenderDimension(currentModel.elements, renderPosition);
+        const cameraDimension = calculateRenderDimension(
+            currentModel.elements.filter(element => element.type === FloorBlock.name),
+            renderPosition
+        );
+
+        // calculate player spawn position
+        const playerSpawnPosition = new Vector3()
+            .copy(renderPosition)
+            .add(currentModel.player);
 
         // create new rendered chunk
         calculatedChunks[task.currentId] = {
             model: currentModel,
             worldPosition: renderPosition,
+            playerSpawnPosition: playerSpawnPosition,
+            chunkDimension: chunkDimension,
             cameraDimension: cameraDimension,
         };
 

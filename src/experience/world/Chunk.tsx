@@ -5,11 +5,15 @@ import {elementDefinition, elementFallback} from "../config/elementDefinition";
 import {Joint} from "./Joint";
 import {JointModel} from "../../model/JointModel";
 import {ElementModel} from "../../model/ElementModel";
+import {CuboidCollider} from "@react-three/rapier";
 
 export type ChunkProps = ChunkModel & {
     active: boolean,
     position: Vector3Like,
-    onChunkLeave: (neighbour: string) => void,
+    center: Vector3Like,
+    dimension: Vector3Like,
+    onPlayerChunkLeave: (neighbour: string) => void,
+    onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
     const createChunkElement = (model: ElementModel) => {
@@ -27,17 +31,28 @@ export function Chunk(props: ChunkProps) {
 
     return (
         <>
+            {/* all displayed elements */}
             {props.elements.map((element) => createChunkElement(element))}
+            {/* player chunk joint colliders */}
             {props.joints.map((joint: JointModel) =>
                 <Joint
                     {...joint}
-                    key={props.name+"->"+joint.neighbour}
+                    key={props.name + "->" + joint.neighbour}
                     inActiveChunk={props.active}
                     position={new Vector3().copy(props.position).add(joint.position)}
                     chunkPosition={new Vector3().copy(props.position)}
-                    onChunkLeave={props.onChunkLeave}
+                    onChunkLeave={props.onPlayerChunkLeave}
                 />
             )}
+            {/* player out of bounds collider */}
+            {props.active &&
+                <CuboidCollider
+                    sensor={true}
+                    onIntersectionExit={props.onPlayerOutOfBounds}
+                    args={new Vector3().copy(props.dimension).addScalar(100).toArray()}
+                    position={new Vector3().copy(props.center)}
+                />
+            }
         </>
     );
 }
