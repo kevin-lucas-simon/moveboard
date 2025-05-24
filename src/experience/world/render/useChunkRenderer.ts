@@ -1,9 +1,10 @@
 import {ChunkModel} from "../../../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {FloorBlockModel} from "../../element/block/FloorBlock";
+import {FloorBlock} from "../../element/block/FloorBlock";
 import {JointModel} from "../../../model/JointModel";
 import {ElementModel} from "../../../model/ElementModel";
 import {useMemo, useRef} from "react";
+import {BasicBlockModel} from "../../element/block/BasicBlock";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -11,8 +12,8 @@ export type RenderedChunk = {
     cameraDimension: RenderDimension,
 }
 type RenderDimension = {
-    dimension: Vector3Like,
-    centerWorldPosition: Vector3Like,
+    size: Vector3Like,
+    centerPosition: Vector3Like,
     minimalPosition: Vector3Like,
     maximalPosition: Vector3Like,
 }
@@ -48,32 +49,6 @@ export function useChunkRenderer(
             activeChunkId,
         );
     }, [chunkModels, activeChunkId]);
-}
-
-/**
- * Filter out invisible chunks from chunk, e.g. to previous keep rendering positions of invisible neighbours
- * @param renderedChunks
- * @param chunkId
- */
-function filterNotVisibleChunkNeighbours(
-    renderedChunks: {[key: string]: RenderedChunk},
-    chunkId: string,
-) {
-    // skip if chunk is not rendered
-    const activeChunk = renderedChunks[chunkId];
-    if (!activeChunk) {
-        return renderedChunks;
-    }
-
-    // get all invisible root neighbours
-    const invisibleRootNeighbours = activeChunk.model.joints
-        .filter(joint => joint.vision <= 0)
-        .map(joint => joint.neighbour);
-
-    // filter out invisible root neighbours
-    return Object.fromEntries(
-        Object.entries(renderedChunks).filter(([key]) => !invisibleRootNeighbours.includes(key))
-    );
 }
 
 /**
@@ -127,9 +102,6 @@ function calculateChunks(
             continue;
         }
 
-        // calculate dimension
-        const renderDimension = calculateCameraDimension(currentModel.elements);
-
         // get joint with parent name
         const jointToParent
             = currentModel.joints.find(joint => joint.neighbour === task.parentId);
@@ -140,21 +112,16 @@ function calculateChunks(
                 .sub(jointToParent.position)
         }
 
-        // calculate camera center position
-        const centerWorldPosition = calculateCameraCenterWorldPosition(
-            renderPosition,
-            renderDimension.minimalPosition,
-            renderDimension.maximalPosition,
-        );
+        // calculate dimensions
+        const cameraElements = currentModel.elements
+            .filter(element => element.type === FloorBlock.name)
+        const cameraDimension = calculateRenderDimension(cameraElements, renderPosition);
 
         // create new rendered chunk
         calculatedChunks[task.currentId] = {
             model: currentModel,
             worldPosition: renderPosition,
-            cameraDimension: {
-                ...renderDimension,
-                centerWorldPosition: centerWorldPosition
-            },
+            cameraDimension: cameraDimension,
         };
 
         // add new tasks
@@ -175,50 +142,76 @@ function calculateChunks(
 }
 
 /**
- * Calculate the camera dimension based on FloorBlocks
- * @param elementModels chunk elements from API
+ * Filter out invisible chunks from chunk, e.g. to previous keep rendering positions of invisible neighbours
+ * @param renderedChunks
+ * @param chunkId
  */
-function calculateCameraDimension(
+function filterNotVisibleChunkNeighbours(
+    renderedChunks: {[key: string]: RenderedChunk},
+    chunkId: string,
+) {
+    // skip if chunk is not rendered
+    const activeChunk = renderedChunks[chunkId];
+    if (!activeChunk) {
+        return renderedChunks;
+    }
+
+    // get all invisible root neighbours
+    const invisibleRootNeighbours = activeChunk.model.joints
+        .filter(joint => joint.vision <= 0)
+        .map(joint => joint.neighbour);
+
+    // filter out invisible root neighbours
+    return Object.fromEntries(
+        Object.entries(renderedChunks).filter(([key]) => !invisibleRootNeighbours.includes(key))
+    );
+}
+
+/**
+ * Calculate the render dimension of the chunk based on the block models and world position
+ * @param elementModels chunk elements from API
+ * @param worldPosition world position of the chunk
+ */
+function calculateRenderDimension(
     elementModels: ElementModel[],
-): {
-    dimension: Vector3Like,
-    minimalPosition: Vector3Like,
-    maximalPosition: Vector3Like,
-} {
+    worldPosition: Vector3Like,
+): RenderDimension {
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
 
-    // iterate through all camera related elements
     elementModels.forEach((element) => {
-        // skip if not a floor block and cast to floor block model
-        if (element.type !== "FloorBlock") {
+        // skip if element is not a block
+        const block = element as BasicBlockModel;
+        if (!block.position || !block.dimension) {
             return;
-        }
-        const floorBlock = element as FloorBlockModel;
-
-        // extract position and dimension from child
-        const elementPosition = floorBlock.position;
-        const elementDimension = floorBlock.dimension;
-        if (!elementPosition || !elementDimension) {
-            throw new Error("Missing props in " + element.type + ": position and dimension");
         }
 
         // calculate minimal and maximal position
-        minPosition.x = Math.min(minPosition.x, elementPosition.x - elementDimension.x / 2);
-        minPosition.y = Math.min(minPosition.y, elementPosition.y - elementDimension.y / 2);
-        minPosition.z = Math.min(minPosition.z, elementPosition.z - elementDimension.z / 2);
+        minPosition.x = Math.min(minPosition.x, block.position.x - block.dimension.x / 2);
+        minPosition.y = Math.min(minPosition.y, block.position.y - block.dimension.y / 2);
+        minPosition.z = Math.min(minPosition.z, block.position.z - block.dimension.z / 2);
 
-        maxPosition.x = Math.max(maxPosition.x, elementPosition.x + elementDimension.x / 2);
-        maxPosition.y = Math.max(maxPosition.y, elementPosition.y + elementDimension.y / 2);
-        maxPosition.z = Math.max(maxPosition.z, elementPosition.z + elementDimension.z / 2);
+        maxPosition.x = Math.max(maxPosition.x, block.position.x + block.dimension.x / 2);
+        maxPosition.y = Math.max(maxPosition.y, block.position.y + block.dimension.y / 2);
+        maxPosition.z = Math.max(maxPosition.z, block.position.z + block.dimension.z / 2);
     });
 
-    // calculate new dimension and return it
+    // calculate new dimension
     const dimension = maxPosition.clone().sub(minPosition);
+
+    // calculate chunk center world position
+    const centerPosition = calculateChunkCenterWorldPosition(
+        worldPosition,
+        minPosition,
+        maxPosition,
+    );
+
+    // return the result
     return {
-        dimension: dimension as Vector3Like,
-        minimalPosition: minPosition as Vector3Like,
-        maximalPosition: maxPosition as Vector3Like,
+        size: dimension,
+        centerPosition: centerPosition,
+        minimalPosition: minPosition,
+        maximalPosition: maxPosition,
     };
 }
 
@@ -228,7 +221,7 @@ function calculateCameraDimension(
  * @param minPosition
  * @param maxPosition
  */
-function calculateCameraCenterWorldPosition(
+function calculateChunkCenterWorldPosition(
     worldPosition: Vector3Like,
     minPosition: Vector3Like,
     maxPosition: Vector3Like,
@@ -240,5 +233,5 @@ function calculateCameraCenterWorldPosition(
         (worldMin.x + worldMax.x) / 2,
         (worldMin.y + worldMax.y) / 2,
         (worldMin.z + worldMax.z) / 2,
-    ) as Vector3Like;
+    );
 }
