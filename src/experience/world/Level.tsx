@@ -28,18 +28,15 @@ export function Level(props: LevelProps) {
     return (
         <>
             {Object.keys(renderedChunks).map(key => (
-                <Chunk key={key} {...renderedChunks[key].model}
+                <Chunk key={key} {...renderedChunks[key]}
                        active={key === activeChunk}
-                       position={renderedChunks[key].worldPosition}
-                       center={renderedChunks[key].chunkDimension.centerPosition}
-                       dimension={renderedChunks[key].chunkDimension.size}
                        onPlayerChunkLeave={setActiveChunk}
                        onPlayerOutOfBounds={onPlayerOutOfBounds}
                 />
             ))}
 
             <ChunkCamera
-                chunkPosition={renderedChunks[activeChunk].chunkDimension.centerPosition}
+                chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}
                 chunkDimension={renderedChunks[activeChunk].cameraDimension.size}
                 chunkMaxY={renderedChunks[activeChunk].cameraDimension.maximalPosition.y}
                 cameraFov={45}
