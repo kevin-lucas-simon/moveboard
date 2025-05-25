@@ -20,10 +20,17 @@ export function Level(props: LevelProps) {
         throw new Error("Active chunk is not rendered");
     }
 
+    function onPlayerChunkLeave(neighbour: string) {
+        if (props.chunks[neighbour]) {
+            setActiveChunk(neighbour);
+        }
+    }
+
     function onPlayerOutOfBounds() {
         console.log("Player out of bounds, respawning in chunk", activeChunk);
         // TODO das reicht anscheinend nicht aus, da in SecondChunk der Respawn nicht zuverlässig im Handy läuft
         // TODO: Respawn auch über Key
+        // TODO auch wenn Joint im FirstChunk fehlt und Kugel rausfällt, kommt kein Respawn!
         setPlayerSpawnPosition(new Vector3().copy(renderedChunks[activeChunk].playerSpawnPosition));
     }
 
@@ -32,7 +39,7 @@ export function Level(props: LevelProps) {
             {Object.keys(renderedChunks).map(key => (
                 <Chunk key={key} {...renderedChunks[key]}
                        active={key === activeChunk}
-                       onPlayerChunkLeave={setActiveChunk}
+                       onPlayerChunkLeave={onPlayerChunkLeave}
                        onPlayerOutOfBounds={onPlayerOutOfBounds}
                 />
             ))}
