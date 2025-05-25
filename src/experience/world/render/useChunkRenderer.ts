@@ -105,8 +105,9 @@ function calculateChunks(
         }
 
         // get joint with parent name
-        const jointToParent
-            = currentModel.joints.find(joint => joint.neighbour === task.parentId);
+        const jointToParent = currentModel.joints
+            .find(joint => joint.neighbour === task.parentId && joint.neighbour !== null);
+
         let renderPosition = new Vector3().copy(task.position);
         if (jointToParent) {
             renderPosition = new Vector3()

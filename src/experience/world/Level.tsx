@@ -22,6 +22,8 @@ export function Level(props: LevelProps) {
 
     function onPlayerOutOfBounds() {
         console.log("Player out of bounds, respawning in chunk", activeChunk);
+        // TODO das reicht anscheinend nicht aus, da in SecondChunk der Respawn nicht zuverlässig im Handy läuft
+        // TODO: Respawn auch über Key
         setPlayerSpawnPosition(new Vector3().copy(renderedChunks[activeChunk].playerSpawnPosition));
     }
 
