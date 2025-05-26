@@ -45,11 +45,10 @@ export function useChunkRenderer(
             true // render root neighbour else we do not know their position
         );
 
+        console.log(calculatedChunks.current)
+
         // filter out all chunks that are not visible
-        return filterNotVisibleChunkNeighbours(
-            calculatedChunks.current,
-            activeChunkId,
-        );
+        return calculatedChunks.current;
     }, [chunkModels, activeChunkId]);
 }
 
@@ -151,32 +150,6 @@ function calculateChunks(
     }
 
     return calculatedChunks;
-}
-
-/**
- * Filter out invisible chunks from chunk, e.g. to previous keep rendering positions of invisible neighbours
- * @param renderedChunks
- * @param chunkId
- */
-function filterNotVisibleChunkNeighbours(
-    renderedChunks: {[key: string]: RenderedChunk},
-    chunkId: string,
-) {
-    // skip if chunk is not rendered
-    const activeChunk = renderedChunks[chunkId];
-    if (!activeChunk) {
-        return renderedChunks;
-    }
-
-    // get all invisible root neighbours
-    const invisibleRootNeighbours = activeChunk.model.joints
-        .filter(joint => joint.vision <= 0)
-        .map(joint => joint.neighbour);
-
-    // filter out invisible root neighbours
-    return Object.fromEntries(
-        Object.entries(renderedChunks).filter(([key]) => !invisibleRootNeighbours.includes(key))
-    );
 }
 
 /**
