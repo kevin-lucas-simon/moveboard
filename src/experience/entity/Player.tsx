@@ -1,7 +1,7 @@
 import {RapierRigidBody, RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
 import {useDebugSettings} from "../input/DebugSettingsProvider";
-import {RefObject} from "react";
+import {RefObject, useRef} from "react";
 
 export type PlayerProps = {
     spawnPosition: Vector3Like,
@@ -14,8 +14,11 @@ export type PlayerProps = {
  * @constructor
  */
 export function Player(props: PlayerProps) {
-    const isEditingMode = useDebugSettings().isEditingMode
+    const isEditingMode = useDebugSettings().isEditingMode;
+    // use a ref to store the spawn position so it doesn't change on re-renders
+    const spawnPosition = useRef(new Vector3().copy(props.spawnPosition));
 
+    // in editing mode, we render a sphere at the spawn position
     if (isEditingMode) {
         return (
             <mesh position={new Vector3().copy(props.spawnPosition)}>
@@ -30,7 +33,7 @@ export function Player(props: PlayerProps) {
         <RigidBody
             ref={props.playerRef}
             name={Player.name}
-            position={new Vector3().copy(props.spawnPosition)}
+            position={spawnPosition.current}
             colliders={"ball"}
             canSleep={false}
             restitution={0.98}

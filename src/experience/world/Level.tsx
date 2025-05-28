@@ -20,12 +20,14 @@ export function Level(props: LevelProps) {
         throw new Error("Active chunk is not rendered");
     }
 
+    // change active chunk when player leaves a chunk
     function onPlayerChunkLeave(neighbour: string) {
         if (props.chunks[neighbour]) {
             setActiveChunk(neighbour);
         }
     }
 
+    // reset player position if it goes out of bounds
     function onPlayerOutOfBounds() {
         if (playerRef.current) {
             console.log("Player out of bounds, respawning in chunk", activeChunk);
@@ -54,7 +56,7 @@ export function Level(props: LevelProps) {
                 marginInBlockSize={1}
             />
 
-            <Player playerRef={playerRef} spawnPosition={renderedChunks[activeChunk].playerSpawnPosition}/>
+            <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
         </>
     );
 }
