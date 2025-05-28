@@ -7,7 +7,6 @@ import {useDebugSettings} from "../../input/DebugSettingsProvider";
 export type ChunkCameraProps = {
     chunkPosition: Vector3Like,
     chunkDimension: Vector3Like,
-    chunkMaxY: number,
     cameraFov: number,
     transitionSeconds: number,
     marginInBlockSize: number,
@@ -17,7 +16,6 @@ export type ChunkCameraProps = {
  * Camera that follows the active chunk and is always positioned above it
  * @param props.chunkPosition active chunk position
  * @param props.chunkDimension active chunk dimension
- * @param props.chunkMaxY maximal y position of active chunk (for calculating the chunk edge)
  * @param props.cameraFov field of view of camera
  * @param props.transitionSeconds time in seconds for camera position transition when active chunk changes
  * @param props.marginInBlockSize margin in block size around the displayed active chunk
@@ -33,7 +31,6 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,
         props.chunkDimension,
-        props.chunkMaxY,
         props.cameraFov,
         cameraRef.current?.aspect,
         props.marginInBlockSize
@@ -64,7 +61,6 @@ export function ChunkCamera(props: ChunkCameraProps) {
  * Calculate target camera position and target chunk position based on active chunk
  * @param chunkPosition
  * @param chunkDimension
- * @param chunkMaxY
  * @param cameraFov
  * @param cameraAspectRatio
  * @param marginInBlockSize
@@ -72,7 +68,6 @@ export function ChunkCamera(props: ChunkCameraProps) {
 function useChunkCameraTargetCalculation(
     chunkPosition: Vector3Like,
     chunkDimension: Vector3Like,
-    chunkMaxY: number,
     cameraFov: number,
     cameraAspectRatio: number = 1.0,
     marginInBlockSize: number = 0.0,
@@ -99,7 +94,7 @@ function useChunkCameraTargetCalculation(
         // define camera aimed position for animation
         setTargetCameraPosition(new Vector3(
             chunkPosition.x,
-            chunkPosition.y + chunkMaxY + cameraDistance,
+            chunkPosition.y + cameraDistance,
             chunkPosition.z
         ))
         setTargetChunkPosition(new Vector3()
