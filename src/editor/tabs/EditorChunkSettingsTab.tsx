@@ -7,7 +7,7 @@ import {LevelReducerActions} from "../reducer/levelReducer";
 import {BasicDialog} from "../../component/dialog/BasicDialog";
 import {TrashIcon} from "@heroicons/react/24/outline";
 
-export type EditGeneralTabProps = {
+export type EditorChunkSettingsTabProps = {
     chunk: ChunkModel;
     startChunk: string;
     currentChunk: string;
@@ -17,7 +17,7 @@ enum EditorDialogs {
     LEVEL_DELETE = "level_delete",
 }
 
-export function EditGeneralTab(props: EditGeneralTabProps) {
+export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
     const [dialog, setDialog] = React.useState<EditorDialogs|null>(null);
 
     const updateField = (key: string, value: any) => {
@@ -40,7 +40,7 @@ export function EditGeneralTab(props: EditGeneralTabProps) {
 
     return (
         <BaseTab
-            title={"General"}
+            title={"Chunk Settings"}
             description={"Edit the general information of the chunk."}
         >
             <ul>

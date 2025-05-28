@@ -2,17 +2,14 @@ import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
 import {useReducer, useState} from "react";
 import React from "react";
-import {EditorElementsTab} from "./tabs/EditorElementsTab";
+import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
 import {
-    AtSymbolIcon, Bars3Icon,
-    PlayIcon,
-    PuzzlePieceIcon,
-    Square2StackIcon
+    Bars3Icon, LinkIcon, PlayIcon, PuzzlePieceIcon, RectangleGroupIcon, RectangleStackIcon
 } from "@heroicons/react/24/outline";
-import {EditJointsTab} from "./tabs/EditJointsTab";
-import {EditGeneralTab} from "./tabs/EditGeneralTab";
-import {EditTestTab} from "./tabs/EditTestTab";
+import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
+import {EditorChunkSettingsTab} from "./tabs/EditorChunkSettingsTab";
+import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
 import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
 import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
@@ -23,12 +20,14 @@ import {ChunkSearchBar} from "../component/dropdown/ChunkSearchBar";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {levelReducer} from "./reducer/levelReducer";
+import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 
 enum EditorTabs {
-    GENERAL= "general",
-    JOINTS = "joints",
-    ELEMENTS = "elements",
-    TEST = "test",
+    LEVEL_SETTINGS = "level_settings",
+    CHUNK_SETTINGS= "chunk_settings",
+    CHUNK_JOINTS = "chunk_joints",
+    CHUNK_ELEMENTS = "chunk_elements",
+    PLAY_TEST = "play_test",
 }
 
 enum EditorDialogs {
@@ -50,7 +49,7 @@ export function LevelEditor(props: LevelEditorProps) {
     const editLevel = editor.level;
     const editChunk = editLevel.chunks[editor.active];
 
-    const [tab, setTab] = useState<EditorTabs>(EditorTabs.GENERAL);
+    const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
 
     const handleSettingsChange = (key: string, value: any) => {
@@ -156,49 +155,56 @@ export function LevelEditor(props: LevelEditorProps) {
             <div className="grow flex gap-4">
                 {/* tab buttons */}
                 <div className="w-8 shrink-0 flex flex-col gap-2">
-                    <EditorTabButton active={tab === EditorTabs.GENERAL} onClick={() => setTab(EditorTabs.GENERAL)}>
-                        <AtSymbolIcon/>
+                    <EditorTabButton active={tab === EditorTabs.LEVEL_SETTINGS} onClick={() => setTab(EditorTabs.LEVEL_SETTINGS)}>
+                        <RectangleGroupIcon/>
                     </EditorTabButton>
-                    <EditorTabButton active={tab === EditorTabs.JOINTS} onClick={() => setTab(EditorTabs.JOINTS)}>
+                    <div className="my-1 w-full border border-gray-500/20"></div>
+                    <EditorTabButton active={tab === EditorTabs.CHUNK_SETTINGS} onClick={() => setTab(EditorTabs.CHUNK_SETTINGS)}>
                         <PuzzlePieceIcon/>
                     </EditorTabButton>
-                    <EditorTabButton active={tab === EditorTabs.ELEMENTS} onClick={() => setTab(EditorTabs.ELEMENTS)}>
-                        <Square2StackIcon/>
+                    <EditorTabButton active={tab === EditorTabs.CHUNK_JOINTS} onClick={() => setTab(EditorTabs.CHUNK_JOINTS)}>
+                        <LinkIcon/>
+                    </EditorTabButton>
+                    <EditorTabButton active={tab === EditorTabs.CHUNK_ELEMENTS} onClick={() => setTab(EditorTabs.CHUNK_ELEMENTS)}>
+                        <RectangleStackIcon/>
                     </EditorTabButton>
                     <div className="grow"></div>
-                    <EditorTabButton active={tab === EditorTabs.TEST} onClick={() => setTab(EditorTabs.TEST)}>
+                    <EditorTabButton active={tab === EditorTabs.PLAY_TEST} onClick={() => setTab(EditorTabs.PLAY_TEST)}>
                         <PlayIcon/>
                     </EditorTabButton>
                 </div>
 
                 {/* tab content */}
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
-                    {tab === EditorTabs.GENERAL &&
-                        <EditGeneralTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
+                    {tab === EditorTabs.LEVEL_SETTINGS &&
+                        <EditorLevelSettingsTab/>
                     }
-                    {tab === EditorTabs.JOINTS &&
-                        <EditJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} levelDispatcher={dispatchEditor}/>
+                    {tab === EditorTabs.CHUNK_SETTINGS &&
+                        <EditorChunkSettingsTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
                     }
-                    {tab === EditorTabs.ELEMENTS &&
-                        <EditorElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>
+                    {tab === EditorTabs.CHUNK_JOINTS &&
+                        <EditorChunkJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} levelDispatcher={dispatchEditor}/>
                     }
-                    {tab === EditorTabs.TEST &&
-                        <EditTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
+                    {tab === EditorTabs.CHUNK_ELEMENTS &&
+                        <EditorChunkElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>
+                    }
+                    {tab === EditorTabs.PLAY_TEST &&
+                        <EditorPlayTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
                     }
                 </div>
 
                 {/* 3d canvas */}
                 <DebugSettingsProvider debugSettings={{
                     ...debugSettings,
-                    isEditingMode: tab === EditorTabs.TEST ? debugSettings.isEditingMode : true,
-                    displayEditorFeatures: tab === EditorTabs.TEST ? debugSettings.displayEditorFeatures : true,
-                    moveableCamera: tab === EditorTabs.TEST ? debugSettings.moveableCamera : true,
-                    pauseSimulation: tab === EditorTabs.TEST ? debugSettings.pauseSimulation : true,
+                    isEditingMode: tab === EditorTabs.PLAY_TEST ? debugSettings.isEditingMode : true,
+                    displayEditorFeatures: tab === EditorTabs.PLAY_TEST ? debugSettings.displayEditorFeatures : true,
+                    moveableCamera: tab === EditorTabs.PLAY_TEST ? debugSettings.moveableCamera : true,
+                    pauseSimulation: tab === EditorTabs.PLAY_TEST ? debugSettings.pauseSimulation : true,
                 }}>
                     <Environment
                         className="rounded-xl bg-gray-500/10"
-                        key={tab === EditorTabs.TEST ? editor.active + simulatorInstance : editor.active}
-                        isGranted={tab === EditorTabs.TEST}
+                        key={tab === EditorTabs.PLAY_TEST ? editor.active + simulatorInstance : editor.active}
+                        isGranted={tab === EditorTabs.PLAY_TEST}
                     >
                         {editLevel &&
                             <Level {...editLevel} start={editor.active}/>

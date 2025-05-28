@@ -3,12 +3,12 @@ import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
 import {SingleObjectEditor} from "../input/SingleObjectEditor";
 import {BaseTab} from "./BaseTab";
 
-export type EditTestTabProps = {
+export type EditorPlayTestTabProps = {
     settings: DebugSettings;
     onSettingChange: (key: string, value: any) => void;
     onRestart: () => void;
 }
-export function EditTestTab(props: EditTestTabProps) {
+export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
     return (
         <BaseTab
             title={"Test Play"}

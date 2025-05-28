@@ -6,14 +6,14 @@ import {ArrowRightCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
 
-export type EditJointsTabProps = {
+export type EditorChunkJointsTabProps = {
     joints: JointModel[];
     currentChunk: string;
     chunkNames: string[];
     levelDispatcher: React.Dispatch<LevelReducerActions>;
 }
 
-export function EditJointsTab(props: EditJointsTabProps) {
+export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
     const validChunksForNewJoints = props.chunkNames
         .filter((chunkName) => !props.joints.some((joint) => joint.neighbour === chunkName))
         .filter((chunkName) => chunkName !== props.currentChunk)
@@ -57,7 +57,7 @@ export function EditJointsTab(props: EditJointsTabProps) {
 
     return (
         <BaseTab
-            title={"Joints"}
+            title={"Chunk Joints"}
             description={"Connect the chunk to other chunks using joints."}
             onAdd={addJoint}
         >
