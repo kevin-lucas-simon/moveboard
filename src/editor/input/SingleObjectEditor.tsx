@@ -6,6 +6,7 @@ export type SingleObjectEditorProps = {
     keyName: string,
     value: any,
     onChange: (key: string, value: any) => void,
+    selectionOnKey?: {[key: string]: string[]}
 }
 export function SingleObjectEditor(props: SingleObjectEditorProps) {
      return (
@@ -19,6 +20,7 @@ export function SingleObjectEditor(props: SingleObjectEditorProps) {
                     <JsonSingleFieldEditor
                         value={props.value}
                         onChange={(value: any) => props.onChange(props.keyName, value)}
+                        selection={props.selectionOnKey?.[props.keyName]}
                         className="w-0 grow bg-transparent outline-none"
                     />
                 }
@@ -30,6 +32,7 @@ export function SingleObjectEditor(props: SingleObjectEditorProps) {
                         keyName={props.keyName}
                         value={props.value}
                         onKeyValueChange={props.onChange}
+                        selectionOnKey={props.selectionOnKey}
                     />
                 </ul>
             }

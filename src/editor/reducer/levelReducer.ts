@@ -18,6 +18,12 @@ export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_remove_chunk',
     payload: string,
 } | {
+    type: 'level_update_field',
+    payload: {
+        key: string;
+        value: any;
+    }
+} | {
     type: 'level_reset',
     payload: LevelModel,
 };
@@ -94,6 +100,17 @@ export function levelReducer(
                     chunks: updatedChunks,
                 },
             }
+        case 'level_update_field':
+            if (['chunks'].includes(action.payload.key)) {
+                throw new Error('Use dedicated actions for chunks');
+            }
+            return {
+                ...state,
+                level: {
+                    ...state.level,
+                    [action.payload.key]: action.payload.value,
+                },
+            };
         case 'level_reset':
             // use current active, if not available use level start;
             return {

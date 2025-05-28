@@ -177,7 +177,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* tab content */}
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     {tab === EditorTabs.LEVEL_SETTINGS &&
-                        <EditorLevelSettingsTab/>
+                        <EditorLevelSettingsTab level={editLevel} levelDispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.CHUNK_SETTINGS &&
                         <EditorChunkSettingsTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
