@@ -23,6 +23,7 @@ export function Player(props: PlayerProps) {
         <RigidBody
             ref={props.playerRef}
             name={Player.name}
+            key={isEditingMode ? JSON.stringify(props.spawnPosition) : Player.name}
             position={isEditingMode ? new Vector3().copy(props.spawnPosition) : spawnPosition.current}
             type={isEditingMode ? "fixed" : "dynamic"}
             colliders={"ball"}
