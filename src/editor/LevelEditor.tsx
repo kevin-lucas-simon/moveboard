@@ -3,7 +3,7 @@ import {Environment} from "../experience/Environment";
 import {useReducer, useState} from "react";
 import React from "react";
 import {EditorElementsTab} from "./tabs/EditorElementsTab";
-import {TabButton} from "./component/TabButton";
+import {EditorTabButton} from "./component/EditorTabButton";
 import {
     AtSymbolIcon, Bars3Icon,
     PlayIcon,
@@ -78,6 +78,13 @@ export function LevelEditor(props: LevelEditorProps) {
         })
     }
 
+    const handleLevelReset = () => {
+        dispatchEditor({
+            type: 'level_reset',
+            payload: props.downloadedLevel,
+        });
+    }
+
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
             {/* header */}
@@ -138,10 +145,7 @@ export function LevelEditor(props: LevelEditorProps) {
                     submitButton={"Clear Changes"}
                     onSubmit={() => {
                         setDialog(null);
-                        dispatchEditor({
-                            type: 'level_reset',
-                            payload: props.downloadedLevel,
-                        });
+                        handleLevelReset();
                     }}
                 >
                     Do you really want to clear all changes? All unsaved changes will be lost.
@@ -152,25 +156,25 @@ export function LevelEditor(props: LevelEditorProps) {
             <div className="grow flex gap-4">
                 {/* tab buttons */}
                 <div className="w-8 shrink-0 flex flex-col gap-2">
-                    <TabButton active={tab === EditorTabs.GENERAL} onClick={() => setTab(EditorTabs.GENERAL)}>
+                    <EditorTabButton active={tab === EditorTabs.GENERAL} onClick={() => setTab(EditorTabs.GENERAL)}>
                         <AtSymbolIcon/>
-                    </TabButton>
-                    <TabButton active={tab === EditorTabs.JOINTS} onClick={() => setTab(EditorTabs.JOINTS)}>
+                    </EditorTabButton>
+                    <EditorTabButton active={tab === EditorTabs.JOINTS} onClick={() => setTab(EditorTabs.JOINTS)}>
                         <PuzzlePieceIcon/>
-                    </TabButton>
-                    <TabButton active={tab === EditorTabs.ELEMENTS} onClick={() => setTab(EditorTabs.ELEMENTS)}>
+                    </EditorTabButton>
+                    <EditorTabButton active={tab === EditorTabs.ELEMENTS} onClick={() => setTab(EditorTabs.ELEMENTS)}>
                         <Square2StackIcon/>
-                    </TabButton>
+                    </EditorTabButton>
                     <div className="grow"></div>
-                    <TabButton active={tab === EditorTabs.TEST} onClick={() => setTab(EditorTabs.TEST)}>
+                    <EditorTabButton active={tab === EditorTabs.TEST} onClick={() => setTab(EditorTabs.TEST)}>
                         <PlayIcon/>
-                    </TabButton>
+                    </EditorTabButton>
                 </div>
 
                 {/* tab content */}
                 <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
                     {tab === EditorTabs.GENERAL &&
-                        <EditGeneralTab chunk={editChunk} chunkDispatcher={dispatchEditor}/>
+                        <EditGeneralTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
                     }
                     {tab === EditorTabs.JOINTS &&
                         <EditJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} levelDispatcher={dispatchEditor}/>

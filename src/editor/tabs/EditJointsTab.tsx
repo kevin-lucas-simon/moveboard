@@ -4,6 +4,7 @@ import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ArrowRightCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
+import {LinkButton} from "../../component/button/LinkButton";
 
 export type EditJointsTabProps = {
     joints: JointModel[];
@@ -78,17 +79,14 @@ export function EditJointsTab(props: EditJointsTabProps) {
                             {/* TODO in addition we can add clone and hide functionality here */}
                             {/* TODO display which element is currently selected in 3D engine*/}
 
-                            <li className="mt-2 mx-2">
-                                {joint.neighbour &&
-                                    <button
-                                        className="flex gap-1 px-2 py-1 hover:bg-gray-500/10 rounded-full text-sm"
-                                        onClick={() => changeChunk(joint.neighbour)}
-                                    >
+                            {joint.neighbour &&
+                                <li className="mt-2 mx-2">
+                                    <LinkButton onClick={() => changeChunk(joint.neighbour)}>
                                         <ArrowRightCircleIcon className="w-4"/>
                                         Change Chunk
-                                    </button>
-                                }
-                            </li>
+                                    </LinkButton>
+                                </li>
+                            }
                         </ListObjectEditor>
                     </li>
                 )}

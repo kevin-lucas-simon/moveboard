@@ -7,15 +7,18 @@ It is grouped in feature groups that will be represented as a branch.
 ## feature Groups
 
 ### editor
-- [ ] game, editor, test page
-- [ ] level selection
-- [ ] level editor
-- [ ] test mode with debug tools
-- [ ] save/export level
+- [x] game, editor, test page
+- [x] level selection
+- [x] level editor
+- [x] test mode with debug tools
+- [x] save/export level
 
 ### refactoring
 - [ ] remove useEffects()
 - [ ] introduce useReducer()
+- [ ] add model factory
+- [ ] add browser db editing storage
+- [ ] update level/chunks/joints/elemets to an uuid based system 
 
 ### dooring and plates
 - [ ] door block

@@ -15,6 +15,9 @@ export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_add_chunk',
     payload: string,
 } | {
+    type: 'level_remove_chunk',
+    payload: string,
+} | {
     type: 'level_reset',
     payload: LevelModel,
 };
@@ -66,6 +69,17 @@ export function levelReducer(
                     },
                 },
             };
+        case "level_remove_chunk":
+            return {
+                ...state,
+                active: state.active === action.payload ? state.level.start : state.active,
+                level: {
+                    ...state.level,
+                    chunks: Object.fromEntries(
+                        Object.entries(state.level.chunks).filter(([key]) => key !== action.payload)
+                    ),
+                },
+            }
         case 'level_reset':
             // use current active, if not available use level start;
             return {

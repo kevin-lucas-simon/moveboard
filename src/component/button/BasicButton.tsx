@@ -3,7 +3,7 @@ import React from "react";
 
 export type BasicButtonProps = {
     type: "primary" | "secondary",
-    onClick: (() => void) | undefined,
+    onClick?: (() => void),
     children: React.ReactNode,
 }
 export function BasicButton(props: BasicButtonProps) {
