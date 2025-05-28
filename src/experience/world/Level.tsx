@@ -50,7 +50,6 @@ export function Level(props: LevelProps) {
             <ChunkCamera
                 chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}
                 chunkDimension={renderedChunks[activeChunk].cameraDimension.size}
-                chunkMaxY={renderedChunks[activeChunk].cameraDimension.maximalPosition.y}
                 cameraFov={45}
                 transitionSeconds={0.4}
                 marginInBlockSize={1}

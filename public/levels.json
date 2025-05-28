@@ -6,5 +6,9 @@
     {
         "id": "CycleLevel",
         "name": "Zyklus Test Level"
+    },
+    {
+        "id": "FallLevel",
+        "name": "Fallen Test Level"
     }
 ]

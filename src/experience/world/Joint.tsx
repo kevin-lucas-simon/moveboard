@@ -49,7 +49,7 @@ export function Joint(props: JointProps) {
                 args={new Vector3().copy(props.dimension).multiplyScalar(0.5).toArray()}
             />
 
-            {isVisible &&
+            {isVisible && props.inActiveChunk &&
                 <group position={new Vector3().copy(props.position)}>
                     <mesh>
                         <sphereGeometry args={[0.05]}/>
