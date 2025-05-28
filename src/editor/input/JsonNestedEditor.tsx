@@ -60,7 +60,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                                     displayname={key}
                                     value={value}
                                     onKeyValueChange={handleObjectChange}
-                                    selectionOnKey={props.selectionOnKey} // TODO trim first row if part of key in foreach
+                                    selectionOnKey={props.selectionOnKey}
                                 />
                             ))}
                     </ul>

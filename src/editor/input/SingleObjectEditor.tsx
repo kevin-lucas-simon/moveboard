@@ -8,9 +8,7 @@ export type SingleObjectEditorProps = {
     onChange: (key: string, value: any) => void,
 }
 export function SingleObjectEditor(props: SingleObjectEditorProps) {
-    // TODO prüfen ob das sich zu stark mit ListObjectEditor ähnelt
-
-    return (
+     return (
         <div className="group">
             <label className="w-full flex justify-between group-hover:bg-gray-500/10 px-2 py-1">
                 <span className="flex py-1 px-2 select-none gap-1 items-center capitalize">

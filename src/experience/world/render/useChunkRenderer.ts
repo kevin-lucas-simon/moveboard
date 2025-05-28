@@ -45,8 +45,6 @@ export function useChunkRenderer(
             true // render root neighbour else we do not know their position
         );
 
-        console.log(calculatedChunks.current)
-
         // filter out all chunks that are not visible
         return calculatedChunks.current;
     }, [chunkModels, activeChunkId]);

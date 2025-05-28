@@ -1,9 +1,11 @@
-import {RigidBody} from "@react-three/rapier";
+import {RapierRigidBody, RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
 import {useDebugSettings} from "../input/DebugSettingsProvider";
+import {RefObject} from "react";
 
 export type PlayerProps = {
     spawnPosition: Vector3Like,
+    playerRef: RefObject<RapierRigidBody>,
 }
 
 /**
@@ -26,6 +28,7 @@ export function Player(props: PlayerProps) {
     return (
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */
         <RigidBody
+            ref={props.playerRef}
             name={Player.name}
             position={new Vector3().copy(props.spawnPosition)}
             colliders={"ball"}

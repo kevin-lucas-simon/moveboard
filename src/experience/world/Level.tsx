@@ -1,11 +1,11 @@
 import {Chunk} from "./Chunk";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {useChunkRenderer} from "./render/useChunkRenderer";
 import React from "react";
 import {LevelModel} from "../../model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
-import {Vector3, Vector3Like} from "three";
+import {RapierRigidBody} from "@react-three/rapier";
 
 export type LevelProps = LevelModel & {};
 
@@ -14,7 +14,7 @@ export function Level(props: LevelProps) {
         = useState<string>(props.start);
     const renderedChunks
         = useChunkRenderer(props.chunks, activeChunk);
-    const [playerSpawnPosition, setPlayerSpawnPosition] = useState<Vector3Like>(renderedChunks[activeChunk].playerSpawnPosition ?? new Vector3());
+    const playerRef = useRef<RapierRigidBody>(null)
 
     if (!renderedChunks[activeChunk]) {
         throw new Error("Active chunk is not rendered");
@@ -27,11 +27,12 @@ export function Level(props: LevelProps) {
     }
 
     function onPlayerOutOfBounds() {
-        console.log("Player out of bounds, respawning in chunk", activeChunk);
-        // TODO das reicht anscheinend nicht aus, da in SecondChunk der Respawn nicht zuverlässig im Handy läuft
-        // TODO: Respawn auch über Key
-        // TODO auch wenn Joint im FirstChunk fehlt und Kugel rausfällt, kommt kein Respawn!
-        setPlayerSpawnPosition(new Vector3().copy(renderedChunks[activeChunk].playerSpawnPosition));
+        if (playerRef.current) {
+            console.log("Player out of bounds, respawning in chunk", activeChunk);
+            playerRef.current.setTranslation(renderedChunks[activeChunk].playerSpawnPosition, true)
+            playerRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+            playerRef.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+        }
     }
 
     return (
@@ -53,7 +54,7 @@ export function Level(props: LevelProps) {
                 marginInBlockSize={1}
             />
 
-            <Player spawnPosition={playerSpawnPosition}/>
+            <Player playerRef={playerRef} spawnPosition={renderedChunks[activeChunk].playerSpawnPosition}/>
         </>
     );
 }
