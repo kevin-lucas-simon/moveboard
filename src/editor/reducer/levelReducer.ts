@@ -70,14 +70,28 @@ export function levelReducer(
                 },
             };
         case "level_remove_chunk":
+            // update active chunk to level start if the removed chunk is currently active
+            const updatedActive = state.active === action.payload ? state.level.start : state.active;
+
+            // remove chunk from level
+            const updatedChunks = Object.fromEntries(
+                Object.entries(state.level.chunks).filter(([key]) => key !== action.payload)
+            )
+
+            // update joints in remaining chunks to remove references to the removed chunk
+            Object.values(updatedChunks).forEach(chunk => {
+                chunk.joints = chunk.joints.map(joint =>
+                    joint.neighbour === action.payload ? { ...joint, neighbour: "" } : joint
+                );
+            });
+
+            // return updated state with removed chunk
             return {
                 ...state,
-                active: state.active === action.payload ? state.level.start : state.active,
+                active: updatedActive,
                 level: {
                     ...state.level,
-                    chunks: Object.fromEntries(
-                        Object.entries(state.level.chunks).filter(([key]) => key !== action.payload)
-                    ),
+                    chunks: updatedChunks,
                 },
             }
         case 'level_reset':
