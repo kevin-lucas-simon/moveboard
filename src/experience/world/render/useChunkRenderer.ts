@@ -87,7 +87,7 @@ function calculateChunks(
         }
 
         // skip task if already calculated or vision is zero
-        const isNotVisible = task.vision <= 0;
+        const isNotVisible = task.vision < 0;
         const isChunkCalculated = calculatedChunks[task.currentId];
         const ignoreCheck = renderRootNeighbour && task.parentId === rootChunkId
 
