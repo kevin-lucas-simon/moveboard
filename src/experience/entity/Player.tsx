@@ -18,22 +18,13 @@ export function Player(props: PlayerProps) {
     // use a ref to store the spawn position so it doesn't change on re-renders
     const spawnPosition = useRef(new Vector3().copy(props.spawnPosition));
 
-    // in editing mode, we render a sphere at the spawn position
-    if (isEditingMode) {
-        return (
-            <mesh position={new Vector3().copy(props.spawnPosition)}>
-                <sphereGeometry args={[0.5]}/>
-                <meshPhongMaterial color={"hotpink"} opacity={0.8} transparent/>
-            </mesh>
-        )
-    }
-
     return (
         /* restitution -> bounce, linearDumping -> Luftbremsung, angularDamping -> Bodenbremsung */
         <RigidBody
             ref={props.playerRef}
             name={Player.name}
-            position={spawnPosition.current}
+            position={isEditingMode ? new Vector3().copy(props.spawnPosition) : spawnPosition.current}
+            type={isEditingMode ? "fixed" : "dynamic"}
             colliders={"ball"}
             canSleep={false}
             restitution={0.98}
