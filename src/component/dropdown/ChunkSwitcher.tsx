@@ -1,5 +1,5 @@
 import {
-    CheckIcon, ChevronDownIcon, PlusIcon, XMarkIcon
+    CheckIcon, ChevronDownIcon, PlusIcon
 } from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
@@ -44,23 +44,16 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
             immediate={true}
         >
             <div className="relative max-w-sm mx-auto rounded-md">
-                <ComboboxButton className="group absolute inset-y-0 left-0 m-2">
+                <ComboboxButton className="absolute inset-y-0 left-0 m-2">
                     <ChevronDownIcon className="h-4"/>
                 </ComboboxButton>
                 <ComboboxInput
-                    className="w-full bg-transparent py-1 pl-8 pr-2 focus:outline-none text-2xl leading-none text-gray-500 placeholder-black focus:placeholder-transparent"
+                    key={props.active}
+                    className="w-full bg-transparent py-1 pl-8 pr-2 focus:outline-none text-2xl leading-none placeholder-black focus:placeholder-transparent"
                     displayValue={(item: string) => item}
                     placeholder={props.active ?? "Search or create chunk..."}
                     onChange={(event) => setQuery(event.target.value)}
                 />
-                {query !== '' &&
-                    <ComboboxButton
-                        className="group absolute inset-y-0 right-0 m-2 p-0.5 rounded-full hover:bg-gray-300"
-                        onClick={() => setQuery('')}
-                    >
-                        <XMarkIcon className="h-3"/>
-                    </ComboboxButton>
-                }
             </div>
 
             <ComboboxOptions
