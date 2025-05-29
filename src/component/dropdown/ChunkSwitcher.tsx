@@ -1,8 +1,5 @@
 import {
-    CheckIcon,
-    MagnifyingGlassIcon,
-    PlusIcon,
-    XMarkIcon
+    CheckIcon, ChevronDownIcon, PlusIcon, XMarkIcon
 } from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
@@ -13,8 +10,8 @@ export type ChunkSearchBarProps = {
     onSelect?: ((item: string) => void);
     onCreate?: ((item: string) => void);
 }
-export function ChunkSearchBar(props: ChunkSearchBarProps) {
-    const [query, setQuery] = useState<string>('')
+export function ChunkSwitcher(props: ChunkSearchBarProps) {
+    const [query, setQuery] = useState<string>('');
 
     const filteredItems = query === ''
         ? props.options
@@ -46,14 +43,14 @@ export function ChunkSearchBar(props: ChunkSearchBarProps) {
             onClose={() => setQuery('')}
             immediate={true}
         >
-            <div className="relative max-w-sm mx-auto bg-gray-200 rounded-md">
+            <div className="relative max-w-sm mx-auto rounded-md">
                 <ComboboxButton className="group absolute inset-y-0 left-0 m-2">
-                    <MagnifyingGlassIcon className="h-4"/>
+                    <ChevronDownIcon className="h-4"/>
                 </ComboboxButton>
                 <ComboboxInput
-                    className="w-full bg-transparent rounded-md py-1 pl-8 pr-2 focus:outline-none"
+                    className="w-full bg-transparent py-1 pl-8 pr-2 focus:outline-none text-2xl leading-none text-gray-500 placeholder-black focus:placeholder-transparent"
                     displayValue={(item: string) => item}
-                    placeholder={"Search or create chunk..."}
+                    placeholder={props.active ?? "Search or create chunk..."}
                     onChange={(event) => setQuery(event.target.value)}
                 />
                 {query !== '' &&

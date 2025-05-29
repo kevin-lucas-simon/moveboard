@@ -16,7 +16,7 @@ import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../model/LevelModel";
 import {Textarea} from "@headlessui/react";
-import {ChunkSearchBar} from "../component/dropdown/ChunkSearchBar";
+import {ChunkSwitcher} from "../component/dropdown/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {levelReducer} from "./reducer/levelReducer";
@@ -90,21 +90,18 @@ export function LevelEditor(props: LevelEditorProps) {
             <div className="flex gap-4 h-8 items-center">
                 {/* logo */}
                 <MoveBoardLogo />
-                {/* editing name */}
-                <div className="flex flex-col gap-0.5">
-                    <h1 className="text-2xl leading-none">{editChunk.name}</h1>
-                    <div className="text-xs leading-none">{editLevel.name}</div>
-                </div>
-
-                {/* chunk search */}
-                <div className="grow">
-                    <ChunkSearchBar
+                {/* chunk selection */}
+                <div className="w-72 shrink-0">
+                    <ChunkSwitcher
                         options={Object.keys(editLevel.chunks)}
                         active={editor.active}
                         onSelect={handleChunkChange}
                         onCreate={handleChunkCreate}
                     />
                 </div>
+
+                {/* spacer */}
+                <div className="grow"/>
 
                 {/* menu selector */}
                 <BasicDropdown button={<Bars3Icon className="h-6"/>}>
