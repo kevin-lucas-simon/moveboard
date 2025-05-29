@@ -52,7 +52,7 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
                         )
                     })
                 }
-                <li className="mx-2">
+                <li className="mx-2 mt-2">
                     {props.currentChunk !== props.startChunk &&
                         <LinkButton onClick={() => setDialog(EditorDialogs.LEVEL_DELETE)}>
                             <TrashIcon className="w-4"/>

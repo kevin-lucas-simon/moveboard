@@ -38,7 +38,7 @@ export function LevelSelection(props: StartupModalProps) {
                                 <div key={level.id}>
                                     <BasicButton
                                         key={level.id}
-                                        type={"primary"}
+                                        variant={"primary"}
                                         onClick={() => props.onStart(level.id)}
                                     >
                                         {level.name}
