@@ -27,6 +27,12 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
                 value: value,
             }
         });
+        if (key === 'start') {
+            props.levelDispatcher({
+                type: 'level_select_chunk',
+                payload: value,
+            })
+        }
     }
 
     const handleCreateChunk = (name: string) => {
