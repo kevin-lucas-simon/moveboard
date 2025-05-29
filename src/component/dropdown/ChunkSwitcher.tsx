@@ -1,5 +1,5 @@
 import {
-    CheckIcon, ChevronDownIcon, PlusIcon
+    CheckIcon, ChevronDownIcon, MagnifyingGlassIcon, PlusIcon
 } from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
@@ -44,8 +44,9 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
             immediate={true}
         >
             <div className="relative max-w-sm mx-auto rounded-md">
-                <ComboboxButton className="absolute inset-y-0 left-0 m-2">
-                    <ChevronDownIcon className="h-4"/>
+                <ComboboxButton className="group absolute inset-y-0 left-0 m-2">
+                    <ChevronDownIcon className="h-4 group-data-[open]:hidden"/>
+                    <MagnifyingGlassIcon className="h-4 hidden group-data-[open]:block"/>
                 </ComboboxButton>
                 <ComboboxInput
                     key={props.active}
