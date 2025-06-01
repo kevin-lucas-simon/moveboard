@@ -29,8 +29,11 @@ export function LevelMenu(props: LevelMenuProps) {
     }
 
     return (
-        <div>
-            <BasicDropdown button={<Bars3Icon className="h-6"/>}>
+        <>
+            <BasicDropdown button={<>
+                {props.level.name}
+                <Bars3Icon className="h-6"/>
+            </>}>
                 <div>
                     <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_EXPORT)}>
                         Export Level
@@ -72,6 +75,6 @@ export function LevelMenu(props: LevelMenuProps) {
             >
                 Do you really want to clear all changes? All unsaved changes will be lost.
             </BasicDialog>
-        </div>
+        </>
     );
 }

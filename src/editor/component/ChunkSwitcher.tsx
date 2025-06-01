@@ -43,7 +43,7 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
             onClose={() => setQuery('')}
             immediate={true}
         >
-            <div className="relative max-w-sm mx-auto rounded-md">
+            <div className="relative max-w-sm mx-auto rounded-lg hover:bg-gray-500/10 focus-within:bg-gray-500/10">
                 <ComboboxButton className="group absolute inset-y-0 left-0 m-1.5">
                     <ChevronDownIcon className="h-5 group-data-[open]:hidden"/>
                     <MagnifyingGlassIcon className="h-5 hidden group-data-[open]:block"/>
@@ -59,7 +59,7 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
 
             <ComboboxOptions
                 anchor="bottom start"
-                className="w-[var(--input-width)] empty:invisible rounded-md [--anchor-gap:4px] border border-gray-300"
+                className="w-[var(--input-width)] empty:invisible rounded-lg [--anchor-gap:0.875rem] drop-shadow-xl border border-gray-300"
             >
                 {filteredItems.map((item) => (
                     <ComboboxOption
