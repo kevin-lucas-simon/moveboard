@@ -31,7 +31,10 @@ export function ListObjectEditor(props: ListObjectEditorProps) {
                 </button>
 
                 {props.actionButton &&
-                    <button className="py-1 px-2 hidden group-hover:block" onClick={props.onAction}>
+                    <button
+                        className="py-1 px-2 rounded-full hidden group-hover:block hover:bg-gray-500/10"
+                        onClick={props.onAction}
+                    >
                         {props.actionButton}
                     </button>
                 }
