@@ -5,22 +5,18 @@ import React from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
 import {
-    Bars3Icon, LinkIcon, PlayIcon, PuzzlePieceIcon, RectangleGroupIcon, RectangleStackIcon
+    LinkIcon, PlayIcon, PuzzlePieceIcon, RectangleGroupIcon, RectangleStackIcon
 } from "@heroicons/react/24/outline";
 import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
 import {EditorChunkSettingsTab} from "./tabs/EditorChunkSettingsTab";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
-import {BasicDropdown} from "../component/dropdown/BasicDropdown";
-import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
-import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
-import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../model/LevelModel";
-import {Textarea} from "@headlessui/react";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {levelReducer} from "./reducer/levelReducer";
 import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
+import {LevelMenu} from "./component/LevelMenu";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
@@ -28,11 +24,6 @@ enum EditorTabs {
     CHUNK_JOINTS = "chunk_joints",
     CHUNK_ELEMENTS = "chunk_elements",
     PLAY_TEST = "play_test",
-}
-
-enum EditorDialogs {
-    LEVEL_EXPORT = "level_export",
-    LEVEL_CHANGES_CLEAR = "level_changes_clear",
 }
 
 export type LevelEditorProps = {
@@ -50,7 +41,6 @@ export function LevelEditor(props: LevelEditorProps) {
     const editChunk = editLevel.chunks[editor.active];
 
     const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
-    const [dialog, setDialog] = useState<EditorDialogs|null>(null);
 
     const handleSettingsChange = (key: string, value: any) => {
         setDebugSettings({
@@ -77,13 +67,6 @@ export function LevelEditor(props: LevelEditorProps) {
         })
     }
 
-    const handleLevelReset = () => {
-        dispatchEditor({
-            type: 'level_reset',
-            payload: props.downloadedLevel,
-        });
-    }
-
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
             {/* header */}
@@ -104,48 +87,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 <div className="grow"/>
 
                 {/* menu selector */}
-                <BasicDropdown button={<Bars3Icon className="h-6"/>}>
-                    <div>
-                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_EXPORT)}>
-                            Export Level
-                        </BasicDropdownItem>
-                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_CHANGES_CLEAR)}>
-                            Clear Changes
-                        </BasicDropdownItem>
-                    </div>
-                    <BasicDropdownDivider/>
-                    <div>
-                        <BasicDropdownItem href={"/"}>Leave Editor</BasicDropdownItem>
-                    </div>
-                </BasicDropdown>
-
-                {/* export dialog */}
-                <BasicDialog
-                    title="Export Level"
-                    isOpen={dialog === EditorDialogs.LEVEL_EXPORT}
-                    onClose={() => setDialog(null)}
-                >
-                    <div>Export the JSON data of the current edited level.</div>
-                    <Textarea
-                        className="w-full h-32 p-2 bg-gray-500/5 rounded-md text-xs"
-                        value={JSON.stringify(editLevel)}
-                        readOnly
-                    />
-                </BasicDialog>
-
-                {/* clear dialog */}
-                <BasicDialog
-                    title={"Clear Changes"}
-                    isOpen={dialog === EditorDialogs.LEVEL_CHANGES_CLEAR}
-                    onClose={() => setDialog(null)}
-                    submitButton={"Clear Changes"}
-                    onSubmit={() => {
-                        setDialog(null);
-                        handleLevelReset();
-                    }}
-                >
-                    Do you really want to clear all changes? All unsaved changes will be lost.
-                </BasicDialog>
+                <LevelMenu level={editLevel} levelDispatcher={dispatchEditor}/>
             </div>
 
             {/* body */}
