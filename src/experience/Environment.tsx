@@ -24,7 +24,10 @@ export function Environment(props: EnvironmentProps) {
         <DeviceMotionProvider isGranted={props.isGranted}>
             <KeyboardKeysProvider>
                 <Canvas
-                    resize={{ debounce: 0 }} className={props.className}>
+                    frameloop={"always"}
+                    resize={{ debounce: 0 }}
+                    className={props.className}
+                >
                     <ambientLight intensity={Math.PI / 2} />
                     <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
                     <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
