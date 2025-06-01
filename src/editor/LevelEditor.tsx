@@ -142,7 +142,7 @@ export function LevelEditor(props: LevelEditorProps) {
                 }}>
                     <Environment
                         className="rounded-xl bg-gray-500/10"
-                        key={tab === EditorTabs.PLAY_TEST ? editor.active + simulatorInstance : editor.active}
+                        key={tab === EditorTabs.PLAY_TEST ? `${editor.active}_${simulatorInstance}` : `${editor.active}`}
                         isGranted={tab === EditorTabs.PLAY_TEST}
                     >
                         {editLevel &&
