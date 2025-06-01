@@ -30,10 +30,13 @@ export function ChunkCamera(props: ChunkCameraProps) {
     // calculate camera position and target
     const [cameraAspectRatio, setCameraAspectRatio] = useState(1);
     useEffect(() => {
-        if (cameraRef.current) {
-            setCameraAspectRatio(cameraRef.current.aspect || 1);
-        }
-    }, [cameraRef.current]);
+        const frame = requestAnimationFrame(() => {
+            if (cameraRef.current) {
+                setCameraAspectRatio(cameraRef.current.aspect || 1);
+            }
+        });
+        return () => cancelAnimationFrame(frame);
+    }, []);
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,
         props.chunkDimension,
