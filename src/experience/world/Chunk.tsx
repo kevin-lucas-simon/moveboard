@@ -1,43 +1,55 @@
-import {ChunkModel} from "./model/ChunkModel";
-import {Vector3, Vector3Like} from "three";
+import {Vector3} from "three";
 import React from "react";
-import {allElements} from "../config/allElements";
+import {elementDefinition, elementFallback} from "../config/elementDefinition";
 import {Joint} from "./Joint";
-import {ElementModel} from "../element/ElementModel";
-import {JointModel} from "./model/JointModel";
+import {JointModel} from "../../model/JointModel";
+import {ElementModel} from "../../model/ElementModel";
+import {CuboidCollider} from "@react-three/rapier";
+import {RenderedChunk} from "./render/useChunkRenderer";
 
-export type ChunkProps = ChunkModel & {
+export type ChunkProps = RenderedChunk & {
     active: boolean,
-    position: Vector3Like,
-    onChunkLeave: (neighbour: string) => void,
+    onPlayerChunkLeave: (neighbour: string) => void,
+    onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
     const createChunkElement = (model: ElementModel) => {
         const position = new Vector3()
-            .copy(props.position)
+            .copy(props.worldPosition)
             .add(model.position)
         ;
-        const component = allElements[model.type] ?? allElements.default;
+        const component = elementDefinition[model.type]?.experienceComponent ?? elementFallback.experienceComponent;
 
         return React.createElement(component, {...model,
-            key: props.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,
+            key: props.model.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,
             position: position,
         });
     }
 
     return (
         <>
-            {props.elements.map((element) => createChunkElement(element))}
-            {props.joints.map((joint: JointModel) =>
+            {/* all displayed elements */}
+            {props.model.elements.map((element) => createChunkElement(element))}
+            {/* player chunk joint colliders */}
+            {props.model.joints.map((joint: JointModel) =>
                 <Joint
                     {...joint}
-                    key={props.name+"->"+joint.neighbour}
+                    key={props.model.name + "->" + joint.neighbour}
                     inActiveChunk={props.active}
-                    position={new Vector3().copy(props.position).add(joint.position)}
-                    chunkPosition={new Vector3().copy(props.position)}
-                    onChunkLeave={props.onChunkLeave}
+                    position={new Vector3().copy(props.worldPosition).add(joint.position)}
+                    chunkPosition={new Vector3().copy(props.worldPosition)}
+                    onChunkLeave={props.onPlayerChunkLeave}
                 />
             )}
+            {/* player out of bounds collider */}
+            {props.active &&
+                <CuboidCollider
+                    sensor={true}
+                    onIntersectionExit={props.onPlayerOutOfBounds}
+                    args={new Vector3().copy(props.chunkDimension.size).addScalar(100).toArray()}
+                    position={new Vector3().copy(props.chunkDimension.centerPosition)}
+                />
+            }
         </>
     );
 }

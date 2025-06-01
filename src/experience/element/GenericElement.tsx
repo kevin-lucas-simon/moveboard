@@ -1,16 +1,25 @@
-import {ElementModel} from "./ElementModel";
 import {Vector3} from "three";
 import {useEffect} from "react";
+import {ElementModel} from "../../model/ElementModel";
 
 /**
- * Debug element for unknown element types
+ * Editor default values for generic elements
+ * All element implementations are descendants from this object
+ */
+export const GenericElementDefault: ElementModel = {
+    type: GenericElement.name,
+    position: {x: 0, y: 0, z: 0},
+}
+
+/**
+ * Fallback element for unknown element types
  * @param props
  * @constructor
  */
-export function UnknownElement(props: ElementModel) {
+export function GenericElement(props: ElementModel = GenericElementDefault) {
     useEffect(() => {
         console.warn(`Unknown element type: ${props.type} on position (${props.position.x}, ${props.position.y}, ${props.position.z}).`);
-    }, []);
+    }, [props.position.x, props.position.y, props.position.z, props.type]);
 
     return (
         <group position={new Vector3().copy(props.position)}>

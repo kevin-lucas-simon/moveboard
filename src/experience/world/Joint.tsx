@@ -1,9 +1,9 @@
-import {JointModel} from "./model/JointModel";
+import {JointModel} from "../../model/JointModel";
 import {Vector3} from "three";
-import {useDebug} from "../misc/useDebug";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
-import {Player} from "../element/entity/Player";
+import {Player} from "../entity/Player";
+import {useDebugSettings} from "../input/DebugSettingsProvider";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,
@@ -12,7 +12,7 @@ export type JointProps = JointModel & {
 }
 
 export function Joint(props: JointProps) {
-    const debug = useDebug();
+    const isVisible = useDebugSettings().displayEditorFeatures;
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {
         // if we are the neighbour chunk joint we do nothing
@@ -49,7 +49,7 @@ export function Joint(props: JointProps) {
                 args={new Vector3().copy(props.dimension).multiplyScalar(0.5).toArray()}
             />
 
-            {debug?.visible_joint &&
+            {isVisible && props.inActiveChunk &&
                 <group position={new Vector3().copy(props.position)}>
                     <mesh>
                         <sphereGeometry args={[0.05]}/>

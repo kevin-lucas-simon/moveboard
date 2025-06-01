@@ -1,10 +1,11 @@
 import {Chunk} from "./Chunk";
-import {useState} from "react";
-import {useChunkRenderer} from "./hook/useChunkRenderer";
+import {useRef, useState} from "react";
+import {useChunkRenderer} from "./render/useChunkRenderer";
 import React from "react";
-import {LevelModel} from "./model/LevelModel";
+import {LevelModel} from "../../model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
-import {Player} from "../element/entity/Player";
+import {Player} from "../entity/Player";
+import {RapierRigidBody} from "@react-three/rapier";
 
 export type LevelProps = LevelModel & {};
 
@@ -13,31 +14,48 @@ export function Level(props: LevelProps) {
         = useState<string>(props.start);
     const renderedChunks
         = useChunkRenderer(props.chunks, activeChunk);
+    const playerRef = useRef<RapierRigidBody>(null)
 
     if (!renderedChunks[activeChunk]) {
-        return null;
+        throw new Error("Active chunk is not rendered");
+    }
+
+    // change active chunk when player leaves a chunk
+    function onPlayerChunkLeave(neighbour: string) {
+        if (props.chunks[neighbour]) {
+            setActiveChunk(neighbour);
+        }
+    }
+
+    // reset player position if it goes out of bounds
+    function onPlayerOutOfBounds() {
+        if (playerRef.current) {
+            console.log("Player out of bounds, respawning in chunk", activeChunk);
+            playerRef.current.setTranslation(renderedChunks[activeChunk].playerSpawnPosition, true)
+            playerRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+            playerRef.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+        }
     }
 
     return (
         <>
-            {Object.keys(renderedChunks).filter(key => renderedChunks[key].visible).map(key => (
-                <Chunk key={key} {...renderedChunks[key].model}
+            {Object.keys(renderedChunks).map(key => (
+                <Chunk key={key} {...renderedChunks[key]}
                        active={key === activeChunk}
-                       position={renderedChunks[key].renderPosition}
-                       onChunkLeave={setActiveChunk}
+                       onPlayerChunkLeave={onPlayerChunkLeave}
+                       onPlayerOutOfBounds={onPlayerOutOfBounds}
                 />
             ))}
 
             <ChunkCamera
-                chunkPosition={renderedChunks[activeChunk].renderPosition}
-                chunkDimension={renderedChunks[activeChunk].renderDimension.dimension}
-                chunkMaxY={renderedChunks[activeChunk].renderDimension.maximalPosition.y}
+                chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}
+                chunkDimension={renderedChunks[activeChunk].cameraDimension.size}
                 cameraFov={45}
                 transitionSeconds={0.4}
                 marginInBlockSize={1}
             />
 
-            <Player position={renderedChunks[props.start].model.player} />
+            <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
         </>
     );
 }

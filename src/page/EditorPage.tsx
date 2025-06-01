@@ -1,14 +1,16 @@
-import {Level} from "../experience/world/Level";
-import {Environment} from "../experience/Environment";
-import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
+import {useLevelDownloader} from "../repository/useLevelDownloader";
+import {LevelEditor} from "../editor/LevelEditor";
+import {useParams} from "react-router-dom";
 
 export function EditorPage() {
-    const downloadedLevel
-        = useLevelDownloader("TestLevel");
+    const {levelName} = useParams();
+
+    const downloadedLevel = useLevelDownloader(levelName ?? "");
+    if (!downloadedLevel) {
+        return <></>;
+    }
 
     return (
-        <Environment>
-            {downloadedLevel && <Level {...downloadedLevel} />}
-        </Environment>
-    );
+        <LevelEditor downloadedLevel={downloadedLevel} key={levelName} />
+    )
 }

@@ -1,8 +1,7 @@
 import {Vector3Like} from "three";
 
 /**
- * API data model for generic element
- * All element implementations are descendants from this interface
+ * API data model for generic elements
  */
 export type ElementModel = {
     type: string,

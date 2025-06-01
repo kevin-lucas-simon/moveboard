@@ -2,12 +2,11 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
-import {useDebug} from "../../misc/useDebug";
+import {useDebugSettings} from "../../input/DebugSettingsProvider";
 
 export type ChunkCameraProps = {
     chunkPosition: Vector3Like,
     chunkDimension: Vector3Like,
-    chunkMaxY: number,
     cameraFov: number,
     transitionSeconds: number,
     marginInBlockSize: number,
@@ -17,7 +16,6 @@ export type ChunkCameraProps = {
  * Camera that follows the active chunk and is always positioned above it
  * @param props.chunkPosition active chunk position
  * @param props.chunkDimension active chunk dimension
- * @param props.chunkMaxY maximal y position of active chunk (for calculating the chunk edge)
  * @param props.cameraFov field of view of camera
  * @param props.transitionSeconds time in seconds for camera position transition when active chunk changes
  * @param props.marginInBlockSize margin in block size around the displayed active chunk
@@ -26,21 +24,21 @@ export type ChunkCameraProps = {
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
-    const debug = useDebug()
+    const isMoveableCamera = useDebugSettings().moveableCamera
+    const isInterpolationProhibited = useDebugSettings().isEditingMode
 
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,
         props.chunkDimension,
-        props.chunkMaxY,
         props.cameraFov,
         cameraRef.current?.aspect,
         props.marginInBlockSize
     );
 
     // interpolate position values to refs
-    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds)
-    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds)
+    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, isInterpolationProhibited)
+    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds, isInterpolationProhibited)
 
     return (
         <>
@@ -50,7 +48,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
                 rotation={[-Math.PI/2, 0, 0]}
                 fov={props.cameraFov}
             />
-            {debug?.camera &&
+            {isMoveableCamera &&
                 <OrbitControls
                     ref={orbitControlRef}
                 />
@@ -63,7 +61,6 @@ export function ChunkCamera(props: ChunkCameraProps) {
  * Calculate target camera position and target chunk position based on active chunk
  * @param chunkPosition
  * @param chunkDimension
- * @param chunkMaxY
  * @param cameraFov
  * @param cameraAspectRatio
  * @param marginInBlockSize
@@ -71,7 +68,6 @@ export function ChunkCamera(props: ChunkCameraProps) {
 function useChunkCameraTargetCalculation(
     chunkPosition: Vector3Like,
     chunkDimension: Vector3Like,
-    chunkMaxY: number,
     cameraFov: number,
     cameraAspectRatio: number = 1.0,
     marginInBlockSize: number = 0.0,
@@ -98,7 +94,7 @@ function useChunkCameraTargetCalculation(
         // define camera aimed position for animation
         setTargetCameraPosition(new Vector3(
             chunkPosition.x,
-            chunkPosition.y + chunkMaxY + cameraDistance,
+            chunkPosition.y + cameraDistance,
             chunkPosition.z
         ))
         setTargetChunkPosition(new Vector3()
@@ -152,35 +148,45 @@ function getAspectRatioBasedChunkLength(
  * @param refPositionToInterpolate
  * @param targetPosition
  * @param transitionSeconds
+ * @param prohibitInterpolation
  */
 function usePositionInterpolation(
     refPositionToInterpolate: Vector3|undefined,
     targetPosition: Vector3,
     transitionSeconds: number,
+    prohibitInterpolation: boolean,
 ) {
-    const [transitionTime, setTransitionTime]
-        = useState<number>(0)
-    const [lastPosition, setLastPosition]
-        = useState<Vector3>(new Vector3(0, 0, 0))
+    const remainingTransitionTime = useRef<number>(0)
+    const lastPosition = useRef<Vector3>(new Vector3(0, 0, 0))
 
     // start interpolation if target position changes
     useEffect(() => {
-        setTransitionTime(transitionSeconds)
-        setLastPosition(refPositionToInterpolate ?? new Vector3(0, 0, 0))
-    }, [targetPosition])
+        remainingTransitionTime.current = transitionSeconds
+        lastPosition.current = refPositionToInterpolate ?? new Vector3(0, 0, 0)
+    }, [refPositionToInterpolate, prohibitInterpolation, transitionSeconds, targetPosition])
 
     // update transition if active
     useFrame((state, delta) => {
-        if (transitionTime <= 0 || !refPositionToInterpolate) {
+        // if no transition is active, do nothing
+        if (remainingTransitionTime.current <= 0 || !refPositionToInterpolate) {
             return
         }
-        const newTransitionTime = Math.max(transitionTime - delta, 0)
+        // if transition is prohibited, stop interpolation
+        if (prohibitInterpolation) {
+            if (refPositionToInterpolate.equals(new Vector3(0, 0, 0))) {
+                refPositionToInterpolate.copy(targetPosition)
+            }
+            remainingTransitionTime.current = 0;
+            return
+        }
+        // interpolate position
+        const newTransitionTime = Math.max(remainingTransitionTime.current - delta, 0)
         refPositionToInterpolate.copy(
-            lastPosition.clone().lerp(
+            lastPosition.current.clone().lerp(
                 targetPosition,
                 Math.pow(1 - newTransitionTime / transitionSeconds, 3)
             )
         )
-        setTransitionTime(newTransitionTime)
+        remainingTransitionTime.current = newTransitionTime
     });
 }

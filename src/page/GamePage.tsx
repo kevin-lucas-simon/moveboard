@@ -1,21 +1,28 @@
-import {UserControls} from "../experience/UserControls";
 import {Environment} from "../experience/Environment";
-import {useLevelDownloader} from "../experience/world/hook/useLevelDownloader";
+import {useLevelDownloader} from "../repository/useLevelDownloader";
 import {Level} from "../experience/world/Level";
+import {useState} from "react";
+import {LevelSelection} from "../component/dialog/LevelSelection";
 
 /**
  * Game page that initializes the game
  */
 export function GamePage() {
-    const downloadedLevel
-        = useLevelDownloader("TestLevel");
+    const [selectedLevel, setSelectedLevel] = useState<string|undefined>();
 
     return (
-        <UserControls>
-            {/* TODO Übergreifendes Menü mit Permission-Abfrage -> dann erst <UserControls> einblenden! */}
-            <Environment>
-                {downloadedLevel && <Level {...downloadedLevel} />}
+        <>
+            <LevelSelection isStarted={!!selectedLevel} onStart={(level) => setSelectedLevel(level)} />
+
+            <Environment isGranted={!!selectedLevel}>
+                {selectedLevel && <GameLevel levelName={selectedLevel} />}
             </Environment>
-        </UserControls>
+        </>
     );
+}
+
+function GameLevel(props: {levelName: string}) {
+    const downloadedLevel = useLevelDownloader(props.levelName);
+
+    return downloadedLevel ? <Level {...downloadedLevel} /> : <></>;
 }

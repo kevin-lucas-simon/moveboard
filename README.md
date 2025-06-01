@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# MoveBoard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a web based game, where you can roll a ball between rooms to solve puzzles using the gyroscope of your device. 
+Therefore, the levels can be built via a web based editor based on a JSON format.
+
+The game is built using React and TypeScript, and it utilizes the `react-three-fiber` library for rendering 3D graphics.
 
 ## Available Scripts
 

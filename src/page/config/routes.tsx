@@ -1,21 +1,27 @@
-import {RootPage} from "../RootPage";
 import {ErrorPage} from "../ErrorPage";
 import {GamePage} from "../GamePage";
 import {EditorPage} from "../EditorPage";
+import {EditorSelectorPage} from "../EditorSelectorPage";
 
 const routes = [
     {
         path: '/',
-        element: <RootPage />,
+        element: <GamePage />,
         errorElement: <ErrorPage />,
     },
     {
-        path: '/game',
-        element: <GamePage />,
+        path: '/editor',
+        element: <EditorSelectorPage />,
     },
     {
-        path: '/editor',
+        path: '/editor/:levelName',
         element: <EditorPage />,
+        loader: ({params}: any) => {
+            if (!params.levelName) {
+                throw new Error("Level name is required in the URL");
+            }
+            return params.levelName;
+        }
     }
 ];
 
