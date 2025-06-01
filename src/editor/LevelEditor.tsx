@@ -16,7 +16,7 @@ import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDialog} from "../component/dialog/BasicDialog";
 import {LevelModel} from "../model/LevelModel";
 import {Textarea} from "@headlessui/react";
-import {ChunkSwitcher} from "../component/dropdown/ChunkSwitcher";
+import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {levelReducer} from "./reducer/levelReducer";
