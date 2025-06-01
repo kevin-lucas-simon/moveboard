@@ -39,13 +39,13 @@ export function Level(props: LevelProps) {
 
     return (
         <>
-            {Object.keys(renderedChunks).map(key => (
-                <Chunk key={key} {...renderedChunks[key]}
-                       active={key === activeChunk}
-                       onPlayerChunkLeave={onPlayerChunkLeave}
-                       onPlayerOutOfBounds={onPlayerOutOfBounds}
-                />
-            ))}
+            {/*{Object.keys(renderedChunks).map(key => (*/}
+            {/*    <Chunk key={key} {...renderedChunks[key]}*/}
+            {/*           active={key === activeChunk}*/}
+            {/*           onPlayerChunkLeave={onPlayerChunkLeave}*/}
+            {/*           onPlayerOutOfBounds={onPlayerOutOfBounds}*/}
+            {/*    />*/}
+            {/*))}*/}
 
             <ChunkCamera
                 chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}
@@ -55,7 +55,7 @@ export function Level(props: LevelProps) {
                 marginInBlockSize={1}
             />
 
-            <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
+            {/*<Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>*/}
         </>
     );
 }

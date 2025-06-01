@@ -34,9 +34,9 @@ export function Environment(props: EnvironmentProps) {
                         <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
                         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
-                        {/*<EnvironmentPhysics>*/}
-                        {/*    {props.children}*/}
-                        {/*</EnvironmentPhysics>*/}
+                        <EnvironmentPhysics>
+                            {props.children}
+                        </EnvironmentPhysics>
 
                         {debug.displayEditorFeatures &&
                             <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
