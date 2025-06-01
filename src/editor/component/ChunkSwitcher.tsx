@@ -59,13 +59,13 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
 
             <ComboboxOptions
                 anchor="bottom start"
-                className="w-[var(--input-width)] empty:invisible rounded-lg [--anchor-gap:0.875rem] drop-shadow-xl border border-gray-300"
+                className="w-[var(--input-width)] empty:invisible rounded-lg [--anchor-gap:0.875rem] drop-shadow-xl ring-1 ring-black/5 bg-white"
             >
                 {filteredItems.map((item) => (
                     <ComboboxOption
                         key={item}
                         value={item}
-                        className="flex gap-2 items-center bg-gray-200 data-[focus]:bg-gray-300 py-1 px-2"
+                        className="flex gap-2 items-center data-[focus]:bg-gray-100 p-2"
                     >
                         {item === props.active ?
                             <CheckIcon className="w-4"/>
@@ -79,13 +79,13 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
                 {!filteredItems.includes(query) &&
                     <ComboboxOption
                         value={query}
-                        className="flex gap-2 items-center bg-gray-200 data-[focus]:bg-gray-300 py-1 px-2"
+                        className="flex gap-2 items-center data-[focus]:bg-gray-100 p-2"
                         disabled={query === ""}
                     >
                         {query === "" ?
                             <>
-                                <PlusIcon className="w-4 text-gray-600"/>
-                                <i className="text-gray-600">Create Chunk by typing...</i>
+                                <PlusIcon className="w-4 text-gray-500/50"/>
+                                <i className="text-gray-500/50">Create Chunk by typing...</i>
                             </>
                             :
                             <>

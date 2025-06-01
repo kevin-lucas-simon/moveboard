@@ -9,7 +9,7 @@ type BasicDropdownProps = {
 export function BasicDropdown(props: BasicDropdownProps) {
     return (
         <Menu as={"div"} className="relative">
-            <MenuButton className="h-8 flex items-center gap-2 rounded-xl hover:bg-gray-500/10 -my-2 px-3 py-4">
+            <MenuButton className="h-8 flex items-center gap-2 rounded-lg hover:bg-gray-500/10 -my-2 px-3 py-4">
                 {props.button}
             </MenuButton>
 
