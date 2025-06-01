@@ -47,13 +47,13 @@ export function Level(props: LevelProps) {
                 />
             ))}
 
-            {/*<ChunkCamera*/}
-            {/*    chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}*/}
-            {/*    chunkDimension={renderedChunks[activeChunk].cameraDimension.size}*/}
-            {/*    cameraFov={45}*/}
-            {/*    transitionSeconds={0.4}*/}
-            {/*    marginInBlockSize={1}*/}
-            {/*/>*/}
+            <ChunkCamera
+                chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}
+                chunkDimension={renderedChunks[activeChunk].cameraDimension.size}
+                cameraFov={45}
+                transitionSeconds={0.4}
+                marginInBlockSize={1}
+            />
 
             <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
         </>
