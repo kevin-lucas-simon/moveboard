@@ -4,6 +4,7 @@ import {elementDefinition} from "../../experience/config/elementDefinition";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
+import {XMarkIcon} from "@heroicons/react/24/outline";
 
 export type EditorChunkElementsTabProps = {
     elements: ElementModel[];
@@ -54,7 +55,8 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
                             displayname={element.type}
                             value={element}
                             onChange={changeElement}
-                            onDelete={removeElement}
+                            actionButton={<XMarkIcon className="w-4" />}
+                            onAction={() => removeElement(index.toString())}
                         />
                     </li>
                 )}

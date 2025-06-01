@@ -2,7 +2,7 @@ import {JointModel} from "../../model/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
-import {ArrowRightCircleIcon} from "@heroicons/react/24/outline";
+import {ArrowRightIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
 
@@ -63,30 +63,25 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
         >
             <ul>
                 {props.joints.map((joint, index) =>
-                    <li key={index} className="flex flex-col divide-gray-500/20">
+                    <li key={props.currentChunk + index} className="flex flex-col divide-gray-500/20">
                         <ListObjectEditor
                             key={index}
                             keyName={index.toString()}
                             displayname={joint.neighbour ? joint.neighbour : "Joint without Chunk"}
                             value={joint}
                             onChange={updateJoint}
-                            onDelete={removeJoint}
                             selectionOnKey={{
                                 "neighbour": validChunksForNewJoints,
                             }}
+                            actionButton={joint.neighbour ? <ArrowRightIcon className="w-4"/> : undefined}
+                            onAction={() => changeChunk(joint.neighbour)}
                         >
-                            {/* TODO swap current delete button with new "Action" button which is here the change chunk badge */}
-                            {/* TODO in addition we can add clone and hide functionality here */}
-                            {/* TODO display which element is currently selected in 3D engine*/}
-
-                            {joint.neighbour &&
-                                <li className="mt-2 mx-2">
-                                    <LinkButton onClick={() => changeChunk(joint.neighbour)}>
-                                        <ArrowRightCircleIcon className="w-4"/>
-                                        Change Chunk
-                                    </LinkButton>
-                                </li>
-                            }
+                            <li className="mt-2 mx-2">
+                                <LinkButton onClick={() => removeJoint(index.toString())}>
+                                    <XCircleIcon className="w-4"/>
+                                    Remove Joint
+                                </LinkButton>
+                            </li>
                         </ListObjectEditor>
                     </li>
                 )}

@@ -1,14 +1,15 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
 import React, {useState} from "react";
-import {ChevronDownIcon, ChevronRightIcon, XMarkIcon} from "@heroicons/react/24/outline";
+import {ChevronDownIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
 
 export type ListObjectEditorProps = {
     keyName: string,
     displayname?: string,
     value: any,
     onChange: (key: string, value: any) => void,
-    onDelete: (key: string) => void,
     selectionOnKey?: {[key: string]: string[]}
+    actionButton?: React.ReactNode,
+    onAction?: () => void,
     children?: React.ReactNode;
 }
 
@@ -29,9 +30,11 @@ export function ListObjectEditor(props: ListObjectEditorProps) {
                     <span>{props.displayname ?? props.keyName}</span>
                 </button>
 
-                <button className="py-1 px-2 hidden group-hover:block" onClick={() => props.onDelete(props.keyName)}>
-                    <XMarkIcon className="w-4" />
-                </button>
+                {props.actionButton &&
+                    <button className="py-1 px-2 hidden group-hover:block" onClick={props.onAction}>
+                        {props.actionButton}
+                    </button>
+                }
             </div>
 
             {isOpen &&
