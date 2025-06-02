@@ -1,6 +1,5 @@
 import {ChunkModel} from "../../../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {FloorBlock} from "../../element/block/FloorBlock";
 import {JointModel} from "../../../model/JointModel";
 import {ElementModel} from "../../../model/ElementModel";
 import {useMemo, useRef} from "react";
@@ -115,7 +114,7 @@ function calculateChunks(
         // calculate dimensions
         const chunkDimension = calculateRenderDimension(currentModel.elements, renderPosition);
         const cameraDimension = calculateRenderDimension(
-            currentModel.elements.filter(element => element.type === FloorBlock.name),
+            currentModel.elements.filter(element => element.type === "FloorBlock"),
             renderPosition
         );
 
