@@ -28,20 +28,11 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const isInterpolationProhibited = useDebugSettings().isEditingMode
 
     // calculate camera position and target
-    const [cameraAspectRatio, setCameraAspectRatio] = useState(1);
-    useEffect(() => {
-        const frame = requestAnimationFrame(() => {
-            if (cameraRef.current) {
-                setCameraAspectRatio(cameraRef.current.aspect || 1);
-            }
-        });
-        return () => cancelAnimationFrame(frame);
-    }, []);
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,
         props.chunkDimension,
         props.cameraFov,
-        cameraAspectRatio,
+        cameraRef.current?.aspect,
         props.marginInBlockSize
     );
 
@@ -167,15 +158,11 @@ function usePositionInterpolation(
 ) {
     const remainingTransitionTime = useRef<number>(0)
     const lastPosition = useRef<Vector3>(new Vector3(0, 0, 0))
-    const temporaryVector = useRef<Vector3>(new Vector3()).current
 
-    // check if refPositionToInterpolate exists before interpolation
+    // start interpolation if target position changes
     useEffect(() => {
-        if (!refPositionToInterpolate) {
-            return;
-        }
         remainingTransitionTime.current = transitionSeconds
-        lastPosition.current = refPositionToInterpolate.clone()
+        lastPosition.current = refPositionToInterpolate ?? new Vector3(0, 0, 0)
     }, [refPositionToInterpolate, prohibitInterpolation, transitionSeconds, targetPosition])
 
     // update transition if active
@@ -194,11 +181,12 @@ function usePositionInterpolation(
         }
         // interpolate position
         const newTransitionTime = Math.max(remainingTransitionTime.current - delta, 0)
-        temporaryVector.copy(lastPosition.current).lerp(
-            targetPosition,
-            Math.pow(1 - newTransitionTime / transitionSeconds, 3)
+        refPositionToInterpolate.copy(
+            lastPosition.current.clone().lerp(
+                targetPosition,
+                Math.pow(1 - newTransitionTime / transitionSeconds, 3)
+            )
         )
-        refPositionToInterpolate.copy(temporaryVector)
         remainingTransitionTime.current = newTransitionTime
     });
 }
