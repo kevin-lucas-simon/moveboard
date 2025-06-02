@@ -3,7 +3,7 @@ import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
 import {useDebugSettings} from "./input/DebugSettingsProvider";
 import {KeyboardKeysProvider} from "./input/KeyboardKeysProvider";
 import {DeviceMotionProvider} from "./input/DeviceMotionProvider";
-import React, {Suspense} from "react";
+import React from "react";
 import {EnvironmentPhysics} from "./world/physic/EnvironmentPhysics";
 
 export type EnvironmentProps = {
@@ -23,30 +23,24 @@ export function Environment(props: EnvironmentProps) {
     return (
         <DeviceMotionProvider isGranted={props.isGranted}>
             <KeyboardKeysProvider>
-                <Canvas
-                    frameloop={"always"}
-                    resize={{ debounce: 0 }}
-                    className={props.className}
-                >
-                    <Suspense fallback={null}>
-                        <ambientLight intensity={Math.PI / 2} />
-                        <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
-                        <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
-                        <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
+                <Canvas resize={{ debounce: 0 }} className={props.className}>
+                    <ambientLight intensity={Math.PI / 2} />
+                    <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
+                    <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
+                    <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
-                        <EnvironmentPhysics>
-                            {props.children}
-                        </EnvironmentPhysics>
+                    <EnvironmentPhysics>
+                        {props.children}
+                    </EnvironmentPhysics>
 
-                        {debug.displayEditorFeatures &&
-                            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                                <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
-                            </GizmoHelper>
-                        }
-                        {debug.displayPerformanceStats &&
-                            <Stats />
-                        }
-                    </Suspense>
+                    {debug.displayEditorFeatures &&
+                        <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                            <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
+                        </GizmoHelper>
+                    }
+                    {debug.displayPerformanceStats &&
+                        <Stats />
+                    }
                 </Canvas>
             </KeyboardKeysProvider>
         </DeviceMotionProvider>
