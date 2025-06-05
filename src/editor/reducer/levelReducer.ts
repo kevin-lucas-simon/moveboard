@@ -1,7 +1,7 @@
 import {LevelModel} from "../../model/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {ChunkModel} from "../../model/ChunkModel";
-import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
+import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
+import {LevelBuilder} from "../../model/builder/LevelBuilder";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -39,41 +39,14 @@ export function levelReducer(
                 active: action.payload,
             };
         case "level_add_chunk":
-            const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+            const newChunk = ChunkBuilder
+                .create(action.payload)
+                .build();
 
             return {
                 ...state,
-                level: {
-                    ...state.level,
-                    chunks: {
-                        ...state.level.chunks,
-                        [action.payload]: {
-                            name: action.payload,
-                            player: {
-                                x: 0,
-                                y: 1,
-                                z: 0,
-                            },
-                            elements: [
-                                {
-                                    type: 'FloorBlock',
-                                    position: {
-                                        x: 0,
-                                        y: 0,
-                                        z: 0,
-                                    },
-                                    dimension: {
-                                        x: 3,
-                                        y: 1,
-                                        z: 3,
-                                    },
-                                    color: randomColor,
-                                } as FloorBlockModel
-                            ],
-                            joints: [],
-                        } as ChunkModel,
-                    },
-                },
+                active: newChunk.id,
+                level: LevelBuilder.from(state.level).addChunk(newChunk).build(),
             };
         case "level_remove_chunk":
             // update active chunk to level start if the removed chunk is currently active

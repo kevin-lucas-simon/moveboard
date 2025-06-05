@@ -4,6 +4,7 @@ import {ChunkModel} from "./ChunkModel";
  * API data model
  */
 export type LevelModel = {
+    id: string,
     name: string,
     start: string,
     chunks: {[key: string]: ChunkModel},

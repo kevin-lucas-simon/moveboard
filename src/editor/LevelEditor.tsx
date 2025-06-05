@@ -61,10 +61,6 @@ export function LevelEditor(props: LevelEditorProps) {
             type: 'level_add_chunk',
             payload: chunkName,
         })
-        dispatchEditor({
-            type: 'level_select_chunk',
-            payload: chunkName,
-        })
     }
 
     return (

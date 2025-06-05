@@ -1,0 +1,26 @@
+import {LevelModel} from "../LevelModel";
+import {ChunkValidator} from "./ChunkValidator";
+
+export class LevelValidator {
+    static validate(level: LevelModel) {
+        if (!level.id) {
+            throw new Error("Level ID is required.");
+        }
+
+        if (!level.name || level.name.trim() === "") {
+            throw new Error("Level name must not be empty.");
+        }
+
+        if (!level.chunks[level.start]) {
+            throw new Error(`Start chunk '${level.start}' does not exist.`);
+        }
+
+        Object.keys(level.chunks).forEach((chunkId) => {
+            const chunk = level.chunks[chunkId];
+            if (chunk.id !== chunkId) {
+                throw new Error(`Chunk ID mismatch: expected ${chunkId}, got ${chunk.id}.`);
+            }
+            ChunkValidator.validate(chunk);
+        });
+    }
+}

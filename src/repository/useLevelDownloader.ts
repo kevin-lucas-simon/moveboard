@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {LevelModel} from "../model/LevelModel";
-import {FloorBlockModel} from "../experience/element/block/FloorBlock";
+import {LevelBuilder} from "../model/builder/LevelBuilder";
 
 export function useLevelDownloader(
     levelName: string
@@ -22,10 +22,7 @@ export function useLevelDownloader(
             })
             .catch(() => {
                 if (!ignore) {
-                    setLevel({
-                        ...newLevel,
-                        name: levelName,
-                    } as LevelModel);
+                    setLevel(LevelBuilder.create(levelName).build());
                 }
             })
         ;
@@ -36,35 +33,3 @@ export function useLevelDownloader(
 
     return level;
 }
-
-const newLevel = {
-    name: "NewLevel",
-    start: "StartChunk",
-    chunks: {
-        "StartChunk": {
-            name: "StartChunk",
-            player: {
-                x: 0,
-                y: 1,
-                z: 0
-            },
-            joints: [],
-            elements: [
-                {
-                    type: "FloorBlock",
-                    position: {
-                        x: 0,
-                        y: 0,
-                        z: 0
-                    },
-                    dimension: {
-                        x: 3,
-                        y: 1,
-                        z: 3
-                    },
-                    color: "blue",
-                } as FloorBlockModel
-            ],
-        },
-    },
-} as LevelModel;
