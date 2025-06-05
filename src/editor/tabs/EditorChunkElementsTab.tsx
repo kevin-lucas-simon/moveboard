@@ -7,7 +7,7 @@ import {ChunkReducerActions} from "../reducer/chunkReducer";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 
 export type EditorChunkElementsTabProps = {
-    elements: ElementModel[];
+    elements: {[key: string]: ElementModel};
     chunkDispatcher: React.Dispatch<ChunkReducerActions>;
 }
 
@@ -47,19 +47,21 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
             onAdd={addElement}
         >
             <ul>
-                {props.elements.map((element, index) =>
-                    <li key={index} className="flex flex-col divide-gray-500/20">
-                        <ListObjectEditor
-                            key={index}
-                            keyName={index.toString()}
-                            displayname={element.type}
-                            value={element}
-                            onChange={changeElement}
-                            actionButton={<XMarkIcon className="w-4" />}
-                            onAction={() => removeElement(index.toString())}
-                        />
-                    </li>
-                )}
+                {
+                    Object.entries(props.elements).map(([key, element]) => (
+                        <li key={key} className="flex flex-col divide-gray-500/20">
+                            <ListObjectEditor
+                                key={key}
+                                keyName={element.type}
+                                displayname={element.type}
+                                value={element}
+                                onChange={changeElement}
+                                actionButton={<XMarkIcon className="w-4"/>}
+                                onAction={() => removeElement(key)}
+                            />
+                        </li>
+                    ))
+                }
             </ul>
         </BaseTab>
     );

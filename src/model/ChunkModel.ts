@@ -10,5 +10,5 @@ export type ChunkModel = {
     name: string,
     player: Vector3Like,
     joints: JointModel[],
-    elements: ElementModel[],
+    elements: {[key: string]: ElementModel},
 }

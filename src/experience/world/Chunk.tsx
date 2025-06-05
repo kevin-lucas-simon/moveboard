@@ -20,8 +20,9 @@ export function Chunk(props: ChunkProps) {
         ;
         const component = elementDefinition[model.type]?.experienceComponent ?? elementFallback.experienceComponent;
 
-        return React.createElement(component, {...model,
-            key: props.model.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,
+        return React.createElement(component, {
+            ...model,
+            key: props.model.id,
             position: position,
         });
     }
@@ -29,7 +30,7 @@ export function Chunk(props: ChunkProps) {
     return (
         <>
             {/* all displayed elements */}
-            {props.model.elements.map((element) => createChunkElement(element))}
+            {Object.values(props.model.elements).map((element) => createChunkElement(element))}
             {/* player chunk joint colliders */}
             {props.model.joints.map((joint: JointModel) =>
                 <Joint

@@ -1,5 +1,9 @@
 [
     {
+        "id": "56d77db5-7a7f-4be5-b8f8-c70c19339165",
+        "name": "Id Level"
+    },
+    {
         "id": "TestLevel",
         "name": "Test Level"
     },

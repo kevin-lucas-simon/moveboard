@@ -113,9 +113,12 @@ function calculateChunks(
         }
 
         // calculate dimensions
-        const chunkDimension = calculateRenderDimension(currentModel.elements, renderPosition);
+        const chunkDimension = calculateRenderDimension(
+            Object.values(currentModel.elements),
+            renderPosition
+        );
         const cameraDimension = calculateRenderDimension(
-            currentModel.elements.filter(element => element.type === FloorBlock.name),
+            Object.values(currentModel.elements).filter(element => element.type === FloorBlock.name),
             renderPosition
         );
 

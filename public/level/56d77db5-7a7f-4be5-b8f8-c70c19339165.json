@@ -1,0 +1,34 @@
+{
+    "id": "56d77db5-7a7f-4be5-b8f8-c70c19339165",
+    "name": "IdLevel",
+    "start": "02659fa6-985d-4306-a6d0-8cf32fda37ed",
+    "chunks": {
+        "02659fa6-985d-4306-a6d0-8cf32fda37ed": {
+            "id": "02659fa6-985d-4306-a6d0-8cf32fda37ed",
+            "name": "StartChunk",
+            "player": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "joints": [],
+            "elements": {
+                "e755073a-309f-4890-815b-0d4b6d75166c": {
+                    "id": "e755073a-309f-4890-815b-0d4b6d75166c",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#329460"
+                }
+            }
+        }
+    }
+}

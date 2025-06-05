@@ -2,7 +2,6 @@ import {ChunkModel} from "../ChunkModel";
 import {generateUUID} from "three/src/math/MathUtils";
 import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
 import {Vector3Like} from "three";
-import {ElementModel} from "../ElementModel";
 import {JointModel} from "../JointModel";
 import {ChunkValidator} from "../validator/ChunkValidator";
 
@@ -10,6 +9,7 @@ export class ChunkBuilder {
     private chunk: ChunkModel;
 
     private constructor(name: string) {
+        const elementId = generateUUID();
         const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
 
         this.chunk = {
@@ -17,8 +17,9 @@ export class ChunkBuilder {
             name: name,
             player: { x: 0, y: 1, z: 0 },
             joints: [],
-            elements: [
-                {
+            elements: {
+                [elementId]: {
+                    id: elementId,
                     type: "FloorBlock",
                     position: {
                         x: 0,
@@ -32,7 +33,7 @@ export class ChunkBuilder {
                     },
                     color: randomColor,
                 } as FloorBlockModel
-            ]
+            }
         };
     }
 
@@ -62,10 +63,10 @@ export class ChunkBuilder {
     }
 
     // TODO element need an id as well
-    addElement(element: ElementModel): ChunkBuilder {
-        this.chunk.elements = [...this.chunk.elements, structuredClone(element)];
-        return this;
-    }
+    // addElement(element: ElementModel): ChunkBuilder {
+    //     this.chunk.elements = [...this.chunk.elements, structuredClone(element)];
+    //     return this;
+    // }
 
     // removeElement(id: string) {
     //     this.chunk.elements = this.chunk.elements.filter(e => e.id !== id);

@@ -50,20 +50,25 @@ export function chunkReducer(
         case 'chunk_add_element':
             return {
                 ...state,
-                elements: [
+                elements: {
                     ...state.elements,
-                    action.payload,
-                ]
+                    [action.payload.id]: action.payload,
+                }
             }
         case 'chunk_update_element':
             return {
                 ...state,
-                elements: state.elements.map((el, i) => i !== parseInt(action.payload.index) ? el : action.payload.element)
+                elements: {
+                    ...state.elements,
+                    [action.payload.element.id]: action.payload.element,
+                }
             }
         case 'chunk_remove_element':
             return {
                 ...state,
-                elements: state.elements.filter((e, i) => i !== parseInt(action.payload))
+                elements: Object.fromEntries(
+                    Object.entries(state.elements).filter(([key]) => key !== action.payload)
+                )
             }
         case 'chunk_add_joint':
             return {
