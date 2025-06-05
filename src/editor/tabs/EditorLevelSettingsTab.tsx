@@ -40,10 +40,6 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
             type: 'level_add_chunk',
             payload: name,
         });
-        props.levelDispatcher({
-            type: "level_select_chunk",
-            payload: name,
-        });
         setDialog(null);
     }
 
