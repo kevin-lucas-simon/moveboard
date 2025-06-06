@@ -10,20 +10,14 @@ export class ElementBuilder<T extends ElementModel = ElementModel> {
     private element: T;
 
     private constructor(typeOrElement: string | T) {
-        const typeName = typeof typeOrElement === 'string' ? typeOrElement : typeOrElement.type;
-        const typeDefinition = elementDefinition[typeName] || elementFallback;
-
-        this.element = {
-            ...structuredClone(typeDefinition.defaultProps) as T,
-            id: generateUUID(),
-        };
-
-        if (typeof typeOrElement !== 'string') {
+        if (typeof typeOrElement === "string") {
+            const definition = elementDefinition[typeOrElement] || elementFallback;
             this.element = {
-                ...this.element,
-                ...structuredClone(typeOrElement),
-                id: typeOrElement.id || generateUUID(),
+                ...structuredClone(definition.defaultProps) as T,
+                id: generateUUID(),
             };
+        } else {
+            this.element = structuredClone(typeOrElement);
         }
     }
 

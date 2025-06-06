@@ -10,8 +10,14 @@ export class ChunkBuilder {
     private chunk: ChunkModel;
 
     private constructor(name: string) {
-        const elementId = generateUUID();
         const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+
+        const floorBlock = ElementBuilder
+            .create<FloorBlockModel>("FloorBlock")
+            .set("color", randomColor)
+            .set("dimension", { x: 3, y: 1, z: 3 })
+            .build()
+        ;
 
         this.chunk = {
             id: generateUUID(),
@@ -19,21 +25,7 @@ export class ChunkBuilder {
             player: { x: 0, y: 0, z: 0 },
             joints: [],
             elements: {
-                [elementId]: {
-                    id: elementId,
-                    type: "FloorBlock",
-                    position: {
-                        x: 0,
-                        y: -1,
-                        z: 0
-                    },
-                    dimension: {
-                        x: 3,
-                        y: 1,
-                        z: 3
-                    },
-                    color: randomColor,
-                } as FloorBlockModel
+                [floorBlock.id]: floorBlock
             }
         };
     }
@@ -71,17 +63,26 @@ export class ChunkBuilder {
         return this;
     }
 
+    editElement(id: string, cb: (builder: ElementBuilder) => ElementBuilder): this {
+        const existing = this.chunk.elements[id];
+        if (!existing) {
+            throw new Error(`Element with id "${id}" not found`);
+        }
+
+        const updated = cb(ElementBuilder.from(existing)).build();
+
+        this.chunk.elements = {
+            ...this.chunk.elements,
+            [id]: updated,
+        };
+
+        return this;
+    }
+
     removeElement(id: string): ChunkBuilder {
         this.chunk.elements = Object.fromEntries(
             Object.entries(this.chunk.elements).filter(([key]) => key !== id)
         );
         return this;
     }
-
-    // addJoint(joint: JointModel): ChunkBuilder {
-    //     this.chunk.joints = [...this.chunk.joints, structuredClone(joint)];
-    //     return this;
-    // }
-
-    // removeJoint
 }

@@ -5,6 +5,7 @@ import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 import {XMarkIcon} from "@heroicons/react/24/outline";
+import {ElementBuilder} from "../../model/builder/ElementBuilder";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
@@ -18,7 +19,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         }
         props.chunkDispatcher({
             type: 'chunk_add_element',
-            payload: elementDefinition[type].defaultProps,
+            payload: ElementBuilder.create(type).build(),
         });
     }
 
@@ -52,7 +53,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
                         <li key={key} className="flex flex-col divide-gray-500/20">
                             <ListObjectEditor
                                 key={key}
-                                keyName={element.type}
+                                keyName={key}
                                 displayname={element.type}
                                 value={element}
                                 onChange={changeElement}

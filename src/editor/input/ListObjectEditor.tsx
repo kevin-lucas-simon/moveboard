@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {ChevronDownIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
 
 export type ListObjectEditorProps = {
-    keyName: string,
+    keyName: string, // key is reserved for React, so we use keyName instead
     displayname?: string,
     value: any,
     onChange: (key: string, value: any) => void,

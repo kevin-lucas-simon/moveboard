@@ -56,13 +56,13 @@ export function chunkReducer(
                 .build()
             ;
         case 'chunk_update_element':
-            return {
-                ...state,
-                elements: {
-                    ...state.elements,
-                    [action.payload.element.id]: action.payload.element,
-                }
-            }
+            return ChunkBuilder
+                .from(state)
+                .editElement(action.payload.index, (builder) => {
+                    return builder.patch(action.payload.element);
+                })
+                .build()
+            ;
         case 'chunk_remove_element':
             return ChunkBuilder
                 .from(state)
