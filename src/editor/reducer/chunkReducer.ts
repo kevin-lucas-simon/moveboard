@@ -1,6 +1,8 @@
 import {ChunkModel} from "../../model/ChunkModel";
 import {ElementModel} from "../../model/ElementModel";
 import {JointModel} from "../../model/JointModel";
+import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
+import {ElementBuilder} from "../../model/builder/ElementBuilder";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -48,13 +50,11 @@ export function chunkReducer(
                 [action.payload.key]: action.payload.value,
             }
         case 'chunk_add_element':
-            return {
-                ...state,
-                elements: {
-                    ...state.elements,
-                    [action.payload.id]: action.payload,
-                }
-            }
+            return ChunkBuilder
+                .from(state)
+                .addElement(ElementBuilder.from(action.payload).build())
+                .build()
+            ;
         case 'chunk_update_element':
             return {
                 ...state,
@@ -64,12 +64,11 @@ export function chunkReducer(
                 }
             }
         case 'chunk_remove_element':
-            return {
-                ...state,
-                elements: Object.fromEntries(
-                    Object.entries(state.elements).filter(([key]) => key !== action.payload)
-                )
-            }
+            return ChunkBuilder
+                .from(state)
+                .removeElement(action.payload)
+                .build()
+            ;
         case 'chunk_add_joint':
             return {
                 ...state,

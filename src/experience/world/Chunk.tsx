@@ -22,7 +22,7 @@ export function Chunk(props: ChunkProps) {
 
         return React.createElement(component, {
             ...model,
-            key: props.model.id,
+            key: model.id,
             position: position,
         });
     }

@@ -5,6 +5,7 @@ export const FloorBlockDefault: FloorBlockModel = {
     ...BasicBlockDefault,
     type: FloorBlock.name,
     color: "red",
+    position: {x: 0, y: -1, z: 0},
 }
 
 /**

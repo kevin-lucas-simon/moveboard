@@ -27,6 +27,8 @@ export function ChunkCamera(props: ChunkCameraProps) {
     const isMoveableCamera = useDebugSettings().moveableCamera
     const isInterpolationProhibited = useDebugSettings().isEditingMode
 
+    // TODO add default behavior for camera without existing chunk FloorBlocks
+
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,

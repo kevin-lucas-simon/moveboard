@@ -2,8 +2,9 @@ import {ChunkModel} from "../ChunkModel";
 import {generateUUID} from "three/src/math/MathUtils";
 import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
 import {Vector3Like} from "three";
-import {JointModel} from "../JointModel";
 import {ChunkValidator} from "../validator/ChunkValidator";
+import {ElementModel} from "../ElementModel";
+import {ElementBuilder} from "./ElementBuilder";
 
 export class ChunkBuilder {
     private chunk: ChunkModel;
@@ -15,7 +16,7 @@ export class ChunkBuilder {
         this.chunk = {
             id: generateUUID(),
             name: name,
-            player: { x: 0, y: 1, z: 0 },
+            player: { x: 0, y: 0, z: 0 },
             joints: [],
             elements: {
                 [elementId]: {
@@ -23,7 +24,7 @@ export class ChunkBuilder {
                     type: "FloorBlock",
                     position: {
                         x: 0,
-                        y: 0,
+                        y: -1,
                         z: 0
                     },
                     dimension: {
@@ -62,20 +63,25 @@ export class ChunkBuilder {
         return this;
     }
 
-    // TODO element need an id as well
-    // addElement(element: ElementModel): ChunkBuilder {
-    //     this.chunk.elements = [...this.chunk.elements, structuredClone(element)];
-    //     return this;
-    // }
-
-    // removeElement(id: string) {
-    //     this.chunk.elements = this.chunk.elements.filter(e => e.id !== id);
-    // }
-
-    addJoint(joint: JointModel): ChunkBuilder {
-        this.chunk.joints = [...this.chunk.joints, structuredClone(joint)];
+    addElement(element: ElementModel) {
+        this.chunk.elements = {
+            ...this.chunk.elements,
+            [element.id]: ElementBuilder.from(element).build()
+        }
         return this;
     }
+
+    removeElement(id: string): ChunkBuilder {
+        this.chunk.elements = Object.fromEntries(
+            Object.entries(this.chunk.elements).filter(([key]) => key !== id)
+        );
+        return this;
+    }
+
+    // addJoint(joint: JointModel): ChunkBuilder {
+    //     this.chunk.joints = [...this.chunk.joints, structuredClone(joint)];
+    //     return this;
+    // }
 
     // removeJoint
 }

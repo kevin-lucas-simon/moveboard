@@ -45,7 +45,7 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
         >
             <ul>
                 {Object.entries(props.chunk)
-                    .filter(([_, value]) => !(value instanceof Array))
+                    .filter(([key, _]) => !['elements', 'joints'].includes(key))
                     .map(([key, value]) => {
                         return (
                             <SingleObjectEditor key={key} keyName={key} value={value} onChange={updateField}/>

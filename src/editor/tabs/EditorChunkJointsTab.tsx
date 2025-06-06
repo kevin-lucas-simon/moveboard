@@ -24,7 +24,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
             type: 'chunk_add_joint',
             payload: {
                 neighbour: "",
-                position: {x: 0, y: 1, z: 0},
+                position: {x: 0, y: 0, z: 0},
                 dimension: {x: 1, y: 1, z: 1},
                 vision: 1,
             } as JointModel,
