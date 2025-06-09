@@ -32,7 +32,7 @@ export function Chunk(props: ChunkProps) {
             {/* all displayed elements */}
             {Object.values(props.model.elements).map((element) => createChunkElement(element))}
             {/* player chunk joint colliders */}
-            {props.model.joints.map((joint: JointModel) =>
+            {Object.values(props.model.joints).map((joint: JointModel) =>
                 <Joint
                     {...joint}
                     key={props.model.name + "->" + joint.neighbour}

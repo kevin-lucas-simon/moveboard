@@ -7,7 +7,7 @@ import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
 
 export type EditorChunkJointsTabProps = {
-    joints: JointModel[];
+    joints: {[key: string]: JointModel};
     currentChunk: string;
     chunkNames: string[];
     levelDispatcher: React.Dispatch<LevelReducerActions>;
@@ -15,7 +15,7 @@ export type EditorChunkJointsTabProps = {
 
 export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
     const validChunksForNewJoints = props.chunkNames
-        .filter((chunkName) => !props.joints.some((joint) => joint.neighbour === chunkName))
+        // .filter((chunkName) => !props.joints.some((joint) => joint.neighbour === chunkName)) // TODO
         .filter((chunkName) => chunkName !== props.currentChunk)
     ;
 
@@ -34,17 +34,14 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
     const updateJoint = (index: string, value: JointModel) => {
         props.levelDispatcher({
             type: 'chunk_update_joint',
-            payload: {
-                index: index,
-                joint: value,
-            }
+            payload: value
         });
     }
 
-    const removeJoint = (index: string) => {
+    const removeJoint = (id: string) => {
         props.levelDispatcher({
             type: 'chunk_remove_joint',
-            payload: index,
+            payload: id,
         });
     }
 
@@ -62,7 +59,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
             onAdd={addJoint}
         >
             <ul>
-                {props.joints.map((joint, index) =>
+                {Object.values(props.joints).map((joint, index) =>
                     <li key={props.currentChunk + index} className="flex flex-col divide-gray-500/20">
                         <ListObjectEditor
                             key={index}
@@ -77,7 +74,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
                             onAction={() => changeChunk(joint.neighbour)}
                         >
                             <li className="mt-2 mx-2">
-                                <LinkButton onClick={() => removeJoint(index.toString())}>
+                                <LinkButton onClick={() => removeJoint(joint.id)}>
                                     <XCircleIcon className="w-4"/>
                                     Remove Joint
                                 </LinkButton>

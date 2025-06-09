@@ -101,16 +101,20 @@ function calculateChunks(
             continue;
         }
 
-        // get joint with parent name
-        const jointToParent = currentModel.joints
-            .find(joint => joint.neighbour === task.parentId && joint.neighbour !== null);
-
+        // set default render position to the task position
         let renderPosition = new Vector3().copy(task.position);
-        if (jointToParent) {
-            renderPosition = new Vector3()
-                .copy(task.position)
-                .sub(jointToParent.position)
-        }
+
+        // apply parent chunk position if available
+        Object.values(currentModel.joints).forEach(joint => {
+            // find joint to parent chunk
+            if (joint.neighbour === task.parentId && joint.neighbour !== null) {
+                renderPosition = new Vector3()
+                    .copy(task.position)
+                    .sub(joint.position)
+                ;
+                return;
+            }
+        })
 
         // calculate dimensions
         const chunkDimension = calculateRenderDimension(
@@ -137,7 +141,7 @@ function calculateChunks(
         };
 
         // add new tasks
-        currentModel.joints.forEach((joint: JointModel) => {
+        Object.values(currentModel.joints).forEach((joint: JointModel) => {
             if (joint.neighbour === task.parentId) {
                 return;
             }

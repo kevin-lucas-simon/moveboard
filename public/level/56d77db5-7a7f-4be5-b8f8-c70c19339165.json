@@ -11,7 +11,23 @@
                 "y": 0,
                 "z": 0
             },
-            "joints": [],
+            "joints": {
+                "34f140bf-3b8a-4f88-8c82-a4fcc5f6b498": {
+                    "id": "34f140bf-3b8a-4f88-8c82-a4fcc5f6b498",
+                    "neighbour": "921edeb9-1f84-4eb7-a901-2517675125eb",
+                    "position": {
+                        "x": 1.5,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "vision": 1
+                }
+            },
             "elements": {
                 "e755073a-309f-4890-815b-0d4b6d75166c": {
                     "id": "e755073a-309f-4890-815b-0d4b6d75166c",
@@ -27,6 +43,49 @@
                         "z": 3
                     },
                     "color": "#329460"
+                }
+            }
+        },
+        "921edeb9-1f84-4eb7-a901-2517675125eb": {
+            "id": "921edeb9-1f84-4eb7-a901-2517675125eb",
+            "name": "JointChunk",
+            "player": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "joints": {
+                "358adb0e-0484-44a3-9bd3-cd576ef95228": {
+                    "id": "358adb0e-0484-44a3-9bd3-cd576ef95228",
+                    "neighbour": "02659fa6-985d-4306-a6d0-8cf32fda37ed",
+                    "position": {
+                        "x": -1.5,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "vision": 1
+                }
+            },
+            "elements": {
+                "ce2e2d6d-81b2-4667-9519-95eef894dd21": {
+                    "id": "ce2e2d6d-81b2-4667-9519-95eef894dd21",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 0,
+                        "y": -1,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#ff5733"
                 }
             }
         }

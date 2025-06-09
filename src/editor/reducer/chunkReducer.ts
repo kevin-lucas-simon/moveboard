@@ -3,6 +3,7 @@ import {ElementModel} from "../../model/ElementModel";
 import {JointModel} from "../../model/JointModel";
 import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
 import {ElementBuilder} from "../../model/builder/ElementBuilder";
+import {JointBuilder} from "../../model/builder/JointBuilder";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -18,10 +19,7 @@ export type ChunkReducerActions = {
     payload: JointModel;
 } | {
     type: 'chunk_update_joint';
-    payload: {
-        index: string;
-        joint: JointModel;
-    }
+    payload: JointModel;
 } | {
     type: 'chunk_remove_joint';
     payload: string;
@@ -64,23 +62,19 @@ export function chunkReducer(
                 .build()
             ;
         case 'chunk_add_joint':
-            return {
-                ...state,
-                joints: [
-                    ...state.joints,
-                    action.payload,
-                ]
-            }
         case 'chunk_update_joint':
-            return {
-                ...state,
-                joints: state.joints.map((el, i) => i !== parseInt(action.payload.index) ? el : action.payload.joint)
-            }
+            return ChunkBuilder
+                .from(state)
+                .withJoint(JointBuilder.from(action.payload).build())
+                .build()
+            ;
+
         case 'chunk_remove_joint':
-            return {
-                ...state,
-                joints: state.joints.filter((e, i) => i !== parseInt(action.payload))
-            }
+            return ChunkBuilder
+                .from(state)
+                .withoutJoint(action.payload)
+                .build()
+            ;
         default:
             throw new Error('Invalid action type');
     }

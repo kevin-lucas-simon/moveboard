@@ -9,6 +9,6 @@ export type ChunkModel = {
     id: string,
     name: string,
     player: Vector3Like,
-    joints: JointModel[],
+    joints: {[key: string]: JointModel},
     elements: {[key: string]: ElementModel},
 }

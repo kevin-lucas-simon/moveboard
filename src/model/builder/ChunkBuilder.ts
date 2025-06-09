@@ -4,6 +4,7 @@ import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
 import {ChunkValidator} from "../validator/ChunkValidator";
 import {ElementModel} from "../ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
+import {JointModel} from "../JointModel";
 
 export class ChunkBuilder {
     private chunk: ChunkModel;
@@ -22,7 +23,7 @@ export class ChunkBuilder {
             id: generateUUID(),
             name: name,
             player: { x: 0, y: 0, z: 0 },
-            joints: [],
+            joints: {},
             elements: {
                 [floorBlock.id]: floorBlock
             }
@@ -63,6 +64,21 @@ export class ChunkBuilder {
     withoutElement(id: string): this {
         this.chunk.elements = Object.fromEntries(
             Object.entries(this.chunk.elements).filter(([key]) => key !== id)
+        );
+        return this;
+    }
+
+    withJoint(joint: JointModel): this {
+        this.chunk.joints = {
+            ...this.chunk.joints,
+            [joint.id]: joint
+        };
+        return this;
+    }
+
+    withoutJoint(id: string): this {
+        this.chunk.joints = Object.fromEntries(
+            Object.entries(this.chunk.joints).filter(([key]) => key !== id)
         );
         return this;
     }

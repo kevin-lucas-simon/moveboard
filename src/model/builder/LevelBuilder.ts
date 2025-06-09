@@ -65,11 +65,13 @@ export class LevelBuilder {
         )
 
         // update joints in remaining chunks to remove references to the removed chunk
-        Object.values(updatedChunks).forEach(chunk => {
-            chunk.joints = chunk.joints.map(joint =>
-                joint.neighbour === removedChunk.id ? { ...joint, neighbour: "" } : joint
-            );
-        });
+        Object.entries(updatedChunks).forEach(([_, chunk]) => {
+            Object.entries(chunk.joints).forEach(([_, joint]) => {
+                if (joint.neighbour === removedChunk.id) {
+                    joint.neighbour = "";
+                }
+            })
+        })
 
         // return updated state with removed chunk
         this.level.chunks = updatedChunks
