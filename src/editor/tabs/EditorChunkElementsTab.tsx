@@ -26,10 +26,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
     const changeElement = (index: string, value: ElementModel) => {
         props.chunkDispatcher({
             type: 'chunk_update_element',
-            payload: {
-                index: index,
-                element: value,
-            }
+            payload: value,
         });
     }
 

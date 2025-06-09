@@ -1,7 +1,6 @@
 import {ChunkModel} from "../ChunkModel";
 import {generateUUID} from "three/src/math/MathUtils";
 import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
-import {Vector3Like} from "three";
 import {ChunkValidator} from "../validator/ChunkValidator";
 import {ElementModel} from "../ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
@@ -14,8 +13,8 @@ export class ChunkBuilder {
 
         const floorBlock = ElementBuilder
             .create<FloorBlockModel>("FloorBlock")
-            .set("color", randomColor)
-            .set("dimension", { x: 3, y: 1, z: 3 })
+            .with("color", randomColor)
+            .with("dimension", { x: 3, y: 1, z: 3 })
             .build()
         ;
 
@@ -45,17 +44,15 @@ export class ChunkBuilder {
         return this.chunk;
     }
 
-    setName(name: string): ChunkBuilder {
-        this.chunk.name = name;
+    with<K extends keyof ChunkModel>(
+        key: K,
+        value: ChunkModel[K]
+    ): this {
+        this.chunk[key] = value;
         return this;
     }
 
-    setPlayerPosition(position: Vector3Like): ChunkBuilder {
-        this.chunk.player = structuredClone(position);
-        return this;
-    }
-
-    addElement(element: ElementModel) {
+    withElement(element: ElementModel): this {
         this.chunk.elements = {
             ...this.chunk.elements,
             [element.id]: ElementBuilder.from(element).build()
@@ -63,23 +60,7 @@ export class ChunkBuilder {
         return this;
     }
 
-    editElement(id: string, cb: (builder: ElementBuilder) => ElementBuilder): this {
-        const existing = this.chunk.elements[id];
-        if (!existing) {
-            throw new Error(`Element with id "${id}" not found`);
-        }
-
-        const updated = cb(ElementBuilder.from(existing)).build();
-
-        this.chunk.elements = {
-            ...this.chunk.elements,
-            [id]: updated,
-        };
-
-        return this;
-    }
-
-    removeElement(id: string): ChunkBuilder {
+    withoutElement(id: string): this {
         this.chunk.elements = Object.fromEntries(
             Object.entries(this.chunk.elements).filter(([key]) => key !== id)
         );

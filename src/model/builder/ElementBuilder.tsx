@@ -29,7 +29,7 @@ export class ElementBuilder<T extends ElementModel = ElementModel> {
         return new ElementBuilder<T>(element);
     }
 
-    set<K extends keyof T>(key: K, value: T[K]): this {
+    with<K extends keyof T>(key: K, value: T[K]): this {
         this.element[key] = value;
         return this;
     }

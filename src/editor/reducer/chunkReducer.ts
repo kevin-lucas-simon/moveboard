@@ -9,10 +9,7 @@ export type ChunkReducerActions = {
     payload: ElementModel;
 } | {
     type: 'chunk_update_element';
-    payload: {
-        index: string;
-        element: ElementModel;
-    }
+    payload: ElementModel;
 } | {
     type: 'chunk_remove_element';
     payload: string;
@@ -31,7 +28,7 @@ export type ChunkReducerActions = {
 } | {
     type: 'chunk_update_field';
     payload: {
-        key: string;
+        key: keyof ChunkModel;
         value: any;
     }
 };
@@ -42,31 +39,28 @@ export function chunkReducer(
 ): ChunkModel {
     switch (action.type) {
         case 'chunk_update_field':
+            if (!(action.payload.key in state)) {
+                throw new Error(`Invalid field key: ${action.payload.key}`);
+            }
             if (['elements', 'joints'].includes(action.payload.key)) {
                 throw new Error('Use dedicated actions for elements and joints');
             }
-            return {
-                ...state,
-                [action.payload.key]: action.payload.value,
-            }
-        case 'chunk_add_element':
             return ChunkBuilder
                 .from(state)
-                .addElement(ElementBuilder.from(action.payload).build())
+                .with(action.payload.key, action.payload.value)
                 .build()
             ;
+        case 'chunk_add_element':
         case 'chunk_update_element':
             return ChunkBuilder
                 .from(state)
-                .editElement(action.payload.index, (builder) => {
-                    return builder.patch(action.payload.element);
-                })
+                .withElement(ElementBuilder.from(action.payload).build())
                 .build()
             ;
         case 'chunk_remove_element':
             return ChunkBuilder
                 .from(state)
-                .removeElement(action.payload)
+                .withoutElement(action.payload)
                 .build()
             ;
         case 'chunk_add_joint':

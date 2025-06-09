@@ -24,7 +24,7 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
         props.levelDispatcher({
             type: 'chunk_update_field',
             payload: {
-                key: key,
+                key: key as keyof ChunkModel,
                 value: value,
             }
         })
