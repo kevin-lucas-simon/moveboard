@@ -4,11 +4,12 @@ import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../entity/Player";
 import {useDebugSettings} from "../input/DebugSettingsProvider";
+import {ChunkID} from "../../model/ChunkModel";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,
     chunkPosition: Vector3,
-    onChunkLeave: (neighbour: string) => void,
+    onChunkLeave: (neighbour: ChunkID|null) => void,
 }
 
 export function Joint(props: JointProps) {

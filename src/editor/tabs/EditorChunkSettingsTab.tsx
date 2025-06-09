@@ -34,7 +34,7 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
         setDialog(null);
         props.levelDispatcher({
             type: 'level_remove_chunk',
-            payload: props.chunk.name,
+            payload: props.chunk.id,
         });
     }
 

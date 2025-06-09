@@ -6,12 +6,13 @@ import {LevelModel} from "../../model/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
+import {ChunkID} from "../../model/ChunkModel";
 
 export type LevelProps = LevelModel & {};
 
 export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
-        = useState<string>(props.start);
+        = useState<ChunkID>(props.start);
     const renderedChunks
         = useChunkRenderer(props.chunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)
@@ -21,8 +22,8 @@ export function Level(props: LevelProps) {
     }
 
     // change active chunk when player leaves a chunk
-    function onPlayerChunkLeave(neighbour: string) {
-        if (props.chunks[neighbour]) {
+    function onPlayerChunkLeave(neighbour: ChunkID|null) {
+        if (neighbour && props.chunks[neighbour]) {
             setActiveChunk(neighbour);
         }
     }
@@ -30,7 +31,6 @@ export function Level(props: LevelProps) {
     // reset player position if it goes out of bounds
     function onPlayerOutOfBounds() {
         if (playerRef.current) {
-            console.log("Player out of bounds, respawning in chunk", activeChunk);
             playerRef.current.setTranslation(renderedChunks[activeChunk].playerSpawnPosition, true)
             playerRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
             playerRef.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
@@ -40,7 +40,7 @@ export function Level(props: LevelProps) {
     return (
         <>
             {Object.keys(renderedChunks).map(key => (
-                <Chunk key={key} {...renderedChunks[key]}
+                <Chunk key={key} {...renderedChunks[key as ChunkID]}
                        active={key === activeChunk}
                        onPlayerChunkLeave={onPlayerChunkLeave}
                        onPlayerOutOfBounds={onPlayerOutOfBounds}

@@ -1,11 +1,13 @@
-import {ChunkModel} from "./ChunkModel";
+import {ChunkID, ChunkModel} from "./ChunkModel";
+import {UUID} from "./util/uuid";
 
 /**
  * API data model
  */
+export type LevelID = UUID;
 export type LevelModel = {
-    id: string,
+    id: LevelID,
     name: string,
-    start: string,
-    chunks: {[key: string]: ChunkModel},
+    start: ChunkID,
+    chunks: {[key: ChunkID]: ChunkModel},
 }

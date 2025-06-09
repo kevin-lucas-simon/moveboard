@@ -1,10 +1,10 @@
 import {ChunkModel} from "../ChunkModel";
-import {generateUUID} from "three/src/math/MathUtils";
 import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
 import {ChunkValidator} from "../validator/ChunkValidator";
 import {ElementModel} from "../ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
 import {JointModel} from "../JointModel";
+import {createUUID} from "../util/uuid";
 
 export class ChunkBuilder {
     private chunk: ChunkModel;
@@ -20,7 +20,7 @@ export class ChunkBuilder {
         ;
 
         this.chunk = {
-            id: generateUUID(),
+            id: createUUID(),
             name: name,
             player: { x: 0, y: 0, z: 0 },
             joints: {},

@@ -2,21 +2,22 @@ import {LevelModel} from "../../model/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
 import {LevelBuilder} from "../../model/builder/LevelBuilder";
+import {ChunkID} from "../../model/ChunkModel";
 
 export type LevelReducerState = {
     level: LevelModel,
-    active: string,
+    active: ChunkID,
 };
 
 export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_select_chunk',
-    payload: string,
+    payload: ChunkID,
 } | {
     type: 'level_add_chunk',
     payload: string,
 } | {
     type: 'level_remove_chunk',
-    payload: string,
+    payload: ChunkID,
 } | {
     type: 'level_update_field',
     payload: {

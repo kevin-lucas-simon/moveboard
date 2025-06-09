@@ -7,7 +7,7 @@ export class JointBuilder {
     private constructor() {
         this.joint = {
             id: generateUUID(),
-            neighbour: "",
+            neighbour: null,
             position: { x: 0, y: 0, z: 0 },
             dimension: { x: 1, y: 1, z: 1 },
             vision: 1,

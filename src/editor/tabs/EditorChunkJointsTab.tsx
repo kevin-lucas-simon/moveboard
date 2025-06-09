@@ -5,6 +5,8 @@ import {BaseTab} from "./BaseTab";
 import {ArrowRightIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
+import {ChunkID} from "../../model/ChunkModel";
+import {JointBuilder} from "../../model/builder/JointBuilder";
 
 export type EditorChunkJointsTabProps = {
     joints: {[key: string]: JointModel};
@@ -22,12 +24,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
     const addJoint = () => {
         props.levelDispatcher({
             type: 'chunk_add_joint',
-            payload: {
-                neighbour: "",
-                position: {x: 0, y: 0, z: 0},
-                dimension: {x: 1, y: 1, z: 1},
-                vision: 1,
-            } as JointModel,
+            payload: JointBuilder.create().build(),
         });
     }
 
@@ -45,10 +42,13 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
         });
     }
 
-    const changeChunk = (index: string) => {
+    const changeChunk = (chunkId: ChunkID|null) => {
+        if (!chunkId) {
+            return
+        }
         props.levelDispatcher({
             type: 'level_select_chunk',
-            payload: index,
+            payload: chunkId,
         });
     }
 

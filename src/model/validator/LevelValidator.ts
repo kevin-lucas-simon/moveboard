@@ -1,5 +1,6 @@
 import {LevelModel} from "../LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
+import {ChunkID} from "../ChunkModel";
 
 export class LevelValidator {
     static validate(level: LevelModel) {
@@ -16,7 +17,7 @@ export class LevelValidator {
         }
 
         Object.keys(level.chunks).forEach((chunkId) => {
-            const chunk = level.chunks[chunkId];
+            const chunk = level.chunks[chunkId as ChunkID];
             if (chunk.id !== chunkId) {
                 throw new Error(`Chunk ID mismatch: expected ${chunkId}, got ${chunk.id}.`);
             }

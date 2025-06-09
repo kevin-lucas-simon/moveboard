@@ -1,8 +1,8 @@
 import {LevelModel} from "../LevelModel";
-import {generateUUID} from "three/src/math/MathUtils";
-import {ChunkModel} from "../ChunkModel";
+import {ChunkID, ChunkModel} from "../ChunkModel";
 import {LevelValidator} from "../validator/LevelValidator";
 import {ChunkBuilder} from "./ChunkBuilder";
+import {createUUID} from "../util/uuid";
 
 export class LevelBuilder {
     private level: LevelModel;
@@ -11,7 +11,7 @@ export class LevelBuilder {
         const startChunk = ChunkBuilder.create("StartChunk").build();
 
         this.level = {
-            id: generateUUID(),
+            id: createUUID(),
             name: name,
             start: startChunk.id,
             chunks: {
@@ -35,12 +35,13 @@ export class LevelBuilder {
         return this.level;
     }
 
+    // TODO verallgemeinern
     setName(name: string) {
         this.level.name = name;
         return this;
     }
 
-    setStart(id: string) {
+    setStart(id: ChunkID) {
         this.level.start = id;
         return this;
     }
@@ -53,7 +54,7 @@ export class LevelBuilder {
         return this
     }
 
-    removeChunk(id: string): this {
+    removeChunk(id: ChunkID): this {
         const removedChunk=  this.level.chunks[id];
         if (!removedChunk) {
             return this;
@@ -68,7 +69,7 @@ export class LevelBuilder {
         Object.entries(updatedChunks).forEach(([_, chunk]) => {
             Object.entries(chunk.joints).forEach(([_, joint]) => {
                 if (joint.neighbour === removedChunk.id) {
-                    joint.neighbour = "";
+                    joint.neighbour = null;
                 }
             })
         })

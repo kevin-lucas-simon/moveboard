@@ -6,10 +6,11 @@ import {JointModel} from "../../model/JointModel";
 import {ElementModel} from "../../model/ElementModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
+import {ChunkID} from "../../model/ChunkModel";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
-    onPlayerChunkLeave: (neighbour: string) => void,
+    onPlayerChunkLeave: (neighbour: ChunkID|null) => void,
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
