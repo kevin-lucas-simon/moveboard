@@ -1,7 +1,7 @@
 import {Vector3Like} from "three";
 import {JointModel} from "./JointModel";
 import {ElementModel} from "./ElementModel";
-import {UUID} from "./util/uuid";
+import {UUID} from "./util/UUID";
 
 /**
 * API data model

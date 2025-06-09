@@ -2,7 +2,7 @@ import {LevelModel} from "../LevelModel";
 import {ChunkID, ChunkModel} from "../ChunkModel";
 import {LevelValidator} from "../validator/LevelValidator";
 import {ChunkBuilder} from "./ChunkBuilder";
-import {createUUID} from "../util/uuid";
+import {createUUID} from "../util/UUID";
 
 export class LevelBuilder {
     private level: LevelModel;

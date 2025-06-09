@@ -4,7 +4,7 @@ import {ChunkValidator} from "../validator/ChunkValidator";
 import {ElementModel} from "../ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
 import {JointModel} from "../JointModel";
-import {createUUID} from "../util/uuid";
+import {createUUID} from "../util/UUID";
 
 export class ChunkBuilder {
     private chunk: ChunkModel;
