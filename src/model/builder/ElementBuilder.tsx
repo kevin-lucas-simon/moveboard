@@ -1,6 +1,6 @@
 import { ElementModel } from "../ElementModel";
-import {generateUUID} from "three/src/math/MathUtils";
 import {elementDefinition, elementFallback} from "../../experience/config/elementDefinition";
+import {createUUID} from "../util/UUID";
 
 type PartialDeep<T> = {
     [P in keyof T]?: T[P] extends object ? PartialDeep<T[P]> : T[P];
@@ -14,7 +14,7 @@ export class ElementBuilder<T extends ElementModel = ElementModel> {
             const definition = elementDefinition[typeOrElement] || elementFallback;
             this.element = {
                 ...structuredClone(definition.defaultProps) as T,
-                id: generateUUID(),
+                id: createUUID(),
             };
         } else {
             this.element = structuredClone(typeOrElement);

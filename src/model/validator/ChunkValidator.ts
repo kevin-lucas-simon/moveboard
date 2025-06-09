@@ -1,4 +1,5 @@
 import {ChunkModel} from "../ChunkModel";
+import {ElementID} from "../ElementModel";
 
 export class ChunkValidator {
     static validate(chunk: ChunkModel) {
@@ -11,11 +12,13 @@ export class ChunkValidator {
         }
 
         Object.keys(chunk.elements).forEach((elementId) => {
-            const element = chunk.elements[elementId];
+            const element = chunk.elements[elementId as ElementID];
             if (element.id !== elementId) {
                 throw new Error(`Element ID mismatch: expected ${elementId}, got ${element.id}.`);
             }
             // TODO ElementValidator
         });
+
+        // TODO JointValidator
     }
 }

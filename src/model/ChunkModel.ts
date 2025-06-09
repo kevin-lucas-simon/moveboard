@@ -1,6 +1,6 @@
 import {Vector3Like} from "three";
-import {JointModel} from "./JointModel";
-import {ElementModel} from "./ElementModel";
+import {JointID, JointModel} from "./JointModel";
+import {ElementID, ElementModel} from "./ElementModel";
 import {UUID} from "./util/UUID";
 
 /**
@@ -11,6 +11,6 @@ export type ChunkModel = {
     id: ChunkID,
     name: string,
     player: Vector3Like,
-    joints: {[key: string]: JointModel},
-    elements: {[key: string]: ElementModel},
+    joints: {[key: JointID]: JointModel},
+    elements: {[key: ElementID]: ElementModel},
 }

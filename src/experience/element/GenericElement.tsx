@@ -7,7 +7,7 @@ import {ElementModel} from "../../model/ElementModel";
  * All element implementations are descendants from this object
  */
 export const GenericElementDefault: ElementModel = {
-    id: '', // set by ElementBuilder
+    id: '000-000', // set by ElementBuilder
     type: GenericElement.name,
     position: {x: 0, y: 0, z: 0},
 }

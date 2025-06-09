@@ -1,12 +1,12 @@
 import {JointModel} from "../JointModel";
-import {generateUUID} from "three/src/math/MathUtils";
+import {createUUID} from "../util/UUID";
 
 export class JointBuilder {
     private joint: JointModel;
 
     private constructor() {
         this.joint = {
-            id: generateUUID(),
+            id: createUUID(),
             neighbour: null,
             position: { x: 0, y: 0, z: 0 },
             dimension: { x: 1, y: 1, z: 1 },

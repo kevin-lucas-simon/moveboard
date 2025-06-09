@@ -23,5 +23,8 @@ export class LevelValidator {
             }
             ChunkValidator.validate(chunk);
         });
+
+        // TODO add joint validation if pointed chunks are existing
+        // TODO refactor it to readable private methods
     }
 }
