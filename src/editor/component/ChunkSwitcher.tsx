@@ -3,37 +3,45 @@ import {
 } from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
+import {ChunkModel} from "../../model/ChunkModel";
+import {LevelReducerActions} from "../reducer/levelReducer";
 
 export type ChunkSearchBarProps = {
-    options: string[];
-    active?: string|null;
-    onSelect?: ((item: string) => void);
-    onCreate?: ((item: string) => void);
+    chunks: {[key: string]: ChunkModel};
+    active: string;
+    levelDispatcher: React.Dispatch<LevelReducerActions>;
 }
 export function ChunkSwitcher(props: ChunkSearchBarProps) {
     const [query, setQuery] = useState<string>('');
 
+    const chunkNameActive = props.chunks[props.active]?.name;
+    const chunkNameOptions = Object.values(props.chunks).map(chunk => chunk.name);
+
     const filteredItems = query === ''
-        ? props.options
+        ? chunkNameOptions
             .slice(0, 12)
-        : props.options
+        : chunkNameOptions
             .filter((item) => item.toLowerCase().includes(query.toLowerCase()))
             .slice(0, 12)
 
-    const handleItemSelect = (item: string|null) => {
-        if (item === null) {
+    const handleItemSelect = (name: string|null) => {
+        const chunk = Object.values(props.chunks).find(chunk => chunk.name === name);
+        if (!chunk) {
             return;
         }
 
-        if (filteredItems.includes(item) && props.onSelect) {
-            props.onSelect(item)
+        if (filteredItems.includes(chunk.name)) {
+            props.levelDispatcher({
+                type: 'level_select_chunk',
+                payload: chunk.id,
+            })
             return;
         }
 
-        if (props.onCreate) {
-            props.onCreate(item)
-            return;
-        }
+        props.levelDispatcher({
+            type: 'level_add_chunk',
+            payload: chunk.id,
+        })
     }
 
     return (
@@ -52,7 +60,7 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
                     key={props.active}
                     className="w-full bg-transparent py-1 pl-8 pr-2 focus:outline-none text-2xl leading-none placeholder-black focus:placeholder-transparent"
                     displayValue={(item: string) => item}
-                    placeholder={props.active ?? "Search or create chunk..."}
+                    placeholder={chunkNameActive ?? "Search or create chunk..."}
                     onChange={(event) => setQuery(event.target.value)}
                 />
             </div>
@@ -67,7 +75,7 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
                         value={item}
                         className="flex gap-2 items-center data-[focus]:bg-gray-100 p-2"
                     >
-                        {item === props.active ?
+                        {item === chunkNameActive ?
                             <CheckIcon className="w-4"/>
                             :
                             <span className="w-4"/>

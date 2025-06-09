@@ -49,20 +49,6 @@ export function LevelEditor(props: LevelEditorProps) {
         })
     }
 
-    const handleChunkChange = (chunkName: string) => {
-        dispatchEditor({
-            type: 'level_select_chunk',
-            payload: chunkName,
-        })
-    }
-
-    const handleChunkCreate = (chunkName: string) => {
-        dispatchEditor({
-            type: 'level_add_chunk',
-            payload: chunkName,
-        })
-    }
-
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
             {/* header */}
@@ -72,10 +58,9 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* chunk selection */}
                 <div className="w-72 shrink-0">
                     <ChunkSwitcher
-                        options={Object.keys(editLevel.chunks)}
+                        chunks={editLevel.chunks}
                         active={editor.active}
-                        onSelect={handleChunkChange}
-                        onCreate={handleChunkCreate}
+                        levelDispatcher={dispatchEditor}
                     />
                 </div>
 
