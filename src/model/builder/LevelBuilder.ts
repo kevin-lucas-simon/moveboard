@@ -3,8 +3,9 @@ import {ChunkID, ChunkModel} from "../ChunkModel";
 import {LevelValidator} from "../validator/LevelValidator";
 import {ChunkBuilder} from "./ChunkBuilder";
 import {createUUID} from "../util/UUID";
+import {Builder} from "./Builder";
 
-export class LevelBuilder {
+export class LevelBuilder implements Builder<LevelModel> {
     private level: LevelModel;
 
     private constructor(name: string) {

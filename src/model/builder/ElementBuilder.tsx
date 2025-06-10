@@ -1,12 +1,13 @@
 import { ElementModel } from "../ElementModel";
 import {elementDefinition, elementFallback} from "../../experience/config/elementDefinition";
 import {createUUID} from "../util/UUID";
+import {Builder} from "./Builder";
 
 type PartialDeep<T> = {
     [P in keyof T]?: T[P] extends object ? PartialDeep<T[P]> : T[P];
 };
 
-export class ElementBuilder<T extends ElementModel = ElementModel> {
+export class ElementBuilder<T extends ElementModel = ElementModel> implements Builder<T> {
     private element: T;
 
     private constructor(typeOrElement: string | T) {

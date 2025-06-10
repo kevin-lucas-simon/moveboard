@@ -5,8 +5,9 @@ import {ElementModel} from "../ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
 import {JointModel} from "../JointModel";
 import {createUUID} from "../util/UUID";
+import {Builder} from "./Builder";
 
-export class ChunkBuilder {
+export class ChunkBuilder implements Builder<ChunkModel> {
     private chunk: ChunkModel;
 
     private constructor(name: string) {

@@ -1,7 +1,8 @@
 import {JointModel} from "../JointModel";
 import {createUUID} from "../util/UUID";
+import {Builder} from "./Builder";
 
-export class JointBuilder {
+export class JointBuilder implements Builder<JointModel> {
     private joint: JointModel;
 
     private constructor() {
