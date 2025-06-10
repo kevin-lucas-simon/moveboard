@@ -1,8 +1,9 @@
 import {LevelModel} from "../LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
 import {ChunkID} from "../ChunkModel";
+import {Validator} from "./Validator";
 
-export class LevelValidator {
+export class LevelValidator implements Validator<LevelModel> {
     static validate(level: LevelModel) {
         if (!level.id) {
             throw new Error("Level ID is required.");
@@ -26,5 +27,6 @@ export class LevelValidator {
 
         // TODO add joint validation if pointed chunks are existing
         // TODO refactor it to readable private methods
+        // TODO if private static methods are visible, make all them not static
     }
 }

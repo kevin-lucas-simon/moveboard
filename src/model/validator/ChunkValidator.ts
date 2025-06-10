@@ -1,7 +1,8 @@
 import {ChunkModel} from "../ChunkModel";
 import {ElementID} from "../ElementModel";
+import {Validator} from "./Validator";
 
-export class ChunkValidator {
+export class ChunkValidator implements Validator<ChunkModel> {
     static validate(chunk: ChunkModel) {
         if (!chunk.id) {
             throw new Error("Chunk ID is required.");
