@@ -35,18 +35,15 @@ export class LevelBuilder {
         return this.level;
     }
 
-    // TODO verallgemeinern
-    setName(name: string) {
-        this.level.name = name;
+    with<K extends keyof LevelModel>(
+        key: K,
+        value: LevelModel[K]
+    ): this {
+        this.level[key] = value;
         return this;
     }
 
-    setStart(id: ChunkID) {
-        this.level.start = id;
-        return this;
-    }
-
-    addChunk(chunk: ChunkModel): this {
+    withChunk(chunk: ChunkModel): this {
         this.level.chunks = {
             ...this.level.chunks,
             [chunk.id]: structuredClone(chunk)
@@ -54,7 +51,7 @@ export class LevelBuilder {
         return this
     }
 
-    removeChunk(id: ChunkID): this {
+    withoutChunk(id: ChunkID): this {
         const removedChunk=  this.level.chunks[id];
         if (!removedChunk) {
             return this;

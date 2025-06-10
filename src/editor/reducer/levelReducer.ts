@@ -21,7 +21,7 @@ export type LevelReducerActions = ChunkReducerActions | {
 } | {
     type: 'level_update_field',
     payload: {
-        key: string;
+        key: keyof LevelModel;
         value: any;
     }
 } | {
@@ -49,7 +49,7 @@ export function levelReducer(
                 active: newChunk.id,
                 level: LevelBuilder
                     .from(state.level)
-                    .addChunk(newChunk)
+                    .withChunk(newChunk)
                     .build()
             };
         case "level_remove_chunk":
@@ -59,19 +59,22 @@ export function levelReducer(
                 active: state.active === action.payload ? state.level.start : state.active,
                 level: LevelBuilder
                     .from(state.level)
-                    .removeChunk(action.payload)
+                    .withoutChunk(action.payload)
                     .build()
             }
         case 'level_update_field':
+            if (!(action.payload.key in state.level)) {
+                throw new Error(`Invalid field key: ${action.payload.key}`);
+            }
             if (['chunks'].includes(action.payload.key)) {
                 throw new Error('Use dedicated actions for chunks');
             }
             return {
                 ...state,
-                level: {
-                    ...state.level,
-                    [action.payload.key]: action.payload.value,
-                },
+                level: LevelBuilder
+                    .from(state.level)
+                    .with(action.payload.key, action.payload.value)
+                    .build()
             };
         case 'level_reset':
             // use current active, if not available use level start;

@@ -23,7 +23,7 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
         props.levelDispatcher({
             type: 'level_update_field',
             payload: {
-                key: key,
+                key: key as keyof LevelModel,
                 value: value,
             }
         });
