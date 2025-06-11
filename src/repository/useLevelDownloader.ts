@@ -17,10 +17,11 @@ export function useLevelDownloader(
             })
             .then(response => {
                 if (!ignore) {
-                    setLevel(response as LevelModel)
+                    setLevel(LevelBuilder.from(response).build());
                 }
             })
-            .catch(() => {
+            .catch((e) => {
+                console.error("Failed to download level", e);
                 if (!ignore) {
                     setLevel(LevelBuilder.create(levelName).build());
                 }

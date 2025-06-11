@@ -1,32 +1,68 @@
 import {LevelModel} from "../LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
-import {ChunkID} from "../ChunkModel";
+import {ChunkModel} from "../ChunkModel";
 import {Validator} from "./Validator";
 
 export class LevelValidator implements Validator<LevelModel> {
-    static validate(level: LevelModel) {
-        if (!level.id) {
-            throw new Error("Level ID is required.");
-        }
+    validate(level: LevelModel) {
+        this.shouldHaveValue(level.id, "Level ID must not be empty.");
+        this.shouldHaveValue(level.name, "Level name must not be empty.");
 
-        if (!level.name || level.name.trim() === "") {
-            throw new Error("Level name must not be empty.");
-        }
+        this.shouldExistIn(level.start, level.chunks, `Start chunk '${level.start}' does not exist in level chunks.`);
 
-        if (!level.chunks[level.start]) {
-            throw new Error(`Start chunk '${level.start}' does not exist.`);
-        }
+        this.shouldHaveSameListIdentifier(level.chunks, "id", "Level chunks must have unique IDs.");
+        this.checkChunkJointsPointToExistingChunks(level);
 
-        Object.keys(level.chunks).forEach((chunkId) => {
-            const chunk = level.chunks[chunkId as ChunkID];
-            if (chunk.id !== chunkId) {
-                throw new Error(`Chunk ID mismatch: expected ${chunkId}, got ${chunk.id}.`);
-            }
-            ChunkValidator.validate(chunk);
+        Object.values(level.chunks).forEach((chunk) => {
+            new ChunkValidator().validate(chunk as ChunkModel);
         });
+    }
 
-        // TODO add joint validation if pointed chunks are existing
-        // TODO refactor it to readable private methods
-        // TODO if private static methods are visible, make all them not static
+    protected shouldHaveValue(
+        value: any,
+        message: string
+    ) {
+        if (
+            !value ||
+            (typeof value === 'string' && value.trim() === '') ||
+            (Array.isArray(value) && value.length === 0)
+        ) {
+            throw new Error(message);
+        }
+    }
+
+    protected shouldExistIn(
+        value: any,
+        collection: Record<string, any>,
+        message: string
+    ) {
+        if (!collection[value]) {
+            throw new Error(message);
+        }
+    }
+
+    protected shouldHaveSameListIdentifier(
+        list: Partial<ChunkModel>,
+        identifier: keyof Partial<Partial<ChunkModel>>,
+        message: string
+    ) {
+        Object.keys(list).forEach((key) => {
+            const item = list[key as keyof Partial<ChunkModel>] as Partial<ChunkModel>;
+            if (!item || item[identifier] !== key) {
+                throw new Error(message);
+            }
+        });
+    }
+
+    private checkChunkJointsPointToExistingChunks(level: LevelModel) {
+        Object.values(level.chunks).forEach((chunk) => {
+            Object.values(chunk.joints || {}).forEach((joint) => {
+                this.shouldExistIn(
+                    joint.neighbour,
+                    level.chunks,
+                    `Joint '${joint.id}' in chunk '${chunk.id}' points to non-existing chunk '${joint.neighbour}'.`
+                );
+            })
+        })
     }
 }

@@ -42,7 +42,7 @@ export class ChunkBuilder implements Builder<ChunkModel> {
     }
 
     build(): ChunkModel {
-        ChunkValidator.validate(this.chunk);
+        new ChunkValidator().validate(this.chunk);
         return this.chunk;
     }
 

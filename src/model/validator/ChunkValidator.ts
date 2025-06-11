@@ -1,25 +1,39 @@
 import {ChunkModel} from "../ChunkModel";
-import {ElementID} from "../ElementModel";
 import {Validator} from "./Validator";
 
 export class ChunkValidator implements Validator<ChunkModel> {
-    static validate(chunk: ChunkModel) {
-        if (!chunk.id) {
-            throw new Error("Chunk ID is required.");
-        }
+    validate(chunk: ChunkModel) {
+        this.shouldNotEmpty(chunk.id, "Chunk ID must not be empty.");
+        this.shouldNotEmpty(chunk.name, "Chunk name must not be empty.");
 
-        if (!chunk.name || chunk.name.trim() === "") {
-            throw new Error("Chunk name must not be empty.");
-        }
+        this.shouldHaveSameListIdentifier(chunk.elements, "id", "Chunk elements must have unique IDs.");
+        this.shouldHaveSameListIdentifier(chunk.joints, "id", "Chunk joints must have unique IDs.");
+    }
 
-        Object.keys(chunk.elements).forEach((elementId) => {
-            const element = chunk.elements[elementId as ElementID];
-            if (element.id !== elementId) {
-                throw new Error(`Element ID mismatch: expected ${elementId}, got ${element.id}.`);
+    protected shouldNotEmpty(
+        value: any,
+        message: string
+    ) {
+        if (
+            !value ||
+            (typeof value === 'string' && value.trim() === '') ||
+            (Array.isArray(value) && value.length === 0)
+        ) {
+            throw new Error(message);
+        }
+    }
+
+    // TODO der identifier hat nicht direkt den korrekten partial type, sondern nur den übergreifenden Typ
+    protected shouldHaveSameListIdentifier(
+        list: Partial<ChunkModel>,
+        identifier: keyof Partial<Partial<ChunkModel>>,
+        message: string
+    ) {
+        Object.keys(list).forEach((key) => {
+            const item = list[key as keyof Partial<ChunkModel>] as Partial<ChunkModel>;
+            if (!item || item[identifier] !== key) {
+                throw new Error(message);
             }
-            // TODO ElementValidator
         });
-
-        // TODO JointValidator
     }
 }

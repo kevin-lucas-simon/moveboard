@@ -32,7 +32,7 @@ export class LevelBuilder implements Builder<LevelModel> {
     }
 
     build(): LevelModel {
-        LevelValidator.validate(this.level);
+        new LevelValidator().validate(this.level);
         return this.level;
     }
 
