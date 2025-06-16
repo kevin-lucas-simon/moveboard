@@ -3,7 +3,7 @@ import {GamePage} from "../page/GamePage";
 import {EditorPage} from "../page/EditorPage";
 import {EditorSelectorPage} from "../page/EditorSelectorPage";
 
-const routeConfig = [
+export const routeConfig = [
     {
         path: '/',
         element: <GamePage />,
@@ -24,5 +24,3 @@ const routeConfig = [
         }
     }
 ];
-
-export default routeConfig;

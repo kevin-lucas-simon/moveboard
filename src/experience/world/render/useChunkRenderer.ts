@@ -1,10 +1,10 @@
 import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {FloorBlock} from "../../element/block/FloorBlock";
 import {JointModel} from "../../../data/model/world/JointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
+import {ElementType} from "../../../data/model/element/ElementType";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -122,7 +122,7 @@ function calculateChunks(
             renderPosition
         );
         const cameraDimension = calculateRenderDimension(
-            Object.values(currentModel.elements).filter(element => element.type === FloorBlock.name),
+            Object.values(currentModel.elements).filter(element => element.type === ElementType.FloorBlock),
             renderPosition
         );
 
@@ -166,6 +166,16 @@ function calculateRenderDimension(
     elementModels: ElementModel[],
     worldPosition: Vector3Like,
 ): RenderDimension {
+    // return empty dimension if no elements are available
+    if (elementModels.length === 0) {
+        return {
+            size: new Vector3(0, 0, 0),
+            centerPosition: new Vector3().copy(worldPosition),
+            minimalPosition: new Vector3().copy(worldPosition),
+            maximalPosition: new Vector3().copy(worldPosition),
+        };
+    }
+
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
 

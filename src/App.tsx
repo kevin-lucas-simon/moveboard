@@ -1,6 +1,6 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import React from "react";
-import routeConfig from "./config/routeConfig";
+import {routeConfig} from "./config/routeConfig";
 
 const router = createBrowserRouter(routeConfig, {
     future: {

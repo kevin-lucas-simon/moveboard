@@ -3,7 +3,6 @@ import {ElementType} from "../ElementType";
 
 /**
  * Block that is guarantied visible in camera chunk view.
- * Chunk dimension logic is handled by the chunk renderer.
  */
 export type FloorBlockModel = BasicBlockModel
 export const FloorBlockDefault: FloorBlockModel = {
