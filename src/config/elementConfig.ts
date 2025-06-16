@@ -4,7 +4,7 @@ import {FloorBlock, FloorBlockDefault} from "../experience/element/block/FloorBl
 import {GenericElement, GenericElementDefault} from "../experience/element/GenericElement";
 import {BarrierBlock, BarrierBlockDefault} from "../experience/element/block/BarrierBlock";
 import {BounceBlock, BounceBlockDefault} from "../experience/element/block/BounceBlock";
-import {ElementModel} from "../model/ElementModel";
+import {ElementModel, ElementType} from "../model/ElementModel";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -12,35 +12,33 @@ import {ElementModel} from "../model/ElementModel";
  * Left: Name of block type in API JSON
  * Right: Corresponding implementations and properties
  */
-export const elementConfig: Record<string, {
+export const elementConfig: Record<ElementType, {
     experienceComponent: React.ComponentType<any>;
     defaultProps: ElementModel;
 }> = {
-    BarrierBlock: {
+    [ElementType.BarrierBlock]: {
         experienceComponent: BarrierBlock,
         defaultProps: BarrierBlockDefault,
     },
-    BasicBlock: {
+    [ElementType.BasicBlock]: {
         experienceComponent: BasicBlock,
         defaultProps: BasicBlockDefault,
     },
-    BounceBlock: {
+    [ElementType.BounceBlock]: {
         experienceComponent: BounceBlock,
         defaultProps: BounceBlockDefault
     },
-    FloorBlock: {
+    [ElementType.FloorBlock]: {
         experienceComponent: FloorBlock,
         defaultProps: FloorBlockDefault,
     },
+    [ElementType.GenericElement]: {
+        experienceComponent: GenericElement,
+        defaultProps: GenericElementDefault,
+    }
 }
 
 /**
  * Fallback element for unknown element types
  */
-export const elementFallbackConfig: {
-    experienceComponent: React.ComponentType<any>;
-    defaultProps: ElementModel;
-} = {
-    experienceComponent: GenericElement,
-    defaultProps: GenericElementDefault,
-}
+export const elementFallbackConfig = elementConfig[ElementType.GenericElement]

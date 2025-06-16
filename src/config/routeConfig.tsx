@@ -3,7 +3,7 @@ import {GamePage} from "../page/GamePage";
 import {EditorPage} from "../page/EditorPage";
 import {EditorSelectorPage} from "../page/EditorSelectorPage";
 
-const routes = [
+const routeConfig = [
     {
         path: '/',
         element: <GamePage />,
@@ -25,4 +25,4 @@ const routes = [
     }
 ];
 
-export default routes;
+export default routeConfig;

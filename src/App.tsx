@@ -1,8 +1,8 @@
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import React from "react";
-import routes from "./config/routes";
+import routeConfig from "./config/routeConfig";
 
-const router = createBrowserRouter(routes, {
+const router = createBrowserRouter(routeConfig, {
     future: {
         v7_relativeSplatPath: true,
         v7_fetcherPersist: true,

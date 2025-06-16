@@ -1,9 +1,10 @@
 import {BasicBlock, BasicBlockDefault, BasicBlockModel} from "./BasicBlock";
+import {ElementType} from "../../../model/ElementModel";
 
 export type FloorBlockModel = BasicBlockModel
 export const FloorBlockDefault: FloorBlockModel = {
     ...BasicBlockDefault,
-    type: FloorBlock.name,
+    type: ElementType.FloorBlock,
     color: "red",
     position: {x: 0, y: -1, z: 0},
 }

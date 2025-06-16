@@ -1,7 +1,7 @@
 import {RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
 import {GenericElementDefault} from "../GenericElement";
-import {ElementModel} from "../../../model/ElementModel";
+import {ElementModel, ElementType} from "../../../model/ElementModel";
 
 export type BasicBlockModel = ElementModel & {
     dimension: Vector3Like,
@@ -9,7 +9,7 @@ export type BasicBlockModel = ElementModel & {
 }
 export const BasicBlockDefault: BasicBlockModel = {
     ...GenericElementDefault,
-    type: BasicBlock.name,
+    type: ElementType.BasicBlock,
     dimension: {x: 1, y: 1, z: 1},
     color: "grey",
 }

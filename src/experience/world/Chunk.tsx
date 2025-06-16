@@ -7,6 +7,7 @@ import {ElementModel} from "../../model/ElementModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {ChunkID} from "../../model/ChunkModel";
+import {ElementType} from "../../model/ElementModel";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
@@ -19,7 +20,7 @@ export function Chunk(props: ChunkProps) {
             .copy(props.worldPosition)
             .add(model.position)
         ;
-        const component = elementConfig[model.type]?.experienceComponent ?? elementFallbackConfig.experienceComponent;
+        const component = elementConfig[model.type as ElementType]?.experienceComponent ?? elementFallbackConfig.experienceComponent;
 
         return React.createElement(component, {
             ...model,

@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import {useEffect} from "react";
-import {ElementModel} from "../../model/ElementModel";
+import {ElementModel, ElementType} from "../../model/ElementModel";
 
 /**
  * Editor default values for generic elements
@@ -8,7 +8,7 @@ import {ElementModel} from "../../model/ElementModel";
  */
 export const GenericElementDefault: ElementModel = {
     id: '000-000', // set by ElementBuilder
-    type: GenericElement.name,
+    type: ElementType.GenericElement,
     position: {x: 0, y: 0, z: 0},
 }
 
