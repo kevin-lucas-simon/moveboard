@@ -1,5 +1,5 @@
 import { ElementModel } from "../ElementModel";
-import {elementDefinition, elementFallback} from "../../experience/config/elementDefinition";
+import {elementConfig, elementFallbackConfig} from "../../config/elementConfig";
 import {createUUID} from "../util/UUID";
 import {Builder} from "./Builder";
 
@@ -12,7 +12,7 @@ export class ElementBuilder<T extends ElementModel = ElementModel> implements Bu
 
     private constructor(typeOrElement: string | T) {
         if (typeof typeOrElement === "string") {
-            const definition = elementDefinition[typeOrElement] || elementFallback;
+            const definition = elementConfig[typeOrElement] || elementFallbackConfig;
             this.element = {
                 ...structuredClone(definition.defaultProps) as T,
                 id: createUUID(),

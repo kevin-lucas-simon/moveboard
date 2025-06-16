@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import React from "react";
-import {elementDefinition, elementFallback} from "../config/elementDefinition";
+import {elementConfig, elementFallbackConfig} from "../../config/elementConfig";
 import {Joint} from "./Joint";
 import {JointModel} from "../../model/JointModel";
 import {ElementModel} from "../../model/ElementModel";
@@ -19,7 +19,7 @@ export function Chunk(props: ChunkProps) {
             .copy(props.worldPosition)
             .add(model.position)
         ;
-        const component = elementDefinition[model.type]?.experienceComponent ?? elementFallback.experienceComponent;
+        const component = elementConfig[model.type]?.experienceComponent ?? elementFallbackConfig.experienceComponent;
 
         return React.createElement(component, {
             ...model,

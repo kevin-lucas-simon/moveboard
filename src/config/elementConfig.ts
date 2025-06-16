@@ -1,15 +1,10 @@
 import React from "react";
-import {BasicBlock, BasicBlockDefault} from "../element/block/BasicBlock";
-import {FloorBlock, FloorBlockDefault} from "../element/block/FloorBlock";
-import {GenericElement, GenericElementDefault} from "../element/GenericElement";
-import {BarrierBlock, BarrierBlockDefault} from "../element/block/BarrierBlock";
-import {BounceBlock, BounceBlockDefault} from "../element/block/BounceBlock";
-import {ElementModel} from "../../model/ElementModel";
-
-export type ElementDefinition = {
-    experienceComponent: React.ComponentType<any>,
-    defaultProps: ElementModel,
-}
+import {BasicBlock, BasicBlockDefault} from "../experience/element/block/BasicBlock";
+import {FloorBlock, FloorBlockDefault} from "../experience/element/block/FloorBlock";
+import {GenericElement, GenericElementDefault} from "../experience/element/GenericElement";
+import {BarrierBlock, BarrierBlockDefault} from "../experience/element/block/BarrierBlock";
+import {BounceBlock, BounceBlockDefault} from "../experience/element/block/BounceBlock";
+import {ElementModel} from "../model/ElementModel";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -17,7 +12,10 @@ export type ElementDefinition = {
  * Left: Name of block type in API JSON
  * Right: Corresponding implementations and properties
  */
-export const elementDefinition: { [key: string]: ElementDefinition } = {
+export const elementConfig: Record<string, {
+    experienceComponent: React.ComponentType<any>;
+    defaultProps: ElementModel;
+}> = {
     BarrierBlock: {
         experienceComponent: BarrierBlock,
         defaultProps: BarrierBlockDefault,
@@ -39,7 +37,10 @@ export const elementDefinition: { [key: string]: ElementDefinition } = {
 /**
  * Fallback element for unknown element types
  */
-export const elementFallback: ElementDefinition = {
+export const elementFallbackConfig: {
+    experienceComponent: React.ComponentType<any>;
+    defaultProps: ElementModel;
+} = {
     experienceComponent: GenericElement,
     defaultProps: GenericElementDefault,
 }

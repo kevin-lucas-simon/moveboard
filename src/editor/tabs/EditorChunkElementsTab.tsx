@@ -1,6 +1,6 @@
 import {ElementModel} from "../../model/ElementModel";
 import React from "react";
-import {elementDefinition} from "../../experience/config/elementDefinition";
+import {elementConfig} from "../../config/elementConfig";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
@@ -14,7 +14,7 @@ export type EditorChunkElementsTabProps = {
 
 export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
     const addElement = (type?: string) => {
-        if (!type || !(type in elementDefinition)) {
+        if (!type || !(type in elementConfig)) {
             return;
         }
         props.chunkDispatcher({
@@ -41,7 +41,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         <BaseTab
             title={"Chunk Elements"}
             description={"Fill the chunk area with static elements."}
-            addOptions={Object.keys(elementDefinition)}
+            addOptions={Object.keys(elementConfig)}
             onAdd={addElement}
         >
             <ul>

@@ -1,7 +1,7 @@
-import {ErrorPage} from "../ErrorPage";
-import {GamePage} from "../GamePage";
-import {EditorPage} from "../EditorPage";
-import {EditorSelectorPage} from "../EditorSelectorPage";
+import {ErrorPage} from "../page/ErrorPage";
+import {GamePage} from "../page/GamePage";
+import {EditorPage} from "../page/EditorPage";
+import {EditorSelectorPage} from "../page/EditorSelectorPage";
 
 const routes = [
     {

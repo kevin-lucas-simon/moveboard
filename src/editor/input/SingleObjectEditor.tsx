@@ -2,6 +2,7 @@ import {JsonNestedEditor} from "./JsonNestedEditor";
 import React from "react";
 import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
 import {UUID} from "../../model/util/UUID";
+import {editorConfig} from "../../config/editorConfig";
 
 export type SingleObjectEditorProps = {
     keyName: string,
@@ -10,7 +11,7 @@ export type SingleObjectEditorProps = {
     selectionOnKey?: {[key: string]: {[id: UUID]: string}}
 }
 export function SingleObjectEditor(props: SingleObjectEditorProps) {
-    if (props.keyName === "id") {
+    if (editorConfig.hiddenJsonKeys.includes(props.keyName)) {
         return <></>;
     }
 
