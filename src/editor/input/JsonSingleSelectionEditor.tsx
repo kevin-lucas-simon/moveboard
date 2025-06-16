@@ -1,10 +1,11 @@
 import {useState} from "react";
 import {Combobox, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
+import {UUID} from "../../model/util/UUID";
 
 export type JsonSelectionFieldEditorProps = {
     value: string,
     onChange: (value: string) => void,
-    options: string[],
+    options: {[id: UUID]: string},
     placeholder?: string,
 }
 
@@ -13,7 +14,10 @@ export function JsonSingleSelectionEditor(props: JsonSelectionFieldEditorProps) 
 
     const filteredItems = query === ''
         ? props.options
-        : props.options.filter((item) => item.toLowerCase().includes(query.toLowerCase()))
+        : Object.entries(props.options)
+            .filter(([_, display]) => display.toLowerCase().includes(query.toLowerCase()))
+            .map(([id, display]) => ({ id, display }))
+    ;
 
     const handleSelect = (item: string) => {
         return props.onChange(item)
@@ -28,7 +32,7 @@ export function JsonSingleSelectionEditor(props: JsonSelectionFieldEditorProps) 
         >
             <ComboboxInput
                 className="w-full grow bg-transparent outline-none -ml-1 px-1 mr-1"
-                displayValue={(item: string) => item}
+                displayValue={(item: UUID) => props.options[item] ?? ''}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={props.placeholder ?? "Select..."}
             />
@@ -36,13 +40,13 @@ export function JsonSingleSelectionEditor(props: JsonSelectionFieldEditorProps) 
                 anchor="bottom start"
                 className="w-[var(--input-width)] empty:invisible rounded bg-gray-200"
             >
-                {filteredItems.map((item) => (
+                {Object.entries(filteredItems).map(([id, display]) => (
                     <ComboboxOption
-                        key={item}
-                        value={item}
+                        key={id}
+                        value={id}
                         className="w-full data-[focus]:bg-gray-300 px-1"
                     >
-                        {item}
+                        {display}
                     </ComboboxOption>
                 ))}
             </ComboboxOptions>

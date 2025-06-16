@@ -103,7 +103,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditorChunkSettingsTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
                     }
                     {tab === EditorTabs.CHUNK_JOINTS &&
-                        <EditorChunkJointsTab joints={editChunk.joints} currentChunk={editor.active} chunkNames={Object.keys(editLevel.chunks)} levelDispatcher={dispatchEditor}/>
+                        <EditorChunkJointsTab level={editLevel} levelDispatcher={dispatchEditor} activeChunk={editChunk}/>
                     }
                     {tab === EditorTabs.CHUNK_ELEMENTS &&
                         <EditorChunkElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>

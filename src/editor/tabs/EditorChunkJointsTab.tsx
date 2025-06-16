@@ -5,21 +5,27 @@ import {BaseTab} from "./BaseTab";
 import {ArrowRightIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
-import {ChunkID} from "../../model/ChunkModel";
+import {ChunkID, ChunkModel} from "../../model/ChunkModel";
 import {JointBuilder} from "../../model/builder/JointBuilder";
+import {LevelModel} from "../../model/LevelModel";
+import {UUID} from "../../model/util/UUID";
 
 export type EditorChunkJointsTabProps = {
-    joints: {[key: string]: JointModel};
-    currentChunk: string;
-    chunkNames: string[];
+    level: LevelModel,
     levelDispatcher: React.Dispatch<LevelReducerActions>;
+    activeChunk: ChunkModel;
 }
 
 export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
-    const validChunksForNewJoints = props.chunkNames
-        // .filter((chunkName) => !props.joints.some((joint) => joint.neighbour === chunkName)) // TODO
-        .filter((chunkName) => chunkName !== props.currentChunk)
-    ;
+    const chunkSelection = {} as {[id: UUID]: string}
+    Object.values(props.level.chunks)
+        .filter(chunk => chunk.id !== props.activeChunk.id)
+        .forEach(chunk => {
+            if (Object.values(props.activeChunk.joints).some(joint => joint.neighbour === chunk.id)) {
+                return; // skip chunks that are already connected
+            }
+            chunkSelection[chunk.id] = chunk.name
+        })
 
     const addJoint = () => {
         props.levelDispatcher({
@@ -59,8 +65,8 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
             onAdd={addJoint}
         >
             <ul>
-                {Object.values(props.joints).map((joint, index) =>
-                    <li key={props.currentChunk + index} className="flex flex-col divide-gray-500/20">
+                {Object.values(props.activeChunk.joints).map((joint, index) =>
+                    <li key={joint.id} className="flex flex-col divide-gray-500/20">
                         <ListObjectEditor
                             key={index}
                             keyName={index.toString()}
@@ -68,7 +74,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
                             value={joint}
                             onChange={updateJoint}
                             selectionOnKey={{
-                                "neighbour": validChunksForNewJoints,
+                                "neighbour": chunkSelection,
                             }}
                             actionButton={joint.neighbour ? <ArrowRightIcon className="w-4"/> : undefined}
                             onAction={() => changeChunk(joint.neighbour)}

@@ -1,12 +1,13 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
 import React from "react";
 import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
+import {UUID} from "../../model/util/UUID";
 
 export type SingleObjectEditorProps = {
     keyName: string,
     value: any,
     onChange: (key: string, value: any) => void,
-    selectionOnKey?: {[key: string]: string[]}
+    selectionOnKey?: {[key: string]: {[id: UUID]: string}}
 }
 export function SingleObjectEditor(props: SingleObjectEditorProps) {
      return (

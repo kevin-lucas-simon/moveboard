@@ -1,11 +1,12 @@
 import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
+import {UUID} from "../../model/util/UUID";
 
 export type JsonNestedEditorProps = {
     keyName: string,
     displayname?: string,
     value: any,
     onKeyValueChange: (key: string, value: any) => void,
-    selectionOnKey?: {[key: string]: string[]}
+    selectionOnKey?: {[key: string]: {[id: UUID]: string}}
 }
 
 export function JsonNestedEditor(props: JsonNestedEditorProps) {

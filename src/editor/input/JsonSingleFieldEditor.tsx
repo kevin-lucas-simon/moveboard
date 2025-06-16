@@ -1,12 +1,13 @@
 import {Switch} from "@headlessui/react";
 import clsx from "clsx";
 import {JsonSingleSelectionEditor} from "./JsonSingleSelectionEditor";
+import {UUID} from "../../model/util/UUID";
 
 export type JsonFieldEditorProps = {
     value: any,
     onChange: (value: any) => void,
     className?: string,
-    selection?: any[],
+    selection?: {[id: UUID]: string},
 }
 
 export function JsonSingleFieldEditor(props: JsonFieldEditorProps) {

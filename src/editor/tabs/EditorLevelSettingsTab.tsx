@@ -6,6 +6,7 @@ import React from "react";
 import {LinkButton} from "../../component/button/LinkButton";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
+import {UUID} from "../../model/util/UUID";
 
 export type EditorLevelSettingsTabProps = {
     level: LevelModel,
@@ -18,6 +19,12 @@ enum EditorDialogs {
 
 export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
     const [dialog, setDialog] = React.useState<EditorDialogs|null>(null);
+
+    const startChunks = {} as {[id: UUID]: string}
+    Object.values(props.level.chunks)
+        .forEach(chunk => {
+            startChunks[chunk.id] = chunk.name;
+        })
 
     const handleUpdateField = (key: string, value: any) => {
         props.levelDispatcher({
@@ -60,7 +67,7 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
                                 value={value}
                                 onChange={handleUpdateField}
                                 selectionOnKey={{
-                                    "start": Object.keys(props.level.chunks),
+                                    "start": startChunks,
                                 }}
                             />
                         )
