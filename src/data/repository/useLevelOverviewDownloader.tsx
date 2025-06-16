@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {LevelOverviewModel} from "../model/LevelOverviewModel";
+import {LevelOverviewModel} from "../model/world/LevelOverviewModel";
 
 export function useLevelOverviewDownloader(): LevelOverviewModel[]|undefined {
     const [levelSelection, setLevelSelection]

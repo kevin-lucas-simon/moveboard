@@ -1,5 +1,5 @@
-import {JointModel} from "../JointModel";
-import {createUUID} from "../util/UUID";
+import {JointModel} from "../model/world/JointModel";
+import {createUUID} from "../model/shared/UUID";
 import {Builder} from "./Builder";
 
 export class JointBuilder implements Builder<JointModel> {

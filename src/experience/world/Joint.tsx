@@ -1,10 +1,10 @@
-import {JointModel} from "../../model/JointModel";
+import {JointModel} from "../../data/model/world/JointModel";
 import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../entity/Player";
 import {useDebugSettings} from "../input/DebugSettingsProvider";
-import {ChunkID} from "../../model/ChunkModel";
+import {ChunkID} from "../../data/model/world/ChunkModel";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,

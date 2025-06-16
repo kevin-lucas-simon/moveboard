@@ -1,7 +1,7 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
 import React, {useState} from "react";
 import {ChevronDownIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
-import {UUID} from "../../model/util/UUID";
+import {UUID} from "../../data/model/shared/UUID";
 
 export type ListObjectEditorProps = {
     keyName: string, // key is reserved for React, so we use keyName instead

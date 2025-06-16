@@ -1,10 +1,15 @@
 import React from "react";
-import {BasicBlock, BasicBlockDefault} from "../experience/element/block/BasicBlock";
-import {FloorBlock, FloorBlockDefault} from "../experience/element/block/FloorBlock";
-import {GenericElement, GenericElementDefault} from "../experience/element/GenericElement";
-import {BarrierBlock, BarrierBlockDefault} from "../experience/element/block/BarrierBlock";
-import {BounceBlock, BounceBlockDefault} from "../experience/element/block/BounceBlock";
-import {ElementModel, ElementType} from "../model/ElementModel";
+import {BasicBlock} from "../experience/element/block/BasicBlock";
+import {FloorBlock} from "../experience/element/block/FloorBlock";
+import {GenericElement} from "../experience/element/GenericElement";
+import {BarrierBlock} from "../experience/element/block/BarrierBlock";
+import {BounceBlock} from "../experience/element/block/BounceBlock";
+import {ElementDefault, ElementModel} from "../data/model/element/ElementModel";
+import {ElementType} from "../data/model/element/ElementType";
+import {BarrierBlockDefault} from "../data/model/element/block/BarrierBlockModel";
+import {BasicBlockDefault} from "../data/model/element/block/BasicBlockModel";
+import {BounceBlockDefault} from "../data/model/element/block/BounceBlockModel";
+import {FloorBlockDefault} from "../data/model/element/block/FloorBlockModel";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -34,7 +39,7 @@ export const elementConfig: Record<ElementType, {
     },
     [ElementType.GenericElement]: {
         experienceComponent: GenericElement,
-        defaultProps: GenericElementDefault,
+        defaultProps: ElementDefault,
     }
 }
 

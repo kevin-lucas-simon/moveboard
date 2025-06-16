@@ -1,8 +1,8 @@
-import {LevelModel} from "../../model/LevelModel";
+import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
-import {LevelBuilder} from "../../model/builder/LevelBuilder";
-import {ChunkID} from "../../model/ChunkModel";
+import {ChunkBuilder} from "../../data/builder/ChunkBuilder";
+import {LevelBuilder} from "../../data/builder/LevelBuilder";
+import {ChunkID} from "../../data/model/world/ChunkModel";
 
 export type LevelReducerState = {
     level: LevelModel,

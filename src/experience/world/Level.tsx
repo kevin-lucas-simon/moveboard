@@ -2,11 +2,11 @@ import {Chunk} from "./Chunk";
 import {useRef, useState} from "react";
 import {useChunkRenderer} from "./render/useChunkRenderer";
 import React from "react";
-import {LevelModel} from "../../model/LevelModel";
+import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
-import {ChunkID} from "../../model/ChunkModel";
+import {ChunkID} from "../../data/model/world/ChunkModel";
 
 export type LevelProps = LevelModel & {};
 

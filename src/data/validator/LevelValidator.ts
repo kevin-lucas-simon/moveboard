@@ -1,6 +1,6 @@
-import {LevelModel} from "../LevelModel";
+import {LevelModel} from "../model/world/LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
-import {ChunkModel} from "../ChunkModel";
+import {ChunkModel} from "../model/world/ChunkModel";
 import {Validator} from "./Validator";
 
 export class LevelValidator implements Validator<LevelModel> {

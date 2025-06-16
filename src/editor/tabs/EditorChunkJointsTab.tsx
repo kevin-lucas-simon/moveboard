@@ -1,14 +1,14 @@
-import {JointModel} from "../../model/JointModel";
+import {JointModel} from "../../data/model/world/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ArrowRightIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
-import {ChunkID, ChunkModel} from "../../model/ChunkModel";
-import {JointBuilder} from "../../model/builder/JointBuilder";
-import {LevelModel} from "../../model/LevelModel";
-import {UUID} from "../../model/util/UUID";
+import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
+import {JointBuilder} from "../../data/builder/JointBuilder";
+import {LevelModel} from "../../data/model/world/LevelModel";
+import {UUID} from "../../data/model/shared/UUID";
 
 export type EditorChunkJointsTabProps = {
     level: LevelModel,

@@ -10,7 +10,7 @@ import {
 import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
 import {EditorChunkSettingsTab} from "./tabs/EditorChunkSettingsTab";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
-import {LevelModel} from "../model/LevelModel";
+import {LevelModel} from "../data/model/world/LevelModel";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";

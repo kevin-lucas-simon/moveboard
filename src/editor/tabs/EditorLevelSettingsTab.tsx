@@ -1,12 +1,12 @@
 import {BaseTab} from "./BaseTab";
-import {LevelModel} from "../../model/LevelModel";
+import {LevelModel} from "../../data/model/world/LevelModel";
 import {SingleObjectEditor} from "../input/SingleObjectEditor";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {LinkButton} from "../../component/button/LinkButton";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
-import {UUID} from "../../model/util/UUID";
+import {UUID} from "../../data/model/shared/UUID";
 
 export type EditorLevelSettingsTabProps = {
     level: LevelModel,

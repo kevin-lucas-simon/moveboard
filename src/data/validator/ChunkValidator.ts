@@ -1,4 +1,4 @@
-import {ChunkModel} from "../ChunkModel";
+import {ChunkModel} from "../model/world/ChunkModel";
 import {Validator} from "./Validator";
 
 export class ChunkValidator implements Validator<ChunkModel> {

@@ -1,5 +1,5 @@
 import {ChunkID, ChunkModel} from "./ChunkModel";
-import {UUID} from "./util/UUID";
+import {UUID} from "../shared/UUID";
 
 /**
  * API data model

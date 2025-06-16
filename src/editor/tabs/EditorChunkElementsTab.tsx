@@ -1,11 +1,11 @@
-import {ElementModel} from "../../model/ElementModel";
+import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import {ElementBuilder} from "../../model/builder/ElementBuilder";
+import {ElementBuilder} from "../../data/builder/ElementBuilder";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};

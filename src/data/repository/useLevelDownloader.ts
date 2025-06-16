@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {LevelModel} from "../model/LevelModel";
-import {LevelBuilder} from "../model/builder/LevelBuilder";
+import {LevelModel} from "../model/world/LevelModel";
+import {LevelBuilder} from "../builder/LevelBuilder";
 
 export function useLevelDownloader(
     levelName: string

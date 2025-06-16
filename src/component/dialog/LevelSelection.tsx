@@ -2,7 +2,7 @@ import React from "react";
 import {Dialog, DialogPanel} from "@headlessui/react";
 import {BasicButton} from "../button/BasicButton";
 import {MoveBoardLogo} from "../asset/MoveBoardLogo";
-import {useLevelOverviewDownloader} from "../../repository/useLevelOverviewDownloader";
+import {useLevelOverviewDownloader} from "../../data/repository/useLevelOverviewDownloader";
 
 export type StartupModalProps = {
     isStarted: boolean,

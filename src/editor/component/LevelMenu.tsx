@@ -6,7 +6,7 @@ import React, {useState} from "react";
 import {BasicDialog} from "../../component/dialog/BasicDialog";
 import {Textarea} from "@headlessui/react";
 import {LevelReducerActions} from "../reducer/levelReducer";
-import {LevelModel} from "../../model/LevelModel";
+import {LevelModel} from "../../data/model/world/LevelModel";
 
 export type LevelMenuProps = {
     level: LevelModel;

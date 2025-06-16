@@ -1,4 +1,4 @@
-import {useLevelDownloader} from "../repository/useLevelDownloader";
+import {useLevelDownloader} from "../data/repository/useLevelDownloader";
 import {LevelEditor} from "../editor/LevelEditor";
 import {useParams} from "react-router-dom";
 

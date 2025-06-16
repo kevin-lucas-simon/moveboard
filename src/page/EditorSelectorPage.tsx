@@ -1,4 +1,4 @@
-import {useLevelOverviewDownloader} from "../repository/useLevelOverviewDownloader";
+import {useLevelOverviewDownloader} from "../data/repository/useLevelOverviewDownloader";
 
 export function EditorSelectorPage() {
     const levelOverview = useLevelOverviewDownloader();

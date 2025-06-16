@@ -1,9 +1,9 @@
-import {ChunkModel} from "../../model/ChunkModel";
-import {ElementModel} from "../../model/ElementModel";
-import {JointModel} from "../../model/JointModel";
-import {ChunkBuilder} from "../../model/builder/ChunkBuilder";
-import {ElementBuilder} from "../../model/builder/ElementBuilder";
-import {JointBuilder} from "../../model/builder/JointBuilder";
+import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {ElementModel} from "../../data/model/element/ElementModel";
+import {JointModel} from "../../data/model/world/JointModel";
+import {ChunkBuilder} from "../../data/builder/ChunkBuilder";
+import {ElementBuilder} from "../../data/builder/ElementBuilder";
+import {JointBuilder} from "../../data/builder/JointBuilder";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';

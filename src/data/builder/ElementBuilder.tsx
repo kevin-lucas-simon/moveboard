@@ -1,7 +1,8 @@
-import {ElementModel, ElementType} from "../ElementModel";
+import {ElementModel} from "../model/element/ElementModel";
 import {elementConfig, elementFallbackConfig} from "../../config/elementConfig";
-import {createUUID} from "../util/UUID";
+import {createUUID} from "../model/shared/UUID";
 import {Builder} from "./Builder";
+import {ElementType} from "../model/element/ElementType";
 
 type PartialDeep<T> = {
     [P in keyof T]?: T[P] extends object ? PartialDeep<T[P]> : T[P];

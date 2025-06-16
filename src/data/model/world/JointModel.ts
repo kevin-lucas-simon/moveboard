@@ -1,6 +1,6 @@
 import {Vector3Like} from "three";
 import {ChunkID} from "./ChunkModel";
-import {UUID} from "./util/UUID";
+import {UUID} from "../shared/UUID";
 
 /**
  * API data model

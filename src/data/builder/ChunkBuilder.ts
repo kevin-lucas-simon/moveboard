@@ -1,11 +1,12 @@
-import {ChunkModel} from "../ChunkModel";
-import {FloorBlockModel} from "../../experience/element/block/FloorBlock";
+import {ChunkModel} from "../model/world/ChunkModel";
 import {ChunkValidator} from "../validator/ChunkValidator";
-import {ElementModel} from "../ElementModel";
+import {ElementModel} from "../model/element/ElementModel";
 import {ElementBuilder} from "./ElementBuilder";
-import {JointModel} from "../JointModel";
-import {createUUID} from "../util/UUID";
+import {JointModel} from "../model/world/JointModel";
+import {createUUID} from "../model/shared/UUID";
 import {Builder} from "./Builder";
+import {FloorBlockModel} from "../model/element/block/FloorBlockModel";
+import {ElementType} from "../model/element/ElementType";
 
 export class ChunkBuilder implements Builder<ChunkModel> {
     private chunk: ChunkModel;
@@ -14,7 +15,7 @@ export class ChunkBuilder implements Builder<ChunkModel> {
         const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
 
         const floorBlock = ElementBuilder
-            .create<FloorBlockModel>("FloorBlock")
+            .create<FloorBlockModel>(ElementType.FloorBlock)
             .with("color", randomColor)
             .with("dimension", { x: 3, y: 1, z: 3 })
             .build()

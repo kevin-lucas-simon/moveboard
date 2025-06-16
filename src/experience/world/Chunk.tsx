@@ -2,12 +2,12 @@ import {Vector3} from "three";
 import React from "react";
 import {elementConfig, elementFallbackConfig} from "../../config/elementConfig";
 import {Joint} from "./Joint";
-import {JointModel} from "../../model/JointModel";
-import {ElementModel} from "../../model/ElementModel";
+import {JointModel} from "../../data/model/world/JointModel";
+import {ElementModel} from "../../data/model/element/ElementModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
-import {ChunkID} from "../../model/ChunkModel";
-import {ElementType} from "../../model/ElementModel";
+import {ChunkID} from "../../data/model/world/ChunkModel";
+import {ElementType} from "../../data/model/element/ElementType";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,

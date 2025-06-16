@@ -1,8 +1,8 @@
-import {LevelModel} from "../LevelModel";
-import {ChunkID, ChunkModel} from "../ChunkModel";
+import {LevelModel} from "../model/world/LevelModel";
+import {ChunkID, ChunkModel} from "../model/world/ChunkModel";
 import {LevelValidator} from "../validator/LevelValidator";
 import {ChunkBuilder} from "./ChunkBuilder";
-import {createUUID} from "../util/UUID";
+import {createUUID} from "../model/shared/UUID";
 import {Builder} from "./Builder";
 
 export class LevelBuilder implements Builder<LevelModel> {
