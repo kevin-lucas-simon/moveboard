@@ -10,6 +10,10 @@ export type JsonNestedEditorProps = {
 }
 
 export function JsonNestedEditor(props: JsonNestedEditorProps) {
+    if (props.keyName === "id") {
+        return <></>;
+    }
+
     const handleObjectChange = (key: string, value: any) => {
         props.onKeyValueChange(props.keyName, {
             ...props.value,

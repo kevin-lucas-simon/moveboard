@@ -10,7 +10,7 @@ export type JsonSelectionFieldEditorProps = {
 }
 
 export function JsonSingleSelectionEditor(props: JsonSelectionFieldEditorProps) {
-    const [query, setQuery] = useState<string>('')
+    const [query, setQuery] = useState<string>('');
 
     const filteredItems = query === ''
         ? props.options

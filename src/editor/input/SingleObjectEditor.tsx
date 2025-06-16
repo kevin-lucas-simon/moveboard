@@ -10,6 +10,10 @@ export type SingleObjectEditorProps = {
     selectionOnKey?: {[key: string]: {[id: UUID]: string}}
 }
 export function SingleObjectEditor(props: SingleObjectEditorProps) {
+    if (props.keyName === "id") {
+        return <></>;
+    }
+
      return (
         <div className="group">
             <label className="w-full flex justify-between group-hover:bg-gray-500/10 px-2 py-1">

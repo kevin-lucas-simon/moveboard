@@ -17,16 +17,6 @@ export type EditorChunkJointsTabProps = {
 }
 
 export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
-    const chunkSelection = {} as {[id: UUID]: string}
-    Object.values(props.level.chunks)
-        .filter(chunk => chunk.id !== props.activeChunk.id)
-        .forEach(chunk => {
-            if (Object.values(props.activeChunk.joints).some(joint => joint.neighbour === chunk.id)) {
-                return; // skip chunks that are already connected
-            }
-            chunkSelection[chunk.id] = chunk.name
-        })
-
     const addJoint = () => {
         props.levelDispatcher({
             type: 'chunk_add_joint',
@@ -58,6 +48,26 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
         });
     }
 
+    const getChunkSelection = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
+        // populate the selection with all chunks except the active chunk
+        const chunkSelection = {} as {[id: UUID]: string};
+        Object.values(props.level.chunks)
+            .filter(chunk => chunk.id !== props.activeChunk.id)
+            .forEach(chunk => {
+                // skip chunks that are already connected
+                if (Object.values(props.activeChunk.joints).some(joint => joint.neighbour === chunk.id)) {
+                    return;
+                }
+                chunkSelection[chunk.id] = chunk.name;
+            });
+
+        // if a joint neighbour is specified as value, ensure it is included in the selection (display name)
+        if (jointNeighbour) {
+            chunkSelection[jointNeighbour] = props.level.chunks[jointNeighbour].name;
+        }
+        return chunkSelection;
+    };
+
     return (
         <BaseTab
             title={"Chunk Joints"}
@@ -70,11 +80,11 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
                         <ListObjectEditor
                             key={index}
                             keyName={index.toString()}
-                            displayname={joint.neighbour ? joint.neighbour : "Joint without Chunk"}
+                            displayname={joint.neighbour ? props.level.chunks[joint.neighbour].name : "Joint without Chunk"}
                             value={joint}
                             onChange={updateJoint}
                             selectionOnKey={{
-                                "neighbour": chunkSelection,
+                                "neighbour": getChunkSelection(joint.neighbour)
                             }}
                             actionButton={joint.neighbour ? <ArrowRightIcon className="w-4"/> : undefined}
                             onAction={() => changeChunk(joint.neighbour)}
