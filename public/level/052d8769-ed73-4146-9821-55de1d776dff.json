@@ -1,0 +1,181 @@
+{
+    "id": "052d8769-ed73-4146-9821-55de1d776dff",
+    "name": "FallLevel",
+    "start": "e94340e6-90c5-4d2e-9ee5-13d733ffdd13",
+    "chunks": {
+        "e94340e6-90c5-4d2e-9ee5-13d733ffdd13": {
+            "id": "e94340e6-90c5-4d2e-9ee5-13d733ffdd13",
+            "name": "StartChunk",
+            "player": {
+                "x": 2,
+                "y": 1,
+                "z": 0
+            },
+            "joints": {
+                "56582b36-b5a4-4249-969e-801727601d1a": {
+                    "id": "56582b36-b5a4-4249-969e-801727601d1a",
+                    "neighbour": "bfdedf7c-33d7-4f1b-8c0a-22d816767351",
+                    "position": {
+                        "x": -4,
+                        "y": -75,
+                        "z": 6
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "vision": 1
+                }
+            },
+            "elements": {
+                "5bc510b0-b890-43d3-a5ff-e395b763a1ed": {
+                    "id": "5bc510b0-b890-43d3-a5ff-e395b763a1ed",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "blue"
+                },
+                "05c0ff45-3c1d-4805-ada4-be5675c40468": {
+                    "id": "05c0ff45-3c1d-4805-ada4-be5675c40468",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": -2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "blue"
+                }
+            }
+        },
+        "bfdedf7c-33d7-4f1b-8c0a-22d816767351": {
+            "id": "bfdedf7c-33d7-4f1b-8c0a-22d816767351",
+            "name": "TestChunk",
+            "player": {
+                "x": -2,
+                "y": 1,
+                "z": -1
+            },
+            "elements": {
+                "116d87e2-bdf0-4af5-a71e-fc3368437829": {
+                    "id": "116d87e2-bdf0-4af5-a71e-fc3368437829",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": -2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#c9a777"
+                },
+                "ca85d2ea-8d6f-4471-9a25-55768093e7c7": {
+                    "id": "ca85d2ea-8d6f-4471-9a25-55768093e7c7",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#c9a777"
+                }
+            },
+            "joints": {
+                "4d34c801-52a4-4b90-9d88-85db891f3195": {
+                    "id": "4d34c801-52a4-4b90-9d88-85db891f3195",
+                    "neighbour": "89d60319-b1e2-489d-b6fa-f07a4a071527",
+                    "position": {
+                        "x": 3,
+                        "y": -75,
+                        "z": -4
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "vision": 1
+                }
+            }
+        },
+        "89d60319-b1e2-489d-b6fa-f07a4a071527": {
+            "id": "89d60319-b1e2-489d-b6fa-f07a4a071527",
+            "name": "DuoChunk",
+            "player": {
+                "x": 2,
+                "y": 1,
+                "z": 1
+            },
+            "elements": {
+                "b81b4e8c-4253-4df1-b79c-aec84d60f75c": {
+                    "id": "b81b4e8c-4253-4df1-b79c-aec84d60f75c",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": 2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#76c329"
+                },
+                "5130afc6-5edc-4f58-8864-94fa247c5db0": {
+                    "id": "5130afc6-5edc-4f58-8864-94fa247c5db0",
+                    "type": "FloorBlock",
+                    "position": {
+                        "x": -2,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "color": "#76c329"
+                }
+            },
+            "joints": {
+                "b1696a0b-3908-468e-be08-5c87a5d92ec3": {
+                    "id": "b1696a0b-3908-468e-be08-5c87a5d92ec3",
+                    "neighbour": "e94340e6-90c5-4d2e-9ee5-13d733ffdd13",
+                    "position": {
+                        "x": 0,
+                        "y": -75,
+                        "z": -6
+                    },
+                    "dimension": {
+                        "x": 3,
+                        "y": 1,
+                        "z": 3
+                    },
+                    "vision": 1
+                }
+            }
+        }
+    }
+}
