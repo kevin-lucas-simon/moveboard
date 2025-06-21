@@ -1,4 +1,4 @@
-import {JointModel} from "../../data/model/world/JointModel";
+import {createJoint, JointModel} from "../../data/model/world/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
@@ -6,7 +6,6 @@ import {ArrowRightIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {LinkButton} from "../../component/button/LinkButton";
 import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
-import {JointBuilder} from "../../data/builder/JointBuilder";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {UUID} from "../../data/model/shared/UUID";
 
@@ -20,7 +19,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
     const addJoint = () => {
         props.levelDispatcher({
             type: 'chunk_add_joint',
-            payload: JointBuilder.create().build(),
+            payload: createJoint(),
         });
     }
 

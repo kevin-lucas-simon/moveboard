@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
-import {LevelModel} from "../model/world/LevelModel";
-import {LevelBuilder} from "../builder/LevelBuilder";
+import {createLevel, LevelModel} from "../model/world/LevelModel";
 
 export function useLevelDownloader(
     levelName: string
@@ -17,13 +16,13 @@ export function useLevelDownloader(
             })
             .then(response => {
                 if (!ignore) {
-                    setLevel(LevelBuilder.from(response).build());
+                    setLevel(response as LevelModel);
                 }
             })
             .catch((e) => {
                 console.error("Failed to download level", e);
                 if (!ignore) {
-                    setLevel(LevelBuilder.create(levelName).build());
+                    setLevel(createLevel());
                 }
             })
         ;

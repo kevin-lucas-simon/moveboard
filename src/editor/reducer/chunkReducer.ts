@@ -1,9 +1,6 @@
 import {ChunkModel} from "../../data/model/world/ChunkModel";
-import {ElementModel} from "../../data/model/element/ElementModel";
+import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 import {JointModel} from "../../data/model/world/JointModel";
-import {ChunkBuilder} from "../../data/builder/ChunkBuilder";
-import {ElementBuilder} from "../../data/builder/ElementBuilder";
-import {JointBuilder} from "../../data/builder/JointBuilder";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -37,44 +34,64 @@ export function chunkReducer(
 ): ChunkModel {
     switch (action.type) {
         case 'chunk_update_field':
-            if (!(action.payload.key in state)) {
-                throw new Error(`Invalid field key: ${action.payload.key}`);
+            const updatedKey = action.payload.key;
+            const updatedValue = action.payload.value
+
+            if (!(updatedKey in state)) {
+                throw new Error(`Invalid field key: ${updatedKey}`);
             }
-            if (['elements', 'joints'].includes(action.payload.key)) {
+            if (['elements', 'joints'].includes(updatedKey)) {
                 throw new Error('Use dedicated actions for elements and joints');
             }
-            return ChunkBuilder
-                .from(state)
-                .with(action.payload.key, action.payload.value)
-                .build()
-            ;
+
+            return {
+                ...state,
+                [updatedKey]: updatedValue,
+            }
         case 'chunk_add_element':
         case 'chunk_update_element':
-            return ChunkBuilder
-                .from(state)
-                .withElement(ElementBuilder.from(action.payload).build())
-                .build()
-            ;
+            const element = action.payload;
+
+            return {
+                ...state,
+                elements: {
+                    ...state.elements,
+                    [element.id]: element,
+                }
+            }
         case 'chunk_remove_element':
-            return ChunkBuilder
-                .from(state)
-                .withoutElement(action.payload)
-                .build()
-            ;
+            const removedElementId = action.payload as ElementID
+
+            const updatedElements = Object.fromEntries(
+                Object.entries(state.elements).filter(([id]) => id !== removedElementId)
+            )
+
+            return {
+                ...state,
+                elements: updatedElements,
+            }
         case 'chunk_add_joint':
         case 'chunk_update_joint':
-            return ChunkBuilder
-                .from(state)
-                .withJoint(JointBuilder.from(action.payload).build())
-                .build()
-            ;
+            const joint = action.payload;
 
+            return {
+                ...state,
+                joints: {
+                    ...state.joints,
+                    [joint.id]: joint,
+                }
+            }
         case 'chunk_remove_joint':
-            return ChunkBuilder
-                .from(state)
-                .withoutJoint(action.payload)
-                .build()
-            ;
+            const removedJointId = action.payload;
+
+            const updatedJoints = Object.fromEntries(
+                Object.entries(state.joints).filter(([id]) => id !== removedJointId)
+            );
+
+            return {
+                ...state,
+                joints: updatedJoints,
+            }
         default:
             throw new Error('Invalid action type');
     }

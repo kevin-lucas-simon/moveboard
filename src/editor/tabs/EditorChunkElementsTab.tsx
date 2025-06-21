@@ -1,11 +1,11 @@
-import {ElementModel} from "../../data/model/element/ElementModel";
+import {createElement, ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
 import {ChunkReducerActions} from "../reducer/chunkReducer";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import {ElementBuilder} from "../../data/builder/ElementBuilder";
+import {ElementType} from "../../data/model/element/ElementType";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
@@ -19,7 +19,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         }
         props.chunkDispatcher({
             type: 'chunk_add_element',
-            payload: ElementBuilder.create(type).build(),
+            payload: createElement(type as ElementType)
         });
     }
 
