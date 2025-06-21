@@ -33,8 +33,6 @@ export function levelReducer(
 ): LevelReducerState {
     // TODO hier können wir die Validatoren einbauen, die Level und Chunks validieren, bevor sie in den State übernommen werden
     //  Idee, wir bauen das in zwei Methoden auf?
-
-    // TODO das vom Chunk Selektor geht zz nicht
     switch (action.type) {
         case 'level_select_chunk':
             const selectedChunkId = action.payload;
