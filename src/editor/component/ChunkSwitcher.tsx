@@ -25,12 +25,12 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
             .slice(0, 12)
 
     const handleItemSelect = (name: string|null) => {
-        const chunk = Object.values(props.chunks).find(chunk => chunk.name === name);
-        if (!chunk) {
+        if (!name) {
             return;
         }
 
-        if (filteredItems.includes(chunk.name)) {
+        const chunk = Object.values(props.chunks).find(chunk => chunk.name === name);
+        if (chunk && filteredItems.includes(chunk.name)) {
             props.levelDispatcher({
                 type: 'level_select_chunk',
                 payload: chunk.id,
@@ -40,7 +40,7 @@ export function ChunkSwitcher(props: ChunkSearchBarProps) {
 
         props.levelDispatcher({
             type: 'level_add_chunk',
-            payload: chunk.id,
+            payload: name,
         })
     }
 
