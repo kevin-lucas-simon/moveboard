@@ -1,6 +1,7 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {ChunkID, createChunk} from "../../data/model/world/ChunkModel";
+import {LevelValidator} from "../../data/validator/LevelValidator";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -31,8 +32,22 @@ export function levelReducer(
     state: LevelReducerState,
     action: LevelReducerActions,
 ): LevelReducerState {
-    // TODO hier können wir die Validatoren einbauen, die Level und Chunks validieren, bevor sie in den State übernommen werden
-    //  Idee, wir bauen das in zwei Methoden auf?
+    const reducerState = updateLevelState(state, action);
+
+    try {
+        new LevelValidator().validate(reducerState.level);
+    } catch (error) {
+        console.error('Level validation failed:', error);
+        return state;
+    }
+
+    return reducerState;
+}
+
+function updateLevelState(
+    state: LevelReducerState,
+    action: LevelReducerActions,
+): LevelReducerState {
     switch (action.type) {
         case 'level_select_chunk':
             const selectedChunkId = action.payload;

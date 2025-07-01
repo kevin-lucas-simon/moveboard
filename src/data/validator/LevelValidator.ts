@@ -57,6 +57,9 @@ export class LevelValidator implements Validator<LevelModel> {
     private checkChunkJointsPointToExistingChunks(level: LevelModel) {
         Object.values(level.chunks).forEach((chunk) => {
             Object.values(chunk.joints || {}).forEach((joint) => {
+                if (joint.neighbour === null) {
+                    return;
+                }
                 this.shouldExistIn(
                     joint.neighbour,
                     level.chunks,

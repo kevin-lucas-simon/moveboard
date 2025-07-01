@@ -23,7 +23,7 @@ export class ChunkValidator implements Validator<ChunkModel> {
         }
     }
 
-    // TODO der identifier hat nicht direkt den korrekten partial type, sondern nur den übergreifenden Typ
+    // TS: The identifier does not directly have the correct partial type, only the overarching type
     protected shouldHaveSameListIdentifier(
         list: Partial<ChunkModel>,
         identifier: keyof Partial<Partial<ChunkModel>>,
