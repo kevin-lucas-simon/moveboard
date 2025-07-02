@@ -1,13 +1,17 @@
 import {ChunkModel} from "../model/world/ChunkModel";
-import {Validator} from "./Validator";
+import {ValidationError, Validator} from "./Validator";
 
 export class ChunkValidator implements Validator<ChunkModel> {
-    validate(chunk: ChunkModel) {
+    private errors: ValidationError[] = [];
+
+    validate(chunk: ChunkModel): ValidationError[] {
         this.shouldNotEmpty(chunk.id, "Chunk ID must not be empty.");
         this.shouldNotEmpty(chunk.name, "Chunk name must not be empty.");
 
         this.shouldHaveSameListIdentifier(chunk.elements, "id", "Chunk elements must have unique IDs.");
         this.shouldHaveSameListIdentifier(chunk.joints, "id", "Chunk joints must have unique IDs.");
+
+        return this.errors;
     }
 
     protected shouldNotEmpty(
@@ -19,7 +23,7 @@ export class ChunkValidator implements Validator<ChunkModel> {
             (typeof value === 'string' && value.trim() === '') ||
             (Array.isArray(value) && value.length === 0)
         ) {
-            throw new Error(message);
+            this.errors.push({message: message})
         }
     }
 
@@ -32,7 +36,7 @@ export class ChunkValidator implements Validator<ChunkModel> {
         Object.keys(list).forEach((key) => {
             const item = list[key as keyof Partial<ChunkModel>] as Partial<ChunkModel>;
             if (!item || item[identifier] !== key) {
-                throw new Error(message);
+                this.errors.push({message: message})
             }
         });
     }

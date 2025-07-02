@@ -14,9 +14,9 @@ import {LevelModel} from "../data/model/world/LevelModel";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
-import {levelReducer} from "./reducer/levelReducer";
 import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
+import {editorReducer} from "./reducer/editorReducer";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
@@ -33,9 +33,10 @@ export function LevelEditor(props: LevelEditorProps) {
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
-    const[editor, dispatchEditor] = useReducer(levelReducer, {
+    const[editor, dispatchEditor] = useReducer(editorReducer, {
         level: props.downloadedLevel,
         active: props.downloadedLevel.start,
+        errors: [],
     })
     const editLevel = editor.level;
     const editChunk = editLevel.chunks[editor.active];

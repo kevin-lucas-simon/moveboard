@@ -1,7 +1,6 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {ChunkID, createChunk} from "../../data/model/world/ChunkModel";
-import {LevelValidator} from "../../data/validator/LevelValidator";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -29,22 +28,6 @@ export type LevelReducerActions = ChunkReducerActions | {
 };
 
 export function levelReducer(
-    state: LevelReducerState,
-    action: LevelReducerActions,
-): LevelReducerState {
-    const reducerState = updateLevelState(state, action);
-
-    try {
-        new LevelValidator().validate(reducerState.level);
-    } catch (error) {
-        console.error('Level validation failed:', error);
-        return state;
-    }
-
-    return reducerState;
-}
-
-function updateLevelState(
     state: LevelReducerState,
     action: LevelReducerActions,
 ): LevelReducerState {

@@ -1,7 +1,6 @@
 import {ChunkModel} from "../../data/model/world/ChunkModel";
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 import {JointModel} from "../../data/model/world/JointModel";
-import {ChunkValidator} from "../../data/validator/ChunkValidator";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -30,22 +29,6 @@ export type ChunkReducerActions = {
 };
 
 export function chunkReducer(
-    state: ChunkModel,
-    action: ChunkReducerActions
-): ChunkModel {
-    const reducerState = updateChunkState(state, action);
-
-    try {
-        new ChunkValidator().validate(reducerState);
-    } catch (error) {
-        console.error('Chunk validation failed:', error);
-        return state;
-    }
-
-    return reducerState;
-}
-
-function updateChunkState(
     state: ChunkModel,
     action: ChunkReducerActions
 ): ChunkModel {

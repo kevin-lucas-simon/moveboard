@@ -1,10 +1,12 @@
 import {LevelModel} from "../model/world/LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
 import {ChunkModel} from "../model/world/ChunkModel";
-import {Validator} from "./Validator";
+import {Validator, ValidationError} from "./Validator";
 
 export class LevelValidator implements Validator<LevelModel> {
-    validate(level: LevelModel) {
+    private errors: ValidationError[] = [];
+
+    validate(level: LevelModel): ValidationError[] {
         this.shouldHaveValue(level.id, "Level ID must not be empty.");
         this.shouldHaveValue(level.name, "Level name must not be empty.");
 
@@ -14,20 +16,24 @@ export class LevelValidator implements Validator<LevelModel> {
         this.checkChunkJointsPointToExistingChunks(level);
 
         Object.values(level.chunks).forEach((chunk) => {
-            new ChunkValidator().validate(chunk as ChunkModel);
+            this.errors.push(...new ChunkValidator().validate(chunk as ChunkModel));
         });
+
+        return this.errors;
     }
 
     protected shouldHaveValue(
         value: any,
         message: string
-    ) {
+    ): void {
         if (
             !value ||
             (typeof value === 'string' && value.trim() === '') ||
             (Array.isArray(value) && value.length === 0)
         ) {
-            throw new Error(message);
+            this.errors.push({
+                message: message,
+            });
         }
     }
 
@@ -37,7 +43,9 @@ export class LevelValidator implements Validator<LevelModel> {
         message: string
     ) {
         if (!collection[value]) {
-            throw new Error(message);
+            this.errors.push({
+                message: message,
+            });
         }
     }
 
@@ -49,7 +57,9 @@ export class LevelValidator implements Validator<LevelModel> {
         Object.keys(list).forEach((key) => {
             const item = list[key as keyof Partial<ChunkModel>] as Partial<ChunkModel>;
             if (!item || item[identifier] !== key) {
-                throw new Error(message);
+                this.errors.push({
+                    message: message,
+                });
             }
         });
     }

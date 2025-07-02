@@ -3,5 +3,12 @@
  * Throws an error if the model is invalid.
  */
 export interface Validator<T> {
-    validate(model: T): void;
+    validate(model: T): ValidationError[];
+}
+
+/**
+ * Represents a validation error with a message.
+ */
+export interface ValidationError {
+    message: string;
 }
