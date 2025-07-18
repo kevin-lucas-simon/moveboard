@@ -17,6 +17,7 @@ import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
 import {editorReducer} from "./reducer/editorReducer";
+import {EditorToaster} from "./component/EditorToaster";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
@@ -40,6 +41,7 @@ export function LevelEditor(props: LevelEditorProps) {
     })
     const editLevel = editor.level;
     const editChunk = editLevel.chunks[editor.active];
+    const editErrors = editor.errors;
 
     const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
 
@@ -71,6 +73,9 @@ export function LevelEditor(props: LevelEditorProps) {
                 {/* menu selector */}
                 <LevelMenu level={editLevel} levelDispatcher={dispatchEditor}/>
             </div>
+
+            {/* error notifications */}
+            <EditorToaster errors={editErrors}/>
 
             {/* body */}
             <div className="grow flex gap-4">

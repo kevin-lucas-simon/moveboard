@@ -16,7 +16,6 @@ export function editorReducer(
     const errors = new LevelValidator().validate(newState.level);
 
     if (errors.length > 0) {
-        console.error('Editor validation failed:', errors);
         return {
             ...state,
             errors: errors,
