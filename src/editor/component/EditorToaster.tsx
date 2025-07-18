@@ -2,7 +2,7 @@ import {ValidationError} from "../../data/validator/Validator";
 
 import toast, {Toast, useToaster} from 'react-hot-toast/headless';
 import {useEffect} from "react";
-import {XMarkIcon} from "@heroicons/react/24/outline";
+import {ExclamationCircleIcon} from "@heroicons/react/24/outline";
 
 export type EditorToasterProps = {
     errors: ValidationError[];
@@ -37,17 +37,13 @@ function EditorToast(props: Toast) {
         <div
             {...props.ariaProps}
             key={props.id}
-            className="w-72 flex items-stretch justify-between bg-white shadow-lg rounded-lg"
+            className="w-72 flex bg-white shadow-lg rounded-lg"
         >
+            <ExclamationCircleIcon className="flex-none w-4 h-4 mt-3 ml-3 mr-1 text-gray-500"/>
             <span className="p-2">
                 {props.message as string}
             </span>
-            <button
-                onClick={() => toast.dismiss(props.id)}
-                className="self-stretch p-2 rounded-r-lg hover:bg-gray-500/10"
-            >
-                <XMarkIcon className="w-4 h-4 text-gray-500"/>
-            </button>
+
         </div>
     )
 }
