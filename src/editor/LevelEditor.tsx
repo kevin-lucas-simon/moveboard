@@ -1,6 +1,6 @@
 import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
-import {useReducer, useState} from "react";
+import {useState} from "react";
 import React from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
@@ -10,14 +10,13 @@ import {
 import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
 import {EditorChunkSettingsTab} from "./tabs/EditorChunkSettingsTab";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
-import {LevelModel} from "../data/model/world/LevelModel";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
-import {editorReducer} from "./reducer/editorReducer";
 import {EditorToaster} from "./component/EditorToaster";
+import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
@@ -27,24 +26,21 @@ enum EditorTabs {
     PLAY_TEST = "play_test",
 }
 
-export type LevelEditorProps = {
-    downloadedLevel: LevelModel
-}
-export function LevelEditor(props: LevelEditorProps) {
+export function LevelEditor() {
+    const editor = useEditorContext();
+    const dispatchEditor = useEditorActions();
+
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
-    const[editor, dispatchEditor] = useReducer(editorReducer, {
-        level: props.downloadedLevel,
-        active: props.downloadedLevel.start,
-        selected: [],
-        errors: [],
-    })
+    const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
+
+    if (!editor || !dispatchEditor) {
+        return <></>;
+    }
     const editLevel = editor.level;
     const editChunk = editLevel.chunks[editor.active];
     const editErrors = editor.errors;
-
-    const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
 
     const handleSettingsChange = (key: string, value: any) => {
         setDebugSettings({

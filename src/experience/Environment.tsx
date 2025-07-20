@@ -47,6 +47,8 @@ export function Environment(props: EnvironmentProps) {
                         <EffectComposer autoClear={false}>
                             <Outline
                                 edgeStrength={10000}
+                                visibleEdgeColor={0xff0000}
+                                hiddenEdgeColor={0xff0000}
                             />
                         </EffectComposer>
                     </Selection>
