@@ -5,6 +5,7 @@ import {KeyboardKeysProvider} from "./input/KeyboardKeysProvider";
 import {DeviceMotionProvider} from "./input/DeviceMotionProvider";
 import React from "react";
 import {EnvironmentPhysics} from "./world/physic/EnvironmentPhysics";
+import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
 
 export type EnvironmentProps = {
     isGranted: boolean,
@@ -30,18 +31,25 @@ export function Environment(props: EnvironmentProps) {
                     <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
                     <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
 
-                    <EnvironmentPhysics>
-                        {props.children}
-                    </EnvironmentPhysics>
+                    <Selection>
+                        <EnvironmentPhysics>
+                            {props.children}
+                        </EnvironmentPhysics>
 
-                    {debug.displayEditorFeatures &&
-                        <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                            <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
-                        </GizmoHelper>
-                    }
-                    {debug.displayPerformanceStats &&
-                        <Stats />
-                    }
+                        {debug.displayEditorFeatures &&
+                            <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
+                                <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
+                            </GizmoHelper>
+                        }
+                        {debug.displayPerformanceStats &&
+                            <Stats />
+                        }
+                        <EffectComposer autoClear={false}>
+                            <Outline
+                                edgeStrength={10000}
+                            />
+                        </EffectComposer>
+                    </Selection>
                 </Canvas>
             </KeyboardKeysProvider>
         </DeviceMotionProvider>

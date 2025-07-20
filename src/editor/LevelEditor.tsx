@@ -37,6 +37,7 @@ export function LevelEditor(props: LevelEditorProps) {
     const[editor, dispatchEditor] = useReducer(editorReducer, {
         level: props.downloadedLevel,
         active: props.downloadedLevel.start,
+        selected: [],
         errors: [],
     })
     const editLevel = editor.level;
@@ -112,7 +113,7 @@ export function LevelEditor(props: LevelEditorProps) {
                         <EditorChunkJointsTab level={editLevel} levelDispatcher={dispatchEditor} activeChunk={editChunk}/>
                     }
                     {tab === EditorTabs.CHUNK_ELEMENTS &&
-                        <EditorChunkElementsTab elements={editChunk.elements} chunkDispatcher={dispatchEditor}/>
+                        <EditorChunkElementsTab selected={editor.selected} elements={editChunk.elements} dispatcher={dispatchEditor}/>
                     }
                     {tab === EditorTabs.PLAY_TEST &&
                         <EditorPlayTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
