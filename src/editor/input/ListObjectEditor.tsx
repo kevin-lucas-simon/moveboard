@@ -16,12 +16,6 @@ export type ListObjectEditorProps = {
     children?: React.ReactNode;
 }
 
-// TODO das ist ne geile Sache, das so zu bauen ey!
-//  - ich muss das in einem Provider Pattern ummünzen, der die Editor State freigibt als auch die Actions
-//  - so kann ich ne Hook für eine <Element> Komponente basteln, die auch bei allen Elementen mandatory ist oder so
-//  - Darin wird ein Mesh umgelegt, der klickbar ist, und diese am Reducer delegiert
-//  - Selektierte Objekte werden mit einem React Drei Outline Effekt versehen
-
 export function ListObjectEditor(props: ListObjectEditorProps) {
     return (
         <div className={props.isExpanded ? "group bg-gray-500/5" : "group"}>

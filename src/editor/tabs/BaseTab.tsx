@@ -9,6 +9,7 @@ export type BaseTabProps = {
     description?: string;
     addOptions?: string[];
     onAdd?: (selected?: string) => void;
+    className?: string;
 }
 export function BaseTab(props: BaseTabProps) {
     const onAddSingle = () => {
@@ -24,7 +25,7 @@ export function BaseTab(props: BaseTabProps) {
     }
 
     return (
-        <div className="w-full h-full flex flex-col">
+        <div className={"w-64 shrink-0 h-full overflow-auto resize-x min-w-40 flex flex-col rounded-xl bg-gray-500/10 " + props.className}>
             <div className="pt-4 px-4 flex justify-between">
                 <h2 className="text-xl">{props.title}</h2>
                 {(props.addOptions || props.onAdd) &&

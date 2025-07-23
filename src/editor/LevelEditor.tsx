@@ -98,23 +98,36 @@ export function LevelEditor() {
                 </div>
 
                 {/* tab content */}
-                <div className="w-72 shrink-0 rounded-xl bg-gray-500/10 overflow-hidden">
-                    {tab === EditorTabs.LEVEL_SETTINGS &&
-                        <EditorLevelSettingsTab level={editLevel} levelDispatcher={dispatchEditor}/>
-                    }
-                    {tab === EditorTabs.CHUNK_SETTINGS &&
-                        <EditorChunkSettingsTab chunk={editChunk} levelDispatcher={dispatchEditor} currentChunk={editor.active} startChunk={editLevel.start}/>
-                    }
-                    {tab === EditorTabs.CHUNK_JOINTS &&
-                        <EditorChunkJointsTab level={editLevel} levelDispatcher={dispatchEditor} activeChunk={editChunk}/>
-                    }
-                    {tab === EditorTabs.CHUNK_ELEMENTS &&
-                        <EditorChunkElementsTab selected={editor.selected} elements={editChunk.elements} dispatcher={dispatchEditor}/>
-                    }
-                    {tab === EditorTabs.PLAY_TEST &&
-                        <EditorPlayTestTab settings={debugSettings} onSettingChange={handleSettingsChange} onRestart={() => setSimulatorInstance(simulatorInstance+1)} />
-                    }
-                </div>
+                <EditorLevelSettingsTab
+                    level={editLevel}
+                    levelDispatcher={dispatchEditor}
+                    isTabOpen={tab === EditorTabs.LEVEL_SETTINGS}
+                />
+                <EditorChunkSettingsTab
+                    chunk={editChunk}
+                    levelDispatcher={dispatchEditor}
+                    currentChunk={editor.active}
+                    startChunk={editLevel.start}
+                    isTabOpen={tab === EditorTabs.CHUNK_SETTINGS}
+                />
+                <EditorChunkJointsTab
+                    level={editLevel}
+                    levelDispatcher={dispatchEditor}
+                    activeChunk={editChunk}
+                    isTabOpen={tab === EditorTabs.CHUNK_JOINTS}
+                />
+                <EditorChunkElementsTab
+                    selected={editor.selected}
+                    elements={editChunk.elements}
+                    dispatcher={dispatchEditor}
+                    isTabOpen={tab === EditorTabs.CHUNK_ELEMENTS}
+                />
+                <EditorPlayTestTab
+                    settings={debugSettings}
+                    onSettingChange={handleSettingsChange}
+                    onRestart={() => setSimulatorInstance(simulatorInstance+1)}
+                    isTabOpen={tab === EditorTabs.PLAY_TEST}
+                />
 
                 {/* 3d canvas */}
                 <DebugSettingsProvider debugSettings={{
