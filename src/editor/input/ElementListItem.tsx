@@ -15,13 +15,12 @@ export type EditorListItemProps = {
 export function ElementListItem(props: EditorListItemProps) {
     const handleSelect = (e: any) => {
         e.stopPropagation();
-        console.log(e)
         props.onSelect(props.id);
     }
 
     const handleHide = (e: any) => {
+        // TODO hide/show logic
         e.stopPropagation();
-        console.log(e)
     }
 
     const handleRemove = (e: any) => {
@@ -31,7 +30,7 @@ export function ElementListItem(props: EditorListItemProps) {
 
     return (
         <li className={props.selected ? "bg-gray-500/10" : ""}>
-            <div onClick={handleSelect} className="flex group hover:bg-gray-500/10 px-2 py-0.5 items-center gap-1">
+            <div onDoubleClick={handleSelect} className="flex group hover:bg-gray-500/10 px-2 py-0.5 items-center gap-1">
                 <button onClick={handleHide} className="p-2 rounded-full hover:bg-gray-500/10">
                     <EyeIcon className="w-4"/>
                 </button>

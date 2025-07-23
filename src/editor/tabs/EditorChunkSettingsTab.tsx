@@ -12,7 +12,6 @@ export type EditorChunkSettingsTabProps = {
     startChunk: string;
     currentChunk: string;
     levelDispatcher: React.Dispatch<LevelReducerActions>;
-    isTabOpen: boolean;
 }
 enum EditorDialogs {
     LEVEL_DELETE = "level_delete",
@@ -43,7 +42,6 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
         <BaseTab
             title={"Chunk Settings"}
             description={"Edit the general information of the chunk."}
-            className={props.isTabOpen ? "block" : "hidden"}
         >
             <ul>
                 {Object.entries(props.chunk)

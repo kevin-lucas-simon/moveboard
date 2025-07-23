@@ -11,7 +11,6 @@ import {UUID} from "../../data/model/shared/UUID";
 export type EditorLevelSettingsTabProps = {
     level: LevelModel,
     levelDispatcher: React.Dispatch<LevelReducerActions>,
-    isTabOpen: boolean,
 }
 
 enum EditorDialogs {
@@ -55,7 +54,6 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
         <BaseTab
             title={"Level Settings"}
             description={"Edit the general information of the level."}
-            className={props.isTabOpen ? "block" : "hidden"}
         >
             <ul>
                 {Object.entries(props.level)

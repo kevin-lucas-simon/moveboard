@@ -13,7 +13,6 @@ export type EditorChunkJointsTabProps = {
     level: LevelModel,
     levelDispatcher: React.Dispatch<LevelReducerActions>;
     activeChunk: ChunkModel;
-    isTabOpen: boolean;
 }
 
 export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
@@ -72,8 +71,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
         <BaseTab
             title={"Chunk Joints"}
             description={"Connect the chunk to other chunks using joints."}
-            onAdd={addJoint}
-            className={props.isTabOpen ? "block" : "hidden"}
+            onAction={addJoint}
         >
             <ul>
                 {Object.values(props.activeChunk.joints).map((joint, index) =>

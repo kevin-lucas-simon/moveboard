@@ -7,14 +7,12 @@ export type EditorPlayTestTabProps = {
     settings: DebugSettings;
     onSettingChange: (key: string, value: any) => void;
     onRestart: () => void;
-    isTabOpen: boolean;
 }
 export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
     return (
         <BaseTab
             title={"Test Play"}
             description={"Test the behaviour of the chunk with some debug display options."}
-            className={props.isTabOpen ? "block" : "hidden"}
         >
             <ul>
                 {Object.entries(props.settings).map(([key, value]) => {

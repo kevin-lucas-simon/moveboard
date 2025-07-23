@@ -7,22 +7,26 @@ import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";
 import {ElementListItem} from "../input/ElementListItem";
 import {JsonNestedEditor} from "../input/JsonNestedEditor";
+import {XMarkIcon} from "@heroicons/react/24/outline";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
     selected: UUID[];
     dispatcher: React.Dispatch<EditorReducerActions>;
-    isTabOpen: boolean;
 }
 
 export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
     const selectedElement = props.selected[0] ? props.elements[props.selected[0]] : undefined;
 
+    const deselectElement = () => {
+        props.dispatcher({
+            type: "editor_deselect_all",
+        });
+    }
+
     const selectElement = (id: UUID) => {
         if (props.selected.includes(id)) {
-            props.dispatcher({
-                type: "editor_deselect_all",
-            });
+            deselectElement();
             return;
         }
         props.dispatcher({
@@ -55,44 +59,50 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         });
     }
     return (
-        <>
-            <BaseTab
-                title={"Chunk Elements"}
-                description={"Fill the chunk area with static elements."}
-                addOptions={Object.keys(elementConfig)}
-                onAdd={addElement}
-                className={props.isTabOpen ? "block" : "hidden"}
-                key={selectedElement ? "selected" : "not-selected"}
+        <div className="w-full h-full flex flex-col gap-2 overflow-y-hidden">
+            <div
+                className={"min-h-24 "+ (selectedElement ? "h-3/5 shrink-0 overflow-hidden resize-y" : "h-full grow")}
+                style={selectedElement ? {maxHeight: "75vh"} : {}}
             >
-                <ul>
-                    {Object.entries(props.elements).map(([key, element]) => (
-                        <ElementListItem
-                            key={key}
-                            id={element.id}
-                            display={element.type}
-                            selected={props.selected.includes(element.id)}
-                            onSelect={selectElement}
-                            onRemove={removeElement}
-                        />
-                    ))}
-                </ul>
-            </BaseTab>
-
-            <BaseTab
-                title={selectedElement?.type ?? "Details"}
-                className={props.isTabOpen && selectedElement ? "w-40" : "hidden"}
-            >
-                {selectedElement &&
-                    <ul className="mt-2">
-                        <JsonNestedEditor
-                            keyName={selectedElement.type}
-                            value={selectedElement}
-                            onKeyValueChange={(key, value) => changeElement(selectedElement.id, value)}
-                        />
+                <BaseTab
+                    title={"Chunk Elements"}
+                    description={"Fill the chunk area with static elements."}
+                    addOptions={Object.keys(elementConfig)}
+                    onAction={addElement}
+                >
+                    <ul>
+                        {Object.entries(props.elements).map(([key, element]) => (
+                            <ElementListItem
+                                key={key}
+                                id={element.id}
+                                display={element.type}
+                                selected={props.selected.includes(element.id)}
+                                onSelect={selectElement}
+                                onRemove={removeElement}
+                            />
+                        ))}
                     </ul>
-                }
-            </BaseTab>
-        </>
+                </BaseTab>
+            </div>
+
+            <div className={"w-full h-full " + (selectedElement ? "" : "hidden")}>
+                <BaseTab
+                    title={selectedElement?.type ?? "Details"}
+                    actionIcon={<XMarkIcon className="w-6" />}
+                    onAction={deselectElement}
+                >
+                    {selectedElement &&
+                        <ul className="mt-2">
+                            <JsonNestedEditor
+                                keyName={selectedElement.type}
+                                value={selectedElement}
+                                onKeyValueChange={(key, value) => changeElement(selectedElement.id, value)}
+                            />
+                        </ul>
+                    }
+                </BaseTab>
+            </div>
+        </div>
     );
 
 }

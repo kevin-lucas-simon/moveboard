@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 import {BasicDropdownItem} from "../../component/dropdown/BasicDropdownItem";
@@ -8,33 +8,34 @@ export type BaseTabProps = {
     title: string;
     description?: string;
     addOptions?: string[];
-    onAdd?: (selected?: string) => void;
+    onAction?: (selected?: string) => void;
+    actionIcon?: ReactNode|null,
     className?: string;
 }
 export function BaseTab(props: BaseTabProps) {
     const onAddSingle = () => {
-        if (!props.addOptions && props.onAdd) {
-            props.onAdd();
+        if (!props.addOptions && props.onAction) {
+            props.onAction();
         }
     }
 
     const onAddMultiple = (selected: string) => {
-        if (props.addOptions && props.onAdd) {
-            props.onAdd(selected);
+        if (props.addOptions && props.onAction) {
+            props.onAction(selected);
         }
     }
 
     return (
-        <div className={"w-64 shrink-0 h-full overflow-auto resize-x min-w-40 flex flex-col rounded-xl bg-gray-500/10 " + props.className}>
+        <div className={"w-full h-full flex flex-col rounded-xl bg-gray-500/10 " + props.className}>
             <div className="pt-4 px-4 flex justify-between">
                 <h2 className="text-xl">{props.title}</h2>
-                {(props.addOptions || props.onAdd) &&
+                {(props.addOptions || props.onAction || props.actionIcon) &&
                     <Menu>
                         <MenuButton
                             className="relative hover:bg-gray-500/15 p-1 -mr-1.5 rounded-full"
                             onClick={onAddSingle}
                         >
-                            <PlusCircleIcon className="h-6"/>
+                            {props.actionIcon ?? <PlusCircleIcon className="h-6"/>}
                         </MenuButton>
                         <MenuItems anchor="bottom end" className="mt-0.5 rounded-md bg-white shadow-lg ring-1 ring-black/5">
                             {props.addOptions?.map((option, index) =>
