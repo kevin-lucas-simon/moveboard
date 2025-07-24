@@ -12,6 +12,7 @@ export type ElementModel = {
     id: ElementID,
     type: ElementType,
     position: Vector3Like,
+    hidden: boolean,
 }
 
 /**
@@ -22,6 +23,7 @@ export const ElementDefault: ElementModel = {
     id: '000-000', // set by createElement()
     type: ElementType.GenericElement,
     position: {x: 0, y: 0, z: 0},
+    hidden: false,
 }
 
 export function createElement(type: ElementType): ElementModel {

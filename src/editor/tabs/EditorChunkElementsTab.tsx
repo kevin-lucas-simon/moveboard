@@ -58,6 +58,14 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
             payload: index,
         });
     }
+
+    const toggleElementVisibility = (index: string, value: ElementModel) => {
+        changeElement(index, {
+            ...value,
+            hidden: !(value.hidden ?? false)
+        })
+    }
+
     return (
         <div className="w-full h-full flex flex-col gap-2 overflow-y-hidden">
             <div
@@ -76,9 +84,11 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
                                 key={key}
                                 id={element.id}
                                 display={element.type}
+                                hidden={element.hidden}
                                 selected={props.selected.includes(element.id)}
                                 onSelect={selectElement}
                                 onRemove={removeElement}
+                                toggleHide={(id) => toggleElementVisibility(id, element)}
                             />
                         ))}
                     </ul>

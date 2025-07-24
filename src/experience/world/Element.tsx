@@ -12,6 +12,10 @@ export function Element(props: ElementProps) {
     const editorContext = useEditorContext();
     const editorActions = useEditorActions();
 
+    if (props.hidden) {
+        return <></>
+    }
+
     const selected = editorContext?.selected.includes(props.id) ?? false;
 
     const selectElement = (e: ThreeEvent<MouseEvent>) => {

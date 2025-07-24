@@ -27,6 +27,7 @@ export function createChunk(): ChunkModel {
         position: { x: 0, y: -1, z: 0 },
         dimension: { x: 3, y: 1, z: 3 },
         color: randomColor,
+        hidden: false,
     }
 
     return {
