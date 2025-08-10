@@ -21,6 +21,8 @@
     "react-hot-toast": "^2.5.2",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
+    "react-sortablejs": "^6.1.4",
+    "sortablejs": "^1.15.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -48,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/sortablejs": "^1.15.8",
     "tailwindcss": "^3.4.3"
   }
 }

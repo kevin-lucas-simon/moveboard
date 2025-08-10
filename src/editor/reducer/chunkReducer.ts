@@ -10,7 +10,10 @@ export type ChunkReducerActions = {
     payload: ElementModel;
 } | {
     type: 'chunk_remove_element';
-    payload: string;
+    payload: ElementID;
+} | {
+    type: 'chunk_reorder_elements';
+    payload: ElementID[];
 } | {
     type: 'chunk_add_joint';
     payload: JointModel;
@@ -58,6 +61,25 @@ export function chunkReducer(
                     ...state.elements,
                     [element.id]: element,
                 }
+            }
+        case 'chunk_reorder_elements':
+            const elementIds = action.payload as ElementID[];
+            const reorderedElements: {[key: ElementID]: ElementModel} = {};
+
+            elementIds.forEach(id => {
+                if (!state.elements[id]) {
+                    throw new Error(`Reorder element ID ${id} not found in state`);
+                }
+                reorderedElements[id] = state.elements[id];
+            })
+
+            if (Object.keys(reorderedElements).length !== Object.keys(state.elements).length) {
+                throw new Error('Reorder element IDs do not match original elements count');
+            }
+
+            return {
+                ...state,
+                elements: reorderedElements,
             }
         case 'chunk_remove_element':
             const removedElementId = action.payload as ElementID

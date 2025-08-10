@@ -1,4 +1,4 @@
-import {createElement, ElementModel} from "../../data/model/element/ElementModel";
+import {createElement, ElementID, ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
 import {BaseTab} from "./BaseTab";
@@ -8,6 +8,7 @@ import {UUID} from "../../data/model/shared/UUID";
 import {ElementListItem} from "../input/ElementListItem";
 import {JsonNestedEditor} from "../input/JsonNestedEditor";
 import {XMarkIcon} from "@heroicons/react/24/outline";
+import {ReactSortable} from "react-sortablejs";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
@@ -55,7 +56,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
     const removeElement = (index: string) => {
         props.dispatcher({
             type: 'chunk_remove_element',
-            payload: index,
+            payload: index as ElementID,
         });
     }
 
@@ -63,6 +64,18 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         changeElement(index, {
             ...value,
             hidden: !(value.hidden ?? false)
+        })
+    }
+
+    const reorderElements = (newState: ElementModel[]) => {
+        const newOrder: ElementID[] = [];
+        newState.forEach((element, index) => {
+            newOrder.push(element.id);
+        });
+
+        props.dispatcher({
+            type: 'chunk_reorder_elements',
+            payload: newOrder,
         })
     }
 
@@ -79,18 +92,20 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
                     onAction={addElement}
                 >
                     <ul>
-                        {Object.entries(props.elements).map(([key, element]) => (
-                            <ElementListItem
-                                key={key}
-                                id={element.id}
-                                display={element.type}
-                                hidden={element.hidden}
-                                selected={props.selected.includes(element.id)}
-                                onSelect={selectElement}
-                                onRemove={removeElement}
-                                toggleHide={(id) => toggleElementVisibility(id, element)}
-                            />
-                        ))}
+                        <ReactSortable list={Object.values(props.elements)} setList={reorderElements}>
+                            {Object.values(props.elements).map((element) => (
+                                <ElementListItem
+                                    key={element.id}
+                                    id={element.id}
+                                    display={element.type}
+                                    hidden={element.hidden}
+                                    selected={props.selected.includes(element.id)}
+                                    onSelect={selectElement}
+                                    onRemove={removeElement}
+                                    toggleHide={(id) => toggleElementVisibility(id, element)}
+                                />
+                            ))}
+                        </ReactSortable>
                     </ul>
                 </BaseTab>
             </div>
