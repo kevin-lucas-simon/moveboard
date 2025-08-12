@@ -1,0 +1,5 @@
+export function EmptyElement() {
+    return (
+        <></>
+    );
+}

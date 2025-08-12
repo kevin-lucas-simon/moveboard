@@ -83,7 +83,16 @@ export function chunkReducer(
             }
         case 'chunk_remove_element':
             const removedElementId = action.payload as ElementID
+            const removedElementParent = state.elements[removedElementId].parent;
 
+            // update children elements to remove the parent reference
+            Object.values(state.elements).forEach(element => {
+                if (element.parent === removedElementId) {
+                    element.parent = removedElementParent;
+                }
+            });
+
+            // remove the element from the state
             const updatedElements = Object.fromEntries(
                 Object.entries(state.elements).filter(([id]) => id !== removedElementId)
             )

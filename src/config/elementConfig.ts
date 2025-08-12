@@ -11,6 +11,7 @@ import {BasicBlockDefault} from "../data/model/element/block/BasicBlockModel";
 import {BounceBlockDefault} from "../data/model/element/block/BounceBlockModel";
 import {FloorBlockDefault} from "../data/model/element/block/FloorBlockModel";
 import {GroupElementDefault} from "../data/model/element/GroupElementModel";
+import {EmptyElement} from "../experience/element/EmptyElement";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -43,7 +44,7 @@ export const elementConfig: Record<ElementType, {
         defaultProps: ElementDefault,
     },
     [ElementType.Group]: {
-        experienceComponent: GenericElement, // TODO Placeholder, as GroupElement is not implemented in the experience
+        experienceComponent: EmptyElement,
         defaultProps: GroupElementDefault,
     },
 }

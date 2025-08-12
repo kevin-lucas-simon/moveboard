@@ -35,11 +35,13 @@ export function EditorElementItem(props: EditorElementItemProps) {
     }
 
     return (
-        <li className={props.isSelected ? "bg-gray-500/10" : ""}>
-            <div onDoubleClick={handleSelect} className="flex group hover:bg-gray-500/10 px-2 py-0.5 items-center">
+        <li className={props.isSelected ? "bg-gray-500/10 "  : ""}>
+            <div onDoubleClick={handleSelect} className={"flex group hover:bg-gray-500/10 px-2 py-0.5 items-center "
+                + (props.hidden ? "text-gray-500/50 " : "")}
+            >
                 <button onClick={toggleHide} className="p-2 rounded-full hover:bg-gray-500/10">
                     {props.hidden
-                        ? <EyeSlashIcon className="w-4 text-gray-500/50"/>
+                        ? <EyeSlashIcon className="w-4"/>
                         : <EyeIcon className="w-4"/>
                     }
                 </button>
@@ -47,10 +49,10 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     {props.isGroup && (
                         <FolderOpenIcon className="w-4"/>
                     )}
-                    <span className={props.hidden ? "text-gray-500/50" : ""}>{props.display}</span>
+                    <span>{props.display}</span>
                 </button>
                 <button onClick={handleRemove} className="p-2 rounded-full invisible group-hover:visible hover:bg-gray-500/10">
-                    <TrashIcon className="w-4"/>
+                    <TrashIcon className="w-4 text-black"/>
                 </button>
             </div>
             {props.children && (

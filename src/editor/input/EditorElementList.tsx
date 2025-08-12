@@ -33,7 +33,8 @@ export function EditorElementList(props: EditorElementListProps) {
         });
     }
 
-    const toggleElementVisibility = (index: string, value: ElementModel) => {
+    // toggle the visibility of the element and all children
+    const toggleVisibility = (index: string, value: ElementModel) => {
         props.dispatcher({
             type: 'chunk_update_element',
             payload: {
@@ -41,6 +42,11 @@ export function EditorElementList(props: EditorElementListProps) {
                 hidden: !(value.hidden ?? false)
             },
         });
+
+        const groupChildren = Object.values(props.elements).filter(element => element.parent === value.id)
+        groupChildren.forEach((child) => {
+            toggleVisibility(child.id, child);
+        })
     }
 
     // Info: SortableJS do fire this event on mount for every group instance
@@ -110,7 +116,7 @@ export function EditorElementList(props: EditorElementListProps) {
                     hasParent={element.parent !== null}
                     onSelect={selectElement}
                     onRemove={removeElement}
-                    toggleHide={(id) => toggleElementVisibility(id, element)}
+                    toggleHide={(id) => toggleVisibility(id, element)}
                 >
                     {/* TODO evtl hier irgendwann ein collapse bauen */}
                     {element.type === ElementType.Group && (
