@@ -1,14 +1,13 @@
-import {createElement, ElementID, ElementModel} from "../../data/model/element/ElementModel";
+import {createElement, ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
 import {BaseTab} from "./BaseTab";
 import {ElementType} from "../../data/model/element/ElementType";
 import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";
-import {ElementListItem} from "../input/ElementListItem";
 import {JsonNestedEditor} from "../input/JsonNestedEditor";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import {ReactSortable} from "react-sortablejs";
+import {EditorElementList} from "../input/EditorElementList";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
@@ -22,17 +21,6 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
     const deselectElement = () => {
         props.dispatcher({
             type: "editor_deselect_all",
-        });
-    }
-
-    const selectElement = (id: UUID) => {
-        if (props.selected.includes(id)) {
-            deselectElement();
-            return;
-        }
-        props.dispatcher({
-            type: "editor_select",
-            payload: id,
         });
     }
 
@@ -53,32 +41,6 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         });
     }
 
-    const removeElement = (index: string) => {
-        props.dispatcher({
-            type: 'chunk_remove_element',
-            payload: index as ElementID,
-        });
-    }
-
-    const toggleElementVisibility = (index: string, value: ElementModel) => {
-        changeElement(index, {
-            ...value,
-            hidden: !(value.hidden ?? false)
-        })
-    }
-
-    const reorderElements = (newState: ElementModel[]) => {
-        const newOrder: ElementID[] = [];
-        newState.forEach((element, index) => {
-            newOrder.push(element.id);
-        });
-
-        props.dispatcher({
-            type: 'chunk_reorder_elements',
-            payload: newOrder,
-        })
-    }
-
     return (
         <div className="w-full h-full flex flex-col gap-2 overflow-y-hidden">
             <div
@@ -91,22 +53,12 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
                     addOptions={Object.keys(elementConfig)}
                     onAction={addElement}
                 >
-                    <ul>
-                        <ReactSortable list={Object.values(props.elements)} setList={reorderElements}>
-                            {Object.values(props.elements).map((element) => (
-                                <ElementListItem
-                                    key={element.id}
-                                    id={element.id}
-                                    display={element.type}
-                                    hidden={element.hidden}
-                                    selected={props.selected.includes(element.id)}
-                                    onSelect={selectElement}
-                                    onRemove={removeElement}
-                                    toggleHide={(id) => toggleElementVisibility(id, element)}
-                                />
-                            ))}
-                        </ReactSortable>
-                    </ul>
+                    <EditorElementList
+                        elements={props.elements}
+                        selected={props.selected}
+                        dispatcher={props.dispatcher}
+                        parent={null}
+                    />
                 </BaseTab>
             </div>
 
@@ -129,5 +81,4 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
             </div>
         </div>
     );
-
 }

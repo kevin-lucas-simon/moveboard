@@ -11,6 +11,7 @@ export type ElementID = UUID;
 export type ElementModel = {
     id: ElementID,
     type: ElementType,
+    parent: ElementID | null,
     position: Vector3Like,
     hidden: boolean,
 }
@@ -22,6 +23,7 @@ export type ElementModel = {
 export const ElementDefault: ElementModel = {
     id: '000-000', // set by createElement()
     type: ElementType.GenericElement,
+    parent: null,
     position: {x: 0, y: 0, z: 0},
     hidden: false,
 }

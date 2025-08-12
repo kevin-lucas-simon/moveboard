@@ -24,6 +24,7 @@ export function createChunk(): ChunkModel {
     const floorBlock: FloorBlockModel = {
         id: createUUID(),
         type: ElementType.FloorBlock,
+        parent: null,
         position: { x: 0, y: -1, z: 0 },
         dimension: { x: 3, y: 1, z: 3 },
         color: randomColor,
