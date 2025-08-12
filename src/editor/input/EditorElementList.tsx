@@ -11,7 +11,7 @@ export type EditorElementListProps = EditorChunkElementsTabProps & {
 }
 
 export function EditorElementList(props: EditorElementListProps) {
-    const folderElements = Object.values(props.elements).filter(element => element.parent === props.parent);
+    const groupElements = Object.values(props.elements).filter(element => element.parent === props.parent);
 
     const selectElement = (id: UUID) => {
         if (props.selected.includes(id)) {
@@ -43,44 +43,15 @@ export function EditorElementList(props: EditorElementListProps) {
         });
     }
 
-    const reorderElements = (newFolderElements: ElementModel[]) => {
-        // group change is handled by the corresponding group element (two events here)
-        if (newFolderElements.length < folderElements.length) {
+    // Info: SortableJS do fire this event on mount for every group instance
+    const reorderElements = (newGroupElements: ElementModel[]) => {
+        // group change is only handled by the corresponding group element (two events on moving between groups)
+        if (newGroupElements.length < groupElements.length) {
             return;
         }
 
-        const movedElements = newFolderElements
-            .filter(element => !folderElements.some(e => e.id === element.id));
-        const movedElementIDs = movedElements
-            .map(element => element.id);
-
-        const rootElements = props.parent === null
-            ? newFolderElements
-            : Object.values(props.elements)
-                .filter(element => element.parent === null)
-                .filter(element => !movedElementIDs.includes(element.id))
-        ;
-
-        const newOrder: ElementID[] = [];
-        rootElements.forEach((element) => {
-            newOrder.push(element.id);
-
-            // check if folder, than push all children or newly added elements
-            if (element.type === ElementType.Group) {
-                const folderElements = props.parent === element.id
-                    ? newFolderElements
-                    : Object.values(props.elements)
-                        .filter(e => e.parent === element.id)
-                        .filter(e => !movedElementIDs.includes(e.id))
-                ;
-                folderElements.forEach((child) => {
-                    newOrder.push(child.id);
-
-                    // hier fehlt die Folder rekursion
-                });
-            }
-        });
-
+        // update the parent of the moved elements
+        const movedElements = newGroupElements.filter(element => !groupElements.some(e => e.id === element.id));
         movedElements.forEach((element) => {
             props.dispatcher({
                 type: 'chunk_update_element',
@@ -91,22 +62,44 @@ export function EditorElementList(props: EditorElementListProps) {
             })
         })
 
-        console.log("Reordering elements in folder", props.parent, newOrder);
+        // recursively calculate the new total order of elements (we have to remove the old one)
+        const calculateGroupOrder = (parent: ElementID|null): ElementID[] => {
+            const groupElements = props.parent === parent
+                ? newGroupElements
+                : Object.values(props.elements)
+                    .filter(element => element.parent === parent)
+                    .filter(element => !movedElements.map(element => element.id).includes(element.id))
+            ;
 
+            const newGroupOrder: ElementID[] = [];
+            groupElements.forEach((element) => {
+                newGroupOrder.push(element.id);
+
+                if (element.type === ElementType.Group) {
+                    const childrenOrder = calculateGroupOrder(element.id);
+                    newGroupOrder.push(...childrenOrder);
+                }
+            })
+
+            return newGroupOrder;
+        }
+
+        // apply the new order to the chunk
+        const newTotalOrder: ElementID[] = calculateGroupOrder(null);
         props.dispatcher({
             type: 'chunk_reorder_elements',
-            payload: newOrder,
+            payload: newTotalOrder,
         })
     }
 
     return (
         <ReactSortable
-            list={folderElements}
+            list={groupElements}
             setList={reorderElements}
             tag="ul"
             group={EditorElementList.name}
         >
-            {folderElements.map((element) => (
+            {groupElements.map((element) => (
                 <EditorElementItem
                     key={element.id}
                     id={element.id}
