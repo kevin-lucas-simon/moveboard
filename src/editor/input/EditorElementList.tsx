@@ -44,43 +44,58 @@ export function EditorElementList(props: EditorElementListProps) {
     }
 
     const reorderElements = (newFolderElements: ElementModel[]) => {
-        // group change is handled by the corresponding group element
+        // group change is handled by the corresponding group element (two events here)
         if (newFolderElements.length < folderElements.length) {
             return;
         }
 
-        const newFolderOrder: ElementID[] = [];
-        newFolderElements.forEach((element) => {
-            newFolderOrder.push(element.id);
+        const movedElements = newFolderElements
+            .filter(element => !folderElements.some(e => e.id === element.id));
+        const movedElementIDs = movedElements
+            .map(element => element.id);
 
-            if (!folderElements.some(e => e.id === element.id)) {
-                props.dispatcher({
-                    type: 'chunk_update_element',
-                    payload: {
-                        ...element,
-                        parent: props.parent,
-                    }
-                })
+        const rootElements = props.parent === null
+            ? newFolderElements
+            : Object.values(props.elements)
+                .filter(element => element.parent === null)
+                .filter(element => !movedElementIDs.includes(element.id))
+        ;
+
+        const newOrder: ElementID[] = [];
+        rootElements.forEach((element) => {
+            newOrder.push(element.id);
+
+            // check if folder, than push all children or newly added elements
+            if (element.type === ElementType.Group) {
+                const folderElements = props.parent === element.id
+                    ? newFolderElements
+                    : Object.values(props.elements)
+                        .filter(e => e.parent === element.id)
+                        .filter(e => !movedElementIDs.includes(e.id))
+                ;
+                folderElements.forEach((child) => {
+                    newOrder.push(child.id);
+
+                    // hier fehlt die Folder rekursion
+                });
             }
         });
 
-        const otherElements = Object.values(props.elements)
-            .filter(element => element.parent !== props.parent || props.parent === null);
+        movedElements.forEach((element) => {
+            props.dispatcher({
+                type: 'chunk_update_element',
+                payload: {
+                    ...element,
+                    parent: props.parent,
+                }
+            })
+        })
 
-        const newGlobalOrder: ElementID[] = [];
-        otherElements.forEach((element) => {
-            newGlobalOrder.push(element.id);
-
-            if (element.id === props.parent) {
-                newGlobalOrder.push(...newFolderOrder); // TODO sauber ist das nicht, weil noch doppelte IDs drin sein können
-            }
-        });
-
-        console.log("Reordering elements:", newGlobalOrder);
+        console.log("Reordering elements in folder", props.parent, newOrder);
 
         props.dispatcher({
             type: 'chunk_reorder_elements',
-            payload: newGlobalOrder,
+            payload: newOrder,
         })
     }
 
