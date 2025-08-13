@@ -49,6 +49,7 @@
                 "af61d614-df3a-4129-826c-fe0a44e22c8e": {
                     "id": "af61d614-df3a-4129-826c-fe0a44e22c8e",
                     "type": "Group",
+                    "collapsed": false,
                     "parent":  null,
                     "position": {
                         "x": 0,
@@ -77,6 +78,7 @@
                 "77d00105-071d-4489-aa13-d088573a79a7": {
                     "id": "77d00105-071d-4489-aa13-d088573a79a7",
                     "type": "Group",
+                    "collapsed": true,
                     "parent":  "af61d614-df3a-4129-826c-fe0a44e22c8e",
                     "position": {
                         "x": 0,

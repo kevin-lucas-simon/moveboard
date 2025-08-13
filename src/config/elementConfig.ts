@@ -10,7 +10,7 @@ import {BarrierBlockDefault} from "../data/model/element/block/BarrierBlockModel
 import {BasicBlockDefault} from "../data/model/element/block/BasicBlockModel";
 import {BounceBlockDefault} from "../data/model/element/block/BounceBlockModel";
 import {FloorBlockDefault} from "../data/model/element/block/FloorBlockModel";
-import {GroupElementDefault} from "../data/model/element/GroupElementModel";
+import {GroupDefault} from "../data/model/element/GroupModel";
 import {EmptyElement} from "../experience/element/EmptyElement";
 
 /**
@@ -45,7 +45,7 @@ export const elementConfig: Record<ElementType, {
     },
     [ElementType.Group]: {
         experienceComponent: EmptyElement,
-        defaultProps: GroupElementDefault,
+        defaultProps: GroupDefault,
     },
 }
 

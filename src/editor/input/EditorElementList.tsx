@@ -5,6 +5,7 @@ import {UUID} from "../../data/model/shared/UUID";
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 import {EditorChunkElementsTabProps} from "../tabs/EditorChunkElementsTab";
 import {ElementType} from "../../data/model/element/ElementType";
+import {GroupModel} from "../../data/model/element/GroupModel";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;
@@ -47,6 +48,20 @@ export function EditorElementList(props: EditorElementListProps) {
         groupChildren.forEach((child) => {
             toggleVisibility(child.id, child);
         })
+    }
+
+    const toggleCollapse = (index: string, value: ElementModel) => {
+        if (value.type !== ElementType.Group) {
+            return;
+        }
+
+        props.dispatcher({
+            type: 'chunk_update_element',
+            payload: {
+                ...value,
+                collapsed: !(value as GroupModel).collapsed
+            } as GroupModel,
+        });
     }
 
     // Info: SortableJS do fire this event on mount for every group instance
@@ -113,10 +128,12 @@ export function EditorElementList(props: EditorElementListProps) {
                     hidden={element.hidden}
                     isSelected={props.selected.includes(element.id)}
                     isGroup={element.type === ElementType.Group}
+                    isCollapsed={element.type === ElementType.Group && (element as GroupModel).collapsed}
                     hasParent={element.parent !== null}
                     onSelect={selectElement}
                     onRemove={removeElement}
                     toggleHide={(id) => toggleVisibility(id, element)}
+                    toggleCollapse={(id) => toggleCollapse(id, element)}
                 >
                     {/* TODO evtl hier irgendwann ein collapse bauen */}
                     {element.type === ElementType.Group && (
