@@ -1,0 +1,29 @@
+import {UUID} from "../../data/model/shared/UUID";
+import React from "react";
+import {EditorReducerActions} from "../reducer/editorReducer";
+import {EditorElementInspector} from "./EditorElementInspector";
+import {EditorChunkInspector} from "./EditorChunkInspector";
+import {ChunkModel} from "../../data/model/world/ChunkModel";
+
+export type EditorInspectorTabProps = {
+    chunk: ChunkModel;
+    dispatcher: React.Dispatch<EditorReducerActions>;
+    selected: UUID[];
+}
+
+export function EditorInspectorTab(props: EditorInspectorTabProps) {
+    const selectedElement = props.selected[0] ? props.chunk.elements[props.selected[0]] : undefined;
+
+    if (selectedElement) {
+        return <EditorElementInspector
+            elements={props.chunk.elements}
+            selected={props.selected}
+            dispatcher={props.dispatcher}
+        />;
+    }
+
+    return <EditorChunkInspector
+        chunk={props.chunk}
+        dispatcher={props.dispatcher}
+    />;
+}

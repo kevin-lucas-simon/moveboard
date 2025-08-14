@@ -5,10 +5,9 @@ import React from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
 import {
-    LinkIcon, PlayIcon, PuzzlePieceIcon, RectangleGroupIcon, RectangleStackIcon
+    LinkIcon, PlayIcon, RectangleGroupIcon, RectangleStackIcon
 } from "@heroicons/react/24/outline";
 import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
-import {EditorChunkSettingsTab} from "./tabs/EditorChunkSettingsTab";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
@@ -17,10 +16,10 @@ import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
+import {EditorInspectorTab} from "./tabs/EditorInspectorTab";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
-    CHUNK_SETTINGS= "chunk_settings",
     CHUNK_JOINTS = "chunk_joints",
     CHUNK_ELEMENTS = "chunk_elements",
     PLAY_TEST = "play_test",
@@ -33,7 +32,7 @@ export function LevelEditor() {
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
-    const [tab, setTab] = useState<EditorTabs>(EditorTabs.CHUNK_SETTINGS);
+    const [tab, setTab] = useState<EditorTabs>(EditorTabs.LEVEL_SETTINGS);
 
     if (!editor || !dispatchEditor) {
         return <></>;
@@ -81,10 +80,6 @@ export function LevelEditor() {
                     <EditorTabButton active={tab === EditorTabs.LEVEL_SETTINGS} onClick={() => setTab(EditorTabs.LEVEL_SETTINGS)}>
                         <RectangleGroupIcon/>
                     </EditorTabButton>
-                    <div className="my-1 w-full border border-gray-500/20"></div>
-                    <EditorTabButton active={tab === EditorTabs.CHUNK_SETTINGS} onClick={() => setTab(EditorTabs.CHUNK_SETTINGS)}>
-                        <PuzzlePieceIcon/>
-                    </EditorTabButton>
                     <EditorTabButton active={tab === EditorTabs.CHUNK_JOINTS} onClick={() => setTab(EditorTabs.CHUNK_JOINTS)}>
                         <LinkIcon/>
                     </EditorTabButton>
@@ -97,20 +92,12 @@ export function LevelEditor() {
                     </EditorTabButton>
                 </div>
 
-                {/* tab content */}
+                {/* list content */}
                 <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
                     {tab === EditorTabs.LEVEL_SETTINGS &&
                         <EditorLevelSettingsTab
                             level={editLevel}
                             levelDispatcher={dispatchEditor}
-                        />
-                    }
-                    {tab === EditorTabs.CHUNK_SETTINGS &&
-                        <EditorChunkSettingsTab
-                            chunk={editChunk}
-                            levelDispatcher={dispatchEditor}
-                            currentChunk={editor.active}
-                            startChunk={editLevel.start}
                         />
                     }
                     {tab === EditorTabs.CHUNK_JOINTS &&
@@ -154,6 +141,15 @@ export function LevelEditor() {
                         }
                     </Environment>
                 </DebugSettingsProvider>
+
+                {/* inspector */}
+                <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
+                    <EditorInspectorTab
+                        chunk={editChunk}
+                        selected={editor.selected}
+                        dispatcher={dispatchEditor}
+                    />
+                </div>
             </div>
         </div>
     );

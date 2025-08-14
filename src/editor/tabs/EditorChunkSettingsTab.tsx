@@ -17,6 +17,7 @@ enum EditorDialogs {
     LEVEL_DELETE = "level_delete",
 }
 
+// TODO deprecated, wird im nächsten Commit gelöscht
 export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
     const [dialog, setDialog] = React.useState<EditorDialogs|null>(null);
 
@@ -52,6 +53,7 @@ export function EditorChunkSettingsTab(props: EditorChunkSettingsTabProps) {
                         )
                     })
                 }
+                {/* TODO das muss ich noch übertragen, aber erstmal will ich noch commiten */}
                 <li className="mx-2 mt-2">
                     {props.currentChunk !== props.startChunk &&
                         <LinkButton onClick={() => setDialog(EditorDialogs.LEVEL_DELETE)}>
