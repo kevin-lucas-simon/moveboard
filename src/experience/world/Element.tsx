@@ -24,17 +24,18 @@ export function Element(props: ElementProps) {
         }
         e.stopPropagation();
 
-        if (selected) {
-            editorActions({
-                type: 'editor_deselect_all',
-            });
-            return;
-        } else {
+        const isInActiveChunk = editorContext.level.chunks[editorContext.active]?.elements[props.id] !== undefined;
+        if (isInActiveChunk && !selected) {
             editorActions({
                 type: 'editor_select',
                 payload: props.id,
             });
+            return;
         }
+
+        editorActions({
+            type: 'editor_deselect_all',
+        });
     }
 
     const component = React.createElement(
