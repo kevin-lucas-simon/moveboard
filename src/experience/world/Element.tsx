@@ -6,7 +6,9 @@ import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
 
-export type ElementProps = ElementModel;
+export type ElementProps = ElementModel & {
+    children?: React.ReactNode;
+};
 
 export function Element(props: ElementProps) {
     const editorContext = useEditorContext();
@@ -48,7 +50,7 @@ export function Element(props: ElementProps) {
 
     return (
         <Select enabled={selected} onDoubleClick={selectElement}>
-            {component}
+            {props.children ?? component}
         </Select>
     );
 }

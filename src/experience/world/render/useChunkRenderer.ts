@@ -1,6 +1,6 @@
 import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {JointModel} from "../../../data/model/world/JointModel";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
@@ -101,11 +101,14 @@ function calculateChunks(
             continue;
         }
 
+        // get chunk joints
+        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+
         // set default render position to the task position
         let renderPosition = new Vector3().copy(task.position);
 
         // apply parent chunk position if available
-        Object.values(currentModel.joints).forEach(joint => {
+        currentJoints.forEach(joint => {
             // find joint to parent chunk
             if (joint.neighbour === task.parentId && joint.neighbour !== null) {
                 renderPosition = new Vector3()
@@ -141,7 +144,7 @@ function calculateChunks(
         };
 
         // add new tasks
-        Object.values(currentModel.joints).forEach((joint: JointModel) => {
+        currentJoints.forEach((joint: JointModel) => {
             if (!joint.neighbour || joint.neighbour === task.parentId) {
                 return;
             }

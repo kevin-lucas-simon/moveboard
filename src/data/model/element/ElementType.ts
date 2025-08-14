@@ -5,4 +5,5 @@ export enum ElementType {
     FloorBlock = "FloorBlock",
     GenericElement = "GenericElement",
     Group = "Group",
+    Joint = "Joint",
 }

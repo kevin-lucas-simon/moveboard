@@ -1,6 +1,5 @@
 import {ChunkModel} from "../../data/model/world/ChunkModel";
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
-import {JointModel} from "../../data/model/world/JointModel";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -14,15 +13,6 @@ export type ChunkReducerActions = {
 } | {
     type: 'chunk_reorder_elements';
     payload: ElementID[];
-} | {
-    type: 'chunk_add_joint';
-    payload: JointModel;
-} | {
-    type: 'chunk_update_joint';
-    payload: JointModel;
-} | {
-    type: 'chunk_remove_joint';
-    payload: string;
 } | {
     type: 'chunk_update_field';
     payload: {
@@ -100,28 +90,6 @@ export function chunkReducer(
             return {
                 ...state,
                 elements: updatedElements,
-            }
-        case 'chunk_add_joint':
-        case 'chunk_update_joint':
-            const joint = action.payload;
-
-            return {
-                ...state,
-                joints: {
-                    ...state.joints,
-                    [joint.id]: joint,
-                }
-            }
-        case 'chunk_remove_joint':
-            const removedJointId = action.payload;
-
-            const updatedJoints = Object.fromEntries(
-                Object.entries(state.joints).filter(([id]) => id !== removedJointId)
-            );
-
-            return {
-                ...state,
-                joints: updatedJoints,
             }
         default:
             throw new Error('Invalid action type');

@@ -2,6 +2,8 @@ import {LevelModel} from "../model/world/LevelModel";
 import {ChunkValidator} from "./ChunkValidator";
 import {ChunkModel} from "../model/world/ChunkModel";
 import {Validator, ValidationError} from "./Validator";
+import {ElementType} from "../model/element/ElementType";
+import {JointModel} from "../model/element/joint/JointModel";
 
 export class LevelValidator implements Validator<LevelModel> {
     private errors: ValidationError[] = [];
@@ -66,7 +68,11 @@ export class LevelValidator implements Validator<LevelModel> {
 
     private checkChunkJointsPointToExistingChunks(level: LevelModel) {
         Object.values(level.chunks).forEach((chunk) => {
-            Object.values(chunk.joints || {}).forEach((joint) => {
+            const joints = Object
+                .values(chunk.elements || {})
+                .filter(element => element.type === ElementType.Joint) as JointModel[];
+
+            joints.forEach((joint) => {
                 if (joint.neighbour === null) {
                     return;
                 }

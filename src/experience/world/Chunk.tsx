@@ -1,11 +1,12 @@
 import {Vector3} from "three";
 import React from "react";
-import {Joint} from "./Joint";
-import {JointModel} from "../../data/model/world/JointModel";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {ChunkID} from "../../data/model/world/ChunkModel";
 import {Element} from "./Element";
+import {ElementType} from "../../data/model/element/ElementType";
+import {JointElement} from "../element/joint/JointElement";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
@@ -13,25 +14,34 @@ export type ChunkProps = RenderedChunk & {
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
+    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementType.Joint);
+    const joints = Object.values(props.model.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+
     return (
         <>
             {/* all displayed elements */}
-            {Object.values(props.model.elements).map((element) =>
+            {elements.map((element) =>
                 <Element
                     {...element}
                     key={element.id}
                     position={new Vector3().copy(props.worldPosition).add(element.position)}
                 />)}
             {/* player chunk joint colliders */}
-            {Object.values(props.model.joints).map((joint: JointModel) =>
-                <Joint
+            {joints.map((joint: JointModel) =>
+                <Element
                     {...joint}
-                    key={props.model.name + "->" + joint.neighbour}
-                    inActiveChunk={props.active}
+                    key={joint.id}
                     position={new Vector3().copy(props.worldPosition).add(joint.position)}
-                    chunkPosition={new Vector3().copy(props.worldPosition)}
-                    onChunkLeave={props.onPlayerChunkLeave}
-                />
+                >
+                    <JointElement
+                        {...joint}
+                        key={joint.id}
+                        inActiveChunk={props.active}
+                        position={new Vector3().copy(props.worldPosition).add(joint.position)}
+                        chunkPosition={new Vector3().copy(props.worldPosition)}
+                        onChunkLeave={props.onPlayerChunkLeave}
+                    />
+                </Element>
             )}
             {/* player out of bounds collider */}
             {props.active &&

@@ -103,7 +103,7 @@ export function LevelEditor() {
                     {tab === EditorTabs.CHUNK_JOINTS &&
                         <EditorChunkJointsTab
                             level={editLevel}
-                            levelDispatcher={dispatchEditor}
+                            dispatcher={dispatchEditor}
                             activeChunk={editChunk}
                         />
                     }

@@ -9,7 +9,6 @@ export class ChunkValidator implements Validator<ChunkModel> {
         this.shouldNotEmpty(chunk.name, "Chunk name must not be empty.");
 
         this.shouldHaveSameListIdentifier(chunk.elements, "id", "Chunk elements must have unique IDs.");
-        this.shouldHaveSameListIdentifier(chunk.joints, "id", "Chunk joints must have unique IDs.");
 
         return this.errors;
     }

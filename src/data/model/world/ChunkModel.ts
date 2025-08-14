@@ -1,5 +1,4 @@
 import {Vector3Like} from "three";
-import {JointID, JointModel} from "./JointModel";
 import {ElementID, ElementModel} from "../element/ElementModel";
 import {createUUID, UUID} from "../shared/UUID";
 import {ElementType} from "../element/ElementType";
@@ -13,7 +12,6 @@ export type ChunkModel = {
     id: ChunkID,
     name: string,
     player: Vector3Like,
-    joints: {[key: JointID]: JointModel},
     elements: {[key: ElementID]: ElementModel},
 }
 
@@ -35,7 +33,6 @@ export function createChunk(): ChunkModel {
         id: createUUID(),
         name: "New Chunk",
         player: { x: 0, y: 0, z: 0 },
-        joints: {},
         elements: {
             [floorBlock.id]: floorBlock,
         },

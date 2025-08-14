@@ -1,6 +1,8 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {ChunkID, createChunk} from "../../data/model/world/ChunkModel";
+import {ElementType} from "../../data/model/element/ElementType";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -70,9 +72,12 @@ export function levelReducer(
 
             // update joints in remaining chunks to remove references to the removed chunk
             Object.entries(updatedChunks).forEach(([_, chunk]) => {
-                Object.entries(chunk.joints).forEach(([_, joint]) => {
-                    if (joint.neighbour === removedChunkId) {
-                        joint.neighbour = null;
+                Object.entries(chunk.elements).forEach(([_, element]) => {
+                    if (
+                        element.type === ElementType.Joint
+                        && (element as JointModel).neighbour === removedChunkId
+                    ) {
+                        (element as JointModel).neighbour = null;
                     }
                 })
             })

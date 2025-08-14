@@ -12,6 +12,8 @@ import {BounceBlockDefault} from "../data/model/element/block/BounceBlockModel";
 import {FloorBlockDefault} from "../data/model/element/block/FloorBlockModel";
 import {GroupDefault} from "../data/model/element/GroupModel";
 import {EmptyElement} from "../experience/element/EmptyElement";
+import {JointDefault} from "../data/model/element/joint/JointModel";
+import {JointElement} from "../experience/element/joint/JointElement";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -47,6 +49,10 @@ export const elementConfig: Record<ElementType, {
         experienceComponent: EmptyElement,
         defaultProps: GroupDefault,
     },
+    [ElementType.Joint]: {
+        experienceComponent: JointElement,
+        defaultProps: JointDefault,
+    }
 }
 
 /**

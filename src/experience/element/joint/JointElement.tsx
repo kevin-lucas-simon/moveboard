@@ -1,10 +1,10 @@
-import {JointModel} from "../../data/model/world/JointModel";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
-import {Player} from "../entity/Player";
-import {useDebugSettings} from "../input/DebugSettingsProvider";
-import {ChunkID} from "../../data/model/world/ChunkModel";
+import {Player} from "../../entity/Player";
+import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {ChunkID} from "../../../data/model/world/ChunkModel";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,
@@ -12,7 +12,7 @@ export type JointProps = JointModel & {
     onChunkLeave: (neighbour: ChunkID|null) => void,
 }
 
-export function Joint(props: JointProps) {
+export function JointElement(props: JointProps) {
     const isVisible = useDebugSettings().displayEditorFeatures;
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {

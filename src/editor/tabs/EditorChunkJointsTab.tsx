@@ -1,4 +1,4 @@
-import {createJoint, JointModel} from "../../data/model/world/JointModel";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 import React from "react";
 import {ListObjectEditor} from "../input/ListObjectEditor";
 import {BaseTab} from "./BaseTab";
@@ -8,32 +8,36 @@ import {LinkButton} from "../../component/button/LinkButton";
 import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {UUID} from "../../data/model/shared/UUID";
+import {createElement, ElementID} from "../../data/model/element/ElementModel";
+import {ElementType} from "../../data/model/element/ElementType";
 
 export type EditorChunkJointsTabProps = {
     level: LevelModel,
-    levelDispatcher: React.Dispatch<LevelReducerActions>;
+    dispatcher: React.Dispatch<LevelReducerActions>;
     activeChunk: ChunkModel;
 }
 
 export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
+    const activeChunkJoints = Object.values(props.activeChunk.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+
     const addJoint = () => {
-        props.levelDispatcher({
-            type: 'chunk_add_joint',
-            payload: createJoint(),
-        });
+        props.dispatcher({
+            type: "chunk_add_element",
+            payload: createElement(ElementType.Joint),
+        })
     }
 
     const updateJoint = (index: string, value: JointModel) => {
-        props.levelDispatcher({
-            type: 'chunk_update_joint',
+        props.dispatcher({
+            type: 'chunk_update_element',
             payload: value
         });
     }
 
     const removeJoint = (id: string) => {
-        props.levelDispatcher({
-            type: 'chunk_remove_joint',
-            payload: id,
+        props.dispatcher({
+            type: 'chunk_remove_element',
+            payload: id as ElementID,
         });
     }
 
@@ -41,7 +45,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
         if (!chunkId) {
             return
         }
-        props.levelDispatcher({
+        props.dispatcher({
             type: 'level_select_chunk',
             payload: chunkId,
         });
@@ -54,7 +58,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
             .filter(chunk => chunk.id !== props.activeChunk.id)
             .forEach(chunk => {
                 // skip chunks that are already connected
-                if (Object.values(props.activeChunk.joints).some(joint => joint.neighbour === chunk.id)) {
+                if (activeChunkJoints.some(joint => joint.neighbour === chunk.id)) {
                     return;
                 }
                 chunkSelection[chunk.id] = chunk.name;
@@ -74,7 +78,7 @@ export function EditorChunkJointsTab(props: EditorChunkJointsTabProps) {
             onAction={addJoint}
         >
             <ul>
-                {Object.values(props.activeChunk.joints).map((joint, index) =>
+                {activeChunkJoints.map((joint, index) =>
                     <li key={joint.id} className="flex flex-col divide-gray-500/20">
                         <ListObjectEditor
                             key={index}

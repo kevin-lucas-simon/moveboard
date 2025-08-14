@@ -11,9 +11,11 @@
                 "y": 1,
                 "z": 0
             },
-            "joints": {
+            "elements": {
                 "d5318744-d4d7-4f9b-8dfd-0cf37c6a24b1": {
                     "id": "d5318744-d4d7-4f9b-8dfd-0cf37c6a24b1",
+                    "type": "Joint",
+                    "parent": null,
                     "neighbour": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
                     "position": {
                         "x": -4,
@@ -25,10 +27,9 @@
                         "y": 2,
                         "z": 2
                     },
-                    "vision": 1
-                }
-            },
-            "elements": {
+                    "vision": 1,
+                    "hidden": false
+                },
                 "c9a7369c-d45f-4f36-b03e-fae08b9a1df4": {
                     "id": "c9a7369c-d45f-4f36-b03e-fae08b9a1df4",
                     "type": "FloorBlock",
@@ -264,9 +265,11 @@
                 "y": 1,
                 "z": 1
             },
-            "joints": {
+            "elements": {
                 "d8b32b26-4e8e-4d95-9868-59f5cfbfcdb1": {
                     "id": "d8b32b26-4e8e-4d95-9868-59f5cfbfcdb1",
+                    "type": "Joint",
+                    "parent": null,
                     "neighbour": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
                     "position": {
                         "x": 2,
@@ -278,10 +281,9 @@
                         "y": 1,
                         "z": 2
                     },
-                    "vision": 0
-                }
-            },
-            "elements": {
+                    "vision": 0,
+                    "hidden": false
+                },
                 "a174d6b7-bf88-4b67-a4e0-e17ec1b6d3f9": {
                     "id": "a174d6b7-bf88-4b67-a4e0-e17ec1b6d3f9",
                     "type": "FloorBlock",
@@ -426,9 +428,11 @@
                 "y": 1,
                 "z": 0
             },
-            "joints": {
+            "elements": {
                 "25b9c77c-6497-4dbd-bb19-8720f63d0d57": {
                     "id": "25b9c77c-6497-4dbd-bb19-8720f63d0d57",
+                    "type": "Joint",
+                    "parent": null,
                     "neighbour": "8c945baf-2c52-4b47-92e2-973e89ac69e1",
                     "position": {
                         "x": 4.5,
@@ -440,10 +444,13 @@
                         "y": 2,
                         "z": 2
                     },
-                    "vision": 1
+                    "vision": 1,
+                    "hidden": false
                 },
                 "0c6a0d26-9c8d-4b6f-b98a-7455c8a2dfdf": {
                     "id": "0c6a0d26-9c8d-4b6f-b98a-7455c8a2dfdf",
+                    "type": "Joint",
+                    "parent": null,
                     "neighbour": "f0db8f9f-14ff-4562-bd7f-457c2c9f106d",
                     "position": {
                         "x": -4.5,
@@ -455,10 +462,9 @@
                         "y": 1,
                         "z": 1.5
                     },
-                    "vision": 1
-                }
-            },
-            "elements": {
+                    "vision": 1,
+                    "hidden": false
+                },
                 "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30": {
                     "id": "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30",
                     "type": "FloorBlock",
