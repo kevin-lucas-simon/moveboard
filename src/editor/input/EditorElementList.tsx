@@ -6,6 +6,7 @@ import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 import {EditorChunkElementsTabProps} from "../tabs/EditorChunkElementsTab";
 import {ElementType} from "../../data/model/element/ElementType";
 import {GroupModel} from "../../data/model/element/GroupModel";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;
@@ -113,6 +114,17 @@ export function EditorElementList(props: EditorElementListProps) {
         })
     }
 
+    const changeChunk = (id: ElementID) => {
+        const chunkId = (props.elements[id] as JointModel).neighbour;
+        if (!chunkId) {
+            return;
+        }
+        props.dispatcher({
+            type: 'level_select_chunk',
+            payload: chunkId,
+        });
+    }
+
     return (
         <ReactSortable
             list={groupElements}
@@ -128,10 +140,12 @@ export function EditorElementList(props: EditorElementListProps) {
                     hidden={element.hidden}
                     isSelected={props.selected.includes(element.id)}
                     isGroup={element.type === ElementType.Group}
+                    isJoint={element.type === ElementType.Joint}
                     isCollapsed={element.type === ElementType.Group && (element as GroupModel).collapsed}
                     hasParent={element.parent !== null}
                     onSelect={selectElement}
                     onRemove={removeElement}
+                    onChunkChange={changeChunk}
                     toggleHide={(id) => toggleVisibility(id, element)}
                     toggleCollapse={(id) => toggleCollapse(id, element)}
                 >

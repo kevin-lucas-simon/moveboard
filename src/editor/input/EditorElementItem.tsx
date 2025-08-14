@@ -1,16 +1,28 @@
-import {EyeIcon, EyeSlashIcon, TrashIcon, FolderOpenIcon, FolderIcon} from "@heroicons/react/24/outline";
+import {
+    EyeIcon,
+    EyeSlashIcon,
+    TrashIcon,
+    FolderOpenIcon,
+    FolderIcon,
+    LinkIcon
+} from "@heroicons/react/24/outline";
 import React from "react";
 import {UUID} from "../../data/model/shared/UUID";
+import {ChunkID} from "../../data/model/world/ChunkModel";
 
+// TODO zu verwurschtelt, hier brauche ich ein Refactoring
+//  - Ziel: Für Ordner, Joints und normale Elemente hier separate Dinger!
 export type EditorElementItemProps = {
     id: UUID;
     display: string;
     isSelected: boolean;
     isGroup: boolean;
+    isJoint: boolean;
     isCollapsed: boolean;
     hasParent: boolean;
     onSelect: (id: UUID) => void;
     onRemove: (id: UUID) => void;
+    onChunkChange: (id: ChunkID) => void;
     hidden: boolean;
     toggleHide: (id: UUID) => void;
     toggleCollapse: (id: UUID) => void;
@@ -26,6 +38,11 @@ export function EditorElementItem(props: EditorElementItemProps) {
     const handleRemove = (e: any) => {
         e.stopPropagation();
         props.onRemove(props.id);
+    }
+
+    const handleChunkChange = (e: any) => {
+        e.stopPropagation();
+        props.onChunkChange(props.id);
     }
 
     const toggleHide = (e: any) => {
@@ -58,14 +75,19 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     }
                 </button>
                 <div className="grow flex gap-2">
-                    {props.isGroup && (
+                    {props.isGroup &&
                         <button onClick={toggleCollapse} className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10">
                             {props.isCollapsed
                                 ? <FolderIcon className="w-4"/>
                                 : <FolderOpenIcon className="w-4"/>
                             }
                         </button>
-                    )}
+                    }
+                    {props.isJoint &&
+                        <button onClick={handleChunkChange} className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10">
+                            <LinkIcon className="w-4"/>
+                        </button>
+                    }
                     <button>{props.display}</button>
                 </div>
                 <button onClick={handleRemove} className="p-2 rounded-full invisible group-hover:visible hover:bg-gray-500/10">
