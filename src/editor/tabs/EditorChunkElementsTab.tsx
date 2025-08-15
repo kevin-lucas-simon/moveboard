@@ -5,7 +5,7 @@ import {BaseTab} from "./BaseTab";
 import {ElementType} from "../../data/model/element/ElementType";
 import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";
-import {EditorElementList} from "../input/EditorElementList";
+import {EditorElementList} from "./list/EditorElementList";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};

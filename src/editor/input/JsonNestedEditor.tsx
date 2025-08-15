@@ -1,4 +1,4 @@
-import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
+import {JsonFieldEditor} from "./JsonFieldEditor";
 import {UUID} from "../../data/model/shared/UUID";
 import {editorConfig} from "../../config/editorConfig";
 
@@ -41,7 +41,7 @@ export function JsonNestedEditor(props: JsonNestedEditorProps) {
                         </>
                     }
                     {!(props.value instanceof Object) &&
-                        <JsonSingleFieldEditor
+                        <JsonFieldEditor
                             className="w-0 grow bg-transparent outline-none"
                             value={props.value}
                             onChange={(value: any) => handleValueChange(value)}

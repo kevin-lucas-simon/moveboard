@@ -1,12 +1,12 @@
 import {ReactSortable} from "react-sortablejs";
 import {EditorElementItem} from "./EditorElementItem";
 import React from "react";
-import {UUID} from "../../data/model/shared/UUID";
-import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
-import {EditorChunkElementsTabProps} from "../tabs/EditorChunkElementsTab";
-import {ElementType} from "../../data/model/element/ElementType";
-import {GroupModel} from "../../data/model/element/GroupModel";
-import {JointModel} from "../../data/model/element/joint/JointModel";
+import {UUID} from "../../../data/model/shared/UUID";
+import {ElementID, ElementModel} from "../../../data/model/element/ElementModel";
+import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
+import {ElementType} from "../../../data/model/element/ElementType";
+import {GroupModel} from "../../../data/model/element/GroupModel";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;

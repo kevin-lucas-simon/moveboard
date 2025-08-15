@@ -1,6 +1,6 @@
 import {JsonNestedEditor} from "./JsonNestedEditor";
 import React from "react";
-import {JsonSingleFieldEditor} from "./JsonSingleFieldEditor";
+import {JsonFieldEditor} from "./JsonFieldEditor";
 import {UUID} from "../../data/model/shared/UUID";
 import {editorConfig} from "../../config/editorConfig";
 
@@ -10,7 +10,7 @@ export type SingleObjectEditorProps = {
     onChange: (key: string, value: any) => void,
     selectionOnKey?: {[key: string]: {[id: UUID]: string}}
 }
-export function SingleObjectEditor(props: SingleObjectEditorProps) {
+export function JsonObjectEditor(props: SingleObjectEditorProps) {
     if (editorConfig.hiddenJsonKeys.includes(props.keyName)) {
         return <></>;
     }
@@ -23,7 +23,7 @@ export function SingleObjectEditor(props: SingleObjectEditorProps) {
                     {!(props.value instanceof Object) && ":"}
                 </span>
                 {!(props.value instanceof Object) &&
-                    <JsonSingleFieldEditor
+                    <JsonFieldEditor
                         value={props.value}
                         onChange={(value: any) => props.onChange(props.keyName, value)}
                         selection={props.selectionOnKey?.[props.keyName]}

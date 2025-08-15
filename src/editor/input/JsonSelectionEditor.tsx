@@ -9,7 +9,7 @@ export type JsonSelectionFieldEditorProps = {
     placeholder?: string,
 }
 
-export function JsonSingleSelectionEditor(props: JsonSelectionFieldEditorProps) {
+export function JsonSelectionEditor(props: JsonSelectionFieldEditorProps) {
     const [query, setQuery] = useState<string>('');
 
     const filteredItems = query === ''

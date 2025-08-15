@@ -1,6 +1,6 @@
 import {BaseTab} from "./BaseTab";
 import {LevelModel} from "../../data/model/world/LevelModel";
-import {SingleObjectEditor} from "../input/SingleObjectEditor";
+import {JsonObjectEditor} from "../input/JsonObjectEditor";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {LinkButton} from "../../component/button/LinkButton";
@@ -61,7 +61,7 @@ export function EditorLevelSettingsTab(props: EditorLevelSettingsTabProps) {
                     .filter(([key, _]) => !['chunks'].includes(key))
                     .map(([key, value]) => {
                         return (
-                            <SingleObjectEditor
+                            <JsonObjectEditor
                                 key={key}
                                 keyName={key}
                                 value={value}

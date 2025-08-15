@@ -2,7 +2,7 @@ import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
 import React from "react";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import {BaseTab} from "../tabs/BaseTab";
-import {SingleObjectEditor} from "../input/SingleObjectEditor";
+import {JsonObjectEditor} from "../input/JsonObjectEditor";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {ElementType} from "../../data/model/element/ElementType";
 import {JointModel} from "../../data/model/element/joint/JointModel";
@@ -44,7 +44,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
                     .filter(([key, _]) => !['elements', 'joints'].includes(key))
                     .map(([key, value]) => {
                         return (
-                            <SingleObjectEditor key={key} keyName={key} value={value} onChange={updateField}/>
+                            <JsonObjectEditor key={key} keyName={key} value={value} onChange={updateField}/>
                         )
                     })
                 }

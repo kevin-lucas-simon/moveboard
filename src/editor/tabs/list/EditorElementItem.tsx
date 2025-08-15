@@ -7,8 +7,8 @@ import {
     LinkIcon
 } from "@heroicons/react/24/outline";
 import React from "react";
-import {UUID} from "../../data/model/shared/UUID";
-import {ChunkID} from "../../data/model/world/ChunkModel";
+import {UUID} from "../../../data/model/shared/UUID";
+import {ChunkID} from "../../../data/model/world/ChunkModel";
 
 // TODO zu verwurschtelt, hier brauche ich ein Refactoring
 //  - Ziel: Für Ordner, Joints und normale Elemente hier separate Dinger!

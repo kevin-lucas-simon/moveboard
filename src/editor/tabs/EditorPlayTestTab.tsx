@@ -1,6 +1,6 @@
 import React from "react";
 import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
-import {SingleObjectEditor} from "../input/SingleObjectEditor";
+import {JsonObjectEditor} from "../input/JsonObjectEditor";
 import {BaseTab} from "./BaseTab";
 
 export type EditorPlayTestTabProps = {
@@ -16,7 +16,7 @@ export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
         >
             <ul>
                 {Object.entries(props.settings).map(([key, value]) =>
-                    <SingleObjectEditor
+                    <JsonObjectEditor
                         key={key}
                         keyName={key}
                         value={value}
