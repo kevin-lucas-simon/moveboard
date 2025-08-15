@@ -15,11 +15,14 @@ export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
             description={"Test the behaviour of the chunk with some debug display options."}
         >
             <ul>
-                {Object.entries(props.settings).map(([key, value]) => {
-                    return (
-                        <SingleObjectEditor key={key} keyName={key} value={value} onChange={props.onSettingChange}/>
-                    )
-                })}
+                {Object.entries(props.settings).map(([key, value]) =>
+                    <SingleObjectEditor
+                        key={key}
+                        keyName={key}
+                        value={value}
+                        onChange={props.onSettingChange}
+                    />
+                )}
             </ul>
         </BaseTab>
     );

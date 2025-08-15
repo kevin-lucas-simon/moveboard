@@ -78,7 +78,7 @@ export function EditorElementList(props: EditorElementListProps) {
             props.dispatcher({
                 type: 'chunk_update_element',
                 payload: {
-                    ...element,
+                    ...props.elements[element.id], // keep the old element data, do not thrust the new one
                     parent: props.parent,
                 }
             })
@@ -127,7 +127,7 @@ export function EditorElementList(props: EditorElementListProps) {
 
     return (
         <ReactSortable
-            list={groupElements}
+            list={structuredClone(groupElements)} // deep copy to avoid reference issues
             setList={reorderElements}
             tag="ul"
             group={EditorElementList.name}

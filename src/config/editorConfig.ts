@@ -4,5 +4,5 @@
  */
 
 export const editorConfig: Record<string, any> = {
-    hiddenJsonKeys: ["id", "type"],
+    hiddenJsonKeys: ["id", "type", "parent"],
 }

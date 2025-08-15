@@ -1,9 +1,9 @@
 import {UUID} from "../../data/model/shared/UUID";
 import React from "react";
 import {EditorReducerActions} from "../reducer/editorReducer";
-import {EditorElementInspector} from "./EditorElementInspector";
 import {EditorChunkInspector} from "./EditorChunkInspector";
 import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {EditorElementInspector} from "./EditorElementInspector";
 
 export type EditorInspectorTabProps = {
     chunk: ChunkModel;

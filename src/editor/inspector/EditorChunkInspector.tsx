@@ -1,7 +1,7 @@
 import {ChunkModel} from "../../data/model/world/ChunkModel";
 import React from "react";
 import {LevelReducerActions} from "../reducer/levelReducer";
-import {BaseTab} from "./BaseTab";
+import {BaseTab} from "../tabs/BaseTab";
 import {SingleObjectEditor} from "../input/SingleObjectEditor";
 
 export type EditorChunkInspectorProps = {
