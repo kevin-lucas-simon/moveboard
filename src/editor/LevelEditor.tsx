@@ -145,6 +145,7 @@ export function LevelEditor() {
                 {/* inspector */}
                 <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
                     <EditorInspectorTab
+                        level={editLevel}
                         chunk={editChunk}
                         selected={editor.selected}
                         dispatcher={dispatchEditor}

@@ -4,8 +4,10 @@ import {EditorReducerActions} from "../reducer/editorReducer";
 import {EditorChunkInspector} from "./EditorChunkInspector";
 import {ChunkModel} from "../../data/model/world/ChunkModel";
 import {EditorElementInspector} from "./EditorElementInspector";
+import {LevelModel} from "../../data/model/world/LevelModel";
 
 export type EditorInspectorTabProps = {
+    level: LevelModel;
     chunk: ChunkModel;
     dispatcher: React.Dispatch<EditorReducerActions>;
     selected: UUID[];
@@ -16,7 +18,8 @@ export function EditorInspectorTab(props: EditorInspectorTabProps) {
 
     if (selectedElement) {
         return <EditorElementInspector
-            elements={props.chunk.elements}
+            level={props.level}
+            chunk={props.chunk}
             selected={props.selected}
             dispatcher={props.dispatcher}
         />;
