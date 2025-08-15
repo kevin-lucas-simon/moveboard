@@ -24,10 +24,15 @@ export function Element(props: ElementProps) {
         if (!editorContext || !editorActions) {
             return;
         }
-        e.stopPropagation();
 
         const isInActiveChunk = editorContext.level.chunks[editorContext.active]?.elements[props.id] !== undefined;
-        if (isInActiveChunk && !selected) {
+        if (!isInActiveChunk) {
+            return;
+        }
+
+        e.stopPropagation();
+
+        if (!selected) {
             editorActions({
                 type: 'editor_select',
                 payload: props.id,

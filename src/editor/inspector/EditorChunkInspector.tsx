@@ -22,7 +22,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
 
     return (
         <BaseTab title={props.chunk.name}>
-            <ul>
+            <ul className="mt-2">
                 {Object.entries(props.chunk)
                     .filter(([key, _]) => !['elements', 'joints'].includes(key))
                     .map(([key, value]) => {
