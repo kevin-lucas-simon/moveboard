@@ -136,7 +136,7 @@ export function EditorElementList(props: EditorElementListProps) {
                 <EditorElementItem
                     key={element.id}
                     id={element.id}
-                    display={element.type}
+                    display={!element.name ? element.type : element.name}
                     hidden={element.hidden}
                     isSelected={props.selected.includes(element.id)}
                     isGroup={element.type === ElementType.Group}

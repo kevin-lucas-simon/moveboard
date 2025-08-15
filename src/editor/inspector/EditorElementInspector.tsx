@@ -64,11 +64,12 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
 
     return (
         <BaseTab
-            title={selectedElement.type}
+            title={!selectedElement.name ? selectedElement.type : selectedElement.name}
+            description={selectedElement.type}
             actionIcon={<XMarkIcon className="w-6" />}
             onAction={deselectElement}
         >
-            <ul className="mt-2">
+            <ul>
                 <JsonNestedEditor
                     keyName={selectedElement.type}
                     value={selectedElement}

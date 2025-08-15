@@ -26,6 +26,7 @@ export function JsonSingleFieldEditor(props: JsonFieldEditorProps) {
             <input
                 type={"text"}
                 value={props.value}
+                placeholder={"Type..."}
                 onChange={e => props.onChange(e.target.value)}
                 className={props.className}
             />
