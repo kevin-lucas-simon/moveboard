@@ -26,6 +26,7 @@ export function EditorInspectorTab(props: EditorInspectorTabProps) {
     }
 
     return <EditorChunkInspector
+        level={props.level}
         chunk={props.chunk}
         dispatcher={props.dispatcher}
     />;

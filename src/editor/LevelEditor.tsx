@@ -5,9 +5,8 @@ import React from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
 import {
-    LinkIcon, PlayIcon, RectangleGroupIcon, RectangleStackIcon
+    PlayIcon, RectangleGroupIcon, RectangleStackIcon
 } from "@heroicons/react/24/outline";
-import {EditorChunkJointsTab} from "./tabs/EditorChunkJointsTab";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
@@ -20,7 +19,6 @@ import {EditorInspectorTab} from "./inspector/EditorInspectorTab";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
-    CHUNK_JOINTS = "chunk_joints",
     CHUNK_ELEMENTS = "chunk_elements",
     PLAY_TEST = "play_test",
 }
@@ -80,13 +78,9 @@ export function LevelEditor() {
                     <EditorTabButton active={tab === EditorTabs.LEVEL_SETTINGS} onClick={() => setTab(EditorTabs.LEVEL_SETTINGS)}>
                         <RectangleGroupIcon/>
                     </EditorTabButton>
-                    <EditorTabButton active={tab === EditorTabs.CHUNK_JOINTS} onClick={() => setTab(EditorTabs.CHUNK_JOINTS)}>
-                        <LinkIcon/>
-                    </EditorTabButton>
                     <EditorTabButton active={tab === EditorTabs.CHUNK_ELEMENTS} onClick={() => setTab(EditorTabs.CHUNK_ELEMENTS)}>
                         <RectangleStackIcon/>
                     </EditorTabButton>
-                    <div className="grow"></div>
                     <EditorTabButton active={tab === EditorTabs.PLAY_TEST} onClick={() => setTab(EditorTabs.PLAY_TEST)}>
                         <PlayIcon/>
                     </EditorTabButton>
@@ -98,13 +92,6 @@ export function LevelEditor() {
                         <EditorLevelSettingsTab
                             level={editLevel}
                             levelDispatcher={dispatchEditor}
-                        />
-                    }
-                    {tab === EditorTabs.CHUNK_JOINTS &&
-                        <EditorChunkJointsTab
-                            level={editLevel}
-                            dispatcher={dispatchEditor}
-                            activeChunk={editChunk}
                         />
                     }
                     {tab === EditorTabs.CHUNK_ELEMENTS &&
