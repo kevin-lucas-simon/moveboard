@@ -143,14 +143,16 @@ export function LevelEditor() {
                 </DebugSettingsProvider>
 
                 {/* inspector */}
-                <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
-                    <EditorInspectorTab
-                        level={editLevel}
-                        chunk={editChunk}
-                        selected={editor.selected}
-                        dispatcher={dispatchEditor}
-                    />
-                </div>
+                {tab !== EditorTabs.PLAY_TEST &&
+                    <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
+                        <EditorInspectorTab
+                            level={editLevel}
+                            chunk={editChunk}
+                            selected={editor.selected}
+                            dispatcher={dispatchEditor}
+                        />
+                    </div>
+                }
             </div>
         </div>
     );
