@@ -1,4 +1,4 @@
-import {BaseTab} from "./BaseTab";
+import {BaseTab} from "../component/BaseTab";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {JsonObjectEditor} from "../input/JsonObjectEditor";
 import {LevelReducerActions} from "../reducer/levelReducer";

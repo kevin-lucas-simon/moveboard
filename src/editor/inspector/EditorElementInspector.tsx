@@ -2,7 +2,7 @@ import {ElementModel} from "../../data/model/element/ElementModel";
 import {UUID} from "../../data/model/shared/UUID";
 import React from "react";
 import {EditorReducerActions} from "../reducer/editorReducer";
-import {BaseTab} from "../tabs/BaseTab";
+import {BaseTab} from "../component/BaseTab";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import {JsonNestedEditor} from "../input/JsonNestedEditor";
 import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";

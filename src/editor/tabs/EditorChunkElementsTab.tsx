@@ -1,7 +1,7 @@
 import {createElement, ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
-import {BaseTab} from "./BaseTab";
+import {BaseTab} from "../component/BaseTab";
 import {ElementType} from "../../data/model/element/ElementType";
 import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";

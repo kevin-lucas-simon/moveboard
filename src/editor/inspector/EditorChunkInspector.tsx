@@ -1,7 +1,7 @@
 import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
 import React from "react";
 import {LevelReducerActions} from "../reducer/levelReducer";
-import {BaseTab} from "../tabs/BaseTab";
+import {BaseTab} from "../component/BaseTab";
 import {JsonObjectEditor} from "../input/JsonObjectEditor";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {ElementType} from "../../data/model/element/ElementType";

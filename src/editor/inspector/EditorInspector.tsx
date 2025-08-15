@@ -13,7 +13,7 @@ export type EditorInspectorTabProps = {
     selected: UUID[];
 }
 
-export function EditorInspectorTab(props: EditorInspectorTabProps) {
+export function EditorInspector(props: EditorInspectorTabProps) {
     const selectedElement = props.selected[0] ? props.chunk.elements[props.selected[0]] : undefined;
 
     if (selectedElement) {

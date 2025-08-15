@@ -15,7 +15,7 @@ import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
-import {EditorInspectorTab} from "./inspector/EditorInspectorTab";
+import {EditorInspector} from "./inspector/EditorInspector";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
@@ -132,7 +132,7 @@ export function LevelEditor() {
                 {/* inspector */}
                 {tab !== EditorTabs.PLAY_TEST &&
                     <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
-                        <EditorInspectorTab
+                        <EditorInspector
                             level={editLevel}
                             chunk={editChunk}
                             selected={editor.selected}
