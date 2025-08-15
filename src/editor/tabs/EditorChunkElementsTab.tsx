@@ -18,9 +18,14 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         if (!type || !(type in elementConfig)) {
             return;
         }
+        const element = createElement(type as ElementType)
         props.dispatcher({
             type: 'chunk_add_element',
-            payload: createElement(type as ElementType)
+            payload: element,
+        });
+        props.dispatcher({
+            type: "editor_select",
+            payload: element.id,
         });
     }
 
