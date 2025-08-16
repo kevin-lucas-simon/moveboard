@@ -36,18 +36,18 @@ export function EditorElementList(props: EditorElementListProps) {
     }
 
     // toggle the visibility of the element and all children
-    const toggleVisibility = (index: string, value: ElementModel) => {
+    const handleVisibility = (index: string, model: ElementModel, value: boolean) => {
         props.dispatcher({
             type: 'chunk_update_element',
             payload: {
-                ...value,
-                hidden: !(value.hidden ?? false)
+                ...model,
+                hidden: value,
             },
         });
 
-        const groupChildren = Object.values(props.elements).filter(element => element.parent === value.id)
+        const groupChildren = Object.values(props.elements).filter(element => element.parent === model.id)
         groupChildren.forEach((child) => {
-            toggleVisibility(child.id, child);
+            handleVisibility(child.id, child, value);
         })
     }
 
@@ -140,7 +140,7 @@ export function EditorElementList(props: EditorElementListProps) {
                     onSelect={selectElement}
                     onRemove={removeElement}
                     onChunkChange={changeChunk}
-                    onHideToggle={(id) => toggleVisibility(id, element)}
+                    onHideToggle={(id) => handleVisibility(id, element, !element.hidden)}
                     onCollapseToggle={(id) => toggleCollapse(id, element)}
                 >
                     {element.type === ElementType.Group && (

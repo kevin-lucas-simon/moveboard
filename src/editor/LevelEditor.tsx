@@ -81,6 +81,7 @@ export function LevelEditor() {
                     <EditorTabButton active={tab === EditorTabs.CHUNK_ELEMENTS} onClick={() => setTab(EditorTabs.CHUNK_ELEMENTS)}>
                         <RectangleStackIcon/>
                     </EditorTabButton>
+                    <div className="grow"/>
                     <EditorTabButton active={tab === EditorTabs.PLAY_TEST} onClick={() => setTab(EditorTabs.PLAY_TEST)}>
                         <PlayIcon/>
                     </EditorTabButton>
