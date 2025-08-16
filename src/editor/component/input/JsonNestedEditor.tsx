@@ -1,6 +1,6 @@
 import {JsonFieldEditor} from "./JsonFieldEditor";
-import {UUID} from "../../data/model/shared/UUID";
-import {editorConfig} from "../../config/editorConfig";
+import {UUID} from "../../../data/model/shared/UUID";
+import {editorConfig} from "../../../config/editorConfig";
 
 export type JsonNestedEditorProps = {
     keyName: string,

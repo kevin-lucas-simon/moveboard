@@ -1,6 +1,6 @@
 import React from "react";
 import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
-import {JsonObjectEditor} from "../input/JsonObjectEditor";
+import {JsonObjectEditor} from "../component/input/JsonObjectEditor";
 import {BaseTab} from "../component/BaseTab";
 
 export type EditorPlayTestTabProps = {

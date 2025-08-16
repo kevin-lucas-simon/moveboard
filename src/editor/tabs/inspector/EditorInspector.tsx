@@ -1,10 +1,10 @@
-import {UUID} from "../../data/model/shared/UUID";
+import {UUID} from "../../../data/model/shared/UUID";
 import React from "react";
-import {EditorReducerActions} from "../reducer/editorReducer";
+import {EditorReducerActions} from "../../reducer/editorReducer";
 import {EditorChunkInspector} from "./EditorChunkInspector";
-import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {ChunkModel} from "../../../data/model/world/ChunkModel";
 import {EditorElementInspector} from "./EditorElementInspector";
-import {LevelModel} from "../../data/model/world/LevelModel";
+import {LevelModel} from "../../../data/model/world/LevelModel";
 
 export type EditorInspectorTabProps = {
     level: LevelModel;

@@ -1,14 +1,14 @@
-import {ElementModel} from "../../data/model/element/ElementModel";
-import {UUID} from "../../data/model/shared/UUID";
+import {ElementModel} from "../../../data/model/element/ElementModel";
+import {UUID} from "../../../data/model/shared/UUID";
 import React from "react";
-import {EditorReducerActions} from "../reducer/editorReducer";
-import {BaseTab} from "../component/BaseTab";
+import {EditorReducerActions} from "../../reducer/editorReducer";
+import {BaseTab} from "../../component/BaseTab";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import {JsonNestedEditor} from "../input/JsonNestedEditor";
-import {ChunkID, ChunkModel} from "../../data/model/world/ChunkModel";
-import {LevelModel} from "../../data/model/world/LevelModel";
-import {ElementType} from "../../data/model/element/ElementType";
-import {JointModel} from "../../data/model/element/joint/JointModel";
+import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
+import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
+import {LevelModel} from "../../../data/model/world/LevelModel";
+import {ElementType} from "../../../data/model/element/ElementType";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
 
 export type EditorElementInspectorProps = {
     level: LevelModel;

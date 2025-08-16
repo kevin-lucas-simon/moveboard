@@ -15,7 +15,7 @@ import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
 import {LevelMenu} from "./component/LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
-import {EditorInspector} from "./inspector/EditorInspector";
+import {EditorInspector} from "./tabs/inspector/EditorInspector";
 
 enum EditorTabs {
     LEVEL_SETTINGS = "level_settings",
