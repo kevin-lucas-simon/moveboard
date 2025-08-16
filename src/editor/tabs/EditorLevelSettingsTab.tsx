@@ -5,7 +5,7 @@ import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {LinkButton} from "../../component/button/LinkButton";
 import {PlusCircleIcon} from "@heroicons/react/24/outline";
-import {CreateChunkDialog} from "../component/dialog/CreateChunkDialog";
+import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
 import {UUID} from "../../data/model/shared/UUID";
 
 export type EditorLevelSettingsTabProps = {

@@ -1,4 +1,4 @@
-import {BasicDialog} from "../../../component/dialog/BasicDialog";
+import {BasicDialog} from "../../component/dialog/BasicDialog";
 import {useState} from "react";
 
 export type CreateChunkDialogProps = {
