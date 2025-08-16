@@ -135,19 +135,13 @@ export function EditorElementList(props: EditorElementListProps) {
             {groupElements.map((element) => (
                 <EditorElementItem
                     key={element.id}
-                    id={element.id}
-                    display={!element.name ? element.type : element.name}
-                    hidden={element.hidden}
-                    isSelected={props.selected.includes(element.id)}
-                    isGroup={element.type === ElementType.Group}
-                    isJoint={element.type === ElementType.Joint}
-                    isCollapsed={element.type === ElementType.Group && (element as GroupModel).collapsed}
-                    hasParent={element.parent !== null}
+                    element={element}
+                    selected={props.selected.includes(element.id)}
                     onSelect={selectElement}
                     onRemove={removeElement}
                     onChunkChange={changeChunk}
-                    toggleHide={(id) => toggleVisibility(id, element)}
-                    toggleCollapse={(id) => toggleCollapse(id, element)}
+                    onHideToggle={(id) => toggleVisibility(id, element)}
+                    onCollapseToggle={(id) => toggleCollapse(id, element)}
                 >
                     {/* TODO evtl hier irgendwann ein collapse bauen */}
                     {element.type === ElementType.Group && (
