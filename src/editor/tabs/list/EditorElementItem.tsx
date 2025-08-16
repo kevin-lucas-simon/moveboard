@@ -1,10 +1,14 @@
-import {EyeIcon, EyeSlashIcon, FolderIcon, FolderOpenIcon, LinkIcon, TrashIcon} from "@heroicons/react/24/outline";
+import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
 import {UUID} from "../../../data/model/shared/UUID";
 import {ChunkID} from "../../../data/model/world/ChunkModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {ElementType} from "../../../data/model/element/ElementType";
 import {GroupModel} from "../../../data/model/element/GroupModel";
+import {EditorElementSlug} from "../slug/EditorElementSlug";
+import {EditorGroupSlug} from "../slug/EditorGroupSlug";
+import {EditorJointSlug} from "../slug/EditorJointSlug";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
 
 export type EditorElementItemProps = {
     element: ElementModel;
@@ -18,31 +22,25 @@ export type EditorElementItemProps = {
 }
 
 export function EditorElementItem(props: EditorElementItemProps) {
-    const handleSelect = (e: any) => {
-        e.stopPropagation();
+    const handleSelect = () => {
         props.onSelect(props.element.id);
     }
 
-    const handleRemove = (e: any) => {
-        e.stopPropagation();
+    const handleRemove = () => {
         props.onRemove(props.element.id);
     }
 
-    const handleChunkChange = (e: any) => {
-        e.stopPropagation();
+    const handleChunkChange = () => {
         props.onChunkChange(props.element.id);
     }
 
-    const toggleHide = (e: any) => {
+    const handleHideToggle = (e: any) => {
         e.stopPropagation();
-        if (props.onHideToggle) {
-            props.onHideToggle(props.element.id);
-        }
+        props.onHideToggle(props.element.id);
     }
 
-    const toggleCollapse = (e: any) => {
-        e.stopPropagation();
-        if (props.onCollapseToggle && props.element.type === ElementType.Group) {
+    const handleCollapseToggle = () => {
+        if (props.element.type === ElementType.Group) {
             props.onCollapseToggle(props.element.id);
         }
     }
@@ -56,27 +54,30 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     + (props.element.hidden ? "text-gray-500/50 " : "")
                 }
             >
-                <button onClick={toggleHide} className="p-2 rounded-full hover:bg-gray-500/10">
+                <button onClick={handleHideToggle} className="p-2 rounded-full hover:bg-gray-500/10">
                     {props.element.hidden
                         ? <EyeSlashIcon className="w-4"/>
                         : <EyeIcon className="w-4"/>
                     }
                 </button>
                 <div className="grow flex gap-2">
-                    {props.element.type === ElementType.Group &&
-                        <button onClick={toggleCollapse} className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10">
-                            {(props.element as GroupModel).collapsed
-                                ? <FolderIcon className="w-4"/>
-                                : <FolderOpenIcon className="w-4"/>
-                            }
-                        </button>
-                    }
-                    {props.element.type === ElementType.Joint &&
-                        <button onClick={handleChunkChange} className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10">
-                            <LinkIcon className="w-4"/>
-                        </button>
-                    }
-                    <button>{!props.element.name ? props.element.type : props.element.name}</button>
+                    {(() => {
+                        switch(props.element.type) {
+                            case ElementType.Group:
+                                return <EditorGroupSlug
+                                    element={props.element as GroupModel}
+                                    onCollapse={handleCollapseToggle}
+                                    onExpand={handleCollapseToggle}
+                                />;
+                            case ElementType.Joint:
+                                return <EditorJointSlug
+                                    element={props.element as JointModel}
+                                    onChunkChange={handleChunkChange}
+                                />;
+                            default:
+                                return <EditorElementSlug element={props.element}/>;
+                        }
+                    })()}
                 </div>
                 <button onClick={handleRemove} className="p-2 rounded-full invisible group-hover:visible hover:bg-gray-500/10">
                     <TrashIcon className="w-4 text-black"/>

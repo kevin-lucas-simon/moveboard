@@ -143,7 +143,6 @@ export function EditorElementList(props: EditorElementListProps) {
                     onHideToggle={(id) => toggleVisibility(id, element)}
                     onCollapseToggle={(id) => toggleCollapse(id, element)}
                 >
-                    {/* TODO evtl hier irgendwann ein collapse bauen */}
                     {element.type === ElementType.Group && (
                         <EditorElementList {...props} parent={element.id} />
                     )}
