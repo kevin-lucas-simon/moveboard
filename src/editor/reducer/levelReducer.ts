@@ -1,6 +1,6 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {ChunkID, createChunk} from "../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel, createChunk} from "../../data/model/world/ChunkModel";
 import {ElementType} from "../../data/model/element/ElementType";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 
@@ -18,6 +18,9 @@ export type LevelReducerActions = ChunkReducerActions | {
 } | {
     type: 'level_remove_chunk',
     payload: ChunkID,
+} | {
+    type: 'level_reorder_chunks',
+    payload: ChunkID[],
 } | {
     type: 'level_update_field',
     payload: {
@@ -91,6 +94,28 @@ export function levelReducer(
                     chunks: updatedChunks,
                 },
             }
+        case 'level_reorder_chunks':
+            const chunkIds = action.payload as ChunkID[];
+            const reorderedChunks: {[key: ChunkID]: ChunkModel} = {};
+
+            chunkIds.forEach(id => {
+                if (!state.level.chunks[id]) {
+                    throw new Error(`Reorder chunk ID ${id} not found in state`);
+                }
+                reorderedChunks[id] = state.level.chunks[id];
+            });
+
+            if (Object.keys(reorderedChunks).length !== Object.keys(state.level.chunks).length) {
+                throw new Error('Reorder chunk IDs do not match original chunks count');
+            }
+
+            return {
+                ...state,
+                level: {
+                    ...state.level,
+                    chunks: reorderedChunks,
+                },
+            };
         case 'level_update_field':
             const updatedKey = action.payload.key;
             const updatedValue = action.payload.value;

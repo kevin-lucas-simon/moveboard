@@ -3,12 +3,13 @@ import {UUID} from "../../../data/model/shared/UUID";
 import React from "react";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {BaseTab} from "../../component/BaseTab";
-import {XMarkIcon} from "@heroicons/react/24/outline";
+import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
 import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {ElementType} from "../../../data/model/element/ElementType";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
+import {LinkButton} from "../../../component/button/LinkButton";
 
 export type EditorElementInspectorProps = {
     level: LevelModel;
@@ -33,6 +34,14 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
         props.dispatcher({
             type: 'chunk_update_element',
             payload: value,
+        });
+    }
+
+    const deleteElement = () => {
+        deselectElement();
+        props.dispatcher({
+            type: 'chunk_remove_element',
+            payload: selectedElement.id,
         });
     }
 
@@ -78,6 +87,12 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
                         "neighbour": getChunkSelection((selectedElement as JointModel).neighbour)
                     }}
                 />
+                <li className="px-2 py-4">
+                    <LinkButton onClick={deleteElement}>
+                        <TrashIcon className="w-4" />
+                        Delete Element
+                    </LinkButton>
+                </li>
             </ul>
         </BaseTab>
     );

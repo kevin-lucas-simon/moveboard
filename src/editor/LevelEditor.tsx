@@ -11,14 +11,14 @@ import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {ChunkSwitcher} from "./component/ChunkSwitcher";
 import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
-import {EditorLevelSettingsTab} from "./tabs/EditorLevelSettingsTab";
+import {EditorLevelChunksTab} from "./tabs/EditorLevelChunksTab";
 import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 import {EditorInspector} from "./tabs/inspector/EditorInspector";
 
 enum EditorTabs {
-    LEVEL_SETTINGS = "level_settings",
+    LEVEL_CHUNKS = "level_settings",
     CHUNK_ELEMENTS = "chunk_elements",
     PLAY_TEST = "play_test",
 }
@@ -30,7 +30,7 @@ export function LevelEditor() {
     const [debugSettings, setDebugSettings] = useState(DebugSettingsDefault);
     const [simulatorInstance, setSimulatorInstance] = useState<number>(0);
 
-    const [tab, setTab] = useState<EditorTabs>(EditorTabs.LEVEL_SETTINGS);
+    const [tab, setTab] = useState<EditorTabs>(EditorTabs.LEVEL_CHUNKS);
 
     if (!editor || !dispatchEditor) {
         return <></>;
@@ -75,7 +75,7 @@ export function LevelEditor() {
             <div className="grow flex gap-4">
                 {/* tab buttons */}
                 <div className="w-8 shrink-0 flex flex-col gap-2">
-                    <EditorTabButton active={tab === EditorTabs.LEVEL_SETTINGS} onClick={() => setTab(EditorTabs.LEVEL_SETTINGS)}>
+                    <EditorTabButton active={tab === EditorTabs.LEVEL_CHUNKS} onClick={() => setTab(EditorTabs.LEVEL_CHUNKS)}>
                         <RectangleGroupIcon/>
                     </EditorTabButton>
                     <EditorTabButton active={tab === EditorTabs.CHUNK_ELEMENTS} onClick={() => setTab(EditorTabs.CHUNK_ELEMENTS)}>
@@ -89,9 +89,10 @@ export function LevelEditor() {
 
                 {/* list content */}
                 <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
-                    {tab === EditorTabs.LEVEL_SETTINGS &&
-                        <EditorLevelSettingsTab
+                    {tab === EditorTabs.LEVEL_CHUNKS &&
+                        <EditorLevelChunksTab
                             level={editLevel}
+                            activeChunk={editChunk}
                             levelDispatcher={dispatchEditor}
                         />
                     }

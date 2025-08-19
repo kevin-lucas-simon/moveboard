@@ -61,7 +61,7 @@ export function chunkReducer(
                     throw new Error(`Reorder element ID ${id} not found in state`);
                 }
                 reorderedElements[id] = state.elements[id];
-            })
+            });
 
             if (Object.keys(reorderedElements).length !== Object.keys(state.elements).length) {
                 throw new Error('Reorder element IDs do not match original elements count');
