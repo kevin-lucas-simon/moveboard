@@ -28,6 +28,16 @@ export function EditorElementList(props: EditorElementListProps) {
         });
     }
 
+    const renameElement = (index: string, name: string) => {
+        props.dispatcher({
+            type: "chunk_update_element",
+            payload: {
+                ...props.elements[index],
+                name: name,
+            }
+        })
+    }
+
     const removeElement = (index: string) => {
         props.dispatcher({
             type: 'chunk_remove_element',
@@ -138,6 +148,7 @@ export function EditorElementList(props: EditorElementListProps) {
                     element={element}
                     selected={props.selected.includes(element.id)}
                     onSelect={selectElement}
+                    onRename={renameElement}
                     onRemove={removeElement}
                     onChunkChange={changeChunk}
                     onHideToggle={(id) => handleVisibility(id, element, !element.hidden)}

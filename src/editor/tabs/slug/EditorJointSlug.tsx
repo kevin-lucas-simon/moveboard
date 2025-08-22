@@ -6,6 +6,7 @@ import React from "react";
 export type EditorJointSlugProps = {
     element: JointModel;
     onChunkChange: () => void;
+    onRename: (name: string) => void;
 }
 
 export function EditorJointSlug(props: EditorJointSlugProps) {
@@ -25,7 +26,10 @@ export function EditorJointSlug(props: EditorJointSlugProps) {
                     : <LinkIcon className="w-4"/>
                 }
             </button>
-            <EditorElementSlug element={props.element}/>
+            <EditorElementSlug
+                element={props.element}
+                onRename={props.onRename}
+            />
         </>
     );
 }

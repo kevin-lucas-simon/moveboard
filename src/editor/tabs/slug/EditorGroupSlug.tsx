@@ -7,6 +7,7 @@ export type EditorGroupSlugProps = {
     element: GroupModel;
     onCollapse: () => void;
     onExpand: () => void;
+    onRename: (name: string) => void;
 }
 
 export function EditorGroupSlug(props: EditorGroupSlugProps) {
@@ -26,7 +27,10 @@ export function EditorGroupSlug(props: EditorGroupSlugProps) {
                     : <FolderOpenIcon className="w-4"/>
                 }
             </button>
-            <EditorElementSlug element={props.element}/>
+            <EditorElementSlug
+                element={props.element}
+                onRename={props.onRename}
+            />
         </>
     );
 }

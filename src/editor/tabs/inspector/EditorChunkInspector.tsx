@@ -78,6 +78,16 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
         });
     }
 
+    const renameJoint = (name: string, joint: JointModel) => {
+        props.dispatcher({
+            type: 'chunk_update_element',
+            payload: {
+                ...joint,
+                name: name,
+            }
+        });
+    }
+
     return (
         <BaseTab title={props.chunk.name}>
             {isStart &&
@@ -102,12 +112,12 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
                             <li
                                 key={joint.id}
                                 className="flex gap-2 px-4 py-1.5 hover:bg-gray-500/10 group"
-                                onClick={() => changeChunk(joint.neighbour)}
                             >
                                 <EditorJointSlug
                                     key={joint.id}
                                     element={joint}
                                     onChunkChange={() => changeChunk(joint.neighbour)}
+                                    onRename={(name) => renameJoint(name, joint)}
                                 />
                                 <div className="grow"/>
                                 <button

@@ -14,6 +14,7 @@ export type EditorElementItemProps = {
     element: ElementModel;
     selected: boolean;
     onSelect: (id: UUID) => void;
+    onRename: (id: UUID, name: string) => void;
     onRemove: (id: UUID) => void;
     onChunkChange: (id: ChunkID) => void;
     onHideToggle: (id: UUID) => void;
@@ -24,6 +25,10 @@ export type EditorElementItemProps = {
 export function EditorElementItem(props: EditorElementItemProps) {
     const handleSelect = () => {
         props.onSelect(props.element.id);
+    }
+
+    const handleRename = (name: string) => {
+        props.onRename(props.element.id, name);
     }
 
     const handleRemove = () => {
@@ -68,14 +73,19 @@ export function EditorElementItem(props: EditorElementItemProps) {
                                     element={props.element as GroupModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
+                                    onRename={handleRename}
                                 />;
                             case ElementType.Joint:
                                 return <EditorJointSlug
                                     element={props.element as JointModel}
                                     onChunkChange={handleChunkChange}
+                                    onRename={handleRename}
                                 />;
                             default:
-                                return <EditorElementSlug element={props.element}/>;
+                                return <EditorElementSlug
+                                    element={props.element}
+                                    onRename={handleRename}
+                                />;
                         }
                     })()}
                 </div>
