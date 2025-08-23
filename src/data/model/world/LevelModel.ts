@@ -1,4 +1,4 @@
-import {ChunkID, ChunkModel, createChunk} from "./ChunkModel";
+import {ChunkID, ChunkModel, createChunk} from "../structure/spatial/ChunkModel";
 import {createUUID, UUID} from "../shared/UUID";
 import {StructureID, StructureModel} from "../structure/StructureModel";
 

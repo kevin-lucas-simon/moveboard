@@ -1,7 +1,7 @@
 import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
 import {UUID} from "../../../data/model/shared/UUID";
-import {ChunkID} from "../../../data/model/world/ChunkModel";
+import {ChunkID} from "../../../data/model/structure/spatial/ChunkModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {ElementType} from "../../../data/model/element/ElementType";
 import {GroupModel} from "../../../data/model/element/GroupModel";

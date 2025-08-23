@@ -1,4 +1,4 @@
-import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {ChunkModel} from "../../data/model/structure/spatial/ChunkModel";
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 
 export type ChunkReducerActions = {

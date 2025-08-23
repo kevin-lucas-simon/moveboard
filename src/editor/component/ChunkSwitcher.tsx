@@ -3,7 +3,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, {useState} from "react";
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
-import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {ChunkModel} from "../../data/model/structure/spatial/ChunkModel";
 import {LevelReducerActions} from "../reducer/levelReducer";
 
 export type ChunkSearchBarProps = {

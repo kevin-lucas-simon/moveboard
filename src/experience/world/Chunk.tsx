@@ -3,7 +3,7 @@ import React from "react";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
-import {ChunkID} from "../../data/model/world/ChunkModel";
+import {ChunkID} from "../../data/model/structure/spatial/ChunkModel";
 import {Element} from "./Element";
 import {ElementType} from "../../data/model/element/ElementType";
 import {JointElement} from "../element/joint/JointElement";

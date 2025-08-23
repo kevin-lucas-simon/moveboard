@@ -5,7 +5,7 @@ import {EditorReducerActions} from "../../reducer/editorReducer";
 import {BaseTab} from "../../component/BaseTab";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
-import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {ElementType} from "../../../data/model/element/ElementType";
 import {JointModel} from "../../../data/model/element/joint/JointModel";

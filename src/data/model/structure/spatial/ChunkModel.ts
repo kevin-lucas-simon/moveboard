@@ -1,8 +1,8 @@
 import {Vector3Like} from "three";
-import {ElementID, ElementModel} from "../element/ElementModel";
-import {createUUID, UUID} from "../shared/UUID";
-import {ElementType} from "../element/ElementType";
-import {FloorBlockModel} from "../element/block/FloorBlockModel";
+import {ElementID, ElementModel} from "../../element/ElementModel";
+import {createUUID, UUID} from "../../shared/UUID";
+import {ElementType} from "../../element/ElementType";
+import {FloorBlockModel} from "../../element/block/FloorBlockModel";
 
 /**
 * API data model

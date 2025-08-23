@@ -1,4 +1,4 @@
-import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {LevelReducerActions} from "../../reducer/levelReducer";
 import {EditorChunkItem} from "./EditorChunkItem";
 import {ReactSortable} from "react-sortablejs";

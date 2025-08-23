@@ -1,4 +1,4 @@
-import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";

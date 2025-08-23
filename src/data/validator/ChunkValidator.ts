@@ -1,4 +1,4 @@
-import {ChunkModel} from "../model/world/ChunkModel";
+import {ChunkModel} from "../model/structure/spatial/ChunkModel";
 import {ValidationError, Validator} from "./Validator";
 
 export class ChunkValidator implements Validator<ChunkModel> {

@@ -1,4 +1,4 @@
-import {ChunkID, ChunkModel} from "../../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import React from "react";
 import {BaseTab} from "../../component/BaseTab";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";

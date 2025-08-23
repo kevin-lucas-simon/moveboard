@@ -1,6 +1,6 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {ChunkID, ChunkModel, createChunk} from "../../data/model/world/ChunkModel";
+import {ChunkID, ChunkModel, createChunk} from "../../data/model/structure/spatial/ChunkModel";
 import {ElementType} from "../../data/model/element/ElementType";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 

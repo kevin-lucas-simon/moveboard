@@ -3,7 +3,7 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {EditorChunkList} from "./list/EditorChunkList";
-import {ChunkModel} from "../../data/model/world/ChunkModel";
+import {ChunkModel} from "../../data/model/structure/spatial/ChunkModel";
 import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
 
 export type EditorLevelSettingsTabProps = {

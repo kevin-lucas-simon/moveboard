@@ -1,4 +1,4 @@
-import {ChunkModel} from "../../../data/model/world/ChunkModel";
+import {ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {StarIcon} from "@heroicons/react/24/outline";
 
 export type EditorChunkItemProps = {
