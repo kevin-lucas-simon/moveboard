@@ -5,15 +5,19 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
-import {ChunkID} from "../../data/model/structure/spatial/ChunkModel";
+import {ChunkID, ChunkModel} from "../../data/model/structure/spatial/ChunkModel";
+import {StructureType} from "../../data/model/structure/StructureType";
+import {filterStructures} from "../../data/helper/filterStructures";
 
 export type LevelProps = LevelModel & {};
 
 export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<ChunkID>(props.start);
+    const allChunks
+        = filterStructures<ChunkModel>(props.chunks, StructureType.Chunk);
     const renderedChunks
-        = useChunkRenderer(props.chunks, activeChunk);
+        = useChunkRenderer(allChunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)
 
     if (!renderedChunks[activeChunk]) {
@@ -22,7 +26,7 @@ export function Level(props: LevelProps) {
 
     // change active chunk when player leaves a chunk
     function onPlayerChunkLeave(neighbour: ChunkID|null) {
-        if (neighbour && props.chunks[neighbour]) {
+        if (neighbour && allChunks[neighbour]) {
             setActiveChunk(neighbour);
         }
     }
