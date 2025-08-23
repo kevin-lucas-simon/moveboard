@@ -5,6 +5,7 @@
     "chunks": {
         "8c945baf-2c52-4b47-92e2-973e89ac69e1": {
             "id": "8c945baf-2c52-4b47-92e2-973e89ac69e1",
+            "type": "Chunk",
             "name": "FirstChunk",
             "player": {
                 "x": 2,
@@ -314,6 +315,7 @@
         },
         "f0db8f9f-14ff-4562-bd7f-457c2c9f106d": {
             "id": "f0db8f9f-14ff-4562-bd7f-457c2c9f106d",
+            "type": "Chunk",
             "name": "SecondChunk",
             "player": {
                 "x": 1,
@@ -552,6 +554,7 @@
         },
         "f93bbf3b-0543-493d-90a2-8e2125f9e6f1": {
             "id": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
+            "type": "Chunk",
             "name": "TunnelChunk",
             "player": {
                 "x": 0,
