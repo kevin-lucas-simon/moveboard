@@ -1,5 +1,6 @@
 import {ChunkID, ChunkModel, createChunk} from "./ChunkModel";
 import {createUUID, UUID} from "../shared/UUID";
+import {StructureID, StructureModel} from "../structure/StructureModel";
 
 /**
  * API data model
@@ -10,6 +11,7 @@ export type LevelModel = {
     name: string,
     start: ChunkID,
     chunks: {[key: ChunkID]: ChunkModel},
+    structures: {[key: StructureID]: StructureModel}
 }
 
 export function createLevel(): LevelModel {
@@ -22,5 +24,6 @@ export function createLevel(): LevelModel {
         chunks: {
             [startChunk.id]: startChunk,
         },
+        structures: {},
     };
 }
