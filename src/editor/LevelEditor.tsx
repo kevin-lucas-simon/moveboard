@@ -1,21 +1,20 @@
 import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
-import {useState} from "react";
-import React from "react";
+import React, {useState} from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
 import {EditorTabButton} from "./component/EditorTabButton";
-import {
-    PlayIcon, RectangleGroupIcon, RectangleStackIcon
-} from "@heroicons/react/24/outline";
+import {PlayIcon, RectangleGroupIcon, RectangleStackIcon} from "@heroicons/react/24/outline";
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
-import {ChunkSwitcher} from "./component/ChunkSwitcher";
-import {DebugSettingsProvider, DebugSettingsDefault} from "../experience/input/DebugSettingsProvider";
+import {DebugSettingsDefault, DebugSettingsProvider} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 import {EditorLevelChunksTab} from "./tabs/EditorLevelChunksTab";
 import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 import {EditorInspector} from "./tabs/inspector/EditorInspector";
+import {filterStructures} from "../data/helper/filterStructures";
+import {ChunkModel} from "../data/model/structure/spatial/ChunkModel";
+import {StructureType} from "../data/model/structure/StructureType";
 
 enum EditorTabs {
     LEVEL_CHUNKS = "level_settings",
@@ -36,7 +35,8 @@ export function LevelEditor() {
         return <></>;
     }
     const editLevel = editor.level;
-    const editChunk = editLevel.chunks[editor.active];
+    const editChunks = filterStructures<ChunkModel>(editLevel.structures, StructureType.Chunk)
+    const editChunk = editChunks[editor.active];
     const editErrors = editor.errors;
 
     const handleSettingsChange = (key: string, value: any) => {
@@ -53,13 +53,7 @@ export function LevelEditor() {
                 {/* logo */}
                 <MoveBoardLogo />
                 {/* chunk selection */}
-                <div className="w-72 shrink-0">
-                    <ChunkSwitcher
-                        chunks={editLevel.chunks}
-                        active={editor.active}
-                        levelDispatcher={dispatchEditor}
-                    />
-                </div>
+                <div className="text-2xl font-semibold">Moveboard Editor</div>
 
                 {/* spacer */}
                 <div className="grow"/>
