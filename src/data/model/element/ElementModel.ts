@@ -35,6 +35,5 @@ export function createElement(type: ElementType): ElementModel {
         ...elementConfig[type]?.defaultProps || ElementDefault,
         id: createUUID(),
         type: type,
-        name: "",
     };
 }
