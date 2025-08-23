@@ -2,7 +2,7 @@ import {Vector3} from "three";
 import {useEffect} from "react";
 import {ElementDefault, ElementModel} from "../../data/model/element/ElementModel";
 
-export function GenericElement(props: ElementModel = ElementDefault) {
+export function UnknownElement(props: ElementModel = ElementDefault) {
     useEffect(() => {
         console.warn(`Unknown element type: ${props.type} on position (${props.position.x}, ${props.position.y}, ${props.position.z}).`);
     }, [props.position.x, props.position.y, props.position.z, props.type]);

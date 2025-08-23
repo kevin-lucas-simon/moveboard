@@ -1,7 +1,7 @@
 import {Vector3Like} from "three";
 import {createUUID, UUID} from "../shared/UUID";
 import {ElementType} from "./ElementType";
-import {elementConfig, elementFallbackConfig} from "../../../config/elementConfig";
+import {elementConfig} from "../../../config/elementConfig";
 
 /**
  * API data model for generic elements
@@ -23,7 +23,7 @@ export type ElementModel = {
  */
 export const ElementDefault: ElementModel = {
     id: '000-000', // set by createElement()
-    type: ElementType.GenericElement,
+    type: ElementType.Unknown,
     name: "",
     parent: null,
     position: {x: 0, y: 0, z: 0},
@@ -32,7 +32,7 @@ export const ElementDefault: ElementModel = {
 
 export function createElement(type: ElementType): ElementModel {
     return {
-        ...elementConfig[type]?.defaultProps || elementFallbackConfig.defaultProps,
+        ...elementConfig[type]?.defaultProps || ElementDefault,
         id: createUUID(),
         type: type,
         name: "",

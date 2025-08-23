@@ -3,7 +3,7 @@ export enum ElementType {
     BasicBlock = "BasicBlock",
     BounceBlock = "BounceBlock",
     FloorBlock = "FloorBlock",
-    GenericElement = "GenericElement",
+    Unknown = "Unknown",
     Group = "Group",
     Joint = "Joint",
 }

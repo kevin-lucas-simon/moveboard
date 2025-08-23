@@ -1,7 +1,7 @@
 import React from "react";
 import {BasicBlock} from "../experience/element/block/BasicBlock";
 import {FloorBlock} from "../experience/element/block/FloorBlock";
-import {GenericElement} from "../experience/element/GenericElement";
+import {UnknownElement} from "../experience/element/UnknownElement";
 import {BarrierBlock} from "../experience/element/block/BarrierBlock";
 import {BounceBlock} from "../experience/element/block/BounceBlock";
 import {ElementDefault, ElementModel} from "../data/model/element/ElementModel";
@@ -41,10 +41,6 @@ export const elementConfig: Record<ElementType, {
         experienceComponent: FloorBlock,
         defaultProps: FloorBlockDefault,
     },
-    [ElementType.GenericElement]: {
-        experienceComponent: GenericElement,
-        defaultProps: ElementDefault,
-    },
     [ElementType.Group]: {
         experienceComponent: EmptyElement,
         defaultProps: GroupDefault,
@@ -52,10 +48,9 @@ export const elementConfig: Record<ElementType, {
     [ElementType.Joint]: {
         experienceComponent: JointElement,
         defaultProps: JointDefault,
-    }
+    },
+    [ElementType.Unknown]: {
+        experienceComponent: UnknownElement,
+        defaultProps: ElementDefault,
+    },
 }
-
-/**
- * Fallback element for unknown element types
- */
-export const elementFallbackConfig = elementConfig[ElementType.GenericElement]

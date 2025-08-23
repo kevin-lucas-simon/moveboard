@@ -1,6 +1,6 @@
 import {Select} from "@react-three/postprocessing";
 import {ElementModel} from "../../data/model/element/ElementModel";
-import {elementConfig, elementFallbackConfig} from "../../config/elementConfig";
+import {elementConfig} from "../../config/elementConfig";
 import {ElementType} from "../../data/model/element/ElementType";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
@@ -46,7 +46,7 @@ export function Element(props: ElementProps) {
     }
 
     const component = React.createElement(
-        elementConfig[props.type as ElementType]?.experienceComponent ?? elementFallbackConfig.experienceComponent,
+        elementConfig[props.type as ElementType]?.experienceComponent ?? elementConfig[ElementType.Unknown].experienceComponent,
         {
             ...props,
             key: props.id,
