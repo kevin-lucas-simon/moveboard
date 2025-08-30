@@ -15,7 +15,7 @@ export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<ChunkID>(props.start);
     const allChunks
-        = filterStructures<ChunkModel>(props.chunks, StructureType.Chunk);
+        = filterStructures<ChunkModel>(props.structures, StructureType.Chunk);
     const renderedChunks
         = useChunkRenderer(allChunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)

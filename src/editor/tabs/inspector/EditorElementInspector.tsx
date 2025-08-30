@@ -54,8 +54,8 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
 
         // populate the selection with all chunks except the active chunk
         const chunkSelection = {} as {[id: UUID]: string};
-        Object.values(props.level.chunks)
-            .filter(chunk => chunk.id !== props.chunk.id)
+        Object.values(props.level.structures)
+            .filter(structure => structure.id !== props.chunk.id)
             .forEach(chunk => {
                 // skip chunks that are already connected
                 if (chunkJoints.some(joint => joint.neighbour === chunk.id)) {
@@ -66,7 +66,7 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
 
         // if a joint neighbour is specified as value, ensure it is included in the selection (display name)
         if (jointNeighbour) {
-            chunkSelection[jointNeighbour] = props.level.chunks[jointNeighbour].name;
+            chunkSelection[jointNeighbour] = props.level.structures[jointNeighbour].name;
         }
         return chunkSelection;
     };

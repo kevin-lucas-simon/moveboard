@@ -7,7 +7,7 @@ import {PlayIcon, RectangleGroupIcon, RectangleStackIcon} from "@heroicons/react
 import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {DebugSettingsDefault, DebugSettingsProvider} from "../experience/input/DebugSettingsProvider";
 import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
-import {EditorLevelChunksTab} from "./tabs/EditorLevelChunksTab";
+import {EditorLevelStructureTab} from "./tabs/EditorLevelStructureTab";
 import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
@@ -84,7 +84,7 @@ export function LevelEditor() {
                 {/* list content */}
                 <div className="w-64 shrink-0 overflow-auto resize-x min-w-40">
                     {tab === EditorTabs.LEVEL_CHUNKS &&
-                        <EditorLevelChunksTab
+                        <EditorLevelStructureTab
                             level={editLevel}
                             activeChunk={editChunk}
                             levelDispatcher={dispatchEditor}

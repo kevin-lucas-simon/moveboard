@@ -1,14 +1,14 @@
-import {ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {StarIcon} from "@heroicons/react/24/outline";
+import {StructureModel} from "../../../data/model/structure/StructureModel";
 
-export type EditorChunkItemProps = {
-    chunk: ChunkModel;
+export type EditorStructureItemProps = {
+    structure: StructureModel;
     isActive: boolean;
     isStart: boolean;
     onSelect: () => void;
 }
 
-export function EditorChunkItem(props: EditorChunkItemProps) {
+export function EditorStructureItem(props: EditorStructureItemProps) {
     return (
         <li className={props.isActive ? "bg-gray-500/10 "  : ""}>
             <div
@@ -17,7 +17,7 @@ export function EditorChunkItem(props: EditorChunkItemProps) {
             >
                 <div className="grow flex gap-2">
                     {props.isStart && <StarIcon className="w-4"/>}
-                    <button>{props.chunk.name}</button>
+                    <button>{props.structure.name}</button>
                 </div>
             </div>
         </li>

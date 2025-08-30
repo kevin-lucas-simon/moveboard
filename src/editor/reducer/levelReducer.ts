@@ -1,26 +1,27 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {ChunkID, ChunkModel, createChunk} from "../../data/model/structure/spatial/ChunkModel";
+import {ChunkModel, createChunk} from "../../data/model/structure/spatial/ChunkModel";
 import {ElementType} from "../../data/model/element/ElementType";
 import {JointModel} from "../../data/model/element/joint/JointModel";
+import {StructureID, StructureModel} from "../../data/model/structure/StructureModel";
 
 export type LevelReducerState = {
     level: LevelModel,
-    active: ChunkID,
+    active: StructureID,
 };
 
-export type LevelReducerActions = ChunkReducerActions | {
+export type LevelReducerActions = ChunkReducerActions | { // TODO actions umbenennen von chunk zu structure
     type: 'level_select_chunk',
-    payload: ChunkID,
+    payload: StructureID,
 } | {
     type: 'level_add_chunk',
     payload: string,
 } | {
     type: 'level_remove_chunk',
-    payload: ChunkID,
+    payload: StructureID,
 } | {
     type: 'level_reorder_chunks',
-    payload: ChunkID[],
+    payload: StructureID[],
 } | {
     type: 'level_update_field',
     payload: {
@@ -37,17 +38,17 @@ export function levelReducer(
     action: LevelReducerActions,
 ): LevelReducerState {
     switch (action.type) {
-        case 'level_select_chunk':
-            const selectedChunkId = action.payload;
-            if (!(selectedChunkId in state.level.chunks)) {
+        case 'level_select_chunk': // TODO generalisierbar auf level_select_structure
+            const selectedStructureId = action.payload;
+            if (!(selectedStructureId in state.level.structures)) {
                 return state;
             }
 
             return {
                 ...state,
-                active: selectedChunkId,
+                active: selectedStructureId,
             };
-        case "level_add_chunk":
+        case "level_add_chunk": // TODO generalisierbar auf level_add_structure mit structureType
             const chunk = createChunk();
             chunk.name = action.payload;
 
@@ -56,13 +57,13 @@ export function levelReducer(
                 active: chunk.id,
                 level: {
                     ...state.level,
-                    chunks: {
-                        ...state.level.chunks,
+                    structures: {
+                        ...state.level.structures,
                         [chunk.id]: chunk,
                     },
                 }
             };
-        case "level_remove_chunk":
+        case "level_remove_chunk": // TODO PROBLEM: Wie mit Verweisen in Joints umgehen? Zudem wie mit Verweisen in anderen Strukturen umgehen?
             const removedChunkId = action.payload;
 
             // update active chunk to level start if the removed chunk is currently active
@@ -70,12 +71,13 @@ export function levelReducer(
 
             // remove chunk from level
             const updatedChunks = Object.fromEntries(
-                Object.entries(state.level.chunks).filter(([key]) => key !== removedChunkId)
+                Object.entries(state.level.structures).filter(([key]) => key !== removedChunkId)
             )
 
             // update joints in remaining chunks to remove references to the removed chunk
+            // TODO ganz heißes Eisen, hier nochmal refactoren!
             Object.entries(updatedChunks).forEach(([_, chunk]) => {
-                Object.entries(chunk.elements).forEach(([_, element]) => {
+                Object.entries((chunk as ChunkModel).elements).forEach(([_, element]) => {
                     if (
                         element.type === ElementType.Joint
                         && (element as JointModel).neighbour === removedChunkId
@@ -91,21 +93,21 @@ export function levelReducer(
                 active: updatedActive,
                 level: {
                     ...state.level,
-                    chunks: updatedChunks,
+                    structures: updatedChunks,
                 },
             }
-        case 'level_reorder_chunks':
-            const chunkIds = action.payload as ChunkID[];
-            const reorderedChunks: {[key: ChunkID]: ChunkModel} = {};
+        case 'level_reorder_chunks': // TODO generalisierbar auf level_reorder_structures
+            const structureIds = action.payload as StructureID[];
+            const reorderedChunks: {[key: StructureID]: StructureModel} = {};
 
-            chunkIds.forEach(id => {
-                if (!state.level.chunks[id]) {
+            structureIds.forEach(id => {
+                if (!state.level.structures[id]) {
                     throw new Error(`Reorder chunk ID ${id} not found in state`);
                 }
-                reorderedChunks[id] = state.level.chunks[id];
+                reorderedChunks[id] = state.level.structures[id];
             });
 
-            if (Object.keys(reorderedChunks).length !== Object.keys(state.level.chunks).length) {
+            if (Object.keys(reorderedChunks).length !== Object.keys(state.level.structures).length) {
                 throw new Error('Reorder chunk IDs do not match original chunks count');
             }
 
@@ -113,10 +115,10 @@ export function levelReducer(
                 ...state,
                 level: {
                     ...state.level,
-                    chunks: reorderedChunks,
+                    structures: reorderedChunks,
                 },
             };
-        case 'level_update_field':
+        case 'level_update_field': // TODO generalisierbar auf level_update_structure_field
             const updatedKey = action.payload.key;
             const updatedValue = action.payload.value;
 
@@ -136,22 +138,23 @@ export function levelReducer(
                     [updatedKey]: updatedValue,
                 },
             };
-        case 'level_reset':
+        case 'level_reset': // TODO feature noch notwendig?
             // use current active, if not available use level start;
             return {
                 ...state,
-                active: state.level.chunks[state.active] ? state.active : state.level.start,
+                active: state.level.structures[state.active] ? state.active : state.level.start,
                 level: action.payload,
             };
         default:
+            // TODO delegation über type based reducer
             // delegate to chunkReducer for active chunk actions
             return {
                 ...state,
                 level: {
                     ...state.level,
-                    chunks: {
-                        ...state.level.chunks,
-                        [state.active]: chunkReducer(state.level.chunks[state.active], action),
+                    structures: {
+                        ...state.level.structures,
+                        [state.active]: chunkReducer(state.level.structures[state.active] as ChunkModel, action),
                     },
                 },
             };

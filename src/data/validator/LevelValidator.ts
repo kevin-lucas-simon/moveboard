@@ -12,14 +12,15 @@ export class LevelValidator implements Validator<LevelModel> {
         this.shouldHaveValue(level.id, "Level ID must not be empty.");
         this.shouldHaveValue(level.name, "Level name must not be empty.");
 
-        this.shouldExistIn(level.start, level.chunks, `Start chunk '${level.start}' does not exist in level chunks.`);
-
-        this.shouldHaveSameListIdentifier(level.chunks, "id", "Level chunks must have unique IDs.");
-        this.checkChunkJointsPointToExistingChunks(level);
-
-        Object.values(level.chunks).forEach((chunk) => {
-            this.errors.push(...new ChunkValidator().validate(chunk as ChunkModel));
-        });
+        // TODO
+        // this.shouldExistIn(level.start, level.chunks, `Start chunk '${level.start}' does not exist in level chunks.`);
+        //
+        // this.shouldHaveSameListIdentifier(level.chunks, "id", "Level chunks must have unique IDs.");
+        // this.checkChunkJointsPointToExistingChunks(level);
+        //
+        // Object.values(level.chunks).forEach((chunk) => {
+        //     this.errors.push(...new ChunkValidator().validate(chunk as ChunkModel));
+        // });
 
         return this.errors;
     }
@@ -66,22 +67,22 @@ export class LevelValidator implements Validator<LevelModel> {
         });
     }
 
-    private checkChunkJointsPointToExistingChunks(level: LevelModel) {
-        Object.values(level.chunks).forEach((chunk) => {
-            const joints = Object
-                .values(chunk.elements || {})
-                .filter(element => element.type === ElementType.Joint) as JointModel[];
-
-            joints.forEach((joint) => {
-                if (joint.neighbour === null) {
-                    return;
-                }
-                this.shouldExistIn(
-                    joint.neighbour,
-                    level.chunks,
-                    `Joint '${joint.id}' in chunk '${chunk.id}' points to non-existing chunk '${joint.neighbour}'.`
-                );
-            })
-        })
-    }
+    // private checkChunkJointsPointToExistingChunks(level: LevelModel) {
+    //     Object.values(level.chunks).forEach((chunk) => {
+    //         const joints = Object
+    //             .values(chunk.elements || {})
+    //             .filter(element => element.type === ElementType.Joint) as JointModel[];
+    //
+    //         joints.forEach((joint) => {
+    //             if (joint.neighbour === null) {
+    //                 return;
+    //             }
+    //             this.shouldExistIn(
+    //                 joint.neighbour,
+    //                 level.chunks,
+    //                 `Joint '${joint.id}' in chunk '${chunk.id}' points to non-existing chunk '${joint.neighbour}'.`
+    //             );
+    //         })
+    //     })
+    // }
 }

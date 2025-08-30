@@ -10,7 +10,7 @@ export type LevelModel = {
     id: LevelID,
     name: string,
     start: ChunkID,
-    chunks: {[key: ChunkID]: ChunkModel},
+    // chunks: {[key: ChunkID]: ChunkModel},
     structures: {[key: StructureID]: StructureModel}
 }
 
@@ -21,9 +21,9 @@ export function createLevel(): LevelModel {
         id: createUUID(),
         name: "New Level",
         start: startChunk.id,
-        chunks: {
-            [startChunk.id]: startChunk,
-        },
+        // chunks: {
+        //     [startChunk.id]: startChunk,
+        // },
         structures: {},
     };
 }
