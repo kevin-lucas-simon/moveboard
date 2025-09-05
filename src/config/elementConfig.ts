@@ -5,15 +5,15 @@ import {UnknownElement} from "../experience/element/UnknownElement";
 import {BarrierBlock} from "../experience/element/block/BarrierBlock";
 import {BounceBlock} from "../experience/element/block/BounceBlock";
 import {ElementDefault, ElementModel} from "../data/model/element/ElementModel";
-import {ElementType} from "../data/model/element/ElementType";
 import {BarrierBlockDefault} from "../data/model/element/block/BarrierBlockModel";
 import {BasicBlockDefault} from "../data/model/element/block/BasicBlockModel";
 import {BounceBlockDefault} from "../data/model/element/block/BounceBlockModel";
 import {FloorBlockDefault} from "../data/model/element/block/FloorBlockModel";
-import {GroupDefault} from "../data/model/element/GroupModel";
+import {GroupDefault} from "../data/model/element/organise/GroupModel";
 import {EmptyElement} from "../experience/element/EmptyElement";
 import {JointDefault} from "../data/model/element/joint/JointModel";
 import {JointElement} from "../experience/element/joint/JointElement";
+import {ElementType} from "../data/model/ElementType";
 
 /**
  * This file is used to store all blocks that are available in the editor.

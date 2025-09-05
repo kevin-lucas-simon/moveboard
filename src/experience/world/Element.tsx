@@ -1,13 +1,13 @@
 import {Select} from "@react-three/postprocessing";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import {elementConfig} from "../../config/elementConfig";
-import {ElementType} from "../../data/model/element/ElementType";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
-import {StructureTypes} from "../../data/model/structure.types";
+import {StructureType} from "../../data/model/StructureType";
 import {ChunkModel} from "../../data/model/structure/structure.models";
-import {filterStructures} from "../../data/factory/structure.factory";
+import {filterStructures} from "../../data/factory/StructureFactory";
+import {ElementType} from "../../data/model/ElementType";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;
@@ -28,7 +28,7 @@ export function Element(props: ElementProps) {
             return;
         }
 
-        const activeChunk = filterStructures<ChunkModel>(editorContext.level.structures, StructureTypes.Chunk)[editorContext.active];
+        const activeChunk = filterStructures<ChunkModel>(editorContext.level.structures, StructureType.Chunk)[editorContext.active];
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;
         if (!isInActiveChunk) {
             return;

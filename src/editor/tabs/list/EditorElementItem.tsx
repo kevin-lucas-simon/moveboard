@@ -2,13 +2,13 @@ import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
 import {UUID} from "../../../data/model/shared/UUID";
 import {ElementModel} from "../../../data/model/element/ElementModel";
-import {ElementType} from "../../../data/model/element/ElementType";
-import {GroupModel} from "../../../data/model/element/GroupModel";
+import {GroupModel} from "../../../data/model/element/organise/GroupModel";
 import {EditorElementSlug} from "../slug/EditorElementSlug";
 import {EditorGroupSlug} from "../slug/EditorGroupSlug";
 import {EditorJointSlug} from "../slug/EditorJointSlug";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ChunkID} from "../../../data/model/structure/structure.models";
+import {ElementType} from "../../../data/model/ElementType";
 
 export type EditorElementItemProps = {
     element: ElementModel;

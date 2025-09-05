@@ -6,10 +6,10 @@ import {BaseTab} from "../../component/BaseTab";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
 import {LevelModel} from "../../../data/model/world/LevelModel";
-import {ElementType} from "../../../data/model/element/ElementType";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {LinkButton} from "../../../component/button/LinkButton";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
+import {ElementType} from "../../../data/model/ElementType";
 
 export type EditorElementInspectorProps = {
     level: LevelModel;

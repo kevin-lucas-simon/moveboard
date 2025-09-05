@@ -5,9 +5,9 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
-import {StructureTypes} from "../../data/model/structure.types";
+import {StructureType} from "../../data/model/StructureType";
 import {ChunkID, ChunkModel} from "../../data/model/structure/structure.models";
-import {filterStructures} from "../../data/factory/structure.factory";
+import {filterStructures} from "../../data/factory/StructureFactory";
 
 export type LevelProps = LevelModel & {};
 
@@ -15,7 +15,7 @@ export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
         = useState<ChunkID>(props.start);
     const allChunks
-        = filterStructures<ChunkModel>(props.structures, StructureTypes.Chunk);
+        = filterStructures<ChunkModel>(props.structures, StructureType.Chunk);
     const renderedChunks
         = useChunkRenderer(allChunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)

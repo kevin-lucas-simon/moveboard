@@ -4,9 +4,9 @@ import {JointModel} from "../../data/model/element/joint/JointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {Element} from "./Element";
-import {ElementType} from "../../data/model/element/ElementType";
 import {JointElement} from "../element/joint/JointElement";
 import {ChunkID} from "../../data/model/structure/structure.models";
+import {ElementType} from "../../data/model/ElementType";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,

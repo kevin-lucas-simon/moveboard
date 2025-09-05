@@ -1,7 +1,6 @@
 import {Vector3Like} from "three";
-import {createUUID, UUID} from "../shared/UUID";
-import {ElementType} from "./ElementType";
-import {elementConfig} from "../../../config/elementConfig";
+import {UUID} from "../shared/UUID";
+import {ElementType} from "../ElementType";
 
 /**
  * API data model for generic elements
@@ -28,12 +27,4 @@ export const ElementDefault: ElementModel = {
     parent: null,
     position: {x: 0, y: 0, z: 0},
     hidden: false,
-}
-
-export function createElement(type: ElementType): ElementModel {
-    return {
-        ...elementConfig[type]?.defaultProps || ElementDefault,
-        id: createUUID(),
-        type: type,
-    };
 }

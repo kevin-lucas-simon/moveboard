@@ -1,14 +1,14 @@
-import {StructureTypes} from "../structure.types";
+import {StructureType} from "../StructureType";
 import {StructureModel} from "./structure.models";
 import {ChunkDefault, StructureDefault} from "./structure.defaults";
 
-export const StructureConfig: Record<StructureTypes, {
+export const StructureConfig: Record<StructureType, {
     defaultProps: StructureModel;
 }> = {
-    [StructureTypes.Chunk]: {
+    [StructureType.Chunk]: {
         defaultProps: ChunkDefault,
     },
-    [StructureTypes.Unknown]: {
+    [StructureType.Unknown]: {
         defaultProps: StructureDefault,
     }
 }

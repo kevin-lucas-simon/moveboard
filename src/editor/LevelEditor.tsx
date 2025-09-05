@@ -12,9 +12,9 @@ import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 import {EditorInspector} from "./tabs/inspector/EditorInspector";
-import {StructureTypes} from "../data/model/structure.types";
+import {StructureType} from "../data/model/StructureType";
 import {ChunkModel} from "../data/model/structure/structure.models";
-import {filterStructures} from "../data/factory/structure.factory";
+import {filterStructures} from "../data/factory/StructureFactory";
 
 enum EditorTabs {
     LEVEL_CHUNKS = "level_settings",
@@ -35,7 +35,7 @@ export function LevelEditor() {
         return <></>;
     }
     const editLevel = editor.level;
-    const editChunks = filterStructures<ChunkModel>(editLevel.structures, StructureTypes.Chunk)
+    const editChunks = filterStructures<ChunkModel>(editLevel.structures, StructureType.Chunk)
     const editChunk = editChunks[editor.active];
     const editErrors = editor.errors;
 

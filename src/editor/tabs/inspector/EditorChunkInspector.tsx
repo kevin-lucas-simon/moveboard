@@ -2,14 +2,14 @@ import React from "react";
 import {BaseTab} from "../../component/BaseTab";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../data/model/world/LevelModel";
-import {ElementType} from "../../../data/model/element/ElementType";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {EditorJointSlug} from "../slug/EditorJointSlug";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";
-import {createElement} from "../../../data/model/element/ElementModel";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
+import {ElementType} from "../../../data/model/ElementType";
+import {createElement} from "../../../data/factory/ElementFactory";
 
 export type EditorChunkInspectorProps = {
     level: LevelModel;

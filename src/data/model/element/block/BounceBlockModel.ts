@@ -1,5 +1,5 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
-import {ElementType} from "../ElementType";
+import {ElementType} from "../../ElementType";
 
 /**
  * Bouncer block that bounces the player on collision

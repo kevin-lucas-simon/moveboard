@@ -1,4 +1,4 @@
-export enum StructureTypes {
+export enum StructureType {
     Chunk = "Chunk",
     Unknown = "Unknown",
 }

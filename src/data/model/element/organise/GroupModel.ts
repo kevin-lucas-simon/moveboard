@@ -1,5 +1,5 @@
-import {ElementDefault, ElementModel} from "./ElementModel";
-import {ElementType} from "./ElementType";
+import {ElementDefault, ElementModel} from "../ElementModel";
+import {ElementType} from "../../ElementType";
 
 /**
  * GroupModel represents a group of elements within a chunk.

@@ -3,8 +3,8 @@ import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
-import {ElementType} from "../../../data/model/element/ElementType";
 import {ChunkModel, ChunkID} from "../../../data/model/structure/structure.models";
+import {ElementType} from "../../../data/model/ElementType";
 
 export type RenderedChunk = {
     model: ChunkModel,

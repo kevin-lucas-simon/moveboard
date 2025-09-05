@@ -1,11 +1,12 @@
-import {createElement, ElementModel} from "../../data/model/element/ElementModel";
+import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {elementConfig} from "../../config/elementConfig";
 import {BaseTab} from "../component/BaseTab";
-import {ElementType} from "../../data/model/element/ElementType";
 import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";
 import {EditorElementList} from "./list/EditorElementList";
+import {createElement} from "../../data/factory/ElementFactory";
+import {ElementType} from "../../data/model/ElementType";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
