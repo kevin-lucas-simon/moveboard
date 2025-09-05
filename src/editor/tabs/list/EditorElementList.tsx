@@ -130,7 +130,7 @@ export function EditorElementList(props: EditorElementListProps) {
             return;
         }
         props.dispatcher({
-            type: 'level_select_chunk',
+            type: 'level_select_structure',
             payload: chunkId,
         });
     }

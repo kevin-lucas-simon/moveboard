@@ -36,7 +36,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
             return
         }
         props.dispatcher({
-            type: 'level_select_chunk',
+            type: 'level_select_structure',
             payload: chunkId,
         });
     }
@@ -53,7 +53,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
 
     const removeChunk = () => {
         props.dispatcher({
-            type: 'level_remove_chunk',
+            type: 'level_remove_structure',
             payload: props.chunk.id,
         });
     }

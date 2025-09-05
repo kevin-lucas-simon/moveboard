@@ -1,4 +1,4 @@
-import {UUID} from "../shared/UUID";
+import {createUUID, UUID} from "../shared/UUID";
 import {StructureType} from "./StructureType";
 import {structureConfig} from "../../../config/structureConfig";
 
@@ -9,16 +9,17 @@ export type StructureModel = {
     name: string,
 }
 
-export const StructureDefault: StructureModel = {
+export var StructureDefault: StructureModel = {
     id: '000-000', // set by createStructure()
     type: StructureType.Unknown,
     name: "",
 }
 
-export function createStructure(type: StructureType): StructureModel {
-    return {
+export function createStructure<T extends StructureModel>(type: StructureType): T {
+    const structure = {
         ...structureConfig[type]?.defaultProps || StructureDefault,
-        id: '000-000', // set by createStructure()
+        id: createUUID(),
         type: type,
     }
+    return structure as T;
 }

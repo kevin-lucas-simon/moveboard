@@ -15,7 +15,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
 
     const selectChunk = (id: StructureID) => {
         props.dispatcher({
-            type: 'level_select_chunk',
+            type: 'level_select_structure',
             payload: id,
         });
     }
@@ -27,7 +27,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
         });
 
         props.dispatcher({
-            type: 'level_reorder_chunks',
+            type: 'level_reorder_structures',
             payload: newStructureOrder,
         });
     }
