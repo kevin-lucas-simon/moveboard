@@ -1,7 +1,7 @@
 import {levelReducer, LevelReducerActions, LevelReducerState} from "./levelReducer";
 import {ValidationError} from "../../data/validator/Validator";
 import {LevelValidator} from "../../data/validator/LevelValidator";
-import {UUID} from "../../data/model/util/UUID";
+import {UUID} from "../../data/model/UUID";
 
 export type EditorReducerState = LevelReducerState & {
     selected: UUID[],

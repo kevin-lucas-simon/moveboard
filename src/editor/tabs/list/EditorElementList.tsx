@@ -1,7 +1,7 @@
 import {ReactSortable} from "react-sortablejs";
 import {EditorElementItem} from "./EditorElementItem";
 import React from "react";
-import {UUID} from "../../../data/model/util/UUID";
+import {UUID} from "../../../data/model/UUID";
 import {ElementID, ElementModel} from "../../../data/model/element/ElementModel";
 import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
 import {GroupModel} from "../../../data/model/element/system/GroupModel";
