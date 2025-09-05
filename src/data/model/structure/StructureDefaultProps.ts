@@ -2,7 +2,7 @@ import {StructureTypes} from "./StructureTypes";
 import {ChunkDefault} from "./spacial/ChunkModel";
 import {StructureDefault, StructureModel} from "./StructureModel";
 
-export const StructureConfig: Record<StructureTypes, {
+export const StructureDefaultProps: Record<StructureTypes, {
     defaultProps: StructureModel;
 }> = {
     [StructureTypes.Chunk]: {

@@ -1,11 +1,11 @@
 import {StructureTypes} from "../model/structure/StructureTypes";
 import {createUUID} from "../model/shared/UUID";
-import {StructureConfig} from "../model/structure/StructureConfig";
+import {StructureDefaultProps} from "../model/structure/StructureDefaultProps";
 import {StructureDefault, StructureID, StructureModel} from "../model/structure/StructureModel";
 
 export function createStructure<T extends StructureModel>(type: StructureTypes): T {
     return {
-        ...StructureConfig[type]?.defaultProps || StructureDefault,
+        ...StructureDefaultProps[type]?.defaultProps || StructureDefault,
         id: createUUID(),
         type: type,
     } as T;

@@ -1,6 +1,5 @@
 import {Select} from "@react-three/postprocessing";
 import {ElementModel} from "../../data/model/element/ElementModel";
-import {ElementConfig} from "../../data/model/element/ElementConfig";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
@@ -8,6 +7,7 @@ import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;
@@ -50,7 +50,7 @@ export function Element(props: ElementProps) {
     }
 
     const component = React.createElement(
-        ElementConfig[props.type as ElementTypes]?.experienceComponent ?? ElementConfig[ElementTypes.Unknown].experienceComponent,
+        ElementExperienceComponents[props.type as ElementTypes]?.experienceComponent ?? ElementExperienceComponents[ElementTypes.Unknown].experienceComponent,
         {
             ...props,
             key: props.id,

@@ -1,6 +1,6 @@
 import {Vector3} from "three";
 import {useEffect} from "react";
-import {ElementDefault, ElementModel} from "../../data/model/element/ElementModel";
+import {ElementDefault, ElementModel} from "../../../data/model/element/ElementModel";
 
 export function UnknownElement(props: ElementModel = ElementDefault) {
     useEffect(() => {
