@@ -4,9 +4,9 @@ import React from "react";
 import {UUID} from "../../../data/model/shared/UUID";
 import {ElementID, ElementModel} from "../../../data/model/element/ElementModel";
 import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
-import {GroupModel} from "../../../data/model/element/organise/GroupModel";
+import {GroupModel} from "../../../data/model/element/system/GroupModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../data/model/ElementTypes";
+import {ElementTypes} from "../../../data/model/element/ElementTypes";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;

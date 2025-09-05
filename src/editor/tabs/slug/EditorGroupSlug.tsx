@@ -1,4 +1,4 @@
-import {GroupModel} from "../../../data/model/element/organise/GroupModel";
+import {GroupModel} from "../../../data/model/element/system/GroupModel";
 import {EditorElementSlug} from "./EditorElementSlug";
 import {FolderIcon, FolderOpenIcon} from "@heroicons/react/24/outline";
 import React from "react";

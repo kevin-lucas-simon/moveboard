@@ -1,5 +1,5 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlockModel";
-import {ElementTypes} from "../../ElementTypes";
+import {ElementTypes} from "../ElementTypes";
 
 /**
  * Invisible block that acts as barrier for the player

@@ -1,6 +1,6 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {Vector3Like} from "three";
-import {ElementTypes} from "../../ElementTypes";
+import {ElementTypes} from "../ElementTypes";
 
 /**
  * Basic block with fixed position

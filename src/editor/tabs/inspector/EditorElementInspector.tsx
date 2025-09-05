@@ -8,7 +8,7 @@ import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {LinkButton} from "../../../component/button/LinkButton";
-import {ElementTypes} from "../../../data/model/ElementTypes";
+import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorElementInspectorProps = {

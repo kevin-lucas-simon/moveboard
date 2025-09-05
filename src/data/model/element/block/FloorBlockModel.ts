@@ -1,5 +1,5 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlockModel";
-import {ElementTypes} from "../../ElementTypes";
+import {ElementTypes} from "../ElementTypes";
 
 /**
  * Block that is guarantied visible in camera chunk view.

@@ -1,6 +1,6 @@
 import {Vector3Like} from "three";
 import {UUID} from "../shared/UUID";
-import {ElementTypes} from "../ElementTypes";
+import {ElementTypes} from "./ElementTypes";
 
 /**
  * API data model for generic elements

@@ -1,12 +1,12 @@
 import {Select} from "@react-three/postprocessing";
 import {ElementModel} from "../../data/model/element/ElementModel";
-import {elementConfig} from "../../config/elementConfig";
+import {ElementConfig} from "../../data/model/element/ElementConfig";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
-import {ElementTypes} from "../../data/model/ElementTypes";
+import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
 export type ElementProps = ElementModel & {
@@ -50,7 +50,7 @@ export function Element(props: ElementProps) {
     }
 
     const component = React.createElement(
-        elementConfig[props.type as ElementTypes]?.experienceComponent ?? elementConfig[ElementTypes.Unknown].experienceComponent,
+        ElementConfig[props.type as ElementTypes]?.experienceComponent ?? ElementConfig[ElementTypes.Unknown].experienceComponent,
         {
             ...props,
             key: props.id,

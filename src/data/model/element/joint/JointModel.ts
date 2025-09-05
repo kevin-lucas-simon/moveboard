@@ -1,6 +1,6 @@
 import {Vector3Like} from "three";
 import {ElementDefault, ElementID, ElementModel} from "../ElementModel";
-import {ElementTypes} from "../../ElementTypes";
+import {ElementTypes} from "../ElementTypes";
 import {ChunkID} from "../../structure/spacial/ChunkModel";
 
 /**
