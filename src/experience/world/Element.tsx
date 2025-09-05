@@ -4,10 +4,10 @@ import {elementConfig} from "../../config/elementConfig";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
-import {StructureType} from "../../data/model/StructureType";
+import {StructureTypes} from "../../data/model/StructureTypes";
 import {ChunkModel} from "../../data/model/structure/structure.models";
 import {filterStructures} from "../../data/factory/StructureFactory";
-import {ElementType} from "../../data/model/ElementType";
+import {ElementTypes} from "../../data/model/ElementTypes";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;
@@ -28,7 +28,7 @@ export function Element(props: ElementProps) {
             return;
         }
 
-        const activeChunk = filterStructures<ChunkModel>(editorContext.level.structures, StructureType.Chunk)[editorContext.active];
+        const activeChunk = filterStructures<ChunkModel>(editorContext.level.structures, StructureTypes.Chunk)[editorContext.active];
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;
         if (!isInActiveChunk) {
             return;
@@ -50,7 +50,7 @@ export function Element(props: ElementProps) {
     }
 
     const component = React.createElement(
-        elementConfig[props.type as ElementType]?.experienceComponent ?? elementConfig[ElementType.Unknown].experienceComponent,
+        elementConfig[props.type as ElementTypes]?.experienceComponent ?? elementConfig[ElementTypes.Unknown].experienceComponent,
         {
             ...props,
             key: props.id,

@@ -1,5 +1,5 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
-import {ElementType} from "../../ElementType";
+import {ElementTypes} from "../../ElementTypes";
 
 /**
  * Bouncer block that bounces the player on collision
@@ -10,7 +10,7 @@ export type BounceBlockModel = ElementModel & {
 }
 export const BounceBlockDefault: BounceBlockModel = {
     ...ElementDefault,
-    type: ElementType.BounceBlock,
+    type: ElementTypes.BounceBlock,
     diameter: 1,
     intensity: 1,
 }

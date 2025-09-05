@@ -9,7 +9,7 @@ import {LevelModel} from "../../../data/model/world/LevelModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {LinkButton} from "../../../component/button/LinkButton";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
-import {ElementType} from "../../../data/model/ElementType";
+import {ElementTypes} from "../../../data/model/ElementTypes";
 
 export type EditorElementInspectorProps = {
     level: LevelModel;
@@ -50,7 +50,7 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
         // get all joints in the current chunk
         const chunkJoints = Object
             .values(props.chunk.elements)
-            .filter(element => element.type === ElementType.Joint) as JointModel[];
+            .filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
         // populate the selection with all chunks except the active chunk
         const chunkSelection = {} as {[id: UUID]: string};

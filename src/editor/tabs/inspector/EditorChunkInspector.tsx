@@ -8,7 +8,7 @@ import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
-import {ElementType} from "../../../data/model/ElementType";
+import {ElementTypes} from "../../../data/model/ElementTypes";
 import {createElement} from "../../../data/factory/ElementFactory";
 
 export type EditorChunkInspectorProps = {
@@ -18,7 +18,7 @@ export type EditorChunkInspectorProps = {
 }
 
 export function EditorChunkInspector(props: EditorChunkInspectorProps) {
-    const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+    const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
     const isStart = props.level.start === props.chunk.id;
 
     const updateField = (key: string, value: any) => {
@@ -67,7 +67,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
     }
 
     const createJoint = () => {
-        const element = createElement(ElementType.Joint) as JointModel;
+        const element = createElement(ElementTypes.Joint) as JointModel;
         props.dispatcher({
             type: "chunk_add_element",
             payload: element,

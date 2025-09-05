@@ -6,7 +6,7 @@ import {RenderedChunk} from "./render/useChunkRenderer";
 import {Element} from "./Element";
 import {JointElement} from "../element/joint/JointElement";
 import {ChunkID} from "../../data/model/structure/structure.models";
-import {ElementType} from "../../data/model/ElementType";
+import {ElementTypes} from "../../data/model/ElementTypes";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
@@ -14,8 +14,8 @@ export type ChunkProps = RenderedChunk & {
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
-    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementType.Joint);
-    const joints = Object.values(props.model.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementTypes.Joint);
+    const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
     return (
         <>

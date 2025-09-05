@@ -6,7 +6,7 @@ import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/shared/UUID";
 import {EditorElementList} from "./list/EditorElementList";
 import {createElement} from "../../data/factory/ElementFactory";
-import {ElementType} from "../../data/model/ElementType";
+import {ElementTypes} from "../../data/model/ElementTypes";
 
 export type EditorChunkElementsTabProps = {
     elements: {[key: string]: ElementModel};
@@ -19,7 +19,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
         if (!type || !(type in elementConfig)) {
             return;
         }
-        const element = createElement(type as ElementType)
+        const element = createElement(type as ElementTypes)
         props.dispatcher({
             type: 'chunk_add_element',
             payload: element,

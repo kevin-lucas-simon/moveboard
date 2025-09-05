@@ -1,4 +1,4 @@
-export enum ElementType {
+export enum ElementTypes {
     BarrierBlock = "BarrierBlock",
     BasicBlock = "BasicBlock",
     BounceBlock = "BounceBlock",

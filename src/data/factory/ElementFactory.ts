@@ -1,9 +1,9 @@
 import {elementConfig} from "../../config/elementConfig";
 import {createUUID} from "../model/shared/UUID";
 import {ElementDefault, ElementModel} from "../model/element/ElementModel";
-import {ElementType} from "../model/ElementType";
+import {ElementTypes} from "../model/ElementTypes";
 
-export function createElement(type: ElementType): ElementModel {
+export function createElement(type: ElementTypes): ElementModel {
     return {
         ...elementConfig[type]?.defaultProps || ElementDefault,
         id: createUUID(),

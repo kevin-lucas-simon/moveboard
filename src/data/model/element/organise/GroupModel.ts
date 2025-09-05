@@ -1,5 +1,5 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
-import {ElementType} from "../../ElementType";
+import {ElementTypes} from "../../ElementTypes";
 
 /**
  * GroupModel represents a group of elements within a chunk.
@@ -11,6 +11,6 @@ export type GroupModel = ElementModel & {
 
 export const GroupDefault: GroupModel = {
     ...ElementDefault,
-    type: ElementType.Group,
+    type: ElementTypes.Group,
     collapsed: false,
 }

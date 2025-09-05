@@ -2,7 +2,7 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 import {ChunkModel, StructureID, StructureModel} from "../../data/model/structure/structure.models";
-import {ElementType} from "../../data/model/ElementType";
+import {ElementTypes} from "../../data/model/ElementTypes";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -77,7 +77,7 @@ export function levelReducer(
             Object.entries(updatedChunks).forEach(([_, chunk]) => {
                 Object.entries((chunk as  ChunkModel).elements).forEach(([_, element]) => {
                     if (
-                        element.type === ElementType.Joint
+                        element.type === ElementTypes.Joint
                         && (element as JointModel).neighbour === removedChunkId
                     ) {
                         (element as JointModel).neighbour = null;

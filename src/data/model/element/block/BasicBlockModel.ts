@@ -1,6 +1,6 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {Vector3Like} from "three";
-import {ElementType} from "../../ElementType";
+import {ElementTypes} from "../../ElementTypes";
 
 /**
  * Basic block with fixed position
@@ -12,7 +12,7 @@ export type BasicBlockModel = ElementModel & {
 
 export const BasicBlockDefault: BasicBlockModel = {
     ...ElementDefault,
-    type: ElementType.BasicBlock,
+    type: ElementTypes.BasicBlock,
     dimension: {x: 1, y: 1, z: 1},
     color: "grey",
 }

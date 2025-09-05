@@ -1,10 +1,10 @@
 import {StructureID, StructureModel} from "../model/structure/structure.models";
-import {StructureType} from "../model/StructureType";
+import {StructureTypes} from "../model/StructureTypes";
 import {StructureConfig} from "../model/structure/structure.config";
 import {StructureDefault} from "../model/structure/structure.defaults";
 import {createUUID} from "../model/shared/UUID";
 
-export function createStructure<T extends StructureModel>(type: StructureType): T {
+export function createStructure<T extends StructureModel>(type: StructureTypes): T {
     return {
         ...StructureConfig[type]?.defaultProps || StructureDefault,
         id: createUUID(),
@@ -14,7 +14,7 @@ export function createStructure<T extends StructureModel>(type: StructureType): 
 
 export function filterStructures<T extends StructureModel>(
     structures: { [key: StructureID]: StructureModel },
-    type: StructureType
+    type: StructureTypes
 ) {
     return Object.fromEntries(
         Object.entries(structures).filter(([_, structure]) => structure.type === type)

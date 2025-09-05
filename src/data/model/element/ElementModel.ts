@@ -1,6 +1,6 @@
 import {Vector3Like} from "three";
 import {UUID} from "../shared/UUID";
-import {ElementType} from "../ElementType";
+import {ElementTypes} from "../ElementTypes";
 
 /**
  * API data model for generic elements
@@ -9,7 +9,7 @@ import {ElementType} from "../ElementType";
 export type ElementID = UUID;
 export type ElementModel = {
     id: ElementID,
-    type: ElementType,
+    type: ElementTypes,
     name: string,
     parent: ElementID | null,
     position: Vector3Like,
@@ -22,7 +22,7 @@ export type ElementModel = {
  */
 export const ElementDefault: ElementModel = {
     id: '000-000', // set by createElement()
-    type: ElementType.Unknown,
+    type: ElementTypes.Unknown,
     name: "",
     parent: null,
     position: {x: 0, y: 0, z: 0},

@@ -8,7 +8,7 @@ import {EditorGroupSlug} from "../slug/EditorGroupSlug";
 import {EditorJointSlug} from "../slug/EditorJointSlug";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ChunkID} from "../../../data/model/structure/structure.models";
-import {ElementType} from "../../../data/model/ElementType";
+import {ElementTypes} from "../../../data/model/ElementTypes";
 
 export type EditorElementItemProps = {
     element: ElementModel;
@@ -45,7 +45,7 @@ export function EditorElementItem(props: EditorElementItemProps) {
     }
 
     const handleCollapseToggle = () => {
-        if (props.element.type === ElementType.Group) {
+        if (props.element.type === ElementTypes.Group) {
             props.onCollapseToggle(props.element.id);
         }
     }
@@ -68,14 +68,14 @@ export function EditorElementItem(props: EditorElementItemProps) {
                 <div className="grow flex gap-2">
                     {(() => {
                         switch(props.element.type) {
-                            case ElementType.Group:
+                            case ElementTypes.Group:
                                 return <EditorGroupSlug
                                     element={props.element as GroupModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
                                     onRename={handleRename}
                                 />;
-                            case ElementType.Joint:
+                            case ElementTypes.Joint:
                                 return <EditorJointSlug
                                     element={props.element as JointModel}
                                     onChunkChange={handleChunkChange}
@@ -93,7 +93,7 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     <TrashIcon className="w-4 text-black"/>
                 </button>
             </div>
-            {props.children && props.element.type === ElementType.Group && !(props.element as GroupModel).collapsed && (
+            {props.children && props.element.type === ElementTypes.Group && !(props.element as GroupModel).collapsed && (
                 <div className="ml-6">
                     {props.children}
                 </div>

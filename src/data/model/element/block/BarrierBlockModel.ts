@@ -1,5 +1,5 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlockModel";
-import {ElementType} from "../../ElementType";
+import {ElementTypes} from "../../ElementTypes";
 
 /**
  * Invisible block that acts as barrier for the player
@@ -7,5 +7,5 @@ import {ElementType} from "../../ElementType";
 export type BarrierBlockModel = BasicBlockModel
 export const BarrierBlockDefault: BarrierBlockModel = {
     ...BasicBlockDefault,
-    type: ElementType.BarrierBlock,
+    type: ElementTypes.BarrierBlock,
 }

@@ -13,7 +13,7 @@ import {GroupDefault} from "../data/model/element/organise/GroupModel";
 import {EmptyElement} from "../experience/element/EmptyElement";
 import {JointDefault} from "../data/model/element/joint/JointModel";
 import {JointElement} from "../experience/element/joint/JointElement";
-import {ElementType} from "../data/model/ElementType";
+import {ElementTypes} from "../data/model/ElementTypes";
 
 /**
  * This file is used to store all blocks that are available in the editor.
@@ -21,35 +21,35 @@ import {ElementType} from "../data/model/ElementType";
  * Left: Name of block type in API JSON
  * Right: Corresponding implementations and properties
  */
-export const elementConfig: Record<ElementType, {
+export const elementConfig: Record<ElementTypes, {
     experienceComponent: React.ComponentType<any>;
     defaultProps: ElementModel;
 }> = {
-    [ElementType.BarrierBlock]: {
+    [ElementTypes.BarrierBlock]: {
         experienceComponent: BarrierBlock,
         defaultProps: BarrierBlockDefault,
     },
-    [ElementType.BasicBlock]: {
+    [ElementTypes.BasicBlock]: {
         experienceComponent: BasicBlock,
         defaultProps: BasicBlockDefault,
     },
-    [ElementType.BounceBlock]: {
+    [ElementTypes.BounceBlock]: {
         experienceComponent: BounceBlock,
         defaultProps: BounceBlockDefault
     },
-    [ElementType.FloorBlock]: {
+    [ElementTypes.FloorBlock]: {
         experienceComponent: FloorBlock,
         defaultProps: FloorBlockDefault,
     },
-    [ElementType.Group]: {
+    [ElementTypes.Group]: {
         experienceComponent: EmptyElement,
         defaultProps: GroupDefault,
     },
-    [ElementType.Joint]: {
+    [ElementTypes.Joint]: {
         experienceComponent: JointElement,
         defaultProps: JointDefault,
     },
-    [ElementType.Unknown]: {
+    [ElementTypes.Unknown]: {
         experienceComponent: UnknownElement,
         defaultProps: ElementDefault,
     },

@@ -4,7 +4,7 @@ import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
 import {ChunkModel, ChunkID} from "../../../data/model/structure/structure.models";
-import {ElementType} from "../../../data/model/ElementType";
+import {ElementTypes} from "../../../data/model/ElementTypes";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -102,7 +102,7 @@ function calculateChunks(
         }
 
         // get chunk joints
-        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementType.Joint) as JointModel[];
+        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
         // set default render position to the task position
         let renderPosition = new Vector3().copy(task.position);
@@ -125,7 +125,7 @@ function calculateChunks(
             renderPosition
         );
         const cameraDimension = calculateRenderDimension(
-            Object.values(currentModel.elements).filter(element => element.type === ElementType.FloorBlock),
+            Object.values(currentModel.elements).filter(element => element.type === ElementTypes.FloorBlock),
             renderPosition
         );
 

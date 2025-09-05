@@ -1,5 +1,5 @@
 import {BasicBlockDefault, BasicBlockModel} from "./BasicBlockModel";
-import {ElementType} from "../../ElementType";
+import {ElementTypes} from "../../ElementTypes";
 
 /**
  * Block that is guarantied visible in camera chunk view.
@@ -7,7 +7,7 @@ import {ElementType} from "../../ElementType";
 export type FloorBlockModel = BasicBlockModel
 export const FloorBlockDefault: FloorBlockModel = {
     ...BasicBlockDefault,
-    type: ElementType.FloorBlock,
+    type: ElementTypes.FloorBlock,
     color: "red",
     position: {x: 0, y: -1, z: 0},
 }

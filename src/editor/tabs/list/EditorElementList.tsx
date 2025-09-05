@@ -6,7 +6,7 @@ import {ElementID, ElementModel} from "../../../data/model/element/ElementModel"
 import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
 import {GroupModel} from "../../../data/model/element/organise/GroupModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ElementType} from "../../../data/model/ElementType";
+import {ElementTypes} from "../../../data/model/ElementTypes";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;
@@ -62,7 +62,7 @@ export function EditorElementList(props: EditorElementListProps) {
     }
 
     const toggleCollapse = (index: string, value: ElementModel) => {
-        if (value.type !== ElementType.Group) {
+        if (value.type !== ElementTypes.Group) {
             return;
         }
 
@@ -107,7 +107,7 @@ export function EditorElementList(props: EditorElementListProps) {
             groupElements.forEach((element) => {
                 newGroupOrder.push(element.id);
 
-                if (element.type === ElementType.Group) {
+                if (element.type === ElementTypes.Group) {
                     const childrenOrder = calculateGroupOrder(element.id);
                     newGroupOrder.push(...childrenOrder);
                 }
@@ -154,7 +154,7 @@ export function EditorElementList(props: EditorElementListProps) {
                     onHideToggle={(id) => handleVisibility(id, element, !element.hidden)}
                     onCollapseToggle={(id) => toggleCollapse(id, element)}
                 >
-                    {element.type === ElementType.Group && (
+                    {element.type === ElementTypes.Group && (
                         <EditorElementList {...props} parent={element.id} />
                     )}
                 </EditorElementItem>

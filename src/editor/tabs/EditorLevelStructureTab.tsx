@@ -4,7 +4,7 @@ import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {EditorStructureList} from "./list/EditorStructureList";
 import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
-import {StructureType} from "../../data/model/StructureType";
+import {StructureTypes} from "../../data/model/StructureTypes";
 import {ChunkModel} from "../../data/model/structure/structure.models";
 import {createStructure} from "../../data/factory/StructureFactory";
 
@@ -22,7 +22,7 @@ export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
     const [dialog, setDialog] = React.useState<EditorDialogs|null>(null);
 
     const handleCreateChunk = (name: string) => {
-        const chunk = createStructure<ChunkModel>(StructureType.Chunk);
+        const chunk = createStructure<ChunkModel>(StructureTypes.Chunk);
         chunk.name = name;
 
         props.levelDispatcher({
