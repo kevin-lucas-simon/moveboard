@@ -1,5 +1,5 @@
 import {StructureTypes} from "../model/structure/StructureTypes";
-import {createUUID} from "../model/shared/UUID";
+import {createUUID} from "../model/system/UUID";
 import {StructureDefaultProps} from "../model/structure/StructureDefaultProps";
 import {StructureDefault, StructureID, StructureModel} from "../model/structure/StructureModel";
 

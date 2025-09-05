@@ -1,5 +1,5 @@
 import {ElementModel} from "../../../data/model/element/ElementModel";
-import {UUID} from "../../../data/model/shared/UUID";
+import {UUID} from "../../../data/model/system/UUID";
 import React from "react";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {BaseTab} from "../../component/BaseTab";

@@ -1,7 +1,7 @@
 import {Switch} from "@headlessui/react";
 import clsx from "clsx";
 import {JsonSelectionEditor} from "./JsonSelectionEditor";
-import {UUID} from "../../../data/model/shared/UUID";
+import {UUID} from "../../../data/model/system/UUID";
 
 export type JsonFieldEditorProps = {
     value: any,

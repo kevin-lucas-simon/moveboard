@@ -1,5 +1,5 @@
 import {ElementDefaultProps} from "../model/element/ElementDefaultProps";
-import {createUUID} from "../model/shared/UUID";
+import {createUUID} from "../model/system/UUID";
 import {ElementDefault, ElementModel} from "../model/element/ElementModel";
 import {ElementTypes} from "../model/element/ElementTypes";
 

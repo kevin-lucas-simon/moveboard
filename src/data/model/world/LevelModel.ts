@@ -1,4 +1,4 @@
-import {createUUID, UUID} from "../shared/UUID";
+import {createUUID, UUID} from "../system/UUID";
 import {StructureTypes} from "../structure/StructureTypes";
 import {createStructure} from "../../factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../structure/spacial/ChunkModel";

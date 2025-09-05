@@ -1,4 +1,4 @@
-import {UUID} from "../../../data/model/shared/UUID";
+import {UUID} from "../../../data/model/system/UUID";
 import React from "react";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {EditorChunkInspector} from "./EditorChunkInspector";

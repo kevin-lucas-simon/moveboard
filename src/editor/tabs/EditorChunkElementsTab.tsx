@@ -3,7 +3,7 @@ import React from "react";
 import {ElementDefaultProps} from "../../data/model/element/ElementDefaultProps";
 import {BaseTab} from "../component/BaseTab";
 import {EditorReducerActions} from "../reducer/editorReducer";
-import {UUID} from "../../data/model/shared/UUID";
+import {UUID} from "../../data/model/system/UUID";
 import {EditorElementList} from "./list/EditorElementList";
 import {createElement} from "../../data/factory/ElementFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
