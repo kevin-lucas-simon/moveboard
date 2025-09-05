@@ -1,10 +1,10 @@
-import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import {Vector3, Vector3Like} from "three";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
 import {ElementType} from "../../../data/model/element/ElementType";
+import {ChunkModel, ChunkID} from "../../../data/model/structure/structure.models";
 
 export type RenderedChunk = {
     model: ChunkModel,

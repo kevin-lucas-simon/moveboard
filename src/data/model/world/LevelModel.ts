@@ -1,6 +1,7 @@
-import {ChunkID, ChunkModel, createChunk} from "../structure/spatial/ChunkModel";
 import {createUUID, UUID} from "../shared/UUID";
-import {StructureID, StructureModel} from "../structure/StructureModel";
+import {ChunkID, ChunkModel, StructureID, StructureModel} from "../structure/structure.models";
+import {createStructure} from "../../factory/structure.factory";
+import {StructureTypes} from "../structure.types";
 
 /**
  * API data model
@@ -10,20 +11,18 @@ export type LevelModel = {
     id: LevelID,
     name: string,
     start: ChunkID,
-    // chunks: {[key: ChunkID]: ChunkModel},
     structures: {[key: StructureID]: StructureModel}
 }
 
 export function createLevel(): LevelModel {
-    const startChunk: ChunkModel = createChunk();
+    const startChunk: ChunkModel = createStructure<ChunkModel>(StructureTypes.Chunk);
 
     return {
         id: createUUID(),
         name: "New Level",
         start: startChunk.id,
-        // chunks: {
-        //     [startChunk.id]: startChunk,
-        // },
-        structures: {},
+        structures: {
+            [startChunk.id]: startChunk,
+        },
     };
 }

@@ -1,9 +1,6 @@
 import {LevelModel} from "../model/world/LevelModel";
-import {ChunkValidator} from "./ChunkValidator";
-import {ChunkModel} from "../model/structure/spatial/ChunkModel";
 import {Validator, ValidationError} from "./Validator";
-import {ElementType} from "../model/element/ElementType";
-import {JointModel} from "../model/element/joint/JointModel";
+import {ChunkModel} from "../model/structure/structure.models";
 
 export class LevelValidator implements Validator<LevelModel> {
     private errors: ValidationError[] = [];

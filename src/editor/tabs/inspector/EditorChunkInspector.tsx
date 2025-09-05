@@ -1,4 +1,3 @@
-import {ChunkID, ChunkModel} from "../../../data/model/structure/spatial/ChunkModel";
 import React from "react";
 import {BaseTab} from "../../component/BaseTab";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
@@ -10,6 +9,7 @@ import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";
 import {createElement} from "../../../data/model/element/ElementModel";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
 
 export type EditorChunkInspectorProps = {
     level: LevelModel;

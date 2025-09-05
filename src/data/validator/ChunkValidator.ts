@@ -1,5 +1,5 @@
-import {ChunkModel} from "../model/structure/spatial/ChunkModel";
 import {ValidationError, Validator} from "./Validator";
+import {ChunkModel} from "../model/structure/structure.models";
 
 export class ChunkValidator implements Validator<ChunkModel> {
     private errors: ValidationError[] = [];

@@ -4,7 +4,7 @@ import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../../entity/Player";
 import {useDebugSettings} from "../../input/DebugSettingsProvider";
-import {ChunkID} from "../../../data/model/structure/spatial/ChunkModel";
+import {ChunkID} from "../../../data/model/structure/structure.models";
 
 export type JointProps = JointModel & {
     inActiveChunk: boolean,

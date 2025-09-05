@@ -1,7 +1,7 @@
 import {LevelReducerActions} from "../../reducer/levelReducer";
 import {EditorStructureItem} from "./EditorStructureItem";
 import {ReactSortable} from "react-sortablejs";
-import {StructureModel, StructureID} from "../../../data/model/structure/StructureModel";
+import {StructureModel, StructureID} from "../../../data/model/structure/structure.models";
 
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
