@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Combobox, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
-import {UUID} from "../../../data/model/system/UUID";
+import {UUID} from "../../../data/model/util/UUID";
 
 export type JsonSelectionFieldEditorProps = {
     value: string,

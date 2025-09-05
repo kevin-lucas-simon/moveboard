@@ -1,8 +1,9 @@
-import {createUUID, UUID} from "../system/UUID";
+import {UUID} from "../util/UUID";
 import {StructureTypes} from "../structure/StructureTypes";
 import {createStructure} from "../../factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../structure/spacial/ChunkModel";
 import {StructureID, StructureModel} from "../structure/StructureModel";
+import {createUUID} from "../../factory/UuidFactory";
 
 /**
  * API data model

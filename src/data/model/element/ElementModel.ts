@@ -1,5 +1,5 @@
 import {Vector3Like} from "three";
-import {UUID} from "../system/UUID";
+import {UUID} from "../util/UUID";
 import {ElementTypes} from "./ElementTypes";
 
 /**

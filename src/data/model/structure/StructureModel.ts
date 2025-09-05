@@ -1,4 +1,4 @@
-import {UUID} from "../system/UUID";
+import {UUID} from "../util/UUID";
 import {StructureTypes} from "./StructureTypes";
 
 export type StructureID = UUID;
