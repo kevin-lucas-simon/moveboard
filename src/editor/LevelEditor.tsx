@@ -12,9 +12,9 @@ import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 import {EditorInspector} from "./tabs/inspector/EditorInspector";
-import {StructureTypes} from "../data/model/StructureTypes";
-import {ChunkModel} from "../data/model/structure/structure.models";
+import {StructureTypes} from "../data/model/structure/StructureTypes";
 import {filterStructures} from "../data/factory/StructureFactory";
+import {ChunkModel} from "../data/model/structure/spacial/ChunkModel";
 
 enum EditorTabs {
     LEVEL_CHUNKS = "level_settings",

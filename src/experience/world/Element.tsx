@@ -4,10 +4,10 @@ import {elementConfig} from "../../config/elementConfig";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
-import {StructureTypes} from "../../data/model/StructureTypes";
-import {ChunkModel} from "../../data/model/structure/structure.models";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
 import {ElementTypes} from "../../data/model/ElementTypes";
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;

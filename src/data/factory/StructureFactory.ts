@@ -1,8 +1,7 @@
-import {StructureID, StructureModel} from "../model/structure/structure.models";
-import {StructureTypes} from "../model/StructureTypes";
-import {StructureConfig} from "../model/structure/structure.config";
-import {StructureDefault} from "../model/structure/structure.defaults";
+import {StructureTypes} from "../model/structure/StructureTypes";
 import {createUUID} from "../model/shared/UUID";
+import {StructureConfig} from "../model/structure/StructureConfig";
+import {StructureDefault, StructureID, StructureModel} from "../model/structure/StructureModel";
 
 export function createStructure<T extends StructureModel>(type: StructureTypes): T {
     return {

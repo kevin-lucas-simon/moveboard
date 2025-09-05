@@ -7,9 +7,9 @@ import {EditorJointSlug} from "../slug/EditorJointSlug";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";
-import {ChunkID, ChunkModel} from "../../../data/model/structure/structure.models";
 import {ElementTypes} from "../../../data/model/ElementTypes";
 import {createElement} from "../../../data/factory/ElementFactory";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorChunkInspectorProps = {
     level: LevelModel;

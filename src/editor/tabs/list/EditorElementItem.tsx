@@ -7,8 +7,8 @@ import {EditorElementSlug} from "../slug/EditorElementSlug";
 import {EditorGroupSlug} from "../slug/EditorGroupSlug";
 import {EditorJointSlug} from "../slug/EditorJointSlug";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ChunkID} from "../../../data/model/structure/structure.models";
 import {ElementTypes} from "../../../data/model/ElementTypes";
+import {ChunkID} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorElementItemProps = {
     element: ElementModel;

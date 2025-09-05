@@ -1,7 +1,8 @@
 import {createUUID, UUID} from "../shared/UUID";
-import {ChunkID, ChunkModel, StructureID, StructureModel} from "../structure/structure.models";
-import {StructureTypes} from "../StructureTypes";
+import {StructureTypes} from "../structure/StructureTypes";
 import {createStructure} from "../../factory/StructureFactory";
+import {ChunkID, ChunkModel} from "../structure/spacial/ChunkModel";
+import {StructureID, StructureModel} from "../structure/StructureModel";
 
 /**
  * API data model

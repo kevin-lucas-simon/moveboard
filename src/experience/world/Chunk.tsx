@@ -5,8 +5,8 @@ import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {Element} from "./Element";
 import {JointElement} from "../element/joint/JointElement";
-import {ChunkID} from "../../data/model/structure/structure.models";
 import {ElementTypes} from "../../data/model/ElementTypes";
+import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,

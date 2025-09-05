@@ -5,9 +5,9 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
-import {StructureTypes} from "../../data/model/StructureTypes";
-import {ChunkID, ChunkModel} from "../../data/model/structure/structure.models";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
+import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
 export type LevelProps = LevelModel & {};
 

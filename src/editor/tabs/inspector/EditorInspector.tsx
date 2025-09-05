@@ -4,7 +4,8 @@ import {EditorReducerActions} from "../../reducer/editorReducer";
 import {EditorChunkInspector} from "./EditorChunkInspector";
 import {EditorElementInspector} from "./EditorElementInspector";
 import {LevelModel} from "../../../data/model/world/LevelModel";
-import {ChunkModel} from "../../../data/model/structure/structure.models";
+
+import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorInspectorTabProps = {
     level: LevelModel;

@@ -1,5 +1,6 @@
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
-import {ChunkModel} from "../../data/model/structure/structure.models";
+
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';

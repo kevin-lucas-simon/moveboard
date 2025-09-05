@@ -1,8 +1,9 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
 import {JointModel} from "../../data/model/element/joint/JointModel";
-import {ChunkModel, StructureID, StructureModel} from "../../data/model/structure/structure.models";
 import {ElementTypes} from "../../data/model/ElementTypes";
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {StructureID, StructureModel} from "../../data/model/structure/StructureModel";
 
 export type LevelReducerState = {
     level: LevelModel,

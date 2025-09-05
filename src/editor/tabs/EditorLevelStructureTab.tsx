@@ -4,9 +4,9 @@ import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {EditorStructureList} from "./list/EditorStructureList";
 import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
-import {StructureTypes} from "../../data/model/StructureTypes";
-import {ChunkModel} from "../../data/model/structure/structure.models";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {createStructure} from "../../data/factory/StructureFactory";
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
 export type EditorLevelStructureTabProps = {
     level: LevelModel,

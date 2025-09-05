@@ -1,5 +1,6 @@
 import {StarIcon} from "@heroicons/react/24/outline";
-import {StructureModel} from "../../../data/model/structure/structure.models";
+
+import {StructureModel} from "../../../data/model/structure/StructureModel";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
