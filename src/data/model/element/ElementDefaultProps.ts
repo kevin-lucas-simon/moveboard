@@ -3,7 +3,7 @@ import {BarrierBlockDefault} from "./block/BarrierBlockModel";
 import {BasicBlockDefault} from "./block/BasicBlockModel";
 import {BounceBlockDefault} from "./block/BounceBlockModel";
 import {FloorBlockDefault} from "./block/FloorBlockModel";
-import {GroupDefault} from "./system/GroupModel";
+import {ElementGroupDefault} from "./system/ElementGroupModel";
 import {JointDefault} from "./joint/JointModel";
 import {ElementTypes} from "./ElementTypes";
 
@@ -23,7 +23,7 @@ export const ElementDefaultProps: Record<ElementTypes, {
         defaultProps: FloorBlockDefault,
     },
     [ElementTypes.Group]: {
-        defaultProps: GroupDefault,
+        defaultProps: ElementGroupDefault,
     },
     [ElementTypes.Joint]: {
         defaultProps: JointDefault,
