@@ -13,7 +13,8 @@ export function EditorProvider(props: EditorProviderProps) {
     const[editor, dispatch] = useReducer(editorReducer, {
         level: props.initial,
         active: props.initial.start,
-        selected: [],
+        selectedStructures: [],
+        selectedElements: [],
         errors: [],
     });
 

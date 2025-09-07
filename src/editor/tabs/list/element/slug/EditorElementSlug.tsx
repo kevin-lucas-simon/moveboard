@@ -1,5 +1,5 @@
 import React, {useRef} from "react";
-import {ElementModel} from "../../../data/model/element/ElementModel";
+import {ElementModel} from "../../../../../data/model/element/ElementModel";
 
 export type EditorElementSlugProps = {
     element: ElementModel;

@@ -1,14 +1,14 @@
 import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
-import {UUID} from "../../../data/model/UUID";
-import {ElementModel} from "../../../data/model/element/ElementModel";
-import {GroupModel} from "../../../data/model/element/system/GroupModel";
-import {EditorElementSlug} from "../slug/EditorElementSlug";
-import {EditorGroupSlug} from "../slug/EditorGroupSlug";
-import {EditorJointSlug} from "../slug/EditorJointSlug";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../data/model/element/ElementTypes";
-import {ChunkID} from "../../../data/model/structure/spacial/ChunkModel";
+import {UUID} from "../../../../data/model/UUID";
+import {ElementModel} from "../../../../data/model/element/ElementModel";
+import {GroupModel} from "../../../../data/model/element/system/GroupModel";
+import {EditorElementSlug} from "./slug/EditorElementSlug";
+import {EditorGroupSlug} from "./slug/EditorGroupSlug";
+import {EditorJointSlug} from "./slug/EditorJointSlug";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {ChunkID} from "../../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorElementItemProps = {
     element: ElementModel;

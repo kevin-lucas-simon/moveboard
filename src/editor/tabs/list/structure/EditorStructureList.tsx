@@ -1,13 +1,16 @@
-import {LevelReducerActions} from "../../reducer/levelReducer";
 import {EditorStructureItem} from "./EditorStructureItem";
 import {ReactSortable} from "react-sortablejs";
-import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
+import {StructureID, StructureModel} from "../../../../data/model/structure/StructureModel";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
     active: StructureID,
     start: StructureID,
-    dispatcher: React.Dispatch<LevelReducerActions>
+    selected: StructureID[],
+    dispatcher: React.Dispatch<EditorReducerActions>,
 }
 
 export function EditorStructureList(props: EditorStructureListProps) {
@@ -15,7 +18,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
 
     const selectChunk = (id: StructureID) => {
         props.dispatcher({
-            type: 'level_select_structure',
+            type: 'editor_select_structure',
             payload: id,
         });
     }
@@ -32,6 +35,20 @@ export function EditorStructureList(props: EditorStructureListProps) {
         });
     }
 
+    const toggleCollapse = (structure: StructureModel) => {
+        if (structure.type !== StructureTypes.Section) {
+            return;
+        }
+
+        props.dispatcher({
+            type: 'level_patch_structure',
+            payload: {
+                id: structure.id,
+                collapsed: !(structure as SectionModel).collapsed,
+            } as SectionModel,
+        })
+    }
+
     return (
         <ReactSortable
             list={structuredClone(structureModels)}
@@ -45,7 +62,9 @@ export function EditorStructureList(props: EditorStructureListProps) {
                     structure={structure}
                     isActive={structure.id === props.active}
                     isStart={structure.id === props.start}
+                    isSelected={props.selected.includes(structure.id)}
                     onSelect={() => selectChunk(structure.id)}
+                    onCollapseToggle={() => toggleCollapse(structure)}
                 />
             ))}
         </ReactSortable>

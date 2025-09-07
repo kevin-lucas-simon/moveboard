@@ -10,12 +10,12 @@ export type LevelReducerState = {
     active: StructureID,
 };
 
-export type LevelReducerActions = ChunkReducerActions | { // TODO actions umbenennen von chunk zu structure
-    type: 'level_select_structure',
-    payload: StructureID,
-} | {
+export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_add_structure',
     payload: StructureModel,
+} | {
+    type: 'level_patch_structure',
+    payload: Partial<StructureModel>,
 } | {
     type: 'level_remove_structure',
     payload: StructureID,
@@ -38,17 +38,7 @@ export function levelReducer(
     action: LevelReducerActions,
 ): LevelReducerState {
     switch (action.type) {
-        case 'level_select_structure':
-            const selectedStructureId = action.payload;
-            if (!(selectedStructureId in state.level.structures)) {
-                return state;
-            }
-
-            return {
-                ...state,
-                active: selectedStructureId,
-            };
-        case "level_add_structure":
+        case "level_add_structure": {
             const structure = action.payload;
 
             return {
@@ -61,7 +51,36 @@ export function levelReducer(
                     },
                 }
             };
-        case "level_remove_structure": // TODO PROBLEM: Wie mit Verweisen in Joints umgehen? Zudem wie mit Verweisen in anderen Strukturen umgehen?
+        }
+        case "level_patch_structure": {
+            const { id, ...patch } = action.payload;
+            if (!id) {
+                throw new Error('Structure ID is required for patching');
+            }
+            if (['type'].some(field => field in patch) || Object.values(patch).some(value => Array.isArray(value))) {
+                throw new Error('Cannot patch structure type or array fields');
+            }
+
+            const structure = state.level.structures[id];
+            if (!structure) {
+                throw new Error(`Structure with ID ${id} not found`);
+            }
+
+            return {
+                ...state,
+                level: {
+                    ...state.level,
+                    structures: {
+                        ...state.level.structures,
+                        [id]: {
+                            ...structure,
+                            ...patch,
+                        },
+                    },
+                },
+            };
+        }
+        case "level_remove_structure": { // TODO PROBLEM: Wie mit Verweisen in Joints umgehen? Zudem wie mit Verweisen in anderen Strukturen umgehen?
             const removedChunkId = action.payload;
 
             // update active chunk to level start if the removed chunk is currently active
@@ -75,7 +94,7 @@ export function levelReducer(
             // update joints in remaining chunks to remove references to the removed chunk
             // TODO ganz heißes Eisen, hier nochmal refactoren!
             Object.entries(updatedChunks).forEach(([_, chunk]) => {
-                Object.entries((chunk as  ChunkModel).elements).forEach(([_, element]) => {
+                Object.entries((chunk as ChunkModel).elements).forEach(([_, element]) => {
                     if (
                         element.type === ElementTypes.Joint
                         && (element as JointModel).neighbour === removedChunkId
@@ -94,9 +113,10 @@ export function levelReducer(
                     structures: updatedChunks,
                 },
             }
-        case 'level_reorder_structures': // TODO generalisierbar auf level_reorder_structures
+        }
+        case 'level_reorder_structures': {
             const structureIds = action.payload as StructureID[];
-            const reorderedChunks: {[key: StructureID]: StructureModel} = {};
+            const reorderedChunks: { [key: StructureID]: StructureModel } = {};
 
             structureIds.forEach(id => {
                 if (!state.level.structures[id]) {
@@ -116,7 +136,8 @@ export function levelReducer(
                     structures: reorderedChunks,
                 },
             };
-        case 'level_update_field': // TODO generalisierbar auf level_update_structure_field
+        }
+        case 'level_update_field': {
             const updatedKey = action.payload.key;
             const updatedValue = action.payload.value;
 
@@ -136,14 +157,16 @@ export function levelReducer(
                     [updatedKey]: updatedValue,
                 },
             };
-        case 'level_reset':
+        }
+        case 'level_reset': {
             // use current active, if not available use level start;
             return {
                 ...state,
                 active: state.level.structures[state.active] ? state.active : state.level.start,
                 level: action.payload,
             };
-        default:
+        }
+        default: {
             // delegate to chunkReducer for active chunk actions
             return {
                 ...state,
@@ -155,5 +178,6 @@ export function levelReducer(
                     },
                 },
             };
+        }
     }
 }

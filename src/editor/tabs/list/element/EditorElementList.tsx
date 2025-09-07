@@ -1,12 +1,12 @@
 import {ReactSortable} from "react-sortablejs";
 import {EditorElementItem} from "./EditorElementItem";
 import React from "react";
-import {UUID} from "../../../data/model/UUID";
-import {ElementID, ElementModel} from "../../../data/model/element/ElementModel";
-import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
-import {GroupModel} from "../../../data/model/element/system/GroupModel";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../data/model/element/ElementTypes";
+import {UUID} from "../../../../data/model/UUID";
+import {ElementID, ElementModel} from "../../../../data/model/element/ElementModel";
+import {EditorChunkElementsTabProps} from "../../EditorChunkElementsTab";
+import {GroupModel} from "../../../../data/model/element/system/GroupModel";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 
 export type EditorElementListProps = EditorChunkElementsTabProps & {
     parent: ElementID | null;
@@ -23,7 +23,7 @@ export function EditorElementList(props: EditorElementListProps) {
             return;
         }
         props.dispatcher({
-            type: "editor_select",
+            type: "editor_select_element",
             payload: id,
         });
     }
@@ -130,7 +130,7 @@ export function EditorElementList(props: EditorElementListProps) {
             return;
         }
         props.dispatcher({
-            type: 'level_select_structure',
+            type: 'editor_select_structure',
             payload: chunkId,
         });
     }

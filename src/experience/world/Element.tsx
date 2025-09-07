@@ -21,7 +21,7 @@ export function Element(props: ElementProps) {
         return <></>
     }
 
-    const selected = editorContext?.selected.includes(props.id) ?? false;
+    const selected = editorContext?.selectedElements.includes(props.id) ?? false;
 
     const selectElement = (e: ThreeEvent<MouseEvent>) => {
         if (!editorContext || !editorActions) {
@@ -38,7 +38,7 @@ export function Element(props: ElementProps) {
 
         if (!selected) {
             editorActions({
-                type: 'editor_select',
+                type: 'editor_select_element',
                 payload: props.id,
             });
             return;

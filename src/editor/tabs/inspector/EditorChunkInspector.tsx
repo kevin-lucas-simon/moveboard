@@ -3,7 +3,7 @@ import {BaseTab} from "../../component/BaseTab";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {EditorJointSlug} from "../slug/EditorJointSlug";
+import {EditorJointSlug} from "../list/element/slug/EditorJointSlug";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";
@@ -36,7 +36,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
             return
         }
         props.dispatcher({
-            type: 'level_select_structure',
+            type: 'editor_select_structure',
             payload: chunkId,
         });
     }
@@ -61,7 +61,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
     const selectJoint = (e: any, joint: JointModel) => {
         e.stopPropagation();
         props.dispatcher({
-            type: 'editor_select',
+            type: 'editor_select_element',
             payload: joint.id,
         });
     }
@@ -73,7 +73,7 @@ export function EditorChunkInspector(props: EditorChunkInspectorProps) {
             payload: element,
         })
         props.dispatcher({
-            type: "editor_select",
+            type: "editor_select_element",
             payload: element.id,
         });
     }

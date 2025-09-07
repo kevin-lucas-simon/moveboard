@@ -1,16 +1,18 @@
 import {BaseTab} from "../component/BaseTab";
 import {LevelModel} from "../../data/model/world/LevelModel";
-import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
-import {EditorStructureList} from "./list/EditorStructureList";
+import {EditorStructureList} from "./list/structure/EditorStructureList";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {createStructure} from "../../data/factory/StructureFactory";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {EditorReducerActions} from "../reducer/editorReducer";
+import {StructureID} from "../../data/model/structure/StructureModel";
 
 export type EditorLevelStructureTabProps = {
     level: LevelModel,
     activeChunk: ChunkModel,
-    levelDispatcher: React.Dispatch<LevelReducerActions>,
+    selectedStructures: StructureID[],
+    levelDispatcher: React.Dispatch<EditorReducerActions>,
 }
 
 export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
@@ -38,6 +40,7 @@ export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
                     structures={props.level.structures}
                     active={props.activeChunk.id}
                     start={props.level.start}
+                    selected={props.selectedStructures}
                     dispatcher={props.levelDispatcher}
                 />
             </ul>

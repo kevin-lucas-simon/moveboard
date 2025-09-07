@@ -87,12 +87,13 @@ export function LevelEditor() {
                         <EditorLevelStructureTab
                             level={editLevel}
                             activeChunk={editChunk}
+                            selectedStructures={editor.selectedStructures}
                             levelDispatcher={dispatchEditor}
                         />
                     }
                     {tab === EditorTabs.CHUNK_ELEMENTS &&
                         <EditorChunkElementsTab
-                            selected={editor.selected}
+                            selected={editor.selectedElements}
                             elements={editChunk.elements}
                             dispatcher={dispatchEditor}
                         />
@@ -131,7 +132,7 @@ export function LevelEditor() {
                         <EditorInspector
                             level={editLevel}
                             chunk={editChunk}
-                            selected={editor.selected}
+                            selected={editor.selectedElements}
                             dispatcher={dispatchEditor}
                         />
                     </div>

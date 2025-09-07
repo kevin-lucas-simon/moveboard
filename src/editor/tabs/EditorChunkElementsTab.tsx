@@ -4,7 +4,7 @@ import {ElementDefaultProps} from "../../data/model/element/ElementDefaultProps"
 import {BaseTab} from "../component/BaseTab";
 import {EditorReducerActions} from "../reducer/editorReducer";
 import {UUID} from "../../data/model/UUID";
-import {EditorElementList} from "./list/EditorElementList";
+import {EditorElementList} from "./list/element/EditorElementList";
 import {createElement} from "../../data/factory/ElementFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 
@@ -25,7 +25,7 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
             payload: element,
         });
         props.dispatcher({
-            type: "editor_select",
+            type: "editor_select_element",
             payload: element.id,
         });
     }
