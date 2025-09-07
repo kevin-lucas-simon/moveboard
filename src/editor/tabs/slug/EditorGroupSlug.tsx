@@ -1,10 +1,10 @@
-import {ElementGroupModel} from "../../../data/model/element/system/ElementGroupModel";
+import {GroupModel} from "../../../data/model/element/system/GroupModel";
 import {EditorElementSlug} from "./EditorElementSlug";
 import {FolderIcon, FolderOpenIcon} from "@heroicons/react/24/outline";
 import React from "react";
 
 export type EditorGroupSlugProps = {
-    element: ElementGroupModel;
+    element: GroupModel;
     onCollapse: () => void;
     onExpand: () => void;
     onRename: (name: string) => void;

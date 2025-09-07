@@ -53,7 +53,6 @@ export function levelReducer(
 
             return {
                 ...state,
-                active: structure.id,
                 level: {
                     ...state.level,
                     structures: {

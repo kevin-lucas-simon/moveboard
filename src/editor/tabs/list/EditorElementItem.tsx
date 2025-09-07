@@ -2,7 +2,7 @@ import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
 import {UUID} from "../../../data/model/UUID";
 import {ElementModel} from "../../../data/model/element/ElementModel";
-import {ElementGroupModel} from "../../../data/model/element/system/ElementGroupModel";
+import {GroupModel} from "../../../data/model/element/system/GroupModel";
 import {EditorElementSlug} from "../slug/EditorElementSlug";
 import {EditorGroupSlug} from "../slug/EditorGroupSlug";
 import {EditorJointSlug} from "../slug/EditorJointSlug";
@@ -70,7 +70,7 @@ export function EditorElementItem(props: EditorElementItemProps) {
                         switch(props.element.type) {
                             case ElementTypes.Group:
                                 return <EditorGroupSlug
-                                    element={props.element as ElementGroupModel}
+                                    element={props.element as GroupModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
                                     onRename={handleRename}
@@ -93,7 +93,7 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     <TrashIcon className="w-4 text-black"/>
                 </button>
             </div>
-            {props.children && props.element.type === ElementTypes.Group && !(props.element as ElementGroupModel).collapsed && (
+            {props.children && props.element.type === ElementTypes.Group && !(props.element as GroupModel).collapsed && (
                 <div className="ml-6">
                     {props.children}
                 </div>

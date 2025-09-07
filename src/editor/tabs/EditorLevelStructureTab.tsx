@@ -3,7 +3,6 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {LevelReducerActions} from "../reducer/levelReducer";
 import React from "react";
 import {EditorStructureList} from "./list/EditorStructureList";
-import {CreateChunkDialog} from "../dialog/CreateChunkDialog";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {createStructure} from "../../data/factory/StructureFactory";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
@@ -14,29 +13,25 @@ export type EditorLevelStructureTabProps = {
     levelDispatcher: React.Dispatch<LevelReducerActions>,
 }
 
-enum EditorDialogs {
-    CHUNK_CREATE = "chunk_create",
-}
-
 export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
-    const [dialog, setDialog] = React.useState<EditorDialogs|null>(null);
+    const addStructure = (type?: string) => {
+        if (!type || !(type in StructureTypes)) {
+            return;
+        }
 
-    const handleCreateChunk = (name: string) => {
-        const chunk = createStructure<ChunkModel>(StructureTypes.Chunk);
-        chunk.name = name;
-
+        const structure = createStructure(type as StructureTypes);
         props.levelDispatcher({
             type: 'level_add_structure',
-            payload: chunk,
-        });
-        setDialog(null);
+            payload: structure,
+        })
     }
 
     return (
         <BaseTab
             title={"Level Chunks"}
             description={"Select and edit the chunks of the level."}
-            onAction={() => setDialog(EditorDialogs.CHUNK_CREATE)}
+            onAction={addStructure}
+            addOptions={Object.keys(StructureTypes)}
         >
             <ul>
                 <EditorStructureList
@@ -46,15 +41,6 @@ export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
                     dispatcher={props.levelDispatcher}
                 />
             </ul>
-
-            {dialog === EditorDialogs.CHUNK_CREATE &&
-                <CreateChunkDialog
-                    isOpen={true}
-                    existingChunkNames={Object.keys(props.level.structures)}
-                    onSubmit={handleCreateChunk}
-                    onClose={() => setDialog(null)}
-                />
-            }
         </BaseTab>
     );
 }

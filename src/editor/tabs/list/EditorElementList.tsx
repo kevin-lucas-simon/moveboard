@@ -4,7 +4,7 @@ import React from "react";
 import {UUID} from "../../../data/model/UUID";
 import {ElementID, ElementModel} from "../../../data/model/element/ElementModel";
 import {EditorChunkElementsTabProps} from "../EditorChunkElementsTab";
-import {ElementGroupModel} from "../../../data/model/element/system/ElementGroupModel";
+import {GroupModel} from "../../../data/model/element/system/GroupModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
 
@@ -70,8 +70,8 @@ export function EditorElementList(props: EditorElementListProps) {
             type: 'chunk_update_element',
             payload: {
                 ...value,
-                collapsed: !(value as ElementGroupModel).collapsed
-            } as ElementGroupModel,
+                collapsed: !(value as GroupModel).collapsed
+            } as GroupModel,
         });
     }
 
