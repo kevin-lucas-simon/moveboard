@@ -7,6 +7,7 @@ import {SectionModel} from "../../../../data/model/structure/system/SectionModel
 
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
+    parent: StructureID | null,
     active: StructureID,
     start: StructureID,
     selected: StructureID[],
@@ -14,7 +15,7 @@ export type EditorStructureListProps = {
 }
 
 export function EditorStructureList(props: EditorStructureListProps) {
-    const structureModels = Object.values(props.structures);
+    const sectionStructures = Object.values(props.structures).filter(structure => structure.parent === props.parent);
 
     const selectChunk = (id: StructureID) => {
         props.dispatcher({
@@ -23,16 +24,52 @@ export function EditorStructureList(props: EditorStructureListProps) {
         });
     }
 
-    const reorderStructures = (newStructures: StructureModel[]) => {
-        const newStructureOrder: StructureID[] = [];
-        newStructures.forEach((chunk) => {
-            newStructureOrder.push(chunk.id);
-        });
+    const reorderStructures = (newSectionStructures: StructureModel[]) => {
+        // section change is only handled by the corresponding section structure (two events on moving between groups)
+        if (newSectionStructures.length < sectionStructures.length) {
+            return;
+        }
 
+        // update the parent of the moved structures
+        const movedStructures = newSectionStructures.filter(structure => !sectionStructures.some(e => e.id === structure.id));
+        movedStructures.forEach((structure) => {
+            props.dispatcher({
+                type: 'level_patch_structure',
+                payload: {
+                    id: structure.id,
+                    parent: props.parent,
+                }
+            })
+        })
+
+        // recursively calculate the new total order of elements (we have to remove the old one)
+        const calculateSectionOrder = (parent: StructureID|null): StructureID[] => {
+            const sectionElements = props.parent === parent
+                ? newSectionStructures
+                : Object.values(props.structures)
+                    .filter(structure => structure.parent === parent)
+                    .filter(structure => !movedStructures.map(structure => structure.id).includes(structure.id))
+            ;
+
+            const newSectionOrder: StructureID[] = [];
+            sectionElements.forEach((structure) => {
+                newSectionOrder.push(structure.id);
+
+                if (structure.type === StructureTypes.Section) {
+                    const childrenOrder = calculateSectionOrder(structure.id);
+                    newSectionOrder.push(...childrenOrder);
+                }
+            })
+
+            return newSectionOrder;
+        }
+
+        // apply the new order
+        const newTotalOrder: StructureID[] = calculateSectionOrder(null);
         props.dispatcher({
             type: 'level_reorder_structures',
-            payload: newStructureOrder,
-        });
+            payload: newTotalOrder,
+        })
     }
 
     const toggleCollapse = (structure: StructureModel) => {
@@ -51,12 +88,12 @@ export function EditorStructureList(props: EditorStructureListProps) {
 
     return (
         <ReactSortable
-            list={structuredClone(structureModels)}
+            list={structuredClone(sectionStructures)}
             setList={reorderStructures}
             tag="ul"
             group={EditorStructureList.name}
         >
-            {structureModels.map((structure) => (
+            {sectionStructures.map((structure) => (
                 <EditorStructureItem
                     key={structure.id}
                     structure={structure}
@@ -65,7 +102,18 @@ export function EditorStructureList(props: EditorStructureListProps) {
                     isSelected={props.selected.includes(structure.id)}
                     onSelect={() => selectChunk(structure.id)}
                     onCollapseToggle={() => toggleCollapse(structure)}
-                />
+                >
+                    {structure.type === StructureTypes.Section && (
+                        <EditorStructureList
+                            structures={props.structures}
+                            parent={structure.id}
+                            active={props.active}
+                            start={props.start}
+                            selected={props.selected}
+                            dispatcher={props.dispatcher}
+                        />
+                    )}
+                </EditorStructureItem>
             ))}
         </ReactSortable>
     );

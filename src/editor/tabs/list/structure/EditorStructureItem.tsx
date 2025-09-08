@@ -3,6 +3,7 @@ import {EditorStructureSlug} from "./slug/EditorStructureSlug";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {EditorSectionSlug} from "./slug/EditorSectionSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
+import React from "react";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
@@ -11,6 +12,7 @@ export type EditorStructureItemProps = {
     isSelected: boolean;
     onCollapseToggle: () => void;
     onSelect: () => void;
+    children?: React.ReactNode;
 }
 
 export function EditorStructureItem(props: EditorStructureItemProps) {
@@ -44,6 +46,11 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                     })()}
                 </div>
             </div>
+            {props.children && props.structure.type === StructureTypes.Section && !(props.structure as SectionModel).collapsed && (
+                <div className="ml-6">
+                    {props.children}
+                </div>
+            )}
         </li>
     );
 }

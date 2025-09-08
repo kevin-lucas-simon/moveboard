@@ -38,6 +38,7 @@ export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
             <ul>
                 <EditorStructureList
                     structures={props.level.structures}
+                    parent={null}
                     active={props.activeChunk.id}
                     start={props.level.start}
                     selected={props.selectedStructures}

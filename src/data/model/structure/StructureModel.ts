@@ -6,10 +6,12 @@ export type StructureModel = {
     id: StructureID,
     type: string,
     name: string,
+    parent: StructureID | null,
 }
 
 export const StructureDefault: StructureModel = {
     id: "000-000",
     type: StructureTypes.Unknown,
     name: "New Structure",
+    parent: null,
 }
