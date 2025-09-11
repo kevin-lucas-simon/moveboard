@@ -1,4 +1,4 @@
-import {Bars3Icon} from "@heroicons/react/24/outline";
+import {Bars3Icon, ChevronDownIcon} from "@heroicons/react/24/outline";
 import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
 import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
 import {BasicDropdown} from "../component/dropdown/BasicDropdown";
@@ -8,6 +8,7 @@ import {LevelModel} from "../data/model/world/LevelModel";
 import {ExportChangesDialog} from "./dialog/ExportChangesDialog";
 import {ClearChangesDialog} from "./dialog/ClearChangesDialog";
 import {LevelSettingsDialog} from "./dialog/LevelSettingsDialog";
+import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
 
 export type LevelMenuProps = {
     level: LevelModel;
@@ -26,8 +27,10 @@ export function LevelMenu(props: LevelMenuProps) {
     return (
         <>
             <BasicDropdown button={<>
-                {props.level.name}
-                <Bars3Icon className="h-6"/>
+                {/*<Bars3Icon className="w-6"/>*/}
+                <MoveBoardLogo />
+                <div className="text-2xl font-semibold">{props.level.name}</div>
+                <ChevronDownIcon className="w-6"/>
             </>}>
                 <div>
                     <BasicDropdownItem onClick={() => setDialog(EditorDialogs.Level_SETTINGS)}>

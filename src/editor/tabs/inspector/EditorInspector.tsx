@@ -26,6 +26,8 @@ export function EditorInspector(props: EditorInspectorTabProps) {
         />;
     }
 
+    // TODO selected structure
+
     return <EditorChunkInspector
         level={props.level}
         chunk={props.chunk}

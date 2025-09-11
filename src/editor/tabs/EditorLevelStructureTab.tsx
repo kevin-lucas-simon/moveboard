@@ -30,8 +30,7 @@ export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
 
     return (
         <BaseTab
-            title={"Level Chunks"}
-            description={"Select and edit the chunks of the level."}
+            title={"Structure"}
             onAction={addStructure}
             addOptions={Object.keys(StructureTypes)}
         >

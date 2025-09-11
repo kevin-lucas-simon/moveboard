@@ -26,9 +26,9 @@ export function BaseTab(props: BaseTabProps) {
     }
 
     return (
-        <div className={"w-full h-full flex flex-col rounded-xl bg-gray-500/10 " + props.className}>
+        <div className={"w-full h-full flex flex-col " + props.className}>
             <div className="pt-4 px-4 flex justify-between">
-                <h2 className="text-xl">{props.title}</h2>
+                <h2 className="text-xl font-semibold">{props.title}</h2>
                 {(props.addOptions || props.onAction || props.actionIcon) &&
                     <Menu>
                         <MenuButton
