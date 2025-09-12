@@ -1,30 +1,32 @@
-import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {ElementDefaultProps} from "../../data/model/element/ElementDefaultProps";
 import {BaseTab} from "../component/BaseTab";
-import {EditorReducerActions} from "../reducer/editorReducer";
-import {UUID} from "../../data/model/UUID";
 import {EditorElementList} from "./list/element/EditorElementList";
 import {createElement} from "../../data/factory/ElementFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
+import {useEditorActions, useEditorContext, useEditorActiveStructure} from "../reducer/EditorProvider";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 
-export type EditorChunkElementsTabProps = {
-    elements: {[key: string]: ElementModel};
-    selected: UUID[];
-    dispatcher: React.Dispatch<EditorReducerActions>;
-}
+export function EditorChunkElementsTab() {
+    const dispatcher = useEditorActions();
+    const elements = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)?.elements;
+    const selectedElementIds = useEditorContext()?.selectedElements ?? [];
 
-export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
+    if (!dispatcher || !elements) {
+        return <></>;
+    }
+
     const addElement = (type?: string) => {
         if (!type || !(type in ElementDefaultProps)) {
             return;
         }
         const element = createElement(type as ElementTypes)
-        props.dispatcher({
+        dispatcher({
             type: 'chunk_add_element',
             payload: element,
         });
-        props.dispatcher({
+        dispatcher({
             type: "editor_select_element",
             payload: element.id,
         });
@@ -38,9 +40,9 @@ export function EditorChunkElementsTab(props: EditorChunkElementsTabProps) {
             onAction={addElement}
         >
             <EditorElementList
-                elements={props.elements}
-                selected={props.selected}
-                dispatcher={props.dispatcher}
+                elements={elements}
+                selected={selectedElementIds}
+                dispatcher={dispatcher}
                 parent={null}
             />
         </BaseTab>

@@ -3,12 +3,15 @@ import {EditorElementItem} from "./EditorElementItem";
 import React from "react";
 import {UUID} from "../../../../data/model/UUID";
 import {ElementID, ElementModel} from "../../../../data/model/element/ElementModel";
-import {EditorChunkElementsTabProps} from "../../EditorChunkElementsTab";
 import {GroupModel} from "../../../../data/model/element/system/GroupModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
 
-export type EditorElementListProps = EditorChunkElementsTabProps & {
+export type EditorElementListProps = {
+    elements: {[key: string]: ElementModel};
+    selected: UUID[];
+    dispatcher: React.Dispatch<EditorReducerActions>;
     parent: ElementID | null;
 }
 

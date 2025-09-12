@@ -4,7 +4,7 @@ import {StructureTypes} from "./StructureTypes";
 export type StructureID = UUID;
 export type StructureModel = {
     id: StructureID,
-    type: string,
+    type: StructureTypes,
     name: string,
     parent: StructureID | null,
 }

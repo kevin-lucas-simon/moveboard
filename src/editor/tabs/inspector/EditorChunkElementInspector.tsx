@@ -12,18 +12,13 @@ import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorElementInspectorProps = {
+    dispatcher: React.Dispatch<EditorReducerActions>;
     level: LevelModel;
     chunk: ChunkModel;
-    selected: UUID[];
-    dispatcher: React.Dispatch<EditorReducerActions>;
+    element: ElementModel;
 }
 
-export function EditorElementInspector(props: EditorElementInspectorProps) {
-    const selectedElement = props.selected[0] ? props.chunk.elements[props.selected[0]] : undefined;
-    if (!selectedElement) {
-        return <></>
-    }
-
+export function EditorChunkElementInspector(props: EditorElementInspectorProps) {
     const deselectElement = () => {
         props.dispatcher({
             type: "editor_deselect_all",
@@ -41,7 +36,7 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
         deselectElement();
         props.dispatcher({
             type: 'chunk_remove_element',
-            payload: selectedElement.id,
+            payload: props.element.id,
         });
     }
 
@@ -73,18 +68,18 @@ export function EditorElementInspector(props: EditorElementInspectorProps) {
 
     return (
         <BaseTab
-            title={!selectedElement.name ? selectedElement.type : selectedElement.name}
-            description={selectedElement.type}
+            title={!props.element.name ? props.element.type : props.element.name}
+            description={props.element.type}
             actionIcon={<XMarkIcon className="w-6" />}
             onAction={deselectElement}
         >
             <ul>
                 <JsonNestedEditor
-                    keyName={selectedElement.type}
-                    value={selectedElement}
-                    onKeyValueChange={(key, value) => changeElement(selectedElement.id, value)}
+                    keyName={props.element.type}
+                    value={props.element}
+                    onKeyValueChange={(key, value) => changeElement(props.element.id, value)}
                     selectionOnKey={{
-                        "neighbour": getChunkSelection((selectedElement as JointModel).neighbour)
+                        "neighbour": getChunkSelection((props.element as JointModel).neighbour)
                     }}
                 />
                 <li className="px-2 py-4">

@@ -1,6 +1,11 @@
 import React, {createContext, useContext, useReducer} from "react";
 import {editorReducer, EditorReducerActions, EditorReducerState} from "./editorReducer";
 import {LevelModel} from "../../data/model/world/LevelModel";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
+import {StructureModel} from "../../data/model/structure/StructureModel";
+import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {ElementModel} from "../../data/model/element/ElementModel";
+import {filterStructures} from "../../data/factory/StructureFactory";
 
 const EditorContext = createContext<EditorReducerState|null>(null);
 const EditorDispatcher = createContext<React.Dispatch<EditorReducerActions>|null>(null);
@@ -33,4 +38,41 @@ export function useEditorContext() {
 
 export function useEditorActions() {
     return useContext(EditorDispatcher);
+}
+
+export function useEditorLevel() {
+    const editor = useEditorContext();
+    if (!editor) {
+        return null;
+    }
+    return editor.level;
+}
+
+export function useEditorActiveStructure<T extends StructureModel>(type?: StructureTypes): T | null {
+    const editor = useEditorContext();
+    if (!editor) {
+        return null;
+    }
+
+    const structures = type
+        ? filterStructures<T>(editor.level.structures, type)
+        : editor.level.structures;
+
+    return structures[editor.active] as T;
+}
+
+export function useEditorSelectedChunkElements(): {[key: string]: ElementModel} {
+    const editor = useEditorContext();
+    const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk);
+    if (!editor || !chunk) {
+        return {};
+    }
+
+    const elements: {[key: string]: ElementModel} = {};
+    editor.selectedElements.forEach(id => {
+        if (chunk.elements[id]) {
+            elements[id] = chunk.elements[id];
+        }
+    });
+    return elements;
 }

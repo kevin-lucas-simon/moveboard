@@ -15,7 +15,7 @@ export type EditorCollapseBarType = {
     dispatcher: React.Dispatch<EditorReducerActions>;
 }
 
-export function EditorCollapseBar(props: EditorCollapseBarType) {
+export function EditorStructureMenu(props: EditorCollapseBarType) {
     const [isCollapsed, setCollapsed] = React.useState(false);
 
     const handleCollapse = () => {
