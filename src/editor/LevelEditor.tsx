@@ -2,25 +2,14 @@ import {Level} from "../experience/world/Level";
 import {Environment} from "../experience/Environment";
 import React, {useState} from "react";
 import {EditorChunkElementsTab} from "./tabs/EditorChunkElementsTab";
-import {EditorTabButton} from "./component/EditorTabButton";
-import {
-    Bars3Icon,
-    ChevronDoubleRightIcon, ChevronDownIcon,
-    PlayIcon,
-    RectangleGroupIcon,
-    RectangleStackIcon
-} from "@heroicons/react/24/outline";
-import {EditorPlayTestTab} from "./tabs/EditorPlayTestTab";
 import {DebugSettingsDefault, DebugSettingsProvider} from "../experience/input/DebugSettingsProvider";
-import {MoveBoardLogo} from "../component/asset/MoveBoardLogo";
-import {EditorLevelStructureTab} from "./tabs/EditorLevelStructureTab";
-import {LevelMenu} from "./LevelMenu";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorActions, useEditorContext} from "./reducer/EditorProvider";
 import {EditorInspector} from "./tabs/inspector/EditorInspector";
 import {StructureTypes} from "../data/model/structure/StructureTypes";
 import {filterStructures} from "../data/factory/StructureFactory";
 import {ChunkModel} from "../data/model/structure/spacial/ChunkModel";
+import {EditorCollapseBar} from "./layout/EditorCollapseBar";
 
 enum EditorTabs {
     LEVEL_CHUNKS = "level_settings",
@@ -54,33 +43,16 @@ export function LevelEditor() {
 
     return (
         <div className="w-full h-full flex bg-gray-500/10">
-            {/* error notifications */}
             <EditorToaster errors={editErrors}/>
 
-            <div className="w-56 shrink-0 h-full flex flex-col">
-                {/* header */}
-                <div className="w-full px-2 py-6">
-                    <LevelMenu level={editLevel} levelDispatcher={dispatchEditor}/>
-                </div>
+            <EditorCollapseBar
+                level={editLevel}
+                chunk={editChunk}
+                selectedStructures={editor.selectedStructures}
+                dispatcher={dispatchEditor}
+            />
 
-                {/* content */}
-                <div className="w-full grow">
-                    <EditorLevelStructureTab
-                        level={editLevel}
-                        activeChunk={editChunk}
-                        selectedStructures={editor.selectedStructures}
-                        levelDispatcher={dispatchEditor}
-                    />
-                </div>
-
-                {/* actions */}
-                <div className="w-full flex gap-2 p-4">
-                    <PlayIcon className="w-6"/>
-                    Test Play
-                </div>
-            </div>
-
-            <div className="grow h-full flex p-4 pl-0 rounded-2xl overflow-hidden">
+            <div className="grow h-full flex p-4 pl-0 rounded-2xl overflow-hidden z-10">
                 <div className="shrink-0 -mr-4 rounded-2xl bg-white z-10 drop-shadow flex">
                     <div className="w-56">
                         <EditorChunkElementsTab
