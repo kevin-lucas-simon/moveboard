@@ -17,8 +17,8 @@ export function JsonObjectEditor(props: SingleObjectEditorProps) {
 
      return (
         <div className="group">
-            <label className="w-full flex justify-between group-hover:bg-gray-500/10 px-2 py-1">
-                <span className="flex py-1 px-2 select-none gap-1 items-center capitalize">
+            <label className="w-full flex gap-1 justify-between group-hover:bg-gray-500/10 px-2 py-1">
+                <span className="flex py-1 px-2 select-none gap-1 items-center capitalize truncate text-ellipsis">
                     {props.keyName}
                     {!(props.value instanceof Object) && ":"}
                 </span>
@@ -27,7 +27,7 @@ export function JsonObjectEditor(props: SingleObjectEditorProps) {
                         value={props.value}
                         onChange={(value: any) => props.onChange(props.keyName, value)}
                         selection={props.selectionOnKey?.[props.keyName]}
-                        className="w-0 grow bg-transparent outline-none"
+                        className="w-0 shrink-0 grow bg-transparent outline-none"
                     />
                 }
             </label>

@@ -2,21 +2,28 @@ import {LevelMenu} from "../LevelMenu";
 import {EditorLevelStructureTab} from "../tabs/EditorLevelStructureTab";
 import {ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDownIcon, PlayIcon} from "@heroicons/react/24/outline";
 import React from "react";
-import {LevelModel} from "../../data/model/world/LevelModel";
-import {EditorReducerActions} from "../reducer/editorReducer";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {StructureID} from "../../data/model/structure/StructureModel";
 import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
+import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
-export type EditorCollapseBarType = {
-    level: LevelModel;
-    chunk: ChunkModel;
-    selectedStructures: StructureID[];
-    dispatcher: React.Dispatch<EditorReducerActions>;
+export type EditorStructureMenuProps = {
+    onTestButtonClick: () => void;
 }
 
-export function EditorStructureMenu(props: EditorCollapseBarType) {
+export function EditorStructureMenu(props: EditorStructureMenuProps) {
     const [isCollapsed, setCollapsed] = React.useState(false);
+
+    const dispatcher = useEditorActions();
+    const editor = useEditorContext();
+    const level = useEditorLevel();
+    const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)
+
+    if (!dispatcher || !editor || !level || !chunk) {
+        return <></>;
+    }
+
+    const selectedStructures = editor?.selectedStructures || [];
 
     const handleCollapse = () => {
         setCollapsed(!isCollapsed);
@@ -29,28 +36,33 @@ export function EditorStructureMenu(props: EditorCollapseBarType) {
                 <LevelMenu
                     button={<>
                         <MoveBoardLogo />
-                        {!isCollapsed && <div className="text-2xl font-semibold">{props.level.name}</div>}
+                        {!isCollapsed && <div className="text-2xl font-semibold">{level.name}</div>}
                         {!isCollapsed && <ChevronDownIcon className="w-6"/>}
                     </>}
-                    level={props.level}
-                    levelDispatcher={props.dispatcher}
+                    level={level}
+                    levelDispatcher={dispatcher}
                 />
             </div>
 
             {/* content */}
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
                 <EditorLevelStructureTab
-                    level={props.level}
-                    activeChunk={props.chunk}
-                    selectedStructures={props.selectedStructures}
-                    levelDispatcher={props.dispatcher}
+                    level={level}
+                    activeChunk={chunk}
+                    selectedStructures={selectedStructures}
+                    levelDispatcher={dispatcher}
                 />
             </div>
 
             {/* actions */}
-            <div className={"w-full flex gap-2 p-4 transition-all overflow-hidden " + (isCollapsed ? "ml-1" : "")}>
-                <PlayIcon className="w-6 shrink-0"/>
-                <span className={"text-nowrap overflow-hidden " + (isCollapsed ? "w-0" : "w-auto")}>Test Play</span>
+            <div
+                className={"w-full flex p-4 transition-all overflow-hidden"}
+                onClick={props.onTestButtonClick}
+            >
+                <div className="flex gap-2 rounded-lg -m-1 p-2  hover:bg-gray-500/10">
+                    <PlayIcon className="w-6 shrink-0"/>
+                    {!isCollapsed && <span className="text-nowrap overflow-hidden ">Test Play</span>}
+                </div>
             </div>
 
             <button
