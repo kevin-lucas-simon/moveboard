@@ -1,14 +1,20 @@
 import {LevelMenu} from "../LevelMenu";
 import {EditorLevelStructureTab} from "../tabs/EditorLevelStructureTab";
-import {ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDownIcon, PlayIcon} from "@heroicons/react/24/outline";
-import React from "react";
+import {
+    ArrowUturnLeftIcon, ArrowUturnRightIcon,
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    ChevronDownIcon, PlayIcon, StopIcon,
+} from "@heroicons/react/24/outline";
+import React, {ReactNode} from "react";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
 import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
 export type EditorStructureMenuProps = {
-    onTestButtonClick: () => void;
+    isTestPlay: boolean,
+    onClickTestPlay: () => void,
 }
 
 export function EditorStructureMenu(props: EditorStructureMenuProps) {
@@ -30,9 +36,9 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
     }
 
     return (
-        <div className={"shrink-0 h-full flex flex-col relative transition-all " + (isCollapsed ? "w-16" : "w-60")}>
+        <div className={"shrink-0 h-full py-4 flex flex-col relative transition-all " + (isCollapsed ? "w-16" : "w-60")}>
             {/* header */}
-            <div className="w-full px-2 pt-6 pb-2">
+            <div className="w-full p-2">
                 <LevelMenu
                     button={<>
                         <MoveBoardLogo />
@@ -55,23 +61,49 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
             </div>
 
             {/* actions */}
-            <div
-                className={"w-full flex p-4 transition-all overflow-hidden"}
-                onClick={props.onTestButtonClick}
-            >
-                <div className="flex gap-2 rounded-lg -m-1 p-2  hover:bg-gray-500/10">
-                    <PlayIcon className="w-6 shrink-0"/>
-                    {!isCollapsed && <span className="text-nowrap overflow-hidden ">Test Play</span>}
+            <div className={"w-full px-2 flex gap-4 justify-between " + (isCollapsed ? "flex-col-reverse" : "flex-row")}>
+                <StructureMenuButton onClick={props.onClickTestPlay}>
+                    {props.isTestPlay
+                        ? <StopIcon className="w-6" />
+                        : <PlayIcon className="w-6" />
+                    }
+                </StructureMenuButton>
+
+                <div className={"flex " + (isCollapsed ? "flex-col" : "flex-row")}>
+                    <StructureMenuButton onClick={() => {}}>
+                        <ArrowUturnLeftIcon className="w-5"/>
+                    </StructureMenuButton>
+                    <StructureMenuButton onClick={() => {}}>
+                        <ArrowUturnRightIcon className="w-5"/>
+                    </StructureMenuButton>
                 </div>
             </div>
 
+            {/* collapse button */}
             <button
                 className="absolute right-0 bottom-1/2 px-1 py-3 rounded-l-2xl text-xs shadow-2xl bg-white/75 hover:bg-white cursor-pointer"
                 onClick={handleCollapse}
             >
-                {!isCollapsed && <ChevronDoubleLeftIcon className="w-4"/>}
-                {isCollapsed && <ChevronDoubleRightIcon className="w-4"/>}
+                {isCollapsed
+                    ? <ChevronDoubleRightIcon className="w-4"/>
+                    : <ChevronDoubleLeftIcon className="w-4"/>
+                }
             </button>
         </div>
     );
+}
+
+type StructureMenuButtonProps = {
+    children: ReactNode;
+    onClick: () => void;
+}
+function StructureMenuButton(props: StructureMenuButtonProps) {
+    return (
+        <button
+            className="flex justify-center px-3 py-2 rounded-lg  hover:bg-gray-500/10"
+            onClick={props.onClick}
+        >
+            {props.children}
+        </button>
+    )
 }

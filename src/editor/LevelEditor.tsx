@@ -5,14 +5,8 @@ import {EditorStructureMenu} from "./layout/EditorStructureMenu";
 import {EditorStructureEditor} from "./content/EditorStructureEditor";
 import {EditorTestEditor} from "./content/EditorTestEditor";
 
-enum EditorMode {
-    LEVEL_STRUCTURE = "editor_structure",
-    PLAY_TEST = "editor_play",
-}
-
 export function LevelEditor() {
-    const [tab, setTab] = useState<EditorMode>(EditorMode.LEVEL_STRUCTURE);
-
+    const [isTestPlay, setTestPlay] = useState<boolean>(false)
     const editor = useEditorContext();
     if (!editor) {
         return <></>;
@@ -22,18 +16,15 @@ export function LevelEditor() {
         <div className="w-full h-full flex bg-gray-500/10">
             <EditorToaster errors={editor.errors}/>
 
-            <EditorStructureMenu onTestButtonClick={() => setTab(EditorMode.PLAY_TEST)}/>
+            <EditorStructureMenu
+                isTestPlay={isTestPlay}
+                onClickTestPlay={() => setTestPlay(!isTestPlay)}
+            />
 
-            {(() => {
-                switch (tab) {
-                    case EditorMode.LEVEL_STRUCTURE:
-                        return <EditorStructureEditor/>;
-                    case EditorMode.PLAY_TEST:
-                        return <EditorTestEditor/>;
-                    default:
-                        return <></>;
-                }
-            })()}
+            {isTestPlay
+                ? <EditorTestEditor/>
+                : <EditorStructureEditor/>
+            }
         </div>
     );
 }

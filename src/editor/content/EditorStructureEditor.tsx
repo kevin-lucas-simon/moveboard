@@ -1,6 +1,6 @@
 import {EditorContentBar} from "../layout/EditorContentBar";
 import React from "react";
-import {useEditorActiveStructure, useEditorLevel} from "../reducer/EditorProvider";
+import {useEditorActiveStructure} from "../reducer/EditorProvider";
 import {StructureEditorComponents} from "./structure/StructureEditorComponents";
 import {EditorEnvironment} from "./structure/environment/EditorEnvironment";
 

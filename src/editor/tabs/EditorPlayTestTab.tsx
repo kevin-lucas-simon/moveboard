@@ -6,7 +6,6 @@ import {BaseTab} from "../component/BaseTab";
 export type EditorPlayTestTabProps = {
     settings: DebugSettings;
     onSettingChange: (key: string, value: any) => void;
-    onRestart: () => void;
 }
 export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
     return (

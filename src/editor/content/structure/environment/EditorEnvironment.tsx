@@ -2,7 +2,7 @@ import {Environment} from "../../../../experience/Environment";
 import {Level} from "../../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../../reducer/EditorProvider";
-import {DebugSettingsDefault, DebugSettingsProvider} from "../../../../experience/input/DebugSettingsProvider";
+import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../../experience/input/DebugSettingsProvider";
 
 export function EditorEnvironment() {
     const level = useEditorLevel();
@@ -12,13 +12,7 @@ export function EditorEnvironment() {
     }
 
     return (
-        <DebugSettingsProvider debugSettings={{
-            ...DebugSettingsDefault,
-            isEditingMode: true,
-            displayEditorFeatures: true,
-            moveableCamera: true,
-            pauseSimulation: true,
-        }}>
+        <DebugSettingsProvider debugSettings={DefaultEditorDebugSettings}>
             <Environment key={structure.id} isGranted={false}>
                 <Level {...level} start={structure.id}/>
             </Environment>

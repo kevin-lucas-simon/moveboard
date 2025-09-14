@@ -8,23 +8,24 @@ export type EditorContentBarType = {
 
 export function EditorContentBar(props: EditorContentBarType) {
     return (
-        <div className="grow h-full flex p-4 pl-0 rounded-2xl overflow-hidden z-10">
+        <div className="grow h-full flex overflow-hidden z-10">
             {(props.leftMenu || props.rightMenu) &&
-                <div className="shrink-0 -mr-4 rounded-2xl bg-white z-10 drop-shadow flex">
-                    {props.leftMenu &&
-                        <div className="w-56">
-                            {props.leftMenu}
-                        </div>
-                    }
-                    {props.rightMenu &&
-                        <div className="w-56 shadow-xl rounded-2xl">
-                            {props.rightMenu}
-                        </div>
-                    }
+                <div className="h-full flex py-4">
+                    <div className="shrink-0 -mr-4 rounded-2xl bg-white z-10 drop-shadow flex">
+                        {props.leftMenu &&
+                            <div className="w-56">
+                                {props.leftMenu}
+                            </div>
+                        }
+                        {props.rightMenu &&
+                            <div className="w-56 shadow-xl rounded-2xl">
+                                {props.rightMenu}
+                            </div>
+                        }
+                    </div>
                 </div>
             }
-
-            <div className="grow rounded-2xl overflow-hidden">
+            <div className="grow rounded-l-3xl overflow-hidden">
                 {props.mainView}
             </div>
         </div>

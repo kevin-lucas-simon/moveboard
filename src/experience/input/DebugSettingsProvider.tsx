@@ -7,7 +7,7 @@ export type DebugSettings = {
     moveableCamera: boolean,
     pauseSimulation: boolean,
 }
-export const DebugSettingsDefault: DebugSettings = {
+export const DefaultPlayDebugSettings: DebugSettings = {
     isEditingMode: false,
     displayEditorFeatures: false,
     displayPerformanceStats: false,
@@ -15,7 +15,15 @@ export const DebugSettingsDefault: DebugSettings = {
     pauseSimulation: false,
 }
 
-const DebugSettingsContext = createContext<DebugSettings>(DebugSettingsDefault);
+export const DefaultEditorDebugSettings: DebugSettings = {
+    isEditingMode: true,
+    displayEditorFeatures: true,
+    moveableCamera: true,
+    pauseSimulation: true,
+    displayPerformanceStats: false,
+}
+
+const DebugSettingsContext = createContext<DebugSettings>(DefaultPlayDebugSettings);
 
 export type DebugSettingsProviderProps = {
     debugSettings: DebugSettings,
