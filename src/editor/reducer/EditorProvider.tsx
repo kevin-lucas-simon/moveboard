@@ -20,6 +20,8 @@ export function EditorProvider(props: EditorProviderProps) {
         active: props.initial.start,
         selectedStructures: [],
         selectedElements: [],
+        previousState: [],
+        nextState: [],
         errors: [],
     });
 

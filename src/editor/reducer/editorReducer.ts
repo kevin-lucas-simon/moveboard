@@ -1,17 +1,17 @@
-import {levelReducer, LevelReducerActions, LevelReducerState} from "./levelReducer";
 import {ValidationError} from "../../data/validator/Validator";
 import {LevelValidator} from "../../data/validator/LevelValidator";
 import {ElementID} from "../../data/model/element/ElementModel";
 import {StructureID} from "../../data/model/structure/StructureModel";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
+import {undoRedoReducer, UndoRedoReducerActions, UndoRedoReducerState} from "./UndoRedoReducer";
 
-export type EditorReducerState = LevelReducerState & {
+export type EditorReducerState = UndoRedoReducerState & {
     selectedStructures: StructureID[],
     selectedElements: ElementID[],
     errors: ValidationError[],
 }
 
-export type EditorReducerActions = LevelReducerActions | {
+export type EditorReducerActions = UndoRedoReducerActions | {
     type: 'editor_select_structure',
     payload: StructureID,
 } | {
@@ -26,7 +26,7 @@ export function editorReducer(
     action: EditorReducerActions,
 ): EditorReducerState {
     switch (action.type) {
-        case "editor_select_structure":
+        case "editor_select_structure": {
             const selectedId = action.payload;
             const selectedStructure = state.level.structures[selectedId];
             if (!selectedStructure) {
@@ -47,21 +47,24 @@ export function editorReducer(
                 ...state,
                 selectedStructures: [action.payload],
             };
-        case "editor_select_element":
+        }
+        case "editor_select_element": {
             // selection can be any UUID, the corresponding items will check themselves
             return {
                 ...state,
                 selectedElements: [action.payload],
             };
-        case "editor_deselect_all":
+        }
+        case "editor_deselect_all": {
             // deselect all items
             return {
                 ...state,
                 selectedElements: [],
             };
-        default:
+        }
+        default: {
             // validate level manipulation before applying them
-            const newState = levelReducer(state, action);
+            const newState = undoRedoReducer(state, action);
             const errors = new LevelValidator().validate(newState.level);
 
             if (errors.length > 0) {
@@ -76,5 +79,6 @@ export function editorReducer(
                 ...newState,
                 errors: [],
             };
+        }
     }
 }

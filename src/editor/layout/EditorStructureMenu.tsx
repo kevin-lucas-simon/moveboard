@@ -35,6 +35,14 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
         setCollapsed(!isCollapsed);
     }
 
+    const handleUndo = () => {
+        dispatcher({ type: "editor_undo" });
+    }
+
+    const handleRedo = () => {
+        dispatcher({ type: "editor_redo" });
+    }
+
     return (
         <div className={"shrink-0 h-full py-4 flex flex-col relative transition-all " + (isCollapsed ? "w-16" : "w-60")}>
             {/* header */}
@@ -70,10 +78,10 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
                 </StructureMenuButton>
 
                 <div className={"flex " + (isCollapsed ? "flex-col" : "flex-row")}>
-                    <StructureMenuButton onClick={() => {}}>
+                    <StructureMenuButton onClick={handleUndo}>
                         <ArrowUturnLeftIcon className="w-5"/>
                     </StructureMenuButton>
-                    <StructureMenuButton onClick={() => {}}>
+                    <StructureMenuButton onClick={handleRedo}>
                         <ArrowUturnRightIcon className="w-5"/>
                     </StructureMenuButton>
                 </div>
