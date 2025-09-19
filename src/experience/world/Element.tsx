@@ -1,4 +1,3 @@
-import {Select} from "@react-three/postprocessing";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
@@ -58,8 +57,8 @@ export function Element(props: ElementProps) {
     );
 
     return (
-        <Select enabled={selected} onDoubleClick={selectElement}>
+        <group onDoubleClick={selectElement}>
             {props.children ?? component}
-        </Select>
+        </group>
     );
 }

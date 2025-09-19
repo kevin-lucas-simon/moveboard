@@ -8,7 +8,7 @@ import {RapierRigidBody} from "@react-three/rapier";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {EditorChunkElementManipulator} from "../editor/EditorChunkElementManipulator";
+import {EditorChunkElementSelector} from "../editor/EditorChunkElementSelector";
 
 export type LevelProps = LevelModel & {};
 
@@ -61,7 +61,7 @@ export function Level(props: LevelProps) {
 
             <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
 
-            <EditorChunkElementManipulator
+            <EditorChunkElementSelector
                 activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}
             />
         </>

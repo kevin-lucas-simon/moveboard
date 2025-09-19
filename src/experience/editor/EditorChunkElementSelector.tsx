@@ -9,15 +9,15 @@ import React from "react";
 import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ElementModel} from "../../data/model/element/ElementModel";
+import {Select} from "@react-three/postprocessing";
 
 const SNAP_INTERVAL = 1.0;
 
-export type EditorChunkElementManipulatorProps = {
+export type EditorChunkElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
 }
 
-// TODO der name <EditorChunkElementManipulator> ist ja scheiße
-export function EditorChunkElementManipulator(props: EditorChunkElementManipulatorProps) {
+export function EditorChunkElementSelector(props: EditorChunkElementSelectorProps) {
     const editor = useEditorContext();
     const dispatcher = useEditorActions();
 
@@ -84,13 +84,15 @@ export function EditorChunkElementManipulator(props: EditorChunkElementManipulat
             onDragEnd={handleDragEnd}
         >
             {visibleSelectedElements.map(element =>
-                React.createElement( // TODO das sollte in einer separaten Funktion ausgelagert werden, da es auch in Element.tsx verwendet wird
-                    ElementExperienceComponents[element.type]?.experienceComponent ?? ElementExperienceComponents[ElementTypes.Unknown].experienceComponent,
-                    {
-                        ...element,
-                        key: element.id,
-                    }
-                )
+                <Select enabled={true}>
+                    {React.createElement( // TODO das sollte in einer separaten Funktion ausgelagert werden, da es auch in Element.tsx verwendet wird
+                        ElementExperienceComponents[element.type]?.experienceComponent ?? ElementExperienceComponents[ElementTypes.Unknown].experienceComponent,
+                        {
+                            ...element,
+                            key: element.id,
+                        }
+                    )}
+                </Select>
             )}
         </PivotControls>
     );
