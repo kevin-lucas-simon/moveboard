@@ -7,6 +7,8 @@ import {filterStructures} from "../../data/factory/StructureFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
+import {filterElements} from "../../data/factory/ElementFactory";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;
@@ -27,14 +29,36 @@ export function Element(props: ElementProps) {
             return;
         }
 
-        const activeChunk = filterStructures<ChunkModel>(editorContext.level.structures, StructureTypes.Chunk)[editorContext.active];
+        const allChunks = filterStructures<ChunkModel>(editorContext.level.structures, StructureTypes.Chunk);
+        const activeChunk = allChunks[editorContext.active];
+
+        // jump to neighbour chunk if the element is not in the active chunk
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;
         if (!isInActiveChunk) {
+            const joints = filterElements<JointModel>(activeChunk.elements, ElementTypes.Joint);
+
+            Object.values(joints).forEach(joint => {
+                if (!joint.neighbour) {
+                    return;
+                }
+
+                const neighbourChunk = allChunks[joint.neighbour];
+                if (!neighbourChunk || !neighbourChunk.elements[props.id]) {
+                    return;
+                }
+
+                e.stopPropagation();
+                editorActions({
+                    type: 'editor_select_structure',
+                    payload: joint.neighbour,
+                });
+            });
+
             return;
         }
 
+        // select element if not selected, otherwise deselect all
         e.stopPropagation();
-
         if (!selected) {
             editorActions({
                 type: 'editor_select_element',
