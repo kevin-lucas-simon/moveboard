@@ -33,7 +33,7 @@ export function EditorElementList(props: EditorElementListProps) {
 
     const renameElement = (index: string, name: string) => {
         props.dispatcher({
-            type: "chunk_update_element",
+            type: "chunk_patch_element",
             payload: {
                 ...props.elements[index],
                 name: name,
@@ -51,7 +51,7 @@ export function EditorElementList(props: EditorElementListProps) {
     // toggle the visibility of the element and all children
     const handleVisibility = (index: string, model: ElementModel, value: boolean) => {
         props.dispatcher({
-            type: 'chunk_update_element',
+            type: 'chunk_patch_element',
             payload: {
                 ...model,
                 hidden: value,
@@ -70,7 +70,7 @@ export function EditorElementList(props: EditorElementListProps) {
         }
 
         props.dispatcher({
-            type: 'chunk_update_element',
+            type: 'chunk_patch_element',
             payload: {
                 ...value,
                 collapsed: !(value as GroupModel).collapsed
@@ -89,7 +89,7 @@ export function EditorElementList(props: EditorElementListProps) {
         const movedElements = newGroupElements.filter(element => !groupElements.some(e => e.id === element.id));
         movedElements.forEach((element) => {
             props.dispatcher({
-                type: 'chunk_update_element',
+                type: 'chunk_patch_element',
                 payload: {
                     ...props.elements[element.id], // keep the old element data, do not thrust the new one
                     parent: props.parent,

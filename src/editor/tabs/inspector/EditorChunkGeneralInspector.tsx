@@ -80,7 +80,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkInspectorProps) {
 
     const renameJoint = (name: string, joint: JointModel) => {
         props.dispatcher({
-            type: 'chunk_update_element',
+            type: 'chunk_patch_element',
             payload: {
                 ...joint,
                 name: name,

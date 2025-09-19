@@ -57,7 +57,10 @@ export function levelReducer(
             if (!id) {
                 throw new Error('Structure ID is required for patching');
             }
-            if (['type'].some(field => field in patch) || Object.values(patch).some(value => Array.isArray(value))) {
+            if (
+                (['type'].some(field => field in patch) && patch['type'] !== state.level.structures[id]?.type)
+                || Object.values(patch).some(value => Array.isArray(value))
+            ) {
                 throw new Error('Cannot patch structure type or array fields');
             }
 

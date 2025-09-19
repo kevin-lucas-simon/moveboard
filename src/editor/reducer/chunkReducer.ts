@@ -6,8 +6,8 @@ export type ChunkReducerActions = {
     type: 'chunk_add_element';
     payload: ElementModel;
 } | {
-    type: 'chunk_update_element';
-    payload: ElementModel;
+    type: 'chunk_patch_element';
+    payload: Partial<ElementModel>;
 } | {
     type: 'chunk_remove_element';
     payload: ElementID;
@@ -27,7 +27,7 @@ export function chunkReducer(
     action: ChunkReducerActions
 ): ChunkModel {
     switch (action.type) {
-        case 'chunk_update_field':
+        case 'chunk_update_field': {
             const updatedKey = action.payload.key;
             const updatedValue = action.payload.value
 
@@ -42,8 +42,8 @@ export function chunkReducer(
                 ...state,
                 [updatedKey]: updatedValue,
             }
-        case 'chunk_add_element':
-        case 'chunk_update_element':
+        }
+        case 'chunk_add_element': {
             const element = action.payload;
 
             return {
@@ -53,7 +53,36 @@ export function chunkReducer(
                     [element.id]: element,
                 }
             }
-        case 'chunk_reorder_elements':
+        }
+        case 'chunk_patch_element': {
+            const { id, ...patch } = action.payload;
+            if (!id) {
+                throw new Error('Element ID is required for patching');
+            }
+            if (
+                (['type'].some(field => field in patch) && patch['type'] !== state.elements[id]?.type)
+                || Object.values(patch).some(value => Array.isArray(value))
+            ) {
+                throw new Error('Cannot change element type or use array fields in patch');
+            }
+
+            const element = state.elements[id];
+            if (!element) {
+                throw new Error(`Element ID ${id} not found in state`);
+            }
+
+            return {
+                ...state,
+                elements: {
+                    ...state.elements,
+                    [id]: {
+                        ...element,
+                        ...patch,
+                    }
+                }
+            }
+        }
+        case 'chunk_reorder_elements': {
             const elementIds = action.payload as ElementID[];
             const reorderedElements: {[key: ElementID]: ElementModel} = {};
 
@@ -72,7 +101,8 @@ export function chunkReducer(
                 ...state,
                 elements: reorderedElements,
             }
-        case 'chunk_remove_element':
+        }
+        case 'chunk_remove_element': {
             const removedElementId = action.payload as ElementID
             const removedElementParent = state.elements[removedElementId].parent;
 
@@ -92,6 +122,7 @@ export function chunkReducer(
                 ...state,
                 elements: updatedElements,
             }
+        }
         default:
             throw new Error('Invalid action type');
     }

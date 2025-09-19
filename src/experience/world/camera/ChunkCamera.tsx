@@ -50,6 +50,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
             />
             {isMoveableCamera &&
                 <OrbitControls
+                    makeDefault
                     ref={orbitControlRef}
                 />
             }

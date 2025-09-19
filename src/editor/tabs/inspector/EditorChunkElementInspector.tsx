@@ -27,7 +27,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
 
     const changeElement = (index: string, value: ElementModel) => {
         props.dispatcher({
-            type: 'chunk_update_element',
+            type: 'chunk_patch_element',
             payload: value,
         });
     }
