@@ -5,11 +5,10 @@ import {
     useEditorSelectedChunkElements
 } from "../../editor/reducer/EditorProvider";
 import {Matrix4, Vector3, Vector3Like} from "three";
-import React from "react";
-import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
-import {ElementTypes} from "../../data/model/element/ElementTypes";
+import React, {useState} from "react";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
+import {Element} from "../world/Element";
 
 const SNAP_INTERVAL = 1.0;
 
@@ -23,7 +22,7 @@ export function EditorChunkElementSelector(props: EditorChunkElementSelectorProp
 
     const visibleSelectedElements = Object.values(useEditorSelectedChunkElements()).filter((element: ElementModel) => !element.hidden);
 
-    const pivotKeyCounter = React.useRef(0);
+    const [pivotResetCounter, setPivotResetCounter] = useState<number>(0);
     const pivotRef = React.useRef<any>(null);
 
     if (!editor || !dispatcher || visibleSelectedElements.length === 0) {
@@ -46,13 +45,18 @@ export function EditorChunkElementSelector(props: EditorChunkElementSelectorProp
             console.warn("Pivot matrix not found: " + pivotRef.current);
             return;
         }
-        const pivotDrag = new Vector3().setFromMatrixPosition(pivotMatrix);
 
+        const pivotDrag = new Vector3().setFromMatrixPosition(pivotMatrix);
         const snappedDrag = new Vector3(
             Math.round(pivotDrag.x / SNAP_INTERVAL) * SNAP_INTERVAL,
             Math.round(pivotDrag.y / SNAP_INTERVAL) * SNAP_INTERVAL,
             Math.round(pivotDrag.z / SNAP_INTERVAL) * SNAP_INTERVAL,
         );
+
+        setPivotResetCounter(c => c + 1);
+        if (snappedDrag.length() === 0) {
+            return;
+        }
 
         visibleSelectedElements.forEach(element => {
             const newPosition = new Vector3()
@@ -79,19 +83,16 @@ export function EditorChunkElementSelector(props: EditorChunkElementSelectorProp
             lineWidth={2}
             scale={2}
             offset={pivotPosition.toArray()}
-            key={pivotKeyCounter.current++} // force re-mount to reset position
+            key={pivotResetCounter} // force re-mount to reset position
             ref={pivotRef}
             onDragEnd={handleDragEnd}
         >
             {visibleSelectedElements.map(element =>
                 <Select enabled={true}>
-                    {React.createElement( // TODO das sollte in einer separaten Funktion ausgelagert werden, da es auch in Element.tsx verwendet wird
-                        ElementExperienceComponents[element.type]?.experienceComponent ?? ElementExperienceComponents[ElementTypes.Unknown].experienceComponent,
-                        {
-                            ...element,
-                            key: element.id,
-                        }
-                    )}
+                    <Element
+                        {...element}
+                        key={element.id}
+                    />
                 </Select>
             )}
         </PivotControls>
