@@ -2,7 +2,6 @@ import {EditorContentBar} from "../layout/EditorContentBar";
 import React from "react";
 import {useEditorActiveStructure} from "../reducer/EditorProvider";
 import {StructureEditorComponents} from "./structure/StructureEditorComponents";
-import {EditorEnvironment} from "./structure/environment/EditorEnvironment";
 
 export function EditorStructureEditor() {
     const structure = useEditorActiveStructure();
@@ -14,6 +13,10 @@ export function EditorStructureEditor() {
         StructureEditorComponents[structure.type]?.overviewPanel
     );
 
+    const mainView = React.createElement(
+        StructureEditorComponents[structure.type]?.mainPanel
+    );
+
     const inspectorDefinition = StructureEditorComponents[structure.type]?.detailPanel
     const inspectorComponent = inspectorDefinition
         ? React.createElement(inspectorDefinition)
@@ -23,7 +26,7 @@ export function EditorStructureEditor() {
         <EditorContentBar
             leftMenu={overviewPanel}
             rightMenu={inspectorComponent}
-            mainView={<EditorEnvironment/>}
+            mainView={mainView}
         />
     );
 }

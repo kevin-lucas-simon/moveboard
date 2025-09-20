@@ -4,6 +4,7 @@ import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {EditorSectionSlug} from "./slug/EditorSectionSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import React from "react";
+import {EditorChunkSlug} from "./slug/EditorChunkSlug";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
@@ -37,10 +38,15 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
                                 />;
+                            case StructureTypes.Chunk:
+                                return <EditorChunkSlug
+                                    structure={props.structure}
+                                    isActive={props.isActive}
+                                    isStart={props.isStart}
+                                />;
                             default:
                                 return <EditorStructureSlug
                                     structure={props.structure}
-                                    isStart={props.isStart}
                                 />;
                         }
                     })()}

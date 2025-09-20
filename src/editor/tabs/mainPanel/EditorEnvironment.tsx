@@ -1,8 +1,8 @@
-import {Environment} from "../../../../experience/Environment";
-import {Level} from "../../../../experience/world/Level";
+import {Environment} from "../../../experience/Environment";
+import {Level} from "../../../experience/world/Level";
 import React from "react";
-import {useEditorActiveStructure, useEditorLevel} from "../../../reducer/EditorProvider";
-import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../../experience/input/DebugSettingsProvider";
+import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
+import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../experience/input/DebugSettingsProvider";
 
 export function EditorEnvironment() {
     const level = useEditorLevel();
