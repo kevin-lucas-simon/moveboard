@@ -1,4 +1,4 @@
-import {SectionModel} from "../../../../../data/model/structure/system/SectionModel";
+import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import {FolderIcon, FolderOpenIcon} from "@heroicons/react/24/outline";
 import React from "react";
 import {EditorStructureSlug} from "./EditorStructureSlug";

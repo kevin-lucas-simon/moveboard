@@ -1,23 +1,28 @@
 import {EditorContentBar} from "../layout/EditorContentBar";
 import React from "react";
 import {useEditorActiveStructure} from "../reducer/EditorProvider";
-import {StructureEditorComponents} from "./structure/StructureEditorComponents";
+import {EditorPanelComponents, EditorPanelTypes} from "../panel/EditorPanelComponents";
 
-export function EditorStructureEditor() {
+export type EditorStructureEditorProps = {
+    panelOverride?: EditorPanelTypes|undefined;
+}
+
+export function EditorStructureEditor(props: EditorStructureEditorProps) {
     const structure = useEditorActiveStructure();
-    if (!structure) {
+    const panel = props.panelOverride ?? structure?.type;
+    if (!panel) {
         return <></>;
     }
 
     const overviewPanel = React.createElement(
-        StructureEditorComponents[structure.type]?.overviewPanel
+        EditorPanelComponents[panel]?.overviewPanel
     );
 
     const mainView = React.createElement(
-        StructureEditorComponents[structure.type]?.mainPanel
+        EditorPanelComponents[panel]?.mainPanel
     );
 
-    const inspectorDefinition = StructureEditorComponents[structure.type]?.detailPanel
+    const inspectorDefinition = EditorPanelComponents[panel]?.detailPanel
     const inspectorComponent = inspectorDefinition
         ? React.createElement(inspectorDefinition)
         : undefined;

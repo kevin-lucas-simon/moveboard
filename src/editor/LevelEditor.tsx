@@ -3,10 +3,13 @@ import {EditorToaster} from "./component/EditorToaster";
 import {useEditorContext} from "./reducer/EditorProvider";
 import {EditorStructureMenu} from "./layout/EditorStructureMenu";
 import {EditorStructureEditor} from "./content/EditorStructureEditor";
-import {EditorTestEditor} from "./content/EditorTestEditor";
+import {EditorPanel} from "./panel/EditorPanelComponents";
+
+type EditorPanelOverride = typeof EditorPanel.TestPlay | undefined;
 
 export function LevelEditor() {
-    const [isTestPlay, setTestPlay] = useState<boolean>(false)
+    const [overridePanel, setOverridePanel] = useState<EditorPanelOverride>(undefined)
+
     const editor = useEditorContext();
     if (!editor) {
         return <></>;
@@ -17,14 +20,13 @@ export function LevelEditor() {
             <EditorToaster errors={editor.errors}/>
 
             <EditorStructureMenu
-                isTestPlay={isTestPlay}
-                onClickTestPlay={() => setTestPlay(!isTestPlay)}
+                isTestPlay={overridePanel === EditorPanel.TestPlay}
+                onClickTestPlay={() => {
+                    setOverridePanel(overridePanel === EditorPanel.TestPlay ? undefined : EditorPanel.TestPlay);
+                }}
             />
 
-            {isTestPlay
-                ? <EditorTestEditor/>
-                : <EditorStructureEditor/>
-            }
+            <EditorStructureEditor panelOverride={overridePanel}/>
         </div>
     );
 }

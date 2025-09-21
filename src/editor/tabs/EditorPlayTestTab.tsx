@@ -1,25 +1,37 @@
 import React from "react";
-import {DebugSettings} from "../../experience/input/DebugSettingsProvider";
+import {useDebugSettings} from "../../experience/input/DebugSettingsProvider";
 import {JsonObjectEditor} from "../component/input/JsonObjectEditor";
 import {BaseTab} from "../component/BaseTab";
 
-export type EditorPlayTestTabProps = {
-    settings: DebugSettings;
-    onSettingChange: (key: string, value: any) => void;
-}
-export function EditorPlayTestTab(props: EditorPlayTestTabProps) {
+export function EditorPlayTestTab() {
+    const settings = useDebugSettings();
+    if (!settings) {
+        return <span>No Debug Settings given</span>
+    }
+
+    const handleSettingsChange = () => {
+        throw Error("onSettingChange: (key: string, value: any) => void; is not implemented")
+
+        // const handleSettingsChange = (key: string, value: any) => {
+        //     setDebugSettings({
+        //         ...debugSettings,
+        //         [key]: value,
+        //     })
+        // }
+    }
+
     return (
         <BaseTab
             title={"Test Play"}
             description={"Test the behaviour of the chunk with some debug display options."}
         >
             <ul>
-                {Object.entries(props.settings).map(([key, value]) =>
+                {Object.entries(settings).map(([key, value]) =>
                     <JsonObjectEditor
                         key={key}
                         keyName={key}
                         value={value}
-                        onChange={props.onSettingChange}
+                        onChange={handleSettingsChange}
                     />
                 )}
             </ul>

@@ -26,8 +26,8 @@ export function EditorTestEditor() {
         <EditorContentBar
             leftMenu={
                 <EditorPlayTestTab
-                    settings={debugSettings}
-                    onSettingChange={handleSettingsChange}
+                    // settings={debugSettings}
+                    // onSettingChange={handleSettingsChange}
                 />
             }
             mainView={

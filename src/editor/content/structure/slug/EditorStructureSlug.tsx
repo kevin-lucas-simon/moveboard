@@ -1,4 +1,4 @@
-import {StructureModel} from "../../../../../data/model/structure/StructureModel";
+import {StructureModel} from "../../../../data/model/structure/StructureModel";
 
 export type EditorStructureSlugProps = {
     structure: StructureModel,

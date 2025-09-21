@@ -1,7 +1,7 @@
 import React from "react";
 import {ElementDefaultProps} from "../../data/model/element/ElementDefaultProps";
 import {BaseTab} from "../component/BaseTab";
-import {EditorElementList} from "./list/element/EditorElementList";
+import {EditorElementList} from "../panel/overview/element/EditorElementList";
 import {createElement} from "../../data/factory/ElementFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {useEditorActions, useEditorContext, useEditorActiveStructure} from "../reducer/EditorProvider";

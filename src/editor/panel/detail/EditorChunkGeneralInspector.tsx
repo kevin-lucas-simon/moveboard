@@ -3,7 +3,7 @@ import {BaseTab} from "../../component/BaseTab";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {EditorJointSlug} from "../list/element/slug/EditorJointSlug";
+import {EditorJointSlug} from "../overview/element/slug/EditorJointSlug";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../component/button/LinkButton";

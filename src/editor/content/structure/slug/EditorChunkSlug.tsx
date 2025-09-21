@@ -1,4 +1,4 @@
-import {StructureModel} from "../../../../../data/model/structure/StructureModel";
+import {StructureModel} from "../../../../data/model/structure/StructureModel";
 import {ChevronRightIcon, StarIcon} from "@heroicons/react/24/outline";
 import {EditorStructureSlug} from "./EditorStructureSlug";
 
