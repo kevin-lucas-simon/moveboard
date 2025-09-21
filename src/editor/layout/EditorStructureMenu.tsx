@@ -1,5 +1,5 @@
-import {LevelMenu} from "../LevelMenu";
-import {EditorLevelStructureTab} from "../tabs/EditorLevelStructureTab";
+import {LevelMenu} from "./LevelMenu";
+import {EditorLevelStructureTab} from "./EditorLevelStructureTab";
 import {
     ArrowUturnLeftIcon, ArrowUturnRightIcon,
     ChevronDoubleLeftIcon,

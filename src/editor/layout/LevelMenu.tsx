@@ -1,11 +1,11 @@
-import {BasicDropdownItem} from "../component/dropdown/BasicDropdownItem";
-import {BasicDropdownDivider} from "../component/dropdown/BasicDropdownDivider";
+import {BasicDropdownItem} from "../../component/dropdown/BasicDropdownItem";
+import {BasicDropdownDivider} from "../../component/dropdown/BasicDropdownDivider";
 import React, {useState} from "react";
-import {LevelReducerActions} from "./reducer/levelReducer";
-import {LevelModel} from "../data/model/world/LevelModel";
-import {ExportChangesDialog} from "./dialog/ExportChangesDialog";
-import {ClearChangesDialog} from "./dialog/ClearChangesDialog";
-import {LevelSettingsDialog} from "./dialog/LevelSettingsDialog";
+import {LevelReducerActions} from "../reducer/levelReducer";
+import {LevelModel} from "../../data/model/world/LevelModel";
+import {ExportChangesDialog} from "../dialog/ExportChangesDialog";
+import {ClearChangesDialog} from "../dialog/ClearChangesDialog";
+import {LevelSettingsDialog} from "../dialog/LevelSettingsDialog";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 
 export type LevelMenuProps = {

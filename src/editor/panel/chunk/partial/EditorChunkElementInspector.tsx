@@ -1,15 +1,15 @@
-import {ElementModel} from "../../../data/model/element/ElementModel";
-import {UUID} from "../../../data/model/UUID";
+import {ElementModel} from "../../../../data/model/element/ElementModel";
+import {UUID} from "../../../../data/model/UUID";
 import React from "react";
-import {EditorReducerActions} from "../../reducer/editorReducer";
-import {BaseTab} from "../../component/BaseTab";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {BaseTab} from "../../../component/BaseTab";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
-import {JsonNestedEditor} from "../../component/input/JsonNestedEditor";
-import {LevelModel} from "../../../data/model/world/LevelModel";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {LinkButton} from "../../../component/button/LinkButton";
-import {ElementTypes} from "../../../data/model/element/ElementTypes";
-import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {JsonNestedEditor} from "../../../component/input/JsonNestedEditor";
+import {LevelModel} from "../../../../data/model/world/LevelModel";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {LinkButton} from "../../../../component/button/LinkButton";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;

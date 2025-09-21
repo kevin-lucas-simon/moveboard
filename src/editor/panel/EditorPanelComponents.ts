@@ -1,24 +1,24 @@
 import React from "react";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {EditorChunkElementsTab} from "../tabs/EditorChunkElementsTab";
-import {EditorChunkInspector} from "./detail/EditorChunkInspector";
-import {EditorEnvironment} from "./main/EditorEnvironment";
-import {EditorEmptyPanel} from "./main/EditorEmptyPanel";
-import {EditorPlayTestTab} from "../tabs/EditorPlayTestTab";
+import {EditorChunkElementsTab} from "./chunk/EditorChunkElementsTab";
+import {EditorChunkInspector} from "./chunk/EditorChunkInspector";
+import {EditorEnvironment} from "./chunk/EditorEnvironment";
+import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
+import {EditorPlayTestTab} from "./testplay/EditorPlayTestTab";
 
-export const EditorPanel = {
+export const EditorPanelTypes = {
     ...StructureTypes,
-    TestPlay: 'TestPlay',
+    TestPlay: 'TestPlay', // TODO rename it to Simulation
 } as const;
 
-export type EditorPanelTypes = typeof EditorPanel[keyof typeof EditorPanel];
+export type EditorPanelComponentTypes = typeof EditorPanelTypes[keyof typeof EditorPanelTypes];
 
-export const EditorPanelComponents: Record<EditorPanelTypes, {
+export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;
     detailPanel?: React.ComponentType<any>;
     mainPanel: React.ComponentType<any>;
 }> = {
-    [EditorPanel.TestPlay]: {
+    [EditorPanelTypes.TestPlay]: {
         overviewPanel: EditorPlayTestTab,
         mainPanel: EditorEnvironment,
     },

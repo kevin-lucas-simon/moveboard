@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import {EditorToaster} from "./component/EditorToaster";
 import {useEditorContext} from "./reducer/EditorProvider";
 import {EditorStructureMenu} from "./layout/EditorStructureMenu";
-import {EditorStructureEditor} from "./content/EditorStructureEditor";
-import {EditorPanel} from "./panel/EditorPanelComponents";
+import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
+import {EditorPanelTypes} from "./panel/EditorPanelComponents";
 
-type EditorPanelOverride = typeof EditorPanel.TestPlay | undefined;
+type EditorPanelOverride = typeof EditorPanelTypes.TestPlay | undefined;
 
 export function LevelEditor() {
     const [overridePanel, setOverridePanel] = useState<EditorPanelOverride>(undefined)
@@ -20,13 +20,13 @@ export function LevelEditor() {
             <EditorToaster errors={editor.errors}/>
 
             <EditorStructureMenu
-                isTestPlay={overridePanel === EditorPanel.TestPlay}
+                isTestPlay={overridePanel === EditorPanelTypes.TestPlay}
                 onClickTestPlay={() => {
-                    setOverridePanel(overridePanel === EditorPanel.TestPlay ? undefined : EditorPanel.TestPlay);
+                    setOverridePanel(overridePanel === EditorPanelTypes.TestPlay ? undefined : EditorPanelTypes.TestPlay);
                 }}
             />
 
-            <EditorStructureEditor panelOverride={overridePanel}/>
+            <EditorPanelCanvas panelOverride={overridePanel}/>
         </div>
     );
 }

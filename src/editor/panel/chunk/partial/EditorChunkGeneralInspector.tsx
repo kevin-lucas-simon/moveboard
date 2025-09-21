@@ -1,15 +1,15 @@
 import React from "react";
-import {BaseTab} from "../../component/BaseTab";
-import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
-import {LevelModel} from "../../../data/model/world/LevelModel";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {EditorJointSlug} from "../overview/element/slug/EditorJointSlug";
-import {EditorReducerActions} from "../../reducer/editorReducer";
+import {BaseTab} from "../../../component/BaseTab";
+import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
+import {LevelModel} from "../../../../data/model/world/LevelModel";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {EditorJointSlug} from "./list_element/slug/EditorJointSlug";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {LinkButton} from "../../../component/button/LinkButton";
-import {ElementTypes} from "../../../data/model/element/ElementTypes";
-import {createElement} from "../../../data/factory/ElementFactory";
-import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {LinkButton} from "../../../../component/button/LinkButton";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {createElement} from "../../../../data/factory/ElementFactory";
+import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 
 export type EditorChunkInspectorProps = {
     level: LevelModel;
