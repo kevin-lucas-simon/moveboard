@@ -1,6 +1,6 @@
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
-import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {useDebugSettings} from "../../debug/DebugSettingsProvider";
 import {BarrierBlockDefault, BarrierBlockModel} from "../../../data/model/element/block/BarrierBlockModel";
 
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {

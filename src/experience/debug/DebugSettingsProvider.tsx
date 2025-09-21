@@ -7,7 +7,7 @@ export type DebugSettings = {
     moveableCamera: boolean,
     pauseSimulation: boolean,
 }
-export const DefaultPlayDebugSettings: DebugSettings = {
+export const DefaultPlayDebugSettings: DebugSettings = { // TODO das ist einfach alles default, vlt woanders packen bzw automatisieren?
     isEditingMode: false,
     displayEditorFeatures: false,
     displayPerformanceStats: false,
@@ -15,7 +15,7 @@ export const DefaultPlayDebugSettings: DebugSettings = {
     pauseSimulation: false,
 }
 
-export const DefaultEditorDebugSettings: DebugSettings = {
+export const DefaultEditorDebugSettings: DebugSettings = { // TODO kann in den Müll
     isEditingMode: true,
     displayEditorFeatures: true,
     moveableCamera: true,

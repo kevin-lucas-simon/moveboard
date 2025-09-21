@@ -1,6 +1,6 @@
 import {RapierRigidBody, RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
-import {useDebugSettings} from "../input/DebugSettingsProvider";
+import {useDebugSettings} from "../debug/DebugSettingsProvider";
 import {RefObject, useRef} from "react";
 
 export type PlayerProps = {

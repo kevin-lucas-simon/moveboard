@@ -23,4 +23,4 @@ export const routeConfig = [
             return params.levelName;
         }
     }
-];
+]; // TODO schieb es in den page ordner

@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../../entity/Player";
-import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {useDebugSettings} from "../../debug/DebugSettingsProvider";
 
 import {ChunkID} from "../../../data/model/structure/spacial/ChunkModel";
 
