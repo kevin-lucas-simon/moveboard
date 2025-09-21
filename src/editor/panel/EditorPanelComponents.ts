@@ -5,13 +5,7 @@ import {EditorChunkDetailPanel} from "./chunk/EditorChunkDetailPanel";
 import {EditorChunkScenePanel} from "./chunk/EditorChunkScenePanel";
 import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
 import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOverviewPanel";
-
-export const EditorPanelTypes = {
-    ...StructureTypes,
-    Simulation: 'Simulation',
-} as const;
-
-export type EditorPanelComponentTypes = typeof EditorPanelTypes[keyof typeof EditorPanelTypes];
+import {EditorPanelComponentTypes, EditorPanelTypes} from "./EditorPanelTypes";
 
 export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;

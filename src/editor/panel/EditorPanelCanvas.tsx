@@ -1,6 +1,7 @@
 import React from "react";
 import {useEditorActiveStructure} from "../reducer/EditorProvider";
-import {EditorPanelComponents, EditorPanelComponentTypes} from "./EditorPanelComponents";
+import {EditorPanelComponents} from "./EditorPanelComponents";
+import {EditorPanelComponentTypes} from "./EditorPanelTypes";
 
 export type EditorPanelsProps = {
     panelOverride?: EditorPanelComponentTypes|undefined;

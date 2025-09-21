@@ -3,7 +3,8 @@ import {EditorToaster} from "./layout/EditorToaster";
 import {useEditorContext} from "./reducer/EditorProvider";
 import {EditorCollapsibleMenu} from "./layout/EditorCollapsibleMenu";
 import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
-import {EditorPanelTypes} from "./panel/EditorPanelComponents";
+
+import {EditorPanelTypes} from "./panel/EditorPanelTypes";
 
 type EditorPanelOverride = typeof EditorPanelTypes.Simulation | undefined;
 
