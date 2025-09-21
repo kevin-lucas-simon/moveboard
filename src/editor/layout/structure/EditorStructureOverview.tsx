@@ -8,14 +8,14 @@ import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {EditorReducerActions} from "../../reducer/editorReducer";
 import {StructureID} from "../../../data/model/structure/StructureModel";
 
-export type EditorLevelStructureTabProps = {
+export type EditorStructureOverviewProps = {
     level: LevelModel,
     activeChunk: ChunkModel,
     selectedStructures: StructureID[],
     levelDispatcher: React.Dispatch<EditorReducerActions>,
 }
 
-export function EditorStructureMenu(props: EditorLevelStructureTabProps) {
+export function EditorStructureOverview(props: EditorStructureOverviewProps) {
     const addStructure = (type?: string) => {
         if (!type || !(type in StructureTypes)) {
             return;

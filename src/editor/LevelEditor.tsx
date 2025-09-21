@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import {EditorToaster} from "./layout/EditorToaster";
+import {EditorMessageToaster} from "./layout/EditorMessageToaster";
 import {useEditorContext} from "./reducer/EditorProvider";
-import {EditorCollapsibleMenu} from "./layout/EditorCollapsibleMenu";
+import {EditorCollapsibleActions} from "./layout/EditorCollapsibleActions";
 import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
 
 import {EditorPanelTypes} from "./panel/EditorPanelTypes";
@@ -18,9 +18,9 @@ export function LevelEditor() {
 
     return (
         <div className="w-full h-full flex bg-gray-500/10">
-            <EditorToaster errors={editor.errors}/>
+            <EditorMessageToaster errors={editor.errors}/>
 
-            <EditorCollapsibleMenu
+            <EditorCollapsibleActions
                 isSimulation={overridePanel === EditorPanelTypes.Simulation}
                 onSimulationButtonClick={() => setOverridePanel(overridePanel === EditorPanelTypes.Simulation ? undefined : EditorPanelTypes.Simulation)}
             />

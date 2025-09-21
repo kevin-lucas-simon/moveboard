@@ -1,19 +1,18 @@
-import {GroupModel} from "../../../../../data/model/element/system/GroupModel";
-import {EditorChunkElementSlug} from "./EditorChunkElementSlug";
+import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import {FolderIcon, FolderOpenIcon} from "@heroicons/react/24/outline";
 import React from "react";
+import {EditorStructureBaseSlug} from "./EditorStructureBaseSlug";
 
-export type EditorChunkGroupSlugProps = {
-    element: GroupModel;
+export type EditorStructureSectionSlugProps = {
+    structure: SectionModel;
     onCollapse: () => void;
     onExpand: () => void;
-    onRename: (name: string) => void;
 }
 
-export function EditorChunkGroupSlug(props: EditorChunkGroupSlugProps) {
+export function EditorStructureSectionSlug(props: EditorStructureSectionSlugProps) {
     const toggleCollapse = (e: any) => {
         e.stopPropagation();
-        props.element.collapsed ? props.onExpand() : props.onCollapse();
+        props.structure.collapsed ? props.onExpand() : props.onCollapse();
     }
 
     return (
@@ -22,15 +21,12 @@ export function EditorChunkGroupSlug(props: EditorChunkGroupSlugProps) {
                 onClick={toggleCollapse}
                 className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10"
             >
-                {props.element.collapsed
+                {props.structure.collapsed
                     ? <FolderIcon className="w-4"/>
                     : <FolderOpenIcon className="w-4"/>
                 }
             </button>
-            <EditorChunkElementSlug
-                element={props.element}
-                onRename={props.onRename}
-            />
+            <EditorStructureBaseSlug structure={props.structure} />
         </>
     );
 }

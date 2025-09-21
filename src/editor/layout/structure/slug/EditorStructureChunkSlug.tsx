@@ -1,19 +1,19 @@
 import {StructureModel} from "../../../../data/model/structure/StructureModel";
 import {ChevronRightIcon, StarIcon} from "@heroicons/react/24/outline";
-import {EditorStructureSlug} from "./EditorStructureSlug";
+import {EditorStructureBaseSlug} from "./EditorStructureBaseSlug";
 
-export type EditorChunkSlugProps = {
+export type EditorStructureChunkSlugProps = {
     structure: StructureModel,
     isStart: boolean,
     isActive: boolean,
 }
 
-export function EditorChunkSlug(props: EditorChunkSlugProps) {
+export function EditorStructureChunkSlug(props: EditorStructureChunkSlugProps) {
     return (
         <>
             {props.isActive && <ChevronRightIcon className="w-4"/>}
             {props.isStart && <StarIcon className="w-4"/>}
-            <EditorStructureSlug structure={props.structure}/>
+            <EditorStructureBaseSlug structure={props.structure}/>
         </>
     );
 }

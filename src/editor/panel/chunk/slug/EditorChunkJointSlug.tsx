@@ -1,4 +1,4 @@
-import {JointModel} from "../../../../../data/model/element/joint/JointModel";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {EditorChunkElementSlug} from "./EditorChunkElementSlug";
 import {LinkIcon, LinkSlashIcon} from "@heroicons/react/24/outline";
 import React from "react";

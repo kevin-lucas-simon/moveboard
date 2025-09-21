@@ -1,10 +1,10 @@
 import {StructureModel} from "../../../../data/model/structure/StructureModel";
-import {EditorStructureSlug} from "../slug/EditorStructureSlug";
+import {EditorStructureBaseSlug} from "../slug/EditorStructureBaseSlug";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
-import {EditorSectionSlug} from "../slug/EditorSectionSlug";
+import {EditorStructureSectionSlug} from "../slug/EditorStructureSectionSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import React from "react";
-import {EditorChunkSlug} from "../slug/EditorChunkSlug";
+import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
@@ -33,19 +33,19 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                     {(() => {
                         switch (props.structure.type) {
                             case StructureTypes.Section:
-                                return <EditorSectionSlug
+                                return <EditorStructureSectionSlug
                                     structure={props.structure as SectionModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
                                 />;
                             case StructureTypes.Chunk:
-                                return <EditorChunkSlug
+                                return <EditorStructureChunkSlug
                                     structure={props.structure}
                                     isActive={props.isActive}
                                     isStart={props.isStart}
                                 />;
                             default:
-                                return <EditorStructureSlug
+                                return <EditorStructureBaseSlug
                                     structure={props.structure}
                                 />;
                         }

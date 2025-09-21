@@ -1,6 +1,6 @@
 import React from "react";
-import {EditorChunkGeneralInspector} from "./partial/EditorChunkGeneralInspector";
-import {EditorChunkElementInspector} from "./partial/EditorChunkElementInspector";
+import {EditorChunkGeneralInspector} from "./inspector/EditorChunkGeneralInspector";
+import {EditorChunkElementInspector} from "./inspector/EditorChunkElementInspector";
 
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {

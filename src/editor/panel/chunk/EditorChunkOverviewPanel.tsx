@@ -1,7 +1,7 @@
 import React from "react";
 import {ElementDefaultProps} from "../../../data/model/element/ElementDefaultProps";
 import {BaseTab} from "../../component/BaseTab";
-import {EditorChunkElementList} from "./partial/EditorChunkElementList";
+import {EditorChunkElementList} from "./list/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {useEditorActions, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";

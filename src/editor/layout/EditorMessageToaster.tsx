@@ -8,7 +8,7 @@ export type EditorToasterProps = {
     errors: ValidationError[];
 }
 
-export function EditorToaster(props: EditorToasterProps) {
+export function EditorMessageToaster(props: EditorToasterProps) {
     const { toasts, handlers } = useToaster();
     const { startPause, endPause } = handlers;
 

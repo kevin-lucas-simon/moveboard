@@ -1,5 +1,5 @@
-import {EditorDropdownMenu} from "./EditorDropdownMenu";
-import {EditorStructureMenu} from "./structures/EditorStructureMenu";
+import {EditorDropdownMenu} from "./menu/EditorDropdownMenu";
+import {EditorStructureOverview} from "./structure/EditorStructureOverview";
 import {
     ArrowUturnLeftIcon, ArrowUturnRightIcon,
     ChevronDoubleLeftIcon,
@@ -12,12 +12,12 @@ import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
 import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
-export type EditorCollapsibleMenuProps = {
+export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
     onSimulationButtonClick: () => void,
 }
 
-export function EditorCollapsibleMenu(props: EditorCollapsibleMenuProps) {
+export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     const [isCollapsed, setCollapsed] = React.useState(false);
 
     const dispatcher = useEditorActions();
@@ -60,7 +60,7 @@ export function EditorCollapsibleMenu(props: EditorCollapsibleMenuProps) {
 
             {/* content */}
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
-                <EditorStructureMenu
+                <EditorStructureOverview
                     level={level}
                     activeChunk={chunk}
                     selectedStructures={selectedStructures}
