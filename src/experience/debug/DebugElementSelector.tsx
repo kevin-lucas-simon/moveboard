@@ -12,11 +12,11 @@ import {Element} from "../world/Element";
 
 const SNAP_INTERVAL = 1.0;
 
-export type EnvironmentElementSelectorProps = {
+export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
 }
 
-export function EnvironmentElementSelector(props: EnvironmentElementSelectorProps) {
+export function DebugElementSelector(props: DebugElementSelectorProps) {
     const editor = useEditorContext();
     const dispatcher = useEditorActions();
 
