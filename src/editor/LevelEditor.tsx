@@ -5,7 +5,7 @@ import {EditorStructureMenu} from "./layout/EditorStructureMenu";
 import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
 import {EditorPanelTypes} from "./panel/EditorPanelComponents";
 
-type EditorPanelOverride = typeof EditorPanelTypes.TestPlay | undefined;
+type EditorPanelOverride = typeof EditorPanelTypes.Simulation | undefined;
 
 export function LevelEditor() {
     const [overridePanel, setOverridePanel] = useState<EditorPanelOverride>(undefined)
@@ -20,9 +20,9 @@ export function LevelEditor() {
             <EditorToaster errors={editor.errors}/>
 
             <EditorStructureMenu
-                isTestPlay={overridePanel === EditorPanelTypes.TestPlay}
-                onClickTestPlay={() => {
-                    setOverridePanel(overridePanel === EditorPanelTypes.TestPlay ? undefined : EditorPanelTypes.TestPlay);
+                isSimulation={overridePanel === EditorPanelTypes.Simulation}
+                onSimulationButtonClick={() => {
+                    setOverridePanel(overridePanel === EditorPanelTypes.Simulation ? undefined : EditorPanelTypes.Simulation);
                 }}
             />
 

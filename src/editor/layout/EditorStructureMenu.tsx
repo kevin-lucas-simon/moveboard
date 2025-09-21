@@ -13,8 +13,8 @@ import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorL
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
 export type EditorStructureMenuProps = {
-    isTestPlay: boolean,
-    onClickTestPlay: () => void,
+    isSimulation: boolean,
+    onSimulationButtonClick: () => void,
 }
 
 export function EditorStructureMenu(props: EditorStructureMenuProps) {
@@ -70,8 +70,8 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
 
             {/* actions */}
             <div className={"w-full px-2 flex gap-4 justify-between " + (isCollapsed ? "flex-col-reverse" : "flex-row")}>
-                <StructureMenuButton onClick={props.onClickTestPlay}>
-                    {props.isTestPlay
+                <StructureMenuButton onClick={props.onSimulationButtonClick}>
+                    {props.isSimulation
                         ? <StopIcon className="w-6" />
                         : <PlayIcon className="w-6" />
                     }

@@ -4,11 +4,11 @@ import {EditorChunkElementsTab} from "./chunk/EditorChunkElementsTab";
 import {EditorChunkInspector} from "./chunk/EditorChunkInspector";
 import {EditorEnvironment} from "./chunk/EditorEnvironment";
 import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
-import {EditorPlayTestTab} from "./testplay/EditorPlayTestTab";
+import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOverviewPanel";
 
 export const EditorPanelTypes = {
     ...StructureTypes,
-    TestPlay: 'TestPlay', // TODO rename it to Simulation
+    Simulation: 'Simulation',
 } as const;
 
 export type EditorPanelComponentTypes = typeof EditorPanelTypes[keyof typeof EditorPanelTypes];
@@ -18,8 +18,8 @@ export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     detailPanel?: React.ComponentType<any>;
     mainPanel: React.ComponentType<any>;
 }> = {
-    [EditorPanelTypes.TestPlay]: {
-        overviewPanel: EditorPlayTestTab,
+    [EditorPanelTypes.Simulation]: {
+        overviewPanel: EditorSimulationOverviewPanel,
         mainPanel: EditorEnvironment,
     },
     [StructureTypes.Chunk]: {

@@ -3,7 +3,7 @@ import {useDebugSettings} from "../../../experience/input/DebugSettingsProvider"
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {BaseTab} from "../../component/BaseTab";
 
-export function EditorPlayTestTab() {
+export function EditorSimulationOverviewPanel() {
     const settings = useDebugSettings();
     if (!settings) {
         return <span>No Debug Settings given</span>
@@ -22,8 +22,8 @@ export function EditorPlayTestTab() {
 
     return (
         <BaseTab
-            title={"Test Play"}
-            description={"Test the behaviour of the chunk with some debug display options."}
+            title={"Simulation"}
+            description={"Simulate the behaviour of the chunk with some debug display options."}
         >
             <ul>
                 {Object.entries(settings).map(([key, value]) =>
