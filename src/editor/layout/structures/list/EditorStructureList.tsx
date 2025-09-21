@@ -1,9 +1,9 @@
 import {EditorStructureItem} from "./EditorStructureItem";
 import {ReactSortable} from "react-sortablejs";
-import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
-import {EditorReducerActions} from "../../reducer/editorReducer";
-import {StructureTypes} from "../../../data/model/structure/StructureTypes";
-import {SectionModel} from "../../../data/model/structure/system/SectionModel";
+import {StructureID, StructureModel} from "../../../../data/model/structure/StructureModel";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},

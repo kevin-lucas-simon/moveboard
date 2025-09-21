@@ -1,10 +1,10 @@
-import {StructureModel} from "../../../data/model/structure/StructureModel";
-import {EditorStructureSlug} from "./slug/EditorStructureSlug";
-import {StructureTypes} from "../../../data/model/structure/StructureTypes";
-import {EditorSectionSlug} from "./slug/EditorSectionSlug";
-import {SectionModel} from "../../../data/model/structure/system/SectionModel";
+import {StructureModel} from "../../../../data/model/structure/StructureModel";
+import {EditorStructureSlug} from "../slug/EditorStructureSlug";
+import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {EditorSectionSlug} from "../slug/EditorSectionSlug";
+import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import React from "react";
-import {EditorChunkSlug} from "./slug/EditorChunkSlug";
+import {EditorChunkSlug} from "../slug/EditorChunkSlug";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;

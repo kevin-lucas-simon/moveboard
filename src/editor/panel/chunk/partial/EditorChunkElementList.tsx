@@ -1,21 +1,21 @@
 import {ReactSortable} from "react-sortablejs";
-import {EditorElementItem} from "./EditorElementItem";
+import {EditorChunkElementItem} from "./EditorChunkElementItem";
 import React from "react";
-import {UUID} from "../../../../../data/model/UUID";
-import {ElementID, ElementModel} from "../../../../../data/model/element/ElementModel";
-import {GroupModel} from "../../../../../data/model/element/system/GroupModel";
-import {JointModel} from "../../../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../../../data/model/element/ElementTypes";
-import {EditorReducerActions} from "../../../../reducer/editorReducer";
+import {UUID} from "../../../../data/model/UUID";
+import {ElementID, ElementModel} from "../../../../data/model/element/ElementModel";
+import {GroupModel} from "../../../../data/model/element/system/GroupModel";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {EditorReducerActions} from "../../../reducer/editorReducer";
 
-export type EditorElementListProps = {
+export type EditorChunkElementListProps = {
     elements: {[key: string]: ElementModel};
     selected: UUID[];
     dispatcher: React.Dispatch<EditorReducerActions>;
     parent: ElementID | null;
 }
 
-export function EditorElementList(props: EditorElementListProps) {
+export function EditorChunkElementList(props: EditorChunkElementListProps) {
     const groupElements = Object.values(props.elements).filter(element => element.parent === props.parent);
 
     const selectElement = (id: UUID) => {
@@ -143,10 +143,10 @@ export function EditorElementList(props: EditorElementListProps) {
             list={structuredClone(groupElements)} // deep copy to avoid reference issues
             setList={reorderElements}
             tag="ul"
-            group={EditorElementList.name}
+            group={EditorChunkElementList.name}
         >
             {groupElements.map((element) => (
-                <EditorElementItem
+                <EditorChunkElementItem
                     key={element.id}
                     element={element}
                     selected={props.selected.includes(element.id)}
@@ -158,9 +158,9 @@ export function EditorElementList(props: EditorElementListProps) {
                     onCollapseToggle={(id) => toggleCollapse(id, element)}
                 >
                     {element.type === ElementTypes.Group && (
-                        <EditorElementList {...props} parent={element.id} />
+                        <EditorChunkElementList {...props} parent={element.id} />
                     )}
-                </EditorElementItem>
+                </EditorChunkElementItem>
             ))}
         </ReactSortable>
     )

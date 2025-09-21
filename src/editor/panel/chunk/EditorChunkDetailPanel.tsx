@@ -11,7 +11,7 @@ import {
 } from "../../reducer/EditorProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 
-export function EditorChunkInspector() {
+export function EditorChunkDetailPanel() {
     const dispatcher = useEditorActions();
     const level = useEditorLevel();
     const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk);

@@ -17,20 +17,20 @@ export function EditorPanelCanvas(props: EditorPanelsProps) {
         EditorPanelComponents[panel]?.overviewPanel
     );
 
-    const mainView = React.createElement(
-        EditorPanelComponents[panel]?.mainPanel
+    const scenePanel = React.createElement(
+        EditorPanelComponents[panel]?.scenePanel
     );
 
-    const inspectorDefinition = EditorPanelComponents[panel]?.detailPanel
-    const inspectorComponent = inspectorDefinition
-        ? React.createElement(inspectorDefinition)
+    const detailDefinition = EditorPanelComponents[panel]?.detailPanel
+    const detailPanel = detailDefinition
+        ? React.createElement(detailDefinition)
         : undefined;
 
     return (
         <EditorPanelCanvasLayout
             leftMenu={overviewPanel}
-            rightMenu={inspectorComponent}
-            mainView={mainView}
+            rightMenu={detailPanel}
+            mainView={scenePanel}
         />
     );
 }

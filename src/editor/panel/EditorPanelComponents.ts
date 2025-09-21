@@ -1,8 +1,8 @@
 import React from "react";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {EditorChunkElementsTab} from "./chunk/EditorChunkElementsTab";
-import {EditorChunkInspector} from "./chunk/EditorChunkInspector";
-import {EditorEnvironment} from "./chunk/EditorEnvironment";
+import {EditorChunkOverviewPanel} from "./chunk/EditorChunkOverviewPanel";
+import {EditorChunkDetailPanel} from "./chunk/EditorChunkDetailPanel";
+import {EditorChunkScenePanel} from "./chunk/EditorChunkScenePanel";
 import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
 import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOverviewPanel";
 
@@ -16,23 +16,23 @@ export type EditorPanelComponentTypes = typeof EditorPanelTypes[keyof typeof Edi
 export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;
     detailPanel?: React.ComponentType<any>;
-    mainPanel: React.ComponentType<any>;
+    scenePanel: React.ComponentType<any>;
 }> = {
     [EditorPanelTypes.Simulation]: {
         overviewPanel: EditorSimulationOverviewPanel,
-        mainPanel: EditorEnvironment,
+        scenePanel: EditorChunkScenePanel,
     },
     [StructureTypes.Chunk]: {
-        overviewPanel: EditorChunkElementsTab,
-        detailPanel: EditorChunkInspector,
-        mainPanel: EditorEnvironment,
+        overviewPanel: EditorChunkOverviewPanel,
+        detailPanel: EditorChunkDetailPanel,
+        scenePanel: EditorChunkScenePanel,
     },
     [StructureTypes.Unknown]: {
-        overviewPanel: EditorChunkElementsTab,
-        mainPanel: EditorEmptyPanel,
+        overviewPanel: EditorChunkOverviewPanel,
+        scenePanel: EditorEmptyPanel,
     },
     [StructureTypes.Section]: {
-        overviewPanel: EditorChunkElementsTab,
-        mainPanel: EditorEmptyPanel,
+        overviewPanel: EditorChunkOverviewPanel,
+        scenePanel: EditorEmptyPanel,
     },
 }

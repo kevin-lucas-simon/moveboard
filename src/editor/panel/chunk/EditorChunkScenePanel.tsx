@@ -4,7 +4,7 @@ import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
 import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../experience/input/DebugSettingsProvider";
 
-export function EditorEnvironment() {
+export function EditorChunkScenePanel() {
     const level = useEditorLevel();
     const structure = useEditorActiveStructure();
     if (!level || !structure) {

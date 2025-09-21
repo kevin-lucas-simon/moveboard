@@ -1,15 +1,15 @@
-import {JointModel} from "../../../../../../data/model/element/joint/JointModel";
-import {EditorElementSlug} from "./EditorElementSlug";
+import {JointModel} from "../../../../../data/model/element/joint/JointModel";
+import {EditorChunkElementSlug} from "./EditorChunkElementSlug";
 import {LinkIcon, LinkSlashIcon} from "@heroicons/react/24/outline";
 import React from "react";
 
-export type EditorJointSlugProps = {
+export type EditorChunkJointSlugProps = {
     element: JointModel;
     onChunkChange: () => void;
     onRename: (name: string) => void;
 }
 
-export function EditorJointSlug(props: EditorJointSlugProps) {
+export function EditorChunkJointSlug(props: EditorChunkJointSlugProps) {
     const changeChunk = (e: any) => {
         e.stopPropagation();
         if (!props.element.neighbour) {
@@ -26,7 +26,7 @@ export function EditorJointSlug(props: EditorJointSlugProps) {
                     : <LinkIcon className="w-4"/>
                 }
             </button>
-            <EditorElementSlug
+            <EditorChunkElementSlug
                 element={props.element}
                 onRename={props.onRename}
             />

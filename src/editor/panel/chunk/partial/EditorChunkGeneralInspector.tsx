@@ -3,7 +3,7 @@ import {BaseTab} from "../../../component/BaseTab";
 import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
-import {EditorJointSlug} from "./list_element/slug/EditorJointSlug";
+import {EditorChunkJointSlug} from "./slug/EditorChunkJointSlug";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../../component/button/LinkButton";
@@ -11,13 +11,13 @@ import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
 import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 
-export type EditorChunkInspectorProps = {
+export type EditorChunkGeneralInspectorProps = {
     level: LevelModel;
     chunk: ChunkModel;
     dispatcher: React.Dispatch<EditorReducerActions>;
 }
 
-export function EditorChunkGeneralInspector(props: EditorChunkInspectorProps) {
+export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorProps) {
     const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
     const isStart = props.level.start === props.chunk.id;
 
@@ -113,7 +113,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkInspectorProps) {
                                 key={joint.id}
                                 className="flex gap-2 px-4 py-1.5 hover:bg-gray-500/10 group"
                             >
-                                <EditorJointSlug
+                                <EditorChunkJointSlug
                                     key={joint.id}
                                     element={joint}
                                     onChunkChange={() => changeChunk(joint.neighbour)}

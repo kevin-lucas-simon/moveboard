@@ -1,16 +1,16 @@
 import {EyeIcon, EyeSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import React from "react";
-import {UUID} from "../../../../../data/model/UUID";
-import {ElementModel} from "../../../../../data/model/element/ElementModel";
-import {GroupModel} from "../../../../../data/model/element/system/GroupModel";
-import {EditorElementSlug} from "./slug/EditorElementSlug";
-import {EditorGroupSlug} from "./slug/EditorGroupSlug";
-import {EditorJointSlug} from "./slug/EditorJointSlug";
-import {JointModel} from "../../../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../../../data/model/element/ElementTypes";
-import {ChunkID} from "../../../../../data/model/structure/spacial/ChunkModel";
+import {UUID} from "../../../../data/model/UUID";
+import {ElementModel} from "../../../../data/model/element/ElementModel";
+import {GroupModel} from "../../../../data/model/element/system/GroupModel";
+import {EditorChunkElementSlug} from "./slug/EditorChunkElementSlug";
+import {EditorChunkGroupSlug} from "./slug/EditorChunkGroupSlug";
+import {EditorChunkJointSlug} from "./slug/EditorChunkJointSlug";
+import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {ChunkID} from "../../../../data/model/structure/spacial/ChunkModel";
 
-export type EditorElementItemProps = {
+export type EditorChunkElementItemProps = {
     element: ElementModel;
     selected: boolean;
     onSelect: (id: UUID) => void;
@@ -22,7 +22,7 @@ export type EditorElementItemProps = {
     children?: React.ReactNode;
 }
 
-export function EditorElementItem(props: EditorElementItemProps) {
+export function EditorChunkElementItem(props: EditorChunkElementItemProps) {
     const handleSelect = () => {
         props.onSelect(props.element.id);
     }
@@ -69,20 +69,20 @@ export function EditorElementItem(props: EditorElementItemProps) {
                     {(() => {
                         switch(props.element.type) {
                             case ElementTypes.Group:
-                                return <EditorGroupSlug
+                                return <EditorChunkGroupSlug
                                     element={props.element as GroupModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
                                     onRename={handleRename}
                                 />;
                             case ElementTypes.Joint:
-                                return <EditorJointSlug
+                                return <EditorChunkJointSlug
                                     element={props.element as JointModel}
                                     onChunkChange={handleChunkChange}
                                     onRename={handleRename}
                                 />;
                             default:
-                                return <EditorElementSlug
+                                return <EditorChunkElementSlug
                                     element={props.element}
                                     onRename={handleRename}
                                 />;

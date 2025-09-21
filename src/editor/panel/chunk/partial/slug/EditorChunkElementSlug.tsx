@@ -1,12 +1,12 @@
 import React, {useRef} from "react";
-import {ElementModel} from "../../../../../../data/model/element/ElementModel";
+import {ElementModel} from "../../../../../data/model/element/ElementModel";
 
-export type EditorElementSlugProps = {
+export type EditorChunkElementSlugProps = {
     element: ElementModel;
     onRename: (name: string) => void;
 }
 
-export function EditorElementSlug(props: EditorElementSlugProps) {
+export function EditorChunkElementSlug(props: EditorChunkElementSlugProps) {
     const [isEditing, setIsEditing] = React.useState(false);
     const [inputValue, setInputValue] = React.useState(props.element.name || "");
     const inputRef = useRef<HTMLInputElement>(null);

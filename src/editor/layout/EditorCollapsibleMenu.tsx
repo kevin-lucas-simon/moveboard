@@ -1,5 +1,5 @@
-import {LevelMenu} from "./LevelMenu";
-import {EditorLevelStructureTab} from "./EditorLevelStructureTab";
+import {EditorDropdownMenu} from "./EditorDropdownMenu";
+import {EditorStructureMenu} from "./structures/EditorStructureMenu";
 import {
     ArrowUturnLeftIcon, ArrowUturnRightIcon,
     ChevronDoubleLeftIcon,
@@ -12,12 +12,12 @@ import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
 import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
-export type EditorStructureMenuProps = {
+export type EditorCollapsibleMenuProps = {
     isSimulation: boolean,
     onSimulationButtonClick: () => void,
 }
 
-export function EditorStructureMenu(props: EditorStructureMenuProps) {
+export function EditorCollapsibleMenu(props: EditorCollapsibleMenuProps) {
     const [isCollapsed, setCollapsed] = React.useState(false);
 
     const dispatcher = useEditorActions();
@@ -47,7 +47,7 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
         <div className={"shrink-0 h-full py-4 flex flex-col relative transition-all " + (isCollapsed ? "w-16" : "w-60")}>
             {/* header */}
             <div className="w-full p-2">
-                <LevelMenu
+                <EditorDropdownMenu
                     button={<>
                         <MoveBoardLogo />
                         {!isCollapsed && <div className="text-2xl font-semibold">{level.name}</div>}
@@ -60,7 +60,7 @@ export function EditorStructureMenu(props: EditorStructureMenuProps) {
 
             {/* content */}
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
-                <EditorLevelStructureTab
+                <EditorStructureMenu
                     level={level}
                     activeChunk={chunk}
                     selectedStructures={selectedStructures}

@@ -20,7 +20,7 @@ enum EditorDialogs {
     LEVEL_CHANGES_CLEAR = "level_changes_clear",
 }
 
-export function LevelMenu(props: LevelMenuProps) {
+export function EditorDropdownMenu(props: LevelMenuProps) {
     const [dialog, setDialog] = useState<EditorDialogs|null>(null);
 
     return (

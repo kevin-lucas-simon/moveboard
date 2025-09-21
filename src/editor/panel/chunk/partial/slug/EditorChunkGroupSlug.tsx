@@ -1,16 +1,16 @@
-import {GroupModel} from "../../../../../../data/model/element/system/GroupModel";
-import {EditorElementSlug} from "./EditorElementSlug";
+import {GroupModel} from "../../../../../data/model/element/system/GroupModel";
+import {EditorChunkElementSlug} from "./EditorChunkElementSlug";
 import {FolderIcon, FolderOpenIcon} from "@heroicons/react/24/outline";
 import React from "react";
 
-export type EditorGroupSlugProps = {
+export type EditorChunkGroupSlugProps = {
     element: GroupModel;
     onCollapse: () => void;
     onExpand: () => void;
     onRename: (name: string) => void;
 }
 
-export function EditorGroupSlug(props: EditorGroupSlugProps) {
+export function EditorChunkGroupSlug(props: EditorChunkGroupSlugProps) {
     const toggleCollapse = (e: any) => {
         e.stopPropagation();
         props.element.collapsed ? props.onExpand() : props.onCollapse();
@@ -27,7 +27,7 @@ export function EditorGroupSlug(props: EditorGroupSlugProps) {
                     : <FolderOpenIcon className="w-4"/>
                 }
             </button>
-            <EditorElementSlug
+            <EditorChunkElementSlug
                 element={props.element}
                 onRename={props.onRename}
             />

@@ -1,12 +1,12 @@
-import {BaseTab} from "../component/BaseTab";
-import {LevelModel} from "../../data/model/world/LevelModel";
+import {BaseTab} from "../../component/BaseTab";
+import {LevelModel} from "../../../data/model/world/LevelModel";
 import React from "react";
-import {EditorStructureList} from "./list_structure/EditorStructureList";
-import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {createStructure} from "../../data/factory/StructureFactory";
-import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {EditorReducerActions} from "../reducer/editorReducer";
-import {StructureID} from "../../data/model/structure/StructureModel";
+import {EditorStructureList} from "./list/EditorStructureList";
+import {StructureTypes} from "../../../data/model/structure/StructureTypes";
+import {createStructure} from "../../../data/factory/StructureFactory";
+import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {EditorReducerActions} from "../../reducer/editorReducer";
+import {StructureID} from "../../../data/model/structure/StructureModel";
 
 export type EditorLevelStructureTabProps = {
     level: LevelModel,
@@ -15,7 +15,7 @@ export type EditorLevelStructureTabProps = {
     levelDispatcher: React.Dispatch<EditorReducerActions>,
 }
 
-export function EditorLevelStructureTab(props: EditorLevelStructureTabProps) {
+export function EditorStructureMenu(props: EditorLevelStructureTabProps) {
     const addStructure = (type?: string) => {
         if (!type || !(type in StructureTypes)) {
             return;

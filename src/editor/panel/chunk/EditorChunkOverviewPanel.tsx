@@ -1,14 +1,14 @@
 import React from "react";
 import {ElementDefaultProps} from "../../../data/model/element/ElementDefaultProps";
 import {BaseTab} from "../../component/BaseTab";
-import {EditorElementList} from "./partial/list_element/EditorElementList";
+import {EditorChunkElementList} from "./partial/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {useEditorActions, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
-export function EditorChunkElementsTab() {
+export function EditorChunkOverviewPanel() {
     const dispatcher = useEditorActions();
     const elements = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)?.elements;
     const selectedElementIds = useEditorContext()?.selectedElements ?? [];
@@ -39,7 +39,7 @@ export function EditorChunkElementsTab() {
             addOptions={Object.keys(ElementDefaultProps)}
             onAction={addElement}
         >
-            <EditorElementList
+            <EditorChunkElementList
                 elements={elements}
                 selected={selectedElementIds}
                 dispatcher={dispatcher}
