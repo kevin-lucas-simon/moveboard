@@ -2,7 +2,7 @@ import {Environment} from "../../../experience/Environment";
 import {Level} from "../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
-import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {DebugSettingsDefault, DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
 
 export function EditorChunkScenePanel() {
     const level = useEditorLevel();
@@ -12,7 +12,13 @@ export function EditorChunkScenePanel() {
     }
 
     return (
-        <DebugSettingsProvider debugSettings={DefaultEditorDebugSettings}>
+        <DebugSettingsProvider debugSettings={{
+            ...DebugSettingsDefault,
+            isEditingMode: true,
+            displayEditorFeatures: true,
+            moveableCamera: true,
+            pauseSimulation: true,
+        }}>
             <Environment key={structure.id} isGranted={false}>
                 <Level {...level} start={structure.id}/>
             </Environment>
