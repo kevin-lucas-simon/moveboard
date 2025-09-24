@@ -1,5 +1,5 @@
 import React from "react";
-import {useDebugSettings} from "../../../experience/debug/DebugSettingsProvider";
+import {useDebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {BaseTab} from "../../component/BaseTab";
 

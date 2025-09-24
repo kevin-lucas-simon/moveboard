@@ -3,12 +3,12 @@ import {
     useEditorActions,
     useEditorContext,
     useEditorSelectedChunkElements
-} from "../../editor/reducer/EditorProvider";
+} from "../../../editor/reducer/EditorProvider";
 import {Matrix4, Vector3, Vector3Like} from "three";
 import React, {useState} from "react";
-import {ElementModel} from "../../data/model/element/ElementModel";
+import {ElementModel} from "../../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
-import {Element} from "../world/Element";
+import {Element} from "../../world/Element";
 
 const SNAP_INTERVAL = 1.0;
 

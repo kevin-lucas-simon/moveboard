@@ -8,7 +8,7 @@ import {RapierRigidBody} from "@react-three/rapier";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {DebugElementSelector} from "../debug/DebugElementSelector";
+import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
 
 export type LevelProps = LevelModel & {};
 

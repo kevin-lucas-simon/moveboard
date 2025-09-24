@@ -2,7 +2,7 @@ import {Environment} from "../../../experience/Environment";
 import {Level} from "../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
-import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../experience/debug/DebugSettingsProvider";
+import {DebugSettingsProvider, DefaultEditorDebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
 
 export function EditorChunkScenePanel() {
     const level = useEditorLevel();

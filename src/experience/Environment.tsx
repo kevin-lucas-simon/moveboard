@@ -1,6 +1,6 @@
 import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
-import {useDebugSettings} from "./debug/DebugSettingsProvider";
+import {useDebugSettings} from "./debug/settings/DebugSettingsProvider";
 import {KeyboardKeysProvider} from "./input/KeyboardKeysProvider";
 import {DeviceMotionProvider} from "./input/DeviceMotionProvider";
 import React from "react";

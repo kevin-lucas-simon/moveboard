@@ -2,7 +2,7 @@ import React from "react";
 import {Physics} from "@react-three/rapier";
 import {useDeviceMotionContext} from "../../input/DeviceMotionProvider";
 import {Vector3, Vector3Like} from "three";
-import {useDebugSettings} from "../../debug/DebugSettingsProvider";
+import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
 import {useKeyboardKeysContext} from "../../input/KeyboardKeysProvider";
 
 const GRAVITATION = 9.81;
