@@ -13,7 +13,7 @@ export type UndoRedoReducerActions = LevelReducerActions | {
     type: 'editor_redo',
 }
 
-export function undoRedoReducer(
+export function historyReducer(
     state: UndoRedoReducerState,
     action: UndoRedoReducerActions,
 ): UndoRedoReducerState {
