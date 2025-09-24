@@ -3,15 +3,15 @@ import {LevelValidator} from "../../data/validator/LevelValidator";
 import {ElementID} from "../../data/model/element/ElementModel";
 import {StructureID} from "../../data/model/structure/StructureModel";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {historyReducer, UndoRedoReducerActions, UndoRedoReducerState} from "./historyReducer";
+import {simulationReducer, SimulationReducerActions, SimulationReducerState} from "./simulationReducer";
 
-export type EditorReducerState = UndoRedoReducerState & {
+export type EditorReducerState = SimulationReducerState & {
     selectedStructures: StructureID[],
     selectedElements: ElementID[],
     errors: ValidationError[],
 }
 
-export type EditorReducerActions = UndoRedoReducerActions | {
+export type EditorReducerActions = SimulationReducerActions | {
     type: 'editor_select_structure',
     payload: StructureID,
 } | {
@@ -64,7 +64,7 @@ export function editorReducer(
         }
         default: {
             // validate level manipulation before applying them
-            const newState = historyReducer(state, action);
+            const newState = simulationReducer(state, action);
             const errors = new LevelValidator().validate(newState.level);
 
             if (errors.length > 0) {

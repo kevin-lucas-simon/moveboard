@@ -6,6 +6,7 @@ import {StructureModel} from "../../data/model/structure/StructureModel";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import {filterStructures} from "../../data/factory/StructureFactory";
+import {DefaultPlayDebugSettings} from "../../experience/debug/settings/DebugSettingsProvider";
 
 const EditorContext = createContext<EditorReducerState|null>(null);
 const EditorDispatcher = createContext<React.Dispatch<EditorReducerActions>|null>(null);
@@ -18,6 +19,7 @@ export function EditorProvider(props: EditorProviderProps) {
     const[editor, dispatch] = useReducer(editorReducer, {
         level: props.initial,
         active: props.initial.start,
+        simulationSettings: DefaultPlayDebugSettings,
         selectedStructures: [],
         selectedElements: [],
         previousState: [],

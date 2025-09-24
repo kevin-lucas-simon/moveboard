@@ -1,23 +1,23 @@
 import React from "react";
-import {useDebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {BaseTab} from "../../component/BaseTab";
+import {useEditorActions, useEditorContext} from "../../reducer/EditorProvider";
 
 export function EditorSimulationOverviewPanel() {
-    const settings = useDebugSettings();
-    if (!settings) {
+    const settings = useEditorContext()?.simulationSettings;
+    const dispatcher = useEditorActions();
+
+    if (!settings || !dispatcher) {
         return <span>No Debug Settings given</span>
     }
 
-    const handleSettingsChange = () => {
-        throw Error("onSettingChange: (key: string, value: any) => void; is not implemented")
-
-        // const handleSettingsChange = (key: string, value: any) => {
-        //     setDebugSettings({
-        //         ...debugSettings,
-        //         [key]: value,
-        //     })
-        // }
+    const handleSettingsChange = (key: string, value: any) => {
+        dispatcher({
+            type: "simulator_patch_settings",
+            payload: {
+                [key]: value,
+            },
+        })
     }
 
     return (

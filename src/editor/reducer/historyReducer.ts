@@ -2,21 +2,21 @@ import {levelReducer, LevelReducerActions, LevelReducerState} from "./levelReduc
 
 const maxUndoSteps = 50;
 
-export type UndoRedoReducerState = LevelReducerState & {
+export type HistoryReducerState = LevelReducerState & {
     previousState: LevelReducerState[],
     nextState: LevelReducerState[],
 }
 
-export type UndoRedoReducerActions = LevelReducerActions | {
+export type HistoryReducerActions = LevelReducerActions | {
     type: 'editor_undo',
 } | {
     type: 'editor_redo',
 }
 
 export function historyReducer(
-    state: UndoRedoReducerState,
-    action: UndoRedoReducerActions,
-): UndoRedoReducerState {
+    state: HistoryReducerState,
+    action: HistoryReducerActions,
+): HistoryReducerState {
     switch (action.type) {
         case "editor_undo": {
             if (state.previousState.length === 0) {

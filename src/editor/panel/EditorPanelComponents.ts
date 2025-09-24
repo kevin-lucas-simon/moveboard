@@ -6,6 +6,7 @@ import {EditorChunkScenePanel} from "./chunk/EditorChunkScenePanel";
 import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
 import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOverviewPanel";
 import {EditorPanelComponentTypes, EditorPanelTypes} from "./EditorPanelTypes";
+import {EditorSimulationScenePanel} from "./simulation/EditorSimulationScenePanel";
 
 export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;
@@ -14,7 +15,7 @@ export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
 }> = {
     [EditorPanelTypes.Simulation]: {
         overviewPanel: EditorSimulationOverviewPanel,
-        scenePanel: EditorChunkScenePanel,
+        scenePanel: EditorSimulationScenePanel,
     },
     [StructureTypes.Chunk]: {
         overviewPanel: EditorChunkOverviewPanel,
