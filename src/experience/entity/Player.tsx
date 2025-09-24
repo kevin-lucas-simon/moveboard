@@ -14,7 +14,7 @@ export type PlayerProps = {
  * @constructor
  */
 export function Player(props: PlayerProps) {
-    const isEditingMode = useDebugSettings().isEditingMode;
+    const isEditingMode = useDebugSettings()?.isEditingMode;
     // use a ref to store the spawn position so it doesn't change on re-renders
     const spawnPosition = useRef(new Vector3().copy(props.spawnPosition));
 

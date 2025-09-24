@@ -4,7 +4,7 @@ import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
 import {BarrierBlockDefault, BarrierBlockModel} from "../../../data/model/element/block/BarrierBlockModel";
 
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
-    const isVisible = useDebugSettings().displayEditorFeatures;
+    const isVisible = useDebugSettings()?.displayEditorFeatures;
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>

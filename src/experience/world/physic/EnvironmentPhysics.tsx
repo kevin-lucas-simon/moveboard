@@ -29,7 +29,7 @@ function useUserGravityInput(): Vector3Like {
     const keyboardVector = useKeyboardVector();
     const deviceMotionVector = useDeviceMotionContext();
 
-    const isDisabled = useDebugSettings().pauseSimulation;
+    const isDisabled = useDebugSettings()?.pauseSimulation;
 
     // add gravity as default input
     const combinedVector = new Vector3(0, -GRAVITATION, 0);

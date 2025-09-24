@@ -1,4 +1,4 @@
-import {createContext, useContext} from "react";
+import React, {createContext, useContext} from "react";
 
 export type DebugSettings = {
     isEditingMode: boolean,
@@ -15,7 +15,7 @@ export const DebugSettingsDefault: DebugSettings = {
     pauseSimulation: false,
 }
 
-const DebugSettingsContext = createContext<DebugSettings>(DebugSettingsDefault);
+const DebugSettingsContext = createContext<DebugSettings|null>(null);
 
 export type DebugSettingsProviderProps = {
     debugSettings: DebugSettings,
@@ -39,6 +39,6 @@ export function DebugSettingsProvider(props: DebugSettingsProviderProps) {
  * Hook to access the debug settings
  * @return DebugSettings
  */
-export function useDebugSettings(): DebugSettings {
+export function useDebugSettings(): DebugSettings|null {
     return useContext(DebugSettingsContext);
 }
