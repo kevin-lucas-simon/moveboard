@@ -1,6 +1,7 @@
 import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
 
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {EditorReducerActions} from "./editorReducer";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -24,7 +25,7 @@ export type ChunkReducerActions = {
 
 export function chunkReducer(
     state: ChunkModel,
-    action: ChunkReducerActions
+    action: EditorReducerActions
 ): ChunkModel {
     switch (action.type) {
         case 'chunk_update_field': {
@@ -124,6 +125,6 @@ export function chunkReducer(
             }
         }
         default:
-            throw new Error('Invalid action type');
+            return state;
     }
 }

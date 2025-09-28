@@ -1,22 +1,32 @@
-import {levelReducer, LevelReducerActions, LevelReducerState} from "./levelReducer";
+import {EditorReducerActions, EditorReducerState} from "./editorReducer";
 
 const maxUndoSteps = 50;
 
-export type HistoryReducerState = LevelReducerState & {
-    previousState: LevelReducerState[],
-    nextState: LevelReducerState[],
+export type HistoryReducerState = {
+    previousState: Omit<EditorReducerState, 'previousState' | 'nextState'>[],
+    nextState: Omit<EditorReducerState, 'previousState' | 'nextState'>[],
 }
 
-export type HistoryReducerActions = LevelReducerActions | {
+export type HistoryReducerActions = {
     type: 'editor_undo',
 } | {
     type: 'editor_redo',
 }
 
+function omitHistoryState(state: EditorReducerState): Omit<EditorReducerState, 'previousState' | 'nextState'> {
+    const {
+        previousState,
+        nextState,
+        ...stateWithoutHistory
+    } = state;
+
+    return stateWithoutHistory;
+}
+
 export function historyReducer(
-    state: HistoryReducerState,
-    action: HistoryReducerActions,
-): HistoryReducerState {
+    state: EditorReducerState,
+    action: EditorReducerActions,
+): EditorReducerState {
     switch (action.type) {
         case "editor_undo": {
             if (state.previousState.length === 0) {
@@ -28,10 +38,7 @@ export function historyReducer(
                 previousState: state.previousState.slice(0, -1),
                 nextState: [
                     ...state.nextState,
-                    {
-                        level: state.level,
-                        active: state.active,
-                    }
+                    omitHistoryState(state)
                 ],
             };
         }
@@ -44,29 +51,20 @@ export function historyReducer(
                 ...nextState,
                 previousState: [
                     ...state.previousState,
-                    {
-                        level: state.level,
-                        active: state.active,
-                    }
+                    omitHistoryState(state)
                 ],
                 nextState: state.nextState.slice(0, -1),
             };
         }
         default: {
-            const newState = levelReducer(state, action);
             return {
-                ...newState,
+                ...state,
                 previousState: [
                     ...state.previousState.slice(-maxUndoSteps),
-                    {
-                        level: state.level,
-                        active: state.active,
-                    }
+                    omitHistoryState(state)
                 ],
                 nextState: [],
             };
         }
     }
 }
-
-

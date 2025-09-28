@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {EditorMessageToaster} from "./layout/EditorMessageToaster";
 import {useEditorContext} from "./reducer/EditorProvider";
 import {EditorCollapsibleActions} from "./layout/EditorCollapsibleActions";
 import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
@@ -18,7 +17,8 @@ export function LevelEditor() {
 
     return (
         <div className="w-full h-full flex bg-gray-500/10">
-            <EditorMessageToaster errors={editor.errors}/>
+            {/* TODO ich muss eine andere Herangehensweise hierfür haben seit dem reducer refactoring */}
+            {/*<EditorMessageToaster errors={editor.errors}/>*/}
 
             <EditorCollapsibleActions
                 isSimulation={overridePanel === EditorPanelTypes.Simulation}

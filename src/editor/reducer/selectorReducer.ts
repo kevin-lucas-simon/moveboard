@@ -1,17 +1,15 @@
 import {ValidationError} from "../../data/validator/Validator";
-import {LevelValidator} from "../../data/validator/LevelValidator";
 import {ElementID} from "../../data/model/element/ElementModel";
 import {StructureID} from "../../data/model/structure/StructureModel";
-import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {simulationReducer, SimulationReducerActions, SimulationReducerState} from "./simulationReducer";
+import {EditorReducerActions, EditorReducerState} from "./editorReducer";
 
-export type SelectorReducerState = SimulationReducerState & {
+export type SelectorReducerState = {
     selectedStructures: StructureID[],
     selectedElements: ElementID[],
     errors: ValidationError[],
 }
 
-export type SelectorReducerActions = SimulationReducerActions | {
+export type SelectorReducerActions = {
     type: 'editor_select_structure',
     payload: StructureID,
 } | {
@@ -22,26 +20,26 @@ export type SelectorReducerActions = SimulationReducerActions | {
 };
 
 export function selectorReducer(
-    state: SelectorReducerState,
-    action: SelectorReducerActions,
-): SelectorReducerState {
+    state: EditorReducerState,
+    action: EditorReducerActions,
+): EditorReducerState {
     switch (action.type) {
         case "editor_select_structure": {
-            const selectedId = action.payload;
-            const selectedStructure = state.level.structures[selectedId];
-            if (!selectedStructure) {
-                return state;
-            }
-
-            // if a chunk is selected, it becomes the active structure and all other selections are cleared
-            if (selectedStructure.type === StructureTypes.Chunk) {
-                return {
-                    ...state,
-                    active: selectedId,
-                    selectedStructures: [action.payload],
-                    selectedElements: [],
-                }
-            }
+            // const selectedId = action.payload;
+            // const selectedStructure = state.level.structures[selectedId];
+            // if (!selectedStructure) {
+            //     return state;
+            // }
+            //
+            // // if a chunk is selected, it becomes the active structure and all other selections are cleared
+            // if (selectedStructure.type === StructureTypes.Chunk) {
+            //     return {
+            //         ...state,
+            //         active: selectedId,
+            //         selectedStructures: [action.payload],
+            //         selectedElements: [],
+            //     }
+            // }
 
             return {
                 ...state,
@@ -63,22 +61,7 @@ export function selectorReducer(
             };
         }
         default: {
-            // validate level manipulation before applying them
-            const newState = simulationReducer(state, action);
-            const errors = new LevelValidator().validate(newState.level);
-
-            if (errors.length > 0) {
-                return {
-                    ...state,
-                    errors: errors,
-                }
-            }
-
-            return {
-                ...state,
-                ...newState,
-                errors: [],
-            };
+            return state;
         }
     }
 }

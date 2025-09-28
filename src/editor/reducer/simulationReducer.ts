@@ -1,19 +1,19 @@
 import {DebugSettings} from "../../experience/debug/settings/DebugSettingsProvider";
-import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./historyReducer";
+import {EditorReducerActions, EditorReducerState} from "./editorReducer";
 
-export type SimulationReducerState = HistoryReducerState & {
+export type SimulationReducerState = {
     simulationSettings: DebugSettings,
 }
 
-export type SimulationReducerActions = HistoryReducerActions | {
+export type SimulationReducerActions = {
     type: 'simulator_patch_settings',
     payload: Partial<DebugSettings>,
 }
 
 export function simulationReducer(
-    state: SimulationReducerState,
-    action: SimulationReducerActions,
-): SimulationReducerState {
+    state: EditorReducerState,
+    action: EditorReducerActions,
+): EditorReducerState {
     switch (action.type) {
         case 'simulator_patch_settings': {
             return {
@@ -25,10 +25,7 @@ export function simulationReducer(
             }
         }
         default: {
-            return {
-                ...historyReducer(state, action),
-                simulationSettings: state.simulationSettings,
-            }
+            return state;
         }
     }
 }

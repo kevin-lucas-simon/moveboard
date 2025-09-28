@@ -4,6 +4,7 @@ import {JointModel} from "../../data/model/element/joint/JointModel";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {StructureID, StructureModel} from "../../data/model/structure/StructureModel";
+import {EditorReducerActions, EditorReducerState} from "./editorReducer";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -34,9 +35,9 @@ export type LevelReducerActions = ChunkReducerActions | {
 };
 
 export function levelReducer(
-    state: LevelReducerState,
-    action: LevelReducerActions,
-): LevelReducerState {
+    state: EditorReducerState,
+    action: EditorReducerActions,
+): EditorReducerState {
     switch (action.type) {
         case "level_add_structure": {
             const structure = action.payload;
