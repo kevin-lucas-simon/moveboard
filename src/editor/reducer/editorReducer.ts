@@ -1,7 +1,7 @@
-import {selectorReducer, SelectorReducerActions, SelectorReducerState} from "./selectorReducer";
-import {SimulationReducerActions, SimulationReducerState, simulationReducer} from "./simulationReducer";
-import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./historyReducer";
-import {levelReducer, LevelReducerActions, LevelReducerState} from "./levelReducer";
+import {selectorReducer, SelectorReducerActions, SelectorReducerState} from "./partial/selectorReducer";
+import {SimulationReducerActions, SimulationReducerState, simulationReducer} from "./partial/simulationReducer";
+import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./partial/historyReducer";
+import {levelReducer, LevelReducerActions, LevelReducerState} from "./partial/levelReducer";
 
 export type EditorReducerState =
     & SelectorReducerState

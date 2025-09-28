@@ -1,4 +1,4 @@
-import {EditorReducerActions, EditorReducerState} from "./editorReducer";
+import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 const maxUndoSteps = 50;
 

@@ -1,5 +1,5 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
-import {LevelReducerActions} from "../reducer/levelReducer";
+import {LevelReducerActions} from "../reducer/partial/levelReducer";
 import React from "react";
 import {BasicDialog} from "../../component/dialog/BasicDialog";
 

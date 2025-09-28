@@ -1,6 +1,6 @@
 import {BasicDialog} from "../../component/dialog/BasicDialog";
 import React from "react";
-import {LevelReducerActions} from "../reducer/levelReducer";
+import {LevelReducerActions} from "../reducer/partial/levelReducer";
 import {LevelModel} from "../../data/model/world/LevelModel";
 
 export type ClearChangesDialogProps = {

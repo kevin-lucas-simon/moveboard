@@ -1,5 +1,5 @@
-import {DebugSettings} from "../../experience/debug/settings/DebugSettingsProvider";
-import {EditorReducerActions, EditorReducerState} from "./editorReducer";
+import {DebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 export type SimulationReducerState = {
     simulationSettings: DebugSettings,

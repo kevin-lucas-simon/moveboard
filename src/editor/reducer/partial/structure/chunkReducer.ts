@@ -1,7 +1,7 @@
-import {ElementID, ElementModel} from "../../data/model/element/ElementModel";
+import {ElementID, ElementModel} from "../../../../data/model/element/ElementModel";
 
-import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {EditorReducerActions} from "./editorReducer";
+import {ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {EditorReducerActions} from "../../editorReducer";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';

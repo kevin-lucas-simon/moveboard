@@ -1,10 +1,10 @@
-import {LevelModel} from "../../data/model/world/LevelModel";
-import {chunkReducer, ChunkReducerActions} from "./chunkReducer";
-import {JointModel} from "../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../data/model/element/ElementTypes";
-import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
-import {StructureID, StructureModel} from "../../data/model/structure/StructureModel";
-import {EditorReducerActions, EditorReducerState} from "./editorReducer";
+import {LevelModel} from "../../../data/model/world/LevelModel";
+import {chunkReducer, ChunkReducerActions} from "./structure/chunkReducer";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
+import {ElementTypes} from "../../../data/model/element/ElementTypes";
+import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
+import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 export type LevelReducerState = {
     level: LevelModel,
