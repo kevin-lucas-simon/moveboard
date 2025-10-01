@@ -18,9 +18,8 @@ export type EditorProviderProps = {
 export function EditorProvider(props: EditorProviderProps) {
     const[editor, dispatch] = useReducer(editorReducer, {
         level: props.initial,
-        active: props.initial.start,
         simulationSettings: DebugSettingsDefault,
-        selectedStructures: [],
+        selectedStructure: props.initial.start,
         selectedElements: [],
         previousState: [],
         nextState: [],
@@ -62,7 +61,7 @@ export function useEditorActiveStructure<T extends StructureModel>(type?: Struct
         ? filterStructures<T>(editor.level.structures, type)
         : editor.level.structures;
 
-    return structures[editor.active] as T;
+    return structures[editor.selectedStructure] as T;
 }
 
 export function useEditorSelectedChunkElements(): {[key: string]: ElementModel} {

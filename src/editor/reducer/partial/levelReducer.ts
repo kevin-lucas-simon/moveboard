@@ -8,7 +8,6 @@ import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 export type LevelReducerState = {
     level: LevelModel,
-    active: StructureID,
 };
 
 export type LevelReducerActions = ChunkReducerActions | {
@@ -88,7 +87,7 @@ export function levelReducer(
             const removedChunkId = action.payload;
 
             // update active chunk to level start if the removed chunk is currently active
-            const updatedActive = state.active === action.payload ? state.level.start : state.active;
+            const updatedActive = state.selectedStructure === action.payload ? state.level.start : state.selectedStructure;
 
             // remove chunk from level
             const updatedChunks = Object.fromEntries(
@@ -111,7 +110,7 @@ export function levelReducer(
             // return updated state with removed chunk
             return {
                 ...state,
-                active: updatedActive,
+                selectedStructure: updatedActive,
                 level: {
                     ...state.level,
                     structures: updatedChunks,
@@ -166,7 +165,7 @@ export function levelReducer(
             // use current active, if not available use level start;
             return {
                 ...state,
-                active: state.level.structures[state.active] ? state.active : state.level.start,
+                selectedStructure: state.level.structures[state.selectedStructure] ? state.selectedStructure : state.level.start,
                 level: action.payload,
             };
         }
@@ -178,7 +177,7 @@ export function levelReducer(
                     ...state.level,
                     structures: {
                         ...state.level.structures,
-                        [state.active]: chunkReducer(state.level.structures[state.active] as ChunkModel, action),
+                        [state.selectedStructure]: chunkReducer(state.level.structures[state.selectedStructure] as ChunkModel, action),
                     },
                 },
             };

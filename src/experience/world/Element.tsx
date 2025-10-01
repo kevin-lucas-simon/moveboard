@@ -30,7 +30,7 @@ export function Element(props: ElementProps) {
         }
 
         const allChunks = filterStructures<ChunkModel>(editorContext.level.structures, StructureTypes.Chunk);
-        const activeChunk = allChunks[editorContext.active];
+        const activeChunk = allChunks[editorContext.selectedStructure];
 
         // jump to neighbour chunk if the element is not in the active chunk
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;

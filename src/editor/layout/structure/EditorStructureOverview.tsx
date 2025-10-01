@@ -11,7 +11,7 @@ import {StructureID} from "../../../data/model/structure/StructureModel";
 export type EditorStructureOverviewProps = {
     level: LevelModel,
     activeChunk: ChunkModel,
-    selectedStructures: StructureID[],
+    selectedStructure: StructureID,
     levelDispatcher: React.Dispatch<EditorReducerActions>,
 }
 
@@ -40,7 +40,7 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
                     parent={null}
                     active={props.activeChunk.id}
                     start={props.level.start}
-                    selected={props.selectedStructures}
+                    selected={props.selectedStructure}
                     dispatcher={props.levelDispatcher}
                 />
             </ul>

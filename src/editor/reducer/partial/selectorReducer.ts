@@ -4,7 +4,7 @@ import {StructureID} from "../../../data/model/structure/StructureModel";
 import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 export type SelectorReducerState = {
-    selectedStructures: StructureID[],
+    selectedStructure: StructureID,
     selectedElements: ElementID[],
     errors: ValidationError[],
 }
@@ -25,25 +25,9 @@ export function selectorReducer(
 ): EditorReducerState {
     switch (action.type) {
         case "editor_select_structure": {
-            // const selectedId = action.payload;
-            // const selectedStructure = state.level.structures[selectedId];
-            // if (!selectedStructure) {
-            //     return state;
-            // }
-            //
-            // // if a chunk is selected, it becomes the active structure and all other selections are cleared
-            // if (selectedStructure.type === StructureTypes.Chunk) {
-            //     return {
-            //         ...state,
-            //         active: selectedId,
-            //         selectedStructures: [action.payload],
-            //         selectedElements: [],
-            //     }
-            // }
-
             return {
                 ...state,
-                selectedStructures: [action.payload],
+                selectedStructure: action.payload,
             };
         }
         case "editor_select_element": {

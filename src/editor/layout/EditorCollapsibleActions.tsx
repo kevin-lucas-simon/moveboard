@@ -29,7 +29,7 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
         return <></>;
     }
 
-    const selectedStructures = editor?.selectedStructures || [];
+    const selectedStructure = editor?.selectedStructure
 
     const handleCollapse = () => {
         setCollapsed(!isCollapsed);
@@ -63,7 +63,7 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
                 <EditorStructureOverview
                     level={level}
                     activeChunk={chunk}
-                    selectedStructures={selectedStructures}
+                    selectedStructure={selectedStructure}
                     levelDispatcher={dispatcher}
                 />
             </div>

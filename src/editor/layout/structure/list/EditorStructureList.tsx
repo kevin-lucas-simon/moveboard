@@ -10,7 +10,7 @@ export type EditorStructureListProps = {
     parent: StructureID | null,
     active: StructureID,
     start: StructureID,
-    selected: StructureID[],
+    selected: StructureID,
     dispatcher: React.Dispatch<EditorReducerActions>,
 }
 
@@ -99,7 +99,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
                     structure={structure}
                     isActive={structure.id === props.active}
                     isStart={structure.id === props.start}
-                    isSelected={props.selected.includes(structure.id)}
+                    isSelected={props.selected === structure.id}
                     onSelect={() => selectChunk(structure.id)}
                     onCollapseToggle={() => toggleCollapse(structure)}
                 >
