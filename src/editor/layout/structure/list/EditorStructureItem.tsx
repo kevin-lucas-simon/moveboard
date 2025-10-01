@@ -8,7 +8,6 @@ import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
-    isActive: boolean;
     isStart: boolean;
     isSelected: boolean;
     onCollapseToggle: () => void;
@@ -41,7 +40,6 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                             case StructureTypes.Chunk:
                                 return <EditorStructureChunkSlug
                                     structure={props.structure}
-                                    isActive={props.isActive}
                                     isStart={props.isStart}
                                 />;
                             default:

@@ -21,7 +21,6 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     const dispatcher = useEditorActions();
     const editor = useEditorContext();
     const level = useEditorLevel();
-    const structure = useEditorActiveStructure()
 
     if (!dispatcher || !editor || !level) {
         return <></>;
@@ -60,7 +59,6 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
                 <EditorStructureOverview
                     level={level}
-                    activeStructure={structure}
                     selectedStructure={selectedStructure}
                     levelDispatcher={dispatcher}
                 />

@@ -8,9 +8,8 @@ import {SectionModel} from "../../../../data/model/structure/system/SectionModel
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
     parent: StructureID | null,
-    active: StructureID,
+    selected: StructureID | null,
     start: StructureID | null,
-    selected: StructureID,
     dispatcher: React.Dispatch<EditorReducerActions>,
 }
 
@@ -97,7 +96,6 @@ export function EditorStructureList(props: EditorStructureListProps) {
                 <EditorStructureItem
                     key={structure.id}
                     structure={structure}
-                    isActive={structure.id === props.active}
                     isStart={structure.id === props.start}
                     isSelected={props.selected === structure.id}
                     onSelect={() => selectChunk(structure.id)}
@@ -107,7 +105,6 @@ export function EditorStructureList(props: EditorStructureListProps) {
                         <EditorStructureList
                             structures={props.structures}
                             parent={structure.id}
-                            active={props.active}
                             start={props.start}
                             selected={props.selected}
                             dispatcher={props.dispatcher}
