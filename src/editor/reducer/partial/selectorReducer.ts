@@ -31,7 +31,6 @@ export function selectorReducer(
             };
         }
         case "editor_select_element": {
-            // selection can be any UUID, the corresponding items will check themselves
             return {
                 ...state,
                 selectedElements: [action.payload],

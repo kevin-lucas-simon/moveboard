@@ -95,7 +95,7 @@ export function levelReducer(
             )
 
             // update joints in remaining chunks to remove references to the removed chunk
-            // TODO ganz heißes Eisen, hier nochmal refactoren!
+            // TODO ganz heißes Eisen, hier nochmal refactoren! -> eigener JointReducer ^^
             Object.entries(updatedChunks).forEach(([_, chunk]) => {
                 Object.entries((chunk as ChunkModel).elements).forEach(([_, element]) => {
                     if (

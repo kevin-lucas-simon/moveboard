@@ -9,7 +9,7 @@ export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
     parent: StructureID | null,
     active: StructureID,
-    start: StructureID,
+    start: StructureID | null,
     selected: StructureID,
     dispatcher: React.Dispatch<EditorReducerActions>,
 }

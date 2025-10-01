@@ -7,10 +7,8 @@ import {
     ChevronDownIcon, PlayIcon, StopIcon,
 } from "@heroicons/react/24/outline";
 import React, {ReactNode} from "react";
-import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
 import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
-import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -23,9 +21,9 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     const dispatcher = useEditorActions();
     const editor = useEditorContext();
     const level = useEditorLevel();
-    const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)
+    const structure = useEditorActiveStructure()
 
-    if (!dispatcher || !editor || !level || !chunk) {
+    if (!dispatcher || !editor || !level) {
         return <></>;
     }
 
@@ -62,7 +60,7 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
                 <EditorStructureOverview
                     level={level}
-                    activeChunk={chunk}
+                    activeStructure={structure}
                     selectedStructure={selectedStructure}
                     levelDispatcher={dispatcher}
                 />

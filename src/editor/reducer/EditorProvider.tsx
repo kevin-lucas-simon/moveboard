@@ -61,7 +61,7 @@ export function useEditorActiveStructure<T extends StructureModel>(type?: Struct
         ? filterStructures<T>(editor.level.structures, type)
         : editor.level.structures;
 
-    return structures[editor.selectedStructure] as T;
+    return structures[editor.selectedStructure] as T | null;
 }
 
 export function useEditorSelectedChunkElements(): {[key: string]: ElementModel} {

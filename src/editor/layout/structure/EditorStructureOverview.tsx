@@ -4,13 +4,12 @@ import React from "react";
 import {EditorStructureList} from "./list/EditorStructureList";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {createStructure} from "../../../data/factory/StructureFactory";
-import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {EditorReducerActions} from "../../reducer/editorReducer";
-import {StructureID} from "../../../data/model/structure/StructureModel";
+import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
 
 export type EditorStructureOverviewProps = {
     level: LevelModel,
-    activeChunk: ChunkModel,
+    activeStructure: StructureModel|null, // TODO fixen, das ist das gleiche!
     selectedStructure: StructureID,
     levelDispatcher: React.Dispatch<EditorReducerActions>,
 }
@@ -38,7 +37,7 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
                 <EditorStructureList
                     structures={props.level.structures}
                     parent={null}
-                    active={props.activeChunk.id}
+                    active={props.activeStructure?.id} // TODO das ist das Gleiche!
                     start={props.level.start}
                     selected={props.selectedStructure}
                     dispatcher={props.levelDispatcher}
