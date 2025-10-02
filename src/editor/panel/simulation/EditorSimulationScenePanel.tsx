@@ -3,6 +3,7 @@ import {Level} from "../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorContext, useEditorLevel} from "../../reducer/EditorProvider";
 import {DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 
 export function EditorSimulationScenePanel() {
     const level = useEditorLevel();
@@ -10,7 +11,7 @@ export function EditorSimulationScenePanel() {
 
     const debugSettings = useEditorContext()?.simulationSettings;
 
-    if (!level || !structure || !debugSettings) {
+    if (!level || !structure || !debugSettings || structure.type !== StructureTypes.Chunk) {
         return <></>;
     }
 

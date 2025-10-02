@@ -22,12 +22,13 @@ export function Level(props: LevelProps) {
     const playerRef = useRef<RapierRigidBody>(null)
 
     if (!renderedChunks[activeChunk]) {
-        throw new Error("Active chunk is not rendered");
+        console.error("Active structure with id " + activeChunk + " could not be not rendered.")
+        return <></>
     }
 
     // change active chunk when player leaves a chunk
     function onPlayerChunkLeave(neighbour: ChunkID|null) {
-        if (neighbour && allChunks[neighbour]) {
+        if (neighbour && allChunks[neighbour]?.type === StructureTypes.Chunk) {
             setActiveChunk(neighbour);
         }
     }

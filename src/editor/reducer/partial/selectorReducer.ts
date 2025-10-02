@@ -37,7 +37,6 @@ export function selectorReducer(
             };
         }
         case "editor_deselect_all": {
-            // deselect all items
             return {
                 ...state,
                 selectedElements: [],

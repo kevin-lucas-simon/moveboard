@@ -3,11 +3,12 @@ import {Level} from "../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
 import {DebugSettingsDefault, DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 
 export function EditorChunkScenePanel() {
     const level = useEditorLevel();
     const structure = useEditorActiveStructure();
-    if (!level || !structure) {
+    if (!level || !structure || structure.type !== StructureTypes.Chunk) {
         return <></>;
     }
 
