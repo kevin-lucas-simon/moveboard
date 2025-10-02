@@ -1,6 +1,6 @@
 import {PivotControls} from "@react-three/drei";
 import {
-    useEditorActions,
+    useEditorDispatcher,
     useEditorContext,
     useEditorSelectedChunkElements
 } from "../../../editor/reducer/EditorProvider";
@@ -18,7 +18,7 @@ export type DebugElementSelectorProps = {
 
 export function DebugElementSelector(props: DebugElementSelectorProps) {
     const editor = useEditorContext();
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
 
     const visibleSelectedElements = Object.values(useEditorSelectedChunkElements()).filter((element: ElementModel) => !element.hidden);
 

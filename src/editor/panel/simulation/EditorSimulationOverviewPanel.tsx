@@ -1,11 +1,11 @@
 import React from "react";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {BaseTab} from "../../component/BaseTab";
-import {useEditorActions, useEditorContext} from "../../reducer/EditorProvider";
+import {useEditorDispatcher, useEditorContext} from "../../reducer/EditorProvider";
 
 export function EditorSimulationOverviewPanel() {
     const settings = useEditorContext()?.simulationSettings;
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
 
     if (!settings || !dispatcher) {
         return <span>No Debug Settings given</span>

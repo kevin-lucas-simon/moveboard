@@ -4,7 +4,7 @@ import {EditorChunkElementInspector} from "./inspector/EditorChunkElementInspect
 
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {
-    useEditorActions,
+    useEditorDispatcher,
     useEditorLevel,
     useEditorActiveStructure,
     useEditorSelectedChunkElements
@@ -12,7 +12,7 @@ import {
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 
 export function EditorChunkDetailPanel() {
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
     const level = useEditorLevel();
     const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk);
     const selectedElements = useEditorSelectedChunkElements();

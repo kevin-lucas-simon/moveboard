@@ -1,6 +1,6 @@
 import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
-import {useEditorActions, useEditorContext} from "../../editor/reducer/EditorProvider";
+import {useEditorDispatcher, useEditorContext} from "../../editor/reducer/EditorProvider";
 import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
@@ -16,7 +16,7 @@ export type ElementProps = ElementModel & {
 
 export function Element(props: ElementProps) {
     const editorContext = useEditorContext();
-    const editorActions = useEditorActions();
+    const editorActions = useEditorDispatcher();
 
     if (props.hidden) {
         return <></>

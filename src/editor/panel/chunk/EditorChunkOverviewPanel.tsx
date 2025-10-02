@@ -4,12 +4,12 @@ import {BaseTab} from "../../component/BaseTab";
 import {EditorChunkElementList} from "./list/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
-import {useEditorActions, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
+import {useEditorDispatcher, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export function EditorChunkOverviewPanel() {
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
     const elements = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)?.elements;
     const selectedElementIds = useEditorContext()?.selectedElements ?? [];
 

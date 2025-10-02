@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import React, {ReactNode} from "react";
 import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
-import {useEditorActions, useEditorActiveStructure, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
+import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -18,7 +18,7 @@ export type EditorCollapsibleActionsProps = {
 export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     const [isCollapsed, setCollapsed] = React.useState(false);
 
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
     const editor = useEditorContext();
     const level = useEditorLevel();
 

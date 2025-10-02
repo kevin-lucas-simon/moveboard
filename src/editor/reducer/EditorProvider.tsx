@@ -39,7 +39,7 @@ export function useEditorContext() {
     return useContext(EditorContext);
 }
 
-export function useEditorActions() {
+export function useEditorDispatcher() {
     return useContext(EditorDispatcher);
 }
 

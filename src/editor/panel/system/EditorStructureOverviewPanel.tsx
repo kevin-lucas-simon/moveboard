@@ -1,9 +1,9 @@
 import {BaseTab} from "../../component/BaseTab";
-import {useEditorActions, useEditorActiveStructure} from "../../reducer/EditorProvider";
+import {useEditorDispatcher, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 
 export function EditorStructureOverviewPanel() {
-    const dispatcher = useEditorActions();
+    const dispatcher = useEditorDispatcher();
     const structure = useEditorActiveStructure();
 
     if (!dispatcher || !structure) {
