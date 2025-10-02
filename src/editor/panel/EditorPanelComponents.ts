@@ -7,6 +7,7 @@ import {EditorEmptyPanel} from "./system/EditorEmptyPanel";
 import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOverviewPanel";
 import {EditorPanelComponentTypes, EditorPanelTypes} from "./EditorPanelTypes";
 import {EditorSimulationScenePanel} from "./simulation/EditorSimulationScenePanel";
+import {EditorStructureOverviewPanel} from "./system/EditorStructureOverviewPanel";
 
 export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;
@@ -27,7 +28,7 @@ export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
         scenePanel: EditorEmptyPanel,
     },
     [StructureTypes.Section]: {
-        overviewPanel: EditorChunkOverviewPanel,
+        overviewPanel: EditorStructureOverviewPanel,
         scenePanel: EditorEmptyPanel,
     },
 }
