@@ -7,6 +7,7 @@ export type EditorStructureSectionSlugProps = {
     structure: SectionModel;
     onCollapse: () => void;
     onExpand: () => void;
+    onRename: (name: string) => void;
 }
 
 export function EditorStructureSectionSlug(props: EditorStructureSectionSlugProps) {
@@ -26,7 +27,10 @@ export function EditorStructureSectionSlug(props: EditorStructureSectionSlugProp
                     : <FolderOpenIcon className="w-4"/>
                 }
             </button>
-            <EditorStructureBaseSlug structure={props.structure} />
+            <EditorStructureBaseSlug
+                structure={props.structure}
+                onRename={props.onRename}
+            />
         </>
     );
 }

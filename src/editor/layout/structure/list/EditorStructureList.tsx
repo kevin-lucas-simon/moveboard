@@ -16,11 +16,21 @@ export type EditorStructureListProps = {
 export function EditorStructureList(props: EditorStructureListProps) {
     const sectionStructures = Object.values(props.structures).filter(structure => structure.parent === props.parent);
 
-    const selectChunk = (id: StructureID) => {
+    const selectStructure = (id: StructureID) => {
         props.dispatcher({
             type: 'editor_select_structure',
             payload: id,
         });
+    }
+
+    const renameStructure = (id: StructureID, name: string) => {
+        props.dispatcher({
+            type: 'level_patch_structure',
+            payload: {
+                id: id,
+                name: name,
+            }
+        })
     }
 
     const reorderStructures = (newSectionStructures: StructureModel[]) => {
@@ -98,8 +108,9 @@ export function EditorStructureList(props: EditorStructureListProps) {
                     structure={structure}
                     isStart={structure.id === props.start}
                     isSelected={props.selected === structure.id}
-                    onSelect={() => selectChunk(structure.id)}
+                    onSelect={() => selectStructure(structure.id)}
                     onCollapseToggle={() => toggleCollapse(structure)}
+                    onRename={renameStructure}
                 >
                     {structure.type === StructureTypes.Section && (
                         <EditorStructureList

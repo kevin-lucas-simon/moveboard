@@ -5,12 +5,14 @@ import {EditorStructureSectionSlug} from "../slug/EditorStructureSectionSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import React from "react";
 import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
+import {UUID} from "../../../../data/model/UUID";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
     isStart: boolean;
     isSelected: boolean;
     onCollapseToggle: () => void;
+    onRename: (id: UUID, name: string) => void;
     onSelect: () => void;
     children?: React.ReactNode;
 }
@@ -20,6 +22,10 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
         if (props.structure.type === StructureTypes.Section) {
             props.onCollapseToggle();
         }
+    }
+
+    const handleRename = (name: string) => {
+        props.onRename(props.structure.id, name);
     }
 
     return (
@@ -36,15 +42,18 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                                     structure={props.structure as SectionModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
+                                    onRename={handleRename}
                                 />;
                             case StructureTypes.Chunk:
                                 return <EditorStructureChunkSlug
                                     structure={props.structure}
                                     isStart={props.isStart}
+                                    onRename={handleRename}
                                 />;
                             default:
                                 return <EditorStructureBaseSlug
                                     structure={props.structure}
+                                    onRename={handleRename}
                                 />;
                         }
                     })()}
