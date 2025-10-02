@@ -19,7 +19,8 @@ export function EditorPanelCanvas(props: EditorPanelsProps) {
     );
 
     const scenePanel = React.createElement(
-        EditorPanelComponents[panel]?.scenePanel
+        EditorPanelComponents[panel]?.scenePanel,
+        {key: panel}
     );
 
     const detailDefinition = EditorPanelComponents[panel]?.detailPanel
