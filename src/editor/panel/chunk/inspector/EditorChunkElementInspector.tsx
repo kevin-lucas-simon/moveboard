@@ -2,7 +2,7 @@ import {ElementModel} from "../../../../data/model/element/ElementModel";
 import {UUID} from "../../../../data/model/UUID";
 import React from "react";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
-import {BaseTab} from "../../../component/BaseTab";
+import {BasePanel} from "../../../component/BasePanel";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {JsonNestedEditor} from "../../../component/input/JsonNestedEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
@@ -67,7 +67,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
     };
 
     return (
-        <BaseTab
+        <BasePanel
             title={!props.element.name ? props.element.type : props.element.name}
             description={props.element.type}
             actionIcon={<XMarkIcon className="w-6" />}
@@ -89,6 +89,6 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                     </LinkButton>
                 </li>
             </ul>
-        </BaseTab>
+        </BasePanel>
     );
 }

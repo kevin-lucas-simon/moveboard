@@ -3,7 +3,7 @@ import {PlusCircleIcon} from "@heroicons/react/24/outline";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 import {BasicDropdownItem} from "../../component/dropdown/BasicDropdownItem";
 
-export type BaseTabProps = {
+export type BasePanelProps = {
     children?: React.ReactNode;
     title: string;
     description?: string;
@@ -12,7 +12,7 @@ export type BaseTabProps = {
     actionIcon?: ReactNode|null,
     className?: string;
 }
-export function BaseTab(props: BaseTabProps) {
+export function BasePanel(props: BasePanelProps) {
     const onAddSingle = () => {
         if (!props.addOptions && props.onAction) {
             props.onAction();
@@ -28,7 +28,7 @@ export function BaseTab(props: BaseTabProps) {
     return (
         <div className={"w-full h-full flex flex-col " + props.className}>
             <div className="pt-4 px-4 flex justify-between">
-                <h2 className="text-xl font-semibold">{props.title}</h2>
+                <h2 className="text-xl font-semibold truncate">{props.title}</h2>
                 {(props.addOptions || props.onAction || props.actionIcon) &&
                     <Menu>
                         <MenuButton

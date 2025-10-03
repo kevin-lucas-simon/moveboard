@@ -1,4 +1,4 @@
-import {BaseTab} from "../../component/BaseTab";
+import {BasePanel} from "../../component/BasePanel";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import React from "react";
 import {EditorStructureList} from "./list/EditorStructureList";
@@ -27,7 +27,7 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
     }
 
     return (
-        <BaseTab
+        <BasePanel
             title={"Structure"}
             onAction={addStructure}
             addOptions={Object.keys(StructureTypes)}
@@ -41,6 +41,6 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
                     dispatcher={props.levelDispatcher}
                 />
             </ul>
-        </BaseTab>
+        </BasePanel>
     );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import {BaseTab} from "../../../component/BaseTab";
+import {BasePanel} from "../../../component/BasePanel";
 import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
@@ -89,7 +89,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
     }
 
     return (
-        <BaseTab title={props.chunk.name}>
+        <BasePanel title={props.chunk.name}>
             {isStart &&
                 <small className="flex gap-1 px-4">
                     <StarIcon className="w-4"/>
@@ -151,6 +151,6 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                     </li>
                 }
             </ul>
-        </BaseTab>
+        </BasePanel>
     );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
-import {BaseTab} from "../../component/BaseTab";
+import {BasePanel} from "../../component/BasePanel";
 import {useEditorDispatcher, useEditorContext} from "../../reducer/EditorProvider";
 
 export function EditorSimulationOverviewPanel() {
@@ -21,7 +21,7 @@ export function EditorSimulationOverviewPanel() {
     }
 
     return (
-        <BaseTab
+        <BasePanel
             title={"Simulation"}
             description={"Simulate the behaviour of the chunk with some debug display options."}
         >
@@ -35,6 +35,6 @@ export function EditorSimulationOverviewPanel() {
                     />
                 )}
             </ul>
-        </BaseTab>
+        </BasePanel>
     );
 }

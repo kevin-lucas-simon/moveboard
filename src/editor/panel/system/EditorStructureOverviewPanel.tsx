@@ -1,4 +1,4 @@
-import {BaseTab} from "../../component/BaseTab";
+import {BasePanel} from "../../component/BasePanel";
 import {useEditorDispatcher, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 
@@ -21,7 +21,7 @@ export function EditorStructureOverviewPanel() {
     }
 
     return (
-        <BaseTab
+        <BasePanel
             title={structure?.type + " Overview"}
             description={structure?.name && structure.name.trim() !== "" ? (structure.name.length > 30 ? structure.name.slice(0, 30) + "..." : structure.name) : "No name"}
         >
@@ -34,6 +34,6 @@ export function EditorStructureOverviewPanel() {
                     />
                 )}
             </ul>
-        </BaseTab>
+        </BasePanel>
     );
 }

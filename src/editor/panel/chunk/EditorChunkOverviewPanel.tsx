@@ -1,6 +1,6 @@
 import React from "react";
 import {ElementDefaultProps} from "../../../data/model/element/ElementDefaultProps";
-import {BaseTab} from "../../component/BaseTab";
+import {BasePanel} from "../../component/BasePanel";
 import {EditorChunkElementList} from "./list/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
@@ -33,7 +33,7 @@ export function EditorChunkOverviewPanel() {
     }
 
     return (
-        <BaseTab
+        <BasePanel
             title={"Chunk Elements"}
             description={"Fill the chunk area with static elements."}
             addOptions={Object.keys(ElementDefaultProps)}
@@ -45,6 +45,6 @@ export function EditorChunkOverviewPanel() {
                 dispatcher={dispatcher}
                 parent={null}
             />
-        </BaseTab>
+        </BasePanel>
     );
 }
