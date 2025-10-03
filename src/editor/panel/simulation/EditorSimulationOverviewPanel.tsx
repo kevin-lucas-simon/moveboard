@@ -23,7 +23,7 @@ export function EditorSimulationOverviewPanel() {
     return (
         <BasePanel
             title={"Simulation"}
-            description={"Simulate the behaviour of the chunk with some debug display options."}
+            description={"Game play test"}
         >
             <ul>
                 {Object.entries(settings).map(([key, value]) =>

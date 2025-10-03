@@ -22,8 +22,8 @@ export function EditorStructureOverviewPanel() {
 
     return (
         <BasePanel
-            title={structure?.type + " Overview"}
-            description={structure?.name && structure.name.trim() !== "" ? (structure.name.length > 30 ? structure.name.slice(0, 30) + "..." : structure.name) : "No name"}
+            title={structure.name.trim() !== "" ? structure.name.trim() : structure.type}
+            description={structure.type}
         >
             <ul>
                 {Object.entries(structure).map(([key, value]) =>

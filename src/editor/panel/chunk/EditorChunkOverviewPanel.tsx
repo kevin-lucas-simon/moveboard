@@ -10,12 +10,14 @@ import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export function EditorChunkOverviewPanel() {
     const dispatcher = useEditorDispatcher();
-    const elements = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk)?.elements;
+    const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk);
     const selectedElementIds = useEditorContext()?.selectedElements ?? [];
 
-    if (!dispatcher || !elements) {
+    if (!dispatcher || !chunk) {
         return <></>;
     }
+
+    const elements = chunk.elements;
 
     const addElement = (type?: string) => {
         if (!type || !(type in ElementDefaultProps)) {
@@ -34,8 +36,8 @@ export function EditorChunkOverviewPanel() {
 
     return (
         <BasePanel
-            title={"Chunk Elements"}
-            description={"Fill the chunk area with static elements."}
+            title={chunk.name.trim() !== "" ? chunk.name : chunk.type}
+            description={chunk.type}
             addOptions={Object.keys(ElementTypes)}
             onAction={addElement}
         >

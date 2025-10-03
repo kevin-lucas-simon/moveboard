@@ -28,7 +28,7 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
 
     return (
         <BasePanel
-            title={"Structure"}
+            title={props.level.name}
             onAction={addStructure}
             addOptions={Object.keys(StructureTypes)}
         >

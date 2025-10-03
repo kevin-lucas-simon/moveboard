@@ -89,13 +89,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
     }
 
     return (
-        <BasePanel title={props.chunk.name}>
-            {isStart &&
-                <small className="flex gap-1 px-4">
-                    <StarIcon className="w-4"/>
-                    Level Start
-                </small>
-            }
+        <BasePanel title={"General"} description={isStart ? "Level Start" : undefined}>
             <ul className="mt-2">
                 {Object.entries(props.chunk)
                     .filter(([key, _]) => !['elements', 'joints'].includes(key))
