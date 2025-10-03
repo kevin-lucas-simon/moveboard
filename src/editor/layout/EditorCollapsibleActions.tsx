@@ -4,10 +4,10 @@ import {
     ArrowUturnLeftIcon, ArrowUturnRightIcon,
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon,
-    ChevronDownIcon, PlayIcon, StopIcon,
+    PlayIcon,
+    StopIcon,
 } from "@heroicons/react/24/outline";
 import React, {ReactNode} from "react";
-import {MoveBoardLogo} from "../../component/asset/MoveBoardLogo";
 import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 
 export type EditorCollapsibleActionsProps = {
@@ -45,11 +45,7 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
             {/* header */}
             <div className="w-full p-2">
                 <EditorDropdownMenu
-                    button={<>
-                        <MoveBoardLogo />
-                        {!isCollapsed && <div className="text-2xl font-semibold">{level.name}</div>}
-                        {!isCollapsed && <ChevronDownIcon className="w-6"/>}
-                    </>}
+                    collapsed={isCollapsed}
                     level={level}
                     levelDispatcher={dispatcher}
                 />

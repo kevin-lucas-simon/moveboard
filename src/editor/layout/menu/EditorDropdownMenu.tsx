@@ -7,11 +7,13 @@ import {ExportChangesDialog} from "../../dialog/ExportChangesDialog";
 import {ClearChangesDialog} from "../../dialog/ClearChangesDialog";
 import {LevelSettingsDialog} from "../../dialog/LevelSettingsDialog";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
+import {MoveBoardLogo} from "../../../component/asset/MoveBoardLogo";
+import {ChevronDownIcon} from "@heroicons/react/24/outline";
 
 export type LevelMenuProps = {
-    button: React.ReactNode|string;
     level: LevelModel;
     levelDispatcher: React.Dispatch<LevelReducerActions>;
+    collapsed: boolean,
 }
 
 enum EditorDialogs {
@@ -27,7 +29,11 @@ export function EditorDropdownMenu(props: LevelMenuProps) {
         <>
             <Menu as={"div"} className="relative">
                 <MenuButton className="h-8 flex items-center gap-2 rounded-lg hover:bg-gray-500/10 -my-2.5 px-3 py-5">
-                    {props.button}
+                    <MoveBoardLogo />
+                    {!props.collapsed && <>
+                        <div className="text-2xl font-semibold ml-1">Moveboard</div>
+                        <ChevronDownIcon className="w-6 mt-1"/>
+                    </>}
                 </MenuButton>
 
                 <MenuItems className="absolute left-0 z-20 mt-4 w-56 text-nowrap origin-top-left rounded-xl bg-white shadow-lg ring-1 ring-black/5 overflow-hidden drop-shadow-xl">
