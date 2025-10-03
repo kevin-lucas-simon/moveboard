@@ -36,7 +36,7 @@ export function EditorChunkOverviewPanel() {
         <BasePanel
             title={"Chunk Elements"}
             description={"Fill the chunk area with static elements."}
-            addOptions={Object.keys(ElementDefaultProps)}
+            addOptions={Object.keys(ElementTypes)}
             onAction={addElement}
         >
             <EditorChunkElementList

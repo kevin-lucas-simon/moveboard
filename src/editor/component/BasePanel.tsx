@@ -37,7 +37,7 @@ export function BasePanel(props: BasePanelProps) {
                         >
                             {props.actionIcon ?? <PlusCircleIcon className="h-6"/>}
                         </MenuButton>
-                        <MenuItems anchor="bottom end" className="mt-0.5 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+                        <MenuItems anchor="bottom end" className="mt-0.5 rounded-md bg-white shadow-xl ring-1 ring-black/5">
                             {props.addOptions?.map((option, index) =>
                                 <BasicDropdownItem key={index} onClick={() => onAddMultiple(option)}>
                                     {option}
