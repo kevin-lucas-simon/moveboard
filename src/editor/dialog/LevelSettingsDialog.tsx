@@ -1,16 +1,20 @@
-import {LevelModel} from "../../data/model/world/LevelModel";
-import {LevelReducerActions} from "../reducer/partial/levelReducer";
 import React from "react";
 import {BasicDialog} from "../../component/dialog/BasicDialog";
+import {useEditorDispatcher, useEditorLevel} from "../reducer/EditorProvider";
 
 export type LevelSettingsDialogProps = {
     onClose: () => void;
-    level: LevelModel;
-    levelDispatcher: React.Dispatch<LevelReducerActions>;
 }
 
 export function LevelSettingsDialog(props: LevelSettingsDialogProps) {
-    const [levelName, setLevelName] = React.useState<string>(props.level.name);
+    const dispatcher = useEditorDispatcher();
+    const level = useEditorLevel();
+
+    const [levelName, setLevelName] = React.useState<string>(level?.name ?? "Unnamed level");
+
+    if (!level || !dispatcher) {
+        return <></>
+    }
 
     const handleLevelUpdate = () => {
         // Prevent empty names
@@ -18,7 +22,7 @@ export function LevelSettingsDialog(props: LevelSettingsDialogProps) {
             return;
         }
 
-        props.levelDispatcher({
+        dispatcher({
             type: 'level_update_field',
             payload: {
                 key: 'name',

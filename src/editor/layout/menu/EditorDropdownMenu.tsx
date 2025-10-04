@@ -4,7 +4,6 @@ import React, {useState} from "react";
 import {LevelReducerActions} from "../../reducer/partial/levelReducer";
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {ExportChangesDialog} from "../../dialog/ExportChangesDialog";
-import {ClearChangesDialog} from "../../dialog/ClearChangesDialog";
 import {LevelSettingsDialog} from "../../dialog/LevelSettingsDialog";
 import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 import {MoveBoardLogo} from "../../../component/asset/MoveBoardLogo";
@@ -19,7 +18,6 @@ export type LevelMenuProps = {
 enum EditorDialogs {
     Level_SETTINGS = "level_settings",
     LEVEL_EXPORT = "level_export",
-    LEVEL_CHANGES_CLEAR = "level_changes_clear",
 }
 
 export function EditorDropdownMenu(props: LevelMenuProps) {
@@ -44,9 +42,6 @@ export function EditorDropdownMenu(props: LevelMenuProps) {
                         <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_EXPORT)}>
                             Export Level
                         </BasicDropdownItem>
-                        <BasicDropdownItem onClick={() => setDialog(EditorDialogs.LEVEL_CHANGES_CLEAR)}>
-                            Clear Changes
-                        </BasicDropdownItem>
                     </div>
                     <BasicDropdownDivider/>
                     <div>
@@ -56,24 +51,10 @@ export function EditorDropdownMenu(props: LevelMenuProps) {
             </Menu>
 
             {dialog === EditorDialogs.Level_SETTINGS &&
-                <LevelSettingsDialog
-                    onClose={() => setDialog(null)}
-                    level={props.level}
-                    levelDispatcher={props.levelDispatcher}
-                />
-            }
-            {dialog === EditorDialogs.LEVEL_CHANGES_CLEAR &&
-                <ClearChangesDialog
-                    onClose={() => setDialog(null)}
-                    level={props.level}
-                    levelDispatcher={props.levelDispatcher}
-                />
+                <LevelSettingsDialog onClose={() => setDialog(null)} />
             }
             {dialog === EditorDialogs.LEVEL_EXPORT &&
-                <ExportChangesDialog
-                    onClose={() => setDialog(null)}
-                    level={props.level}
-                />
+                <ExportChangesDialog onClose={() => setDialog(null)} />
             }
         </>
     );

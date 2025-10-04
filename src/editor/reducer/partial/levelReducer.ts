@@ -161,14 +161,6 @@ export function levelReducer(
                 },
             };
         }
-        case 'level_reset': {
-            // use current active, if not available use level start;
-            return {
-                ...state,
-                selectedStructure: state.level.structures[state.selectedStructure] ? state.selectedStructure : state.level.start,
-                level: action.payload,
-            };
-        }
         default: {
             // delegate to chunkReducer for active chunk actions
             return {
