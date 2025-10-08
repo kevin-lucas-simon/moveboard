@@ -1,9 +1,9 @@
 import React from "react";
-import {BasicDialog} from "../../component/dialog/BasicDialog";
-import {useEditorDispatcher, useEditorLevel} from "../reducer/EditorProvider";
-import {EditorDialogProps} from "./EditorDialogProps";
+import {BasicDialog} from "../../../component/dialog/BasicDialog";
+import {useEditorDispatcher, useEditorLevel} from "../../reducer/EditorProvider";
+import {EditorDialogProps} from "../EditorDialogProps";
 
-export function LevelSettingsDialog(props: EditorDialogProps) {
+export function EditorLevelSettingsDialog(props: EditorDialogProps) {
     const dispatcher = useEditorDispatcher();
     const level = useEditorLevel();
 

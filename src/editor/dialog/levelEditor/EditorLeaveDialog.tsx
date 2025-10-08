@@ -1,5 +1,5 @@
-import {EditorDialogProps} from "./EditorDialogProps";
-import {BasicDialog} from "../../component/dialog/BasicDialog";
+import {EditorDialogProps} from "../EditorDialogProps";
+import {BasicDialog} from "../../../component/dialog/BasicDialog";
 import {useNavigate} from "react-router-dom";
 
 export function EditorLeaveDialog(props: EditorDialogProps) {

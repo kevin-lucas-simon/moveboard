@@ -9,9 +9,9 @@ import {
 } from "@heroicons/react/24/outline";
 import React, {ReactNode} from "react";
 import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
-import {LevelSettingsDialog} from "../dialog/LevelSettingsDialog";
-import {ExportChangesDialog} from "../dialog/ExportChangesDialog";
-import {EditorLeaveDialog} from "../dialog/EditorLeaveDialog";
+import {EditorLevelSettingsDialog} from "../dialog/levelEditor/EditorLevelSettingsDialog";
+import {EditorExportChangesDialog} from "../dialog/levelEditor/EditorExportChangesDialog";
+import {EditorLeaveDialog} from "../dialog/levelEditor/EditorLeaveDialog";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -48,8 +48,8 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
             {/* header */}
             <div className="w-full p-2">
                 <EditorDropdownMenu collapsed={isCollapsed} dialogs={{
-                    "Level Settings": LevelSettingsDialog,
-                    "Export Level": ExportChangesDialog,
+                    "Level Settings": EditorLevelSettingsDialog,
+                    "Export Level": EditorExportChangesDialog,
                     "Leave Editor": EditorLeaveDialog,
                 }} />
             </div>
