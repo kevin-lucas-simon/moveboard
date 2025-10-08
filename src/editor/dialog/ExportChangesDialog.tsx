@@ -2,12 +2,9 @@ import {BasicDialog} from "../../component/dialog/BasicDialog";
 import {Textarea} from "@headlessui/react";
 import {useEditorLevel} from "../reducer/EditorProvider";
 import React from "react";
+import {EditorDialogProps} from "./EditorDialogProps";
 
-export type ExportChangesDialogProps = {
-    onClose: () => void;
-}
-
-export function ExportChangesDialog(props: ExportChangesDialogProps) {
+export function ExportChangesDialog(props: EditorDialogProps) {
     const level = useEditorLevel();
 
     if (!level) {

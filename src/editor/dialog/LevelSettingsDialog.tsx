@@ -1,12 +1,9 @@
 import React from "react";
 import {BasicDialog} from "../../component/dialog/BasicDialog";
 import {useEditorDispatcher, useEditorLevel} from "../reducer/EditorProvider";
+import {EditorDialogProps} from "./EditorDialogProps";
 
-export type LevelSettingsDialogProps = {
-    onClose: () => void;
-}
-
-export function LevelSettingsDialog(props: LevelSettingsDialogProps) {
+export function LevelSettingsDialog(props: EditorDialogProps) {
     const dispatcher = useEditorDispatcher();
     const level = useEditorLevel();
 
