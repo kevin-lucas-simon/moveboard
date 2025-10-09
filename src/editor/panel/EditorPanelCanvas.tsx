@@ -44,7 +44,11 @@ type EditorPanelCanvasLayoutProps = {
 }
 function EditorPanelCanvasLayout(props: EditorPanelCanvasLayoutProps) {
     return (
-        <div className="grow h-full flex overflow-hidden">
+        <div className="grow h-full flex flex-row-reverse overflow-hidden">
+            <div className="grow rounded-l-3xl overflow-hidden">
+                {props.mainView}
+            </div>
+
             {(props.leftMenu || props.rightMenu) &&
                 <div className="h-full flex py-4">
                     <div className="shrink-0 -mr-4 rounded-2xl bg-white drop-shadow flex">
@@ -61,9 +65,6 @@ function EditorPanelCanvasLayout(props: EditorPanelCanvasLayoutProps) {
                     </div>
                 </div>
             }
-            <div className="grow rounded-l-3xl overflow-hidden -z-10">
-                {props.mainView}
-            </div>
         </div>
     );
 }
