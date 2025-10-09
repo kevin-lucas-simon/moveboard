@@ -27,7 +27,12 @@ export function EditorDropdownMenu(props: LevelMenuProps) {
                 <MenuItems className="absolute left-0 z-20 mt-4 w-56 text-nowrap origin-top-left rounded-xl bg-white shadow-lg ring-1 ring-black/5 overflow-hidden drop-shadow-xl">
                     <div>
                         {Object.keys(props.dialogs).map(key => (
-                            <BasicDropdownItem onClick={() => setActiveDialog(key)}>{key}</BasicDropdownItem>
+                            <BasicDropdownItem
+                                onClick={() => setActiveDialog(key)}
+                                key={key}
+                            >
+                                {key}
+                            </BasicDropdownItem>
                         ))}
                     </div>
                 </MenuItems>
