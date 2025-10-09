@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {createLevel, LevelModel} from "../model/world/LevelModel";
+import {createLevel, LevelID, LevelModel} from "../model/world/LevelModel";
 
 export function useLevelDownloader(
-    levelName: string
+    levelID: LevelID|string|undefined,
 ): LevelModel|undefined {
     const [level, setLevel]
         = useState<LevelModel|undefined>(undefined)
@@ -10,7 +10,8 @@ export function useLevelDownloader(
     useEffect(() => {
         let ignore = false;
         setLevel(undefined);
-        fetch(window.location.origin + '/level/' + levelName + '.json')
+
+        fetch(window.location.origin + '/level/' + levelID + '.json')
             .then(response => {
                 return response.json();
             })
@@ -29,7 +30,7 @@ export function useLevelDownloader(
         return () => {
             ignore = true;
         }
-    }, [levelName]);
+    }, [levelID]);
 
     return level;
 }

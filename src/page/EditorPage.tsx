@@ -6,7 +6,7 @@ import {EditorProvider} from "../editor/reducer/EditorProvider";
 export function EditorPage() {
     const {levelName} = useParams();
 
-    const downloadedLevel = useLevelDownloader(levelName ?? "");
+    const downloadedLevel = useLevelDownloader(levelName);
     if (!downloadedLevel) {
         return <></>;
     }
