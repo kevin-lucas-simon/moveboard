@@ -28,6 +28,7 @@ export function EditorStructureOverviewPanel() {
             <ul>
                 {Object.entries(structure).map(([key, value]) =>
                     <JsonObjectEditor
+                        key={key}
                         keyName={key}
                         value={value}
                         onChange={handleStructureChange}
