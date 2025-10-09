@@ -88,7 +88,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
             onDragEnd={handleDragEnd}
         >
             {visibleSelectedElements.map(element =>
-                <Select enabled={true}>
+                <Select enabled={true} key={element.id}>
                     <Element
                         {...element}
                         key={element.id}
