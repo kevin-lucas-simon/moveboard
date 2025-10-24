@@ -3,10 +3,10 @@ import {Menu, MenuButton, MenuItems} from "@headlessui/react";
 import {BasicDropdownItem} from "../../component/dropdown/BasicDropdownItem";
 import {EditorDialogProps} from "../dialog/EditorDialogProps";
 
+export type BaseMenuDialogs = {[key: string]: React.ComponentType<EditorDialogProps>|React.ReactElement<EditorDialogProps>}
 export type BaseMenuProps = {
     className?: string,
-    dialogs: {[key: string]: React.ComponentType<EditorDialogProps>},
-    // dialogs: {[key: string]: React.ReactElement<Partial<EditorDialogProps> & Record<string, any>>, // TODO JSX Komponente direkt um Zusatzprops zu erlauben
+    dialogs: BaseMenuDialogs,
     children: React.ReactNode,
 }
 
@@ -34,9 +34,23 @@ export function BaseMenu(props: BaseMenuProps) {
                 </MenuItems>
             </Menu>
 
-            {activeDialog && React.createElement(props.dialogs[activeDialog], {
-                onClose: () => setActiveDialog(null),
-            })}
+            {activeDialog && typeof props.dialogs[activeDialog] === "function" &&
+                React.createElement(
+                    props.dialogs[activeDialog] as React.ComponentType<EditorDialogProps>,
+                    {
+                        onClose: () => setActiveDialog(null),
+                    }
+                )
+            }
+
+            {activeDialog && React.isValidElement(props.dialogs[activeDialog]) &&
+                React.cloneElement(
+                    props.dialogs[activeDialog] as React.ReactElement<EditorDialogProps>,
+                    {
+                        onClose: () => setActiveDialog(null),
+                    }
+                )
+            }
         </>
     );
 }

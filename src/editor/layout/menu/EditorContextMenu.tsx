@@ -1,11 +1,10 @@
 import React from "react";
-import {EditorDialogProps} from "../../dialog/EditorDialogProps";
 import {EllipsisHorizontalIcon} from "@heroicons/react/24/outline";
-import {BaseMenu} from "../../component/BaseMenu";
+import {BaseMenu, BaseMenuDialogs} from "../../component/BaseMenu";
 
 export type EditorContextMenuProps = {
     className?: string,
-    dialogs: {[key: string]: React.ComponentType<EditorDialogProps>},
+    dialogs: BaseMenuDialogs,
 }
 
 export function EditorContextMenu(props: EditorContextMenuProps) {

@@ -1,11 +1,10 @@
 import React from "react";
 import {MoveBoardLogo} from "../../../component/asset/MoveBoardLogo";
-import {EditorDialogProps} from "../../dialog/EditorDialogProps";
-import {BaseMenu} from "../../component/BaseMenu";
+import {BaseMenu, BaseMenuDialogs} from "../../component/BaseMenu";
 
 export type EditorMainMenuProps = {
     collapsed: boolean,
-    dialogs: {[key: string]: React.ComponentType<EditorDialogProps>},
+    dialogs: BaseMenuDialogs,
 }
 
 export function EditorMainMenu(props: EditorMainMenuProps) {

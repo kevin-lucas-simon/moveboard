@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import {LinkButton} from "../component/button/LinkButton";
 import {EditorContextMenu} from "../editor/layout/menu/EditorContextMenu";
+import { EditorDeleteDialog } from "../editor/dialog/levelOverview/EditorDeleteDialog";
 
 export function EditorSelectorPage() {
     const overviewLocalEditors = useLiveQuery(() => localEditorDB.list()) ?? [];
@@ -28,21 +29,21 @@ export function EditorSelectorPage() {
                 Recent Edits
             </h2>
 
-            <ul className="max-w-xs flex flex-col -my-2.5 overflow-y-auto empty:hidden">
+            <ul className="flex flex-col -my-2.5 overflow-y-auto empty:hidden">
                 {overviewLocalEditors && overviewLocalEditors.map((localEditor) => (
                     <li
                         key={localEditor.id}
-                        className="flex flex-row justify-between items-center gap-2 px-4 py-2.5 rounded-r-2xl group hover:bg-gray-500/10"
+                        className="max-w-xs flex flex-row justify-between items-center gap-2 px-4 py-2.5 rounded-r-2xl group hover:bg-gray-500/10"
                     >
                         <Link to={"/editor/" + localEditor.id} className="grow">
-                            <div className="hover:underline">
+                            <div className="hover:underline truncate">
                                 <div className="text-lg">{localEditor.level.name}</div>
                                 <div className="text-sm">Yesterday</div>
                             </div>
                         </Link>
 
                         <EditorContextMenu className="hidden group-hover:block focus:block" dialogs={{
-                            // "Delete Level" => <EditorDeleteDialog id={localEditor.id} />,
+                            "Delete Level": <EditorDeleteDialog id={localEditor.id} onClose={() => {}} />,
                         }}/>
                     </li>
                 ))}
