@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
-import {createLevel, LevelID, LevelModel} from "../model/world/LevelModel";
+import {LevelID, LevelModel} from "../model/world/LevelModel";
+import {serverLevelDB} from "../serverLevelDB";
 
 export function useLevelDownloader(
     levelID: LevelID|string|undefined,
@@ -11,19 +12,10 @@ export function useLevelDownloader(
         let ignore = false;
         setLevel(undefined);
 
-        fetch(window.location.origin + '/level/' + levelID + '.json')
-            .then(response => {
-                return response.json();
-            })
-            .then(response => {
+        serverLevelDB.getLevel(levelID as string)
+            .then((downloadedLevel) => {
                 if (!ignore) {
-                    setLevel(response as LevelModel);
-                }
-            })
-            .catch((e) => {
-                console.error("Failed to download level", e);
-                if (!ignore) {
-                    setLevel(createLevel());
+                    setLevel(downloadedLevel);
                 }
             })
         ;

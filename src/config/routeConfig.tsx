@@ -14,13 +14,13 @@ export const routeConfig = [
         element: <EditorSelectorPage />,
     },
     {
-        path: '/editor/:levelName',
+        path: '/editor/:editorID',
         element: <EditorPage />,
         loader: ({params}: any) => {
-            if (!params.levelName) {
-                throw new Error("Level name is required in the URL");
+            if (!params.editorID) {
+                throw new Error("Editor ID is required in the URL");
             }
-            return params.levelName;
+            return params.editorID;
         }
     }
 ]; // TODO schieb es in den page ordner

@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {LevelOverviewModel} from "../model/world/LevelOverviewModel";
+import {serverLevelDB} from "../serverLevelDB";
 
 export function useLevelOverviewDownloader(): LevelOverviewModel[]|undefined {
     const [levelSelection, setLevelSelection]
@@ -8,14 +9,14 @@ export function useLevelOverviewDownloader(): LevelOverviewModel[]|undefined {
     useEffect(() => {
         let ignore = false;
         setLevelSelection(undefined);
-        fetch(window.location.origin + '/levels.json')
-            .then(response => response.json())
+
+        serverLevelDB.listLevels()
             .then(response => {
                 if (!ignore) {
-                    setLevelSelection(response as LevelOverviewModel[])
+                    setLevelSelection(response)
                 }
             })
-        ;
+
         return () => {
             ignore = true;
         }

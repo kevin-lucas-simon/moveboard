@@ -17,12 +17,13 @@ body,
 }
 
 body {
-  background: #f0f0f0;
+  background: #eaeaea;
 }
 
 ::-webkit-scrollbar {
   @apply bg-transparent;
   @apply w-1.5;
+  @apply h-1.5;
 }
 
 ::-webkit-scrollbar-track {

@@ -1,6 +1,6 @@
 import React, {createContext, useContext} from "react";
 
-export type DebugSettings = {
+export type DebugSettings = { // TODO rename zu SimulationSettings
     isEditingMode: boolean,
     displayEditorFeatures: boolean,
     displayPerformanceStats: boolean,

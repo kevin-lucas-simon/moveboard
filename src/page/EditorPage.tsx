@@ -1,19 +1,25 @@
-import {useLevelDownloader} from "../data/repository/useLevelDownloader";
 import {LevelEditor} from "../editor/LevelEditor";
 import {useParams} from "react-router-dom";
 import {EditorProvider} from "../editor/reducer/EditorProvider";
+import {useLiveQuery} from "dexie-react-hooks";
+import {localEditorDB} from "../data/localEditorDB";
+import {EditorID} from "../editor/reducer/editorReducer";
 
 export function EditorPage() {
-    const {levelName} = useParams();
+    const {editorID} = useParams();
 
-    const downloadedLevel = useLevelDownloader(levelName);
-    if (!downloadedLevel) {
-        return <></>;
+    const editorState = useLiveQuery(
+        () => localEditorDB.get(editorID as EditorID),
+        [editorID],
+    );
+
+    if (!editorState) {
+        return <></>
     }
 
     return (
-        <EditorProvider initial={downloadedLevel}>
-            <LevelEditor key={levelName} />
+        <EditorProvider editorState={editorState}>
+            <LevelEditor/>
         </EditorProvider>
     )
 }

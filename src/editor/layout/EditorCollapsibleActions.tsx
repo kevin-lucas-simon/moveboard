@@ -1,4 +1,4 @@
-import {EditorDropdownMenu} from "./menu/EditorDropdownMenu";
+import {EditorMainMenu} from "./menu/EditorMainMenu";
 import {EditorStructureOverview} from "./structure/EditorStructureOverview";
 import {
     ArrowUturnLeftIcon, ArrowUturnRightIcon,
@@ -11,7 +11,8 @@ import React, {ReactNode} from "react";
 import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/EditorProvider";
 import {EditorLevelSettingsDialog} from "../dialog/levelEditor/EditorLevelSettingsDialog";
 import {EditorExportChangesDialog} from "../dialog/levelEditor/EditorExportChangesDialog";
-import {EditorLeaveDialog} from "../dialog/levelEditor/EditorLeaveDialog";
+import {EditorLeaveToOverviewDialog} from "../dialog/levelEditor/EditorLeaveToOverviewDialog";
+import {EditorLeaveDialog} from "../dialog/levelOverview/EditorLeaveDialog";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -46,10 +47,11 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     return (
         <div className={"shrink-0 h-full py-4 flex flex-col relative transition-all " + (isCollapsed ? "w-16" : "w-60")}>
             {/* header */}
-            <div className="w-full p-2">
-                <EditorDropdownMenu collapsed={isCollapsed} dialogs={{
+            <div className="w-full -mt-4">
+                <EditorMainMenu collapsed={isCollapsed} dialogs={{
                     "Level Settings": EditorLevelSettingsDialog,
                     "Export Level": EditorExportChangesDialog,
+                    "Leave to Overview": EditorLeaveToOverviewDialog,
                     "Leave Editor": EditorLeaveDialog,
                 }} />
             </div>

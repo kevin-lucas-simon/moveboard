@@ -1,33 +1,24 @@
 import React, {createContext, useContext, useReducer} from "react";
 import {editorReducer, EditorReducerActions, EditorReducerState} from "./editorReducer";
-import {LevelModel} from "../../data/model/world/LevelModel";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {StructureModel} from "../../data/model/structure/StructureModel";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import {filterStructures} from "../../data/factory/StructureFactory";
-import {DebugSettingsDefault} from "../../experience/debug/settings/DebugSettingsProvider";
 
 const EditorContext = createContext<EditorReducerState|null>(null);
 const EditorDispatcher = createContext<React.Dispatch<EditorReducerActions>|null>(null);
 
 export type EditorProviderProps = {
-    initial: LevelModel;
+    editorState: EditorReducerState;
     children: React.ReactNode;
 }
 export function EditorProvider(props: EditorProviderProps) {
-    const[editor, dispatch] = useReducer(editorReducer, {
-        level: props.initial,
-        simulationSettings: DebugSettingsDefault,
-        selectedStructure: props.initial.start,
-        selectedElements: [],
-        previousState: [],
-        nextState: [],
-        errors: [],
-    });
+    // TODO hier erklärung schreiben warum ich den useReducer so benutze mit asynchroner DB Arbeit
+    const[_, dispatch] = useReducer(editorReducer, props.editorState);
 
     return (
-        <EditorContext.Provider value={editor}>
+        <EditorContext.Provider value={props.editorState}>
             <EditorDispatcher.Provider value={dispatch}>
                 {props.children}
             </EditorDispatcher.Provider>

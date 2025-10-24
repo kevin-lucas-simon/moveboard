@@ -6,7 +6,7 @@ export function EditorLeaveDialog(props: EditorDialogProps) {
     const navigate = useNavigate()
 
     const onSubmit = () => {
-        navigate("/editor");
+        navigate("/");
         props.onClose();
     }
 

@@ -2,8 +2,15 @@ import {selectorReducer, SelectorReducerActions, SelectorReducerState} from "./p
 import {SimulationReducerActions, SimulationReducerState, simulationReducer} from "./partial/simulationReducer";
 import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./partial/historyReducer";
 import {levelReducer, LevelReducerActions, LevelReducerState} from "./partial/levelReducer";
+import {localEditorDB} from "../../data/localEditorDB";
+import {UUID} from "../../data/model/UUID";
+
+export type EditorID = UUID;
 
 export type EditorReducerState =
+    {
+        id: EditorID, // TODO own file
+    }
     & SelectorReducerState
     & SimulationReducerState
     & HistoryReducerState
@@ -32,5 +39,8 @@ export function editorReducer(
         newState = {...newState, ...reducer(newState, action)};
     });
 
-    return newState;
+    // TODO hier einen timestamp vergleichen und nur bei änderung speichern?
+    localEditorDB.put(newState)
+
+    return state;
 }
