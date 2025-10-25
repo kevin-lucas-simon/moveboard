@@ -1,5 +1,4 @@
 import React, {ReactNode} from "react";
-import {MenuItem} from "@headlessui/react";
 
 export type BasicDropdownItemProps = {
     href?: string|undefined;
@@ -8,7 +7,7 @@ export type BasicDropdownItemProps = {
 }
 export function BasicDropdownItem(props: BasicDropdownItemProps) {
     return (
-        <MenuItem>
+        <div>
             {props.href ? (
                 <a
                     href={props.href}
@@ -25,6 +24,6 @@ export function BasicDropdownItem(props: BasicDropdownItemProps) {
                     {props.children}
                 </button>
             )}
-        </MenuItem>
+        </div>
     );
 }
