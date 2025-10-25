@@ -52,7 +52,6 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
                     "Level Settings": EditorLevelSettingsDialog,
                     "Export Level": EditorExportChangesDialog,
                     "Leave to Overview": EditorLeaveToOverviewDialog,
-                    "Leave Editor": EditorLeaveDialog,
                 }} />
             </div>
 

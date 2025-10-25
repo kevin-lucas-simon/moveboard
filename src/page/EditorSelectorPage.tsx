@@ -42,7 +42,7 @@ export function EditorSelectorPage() {
                             </div>
                         </Link>
 
-                        <EditorContextMenu className="hidden group-hover:block focus:block" dialogs={{
+                        <EditorContextMenu dialogs={{
                             "Delete Level": <EditorDeleteDialog id={localEditor.id} onClose={() => {}} />,
                         }}/>
                     </li>
