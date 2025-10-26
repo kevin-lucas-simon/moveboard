@@ -1,11 +1,13 @@
 import {EditorReducerState} from "../../editor/reducer/editorReducer";
 import {createUUID} from "./UuidFactory";
-import {createLevel} from "../model/world/LevelModel";
+import {createLevel, LevelModel} from "../model/world/LevelModel";
 import {DebugSettingsDefault} from "../../experience/debug/settings/DebugSettingsProvider";
 
-export function createEditorReducerState(): EditorReducerState {
+export function createEditorReducerState(
+    levelModel?: LevelModel,
+): EditorReducerState {
     const id = createUUID();
-    const level = createLevel();
+    const level = levelModel ?? createLevel();
 
     return {
         id: id,

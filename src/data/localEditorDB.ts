@@ -16,13 +16,9 @@ export const localEditorDB = {
         return await dexieDB.editorStates.toArray();
     },
     async create(levelModel: LevelModel): Promise<EditorID> {
-        const newEditorState = createEditorReducerState();
-
-        // TODO noch nicht fertig, ich brauche das builder pattern
-        newEditorState.level = levelModel;
-        newEditorState.selectedStructure = levelModel.start;
-
-        return await dexieDB.editorStates.add(newEditorState);
+        return await dexieDB.editorStates.add(
+            createEditorReducerState(levelModel)
+        );
     },
     async get(editorID?: EditorID): Promise<EditorReducerState|undefined> {
         return editorID
