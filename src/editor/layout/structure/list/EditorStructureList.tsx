@@ -39,6 +39,18 @@ export function EditorStructureList(props: EditorStructureListProps) {
             return;
         }
 
+        // check if the order actually changed (event on start)
+        let isSameOrder = true;
+        for (let index = 0; index < sectionStructures.length; index++) {
+            if (newSectionStructures[index].id !== sectionStructures[index].id) {
+                isSameOrder = false;
+                break;
+            }
+        }
+        if (isSameOrder) {
+            return;
+        }
+
         // update the parent of the moved structures
         const movedStructures = newSectionStructures.filter(structure => !sectionStructures.some(e => e.id === structure.id));
         movedStructures.forEach((structure) => {

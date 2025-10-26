@@ -40,10 +40,6 @@ export function editorReducer(
         newState = {...newState, ...reducer(newState, action)};
     });
 
-    if (newState === state) {
-        return state;
-    }
-
     console.log("Mutated! : ", action.type)
     localEditorDB.put(newState);
 

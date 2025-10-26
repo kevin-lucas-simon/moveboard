@@ -85,6 +85,18 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
             return;
         }
 
+        // check if the order actually changed (event on start)
+        let isSameOrder = true;
+        for (let index = 0; index < groupElements.length; index++) {
+            if (newGroupElements[index].id !== groupElements[index].id) {
+                isSameOrder = false;
+                break;
+            }
+        }
+        if (isSameOrder) {
+            return;
+        }
+
         // update the parent of the moved elements
         const movedElements = newGroupElements.filter(element => !groupElements.some(e => e.id === element.id));
         movedElements.forEach((element) => {
