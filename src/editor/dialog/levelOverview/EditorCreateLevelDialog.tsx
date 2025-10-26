@@ -31,9 +31,9 @@ export function EditorCreateLevelDialog(props: EditorDialogProps) {
 
         levelModel.name = editorName;
 
-        const editorState = await localEditorDB.create(levelModel)
-        document.location.href = "/editor/" + editorState.id;
+        const editorID = await localEditorDB.create(levelModel)
 
+        document.location.href = "/editor/" + editorID;
         props.onClose();
     }
 

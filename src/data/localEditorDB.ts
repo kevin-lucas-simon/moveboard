@@ -16,7 +16,7 @@ export const localEditorDB = {
     async list(): Promise<EditorReducerState[]> {
         return await dexieDB.editorStates.toArray();
     },
-    async create(levelModel: LevelModel): Promise<EditorReducerState> {
+    async create(levelModel: LevelModel): Promise<EditorID> {
         // TODO default in eigene Datei auslagern
         const newEditorState: EditorReducerState = {
             id: createUUID(),
@@ -28,8 +28,7 @@ export const localEditorDB = {
             nextState: [],
             errors: [],
         };
-        await dexieDB.editorStates.add(newEditorState);
-        return newEditorState;
+        return await dexieDB.editorStates.add(newEditorState);
     },
     async get(editorID?: EditorID): Promise<EditorReducerState|undefined> {
         return editorID
