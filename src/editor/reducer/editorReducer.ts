@@ -10,6 +10,7 @@ export type EditorID = UUID;
 export type EditorReducerState =
     {
         id: EditorID, // TODO own file
+        updatedAt: number,
     }
     & SelectorReducerState
     & SimulationReducerState
@@ -39,9 +40,12 @@ export function editorReducer(
         newState = {...newState, ...reducer(newState, action)};
     });
 
-    // TODO hier einen timestamp vergleichen und nur bei änderung speichern?
-    // TODO hier müsste ich die Sperr Mechanik von useEffect best practice beifügen
-    localEditorDB.put(newState)
+    if (newState === state) {
+        return state;
+    }
+
+    console.log("Mutated! : ", action.type)
+    localEditorDB.put(newState);
 
     return state;
 }

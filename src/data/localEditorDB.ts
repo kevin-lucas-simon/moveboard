@@ -3,17 +3,17 @@ import {EditorID, EditorReducerState} from "../editor/reducer/editorReducer";
 import {LevelModel} from "./model/world/LevelModel";
 import {createEditorReducerState} from "./factory/EditorFactory";
 
-const dexieDB = new Dexie('editor') as Dexie & {
+const dexieDB = new Dexie('Moveboard') as Dexie & {
     editorStates: EntityTable<EditorReducerState, "id">;
 }
 
 dexieDB.version(1).stores({
-    editorStates: 'id',
+    editorStates: 'id,updatedAt',
 });
 
 export const localEditorDB = {
     async list(): Promise<EditorReducerState[]> {
-        return await dexieDB.editorStates.toArray();
+        return await dexieDB.editorStates.orderBy('updatedAt').reverse().toArray();
     },
     async create(levelModel: LevelModel): Promise<EditorID> {
         return await dexieDB.editorStates.add(
@@ -33,3 +33,29 @@ export const localEditorDB = {
         return await dexieDB.editorStates.delete(editorID);
     }
 }
+
+dexieDB.use({
+    stack: "dbcore",
+    name: "TimestampMiddleware",
+    create (downlevelDatabase) {
+        return {
+            ...downlevelDatabase,
+            table (tableName) {
+                const downlevelTable = downlevelDatabase.table(tableName);
+                return {
+                    ...downlevelTable,
+                    mutate: request => {
+                        if ((request.type === 'add' || request.type === 'put' ) && Array.isArray(request.values)) {
+                            request.values = request.values.map((value) => {
+                                const updatedValue = { ...value };
+                                updatedValue.updatedAt = Date.now();
+                                return updatedValue;
+                            });
+                        }
+                        return downlevelTable.mutate(request);
+                    }
+                }
+            }
+        };
+    }
+})

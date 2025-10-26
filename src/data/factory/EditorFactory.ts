@@ -18,5 +18,6 @@ export function createEditorReducerState(
         previousState: [],
         nextState: [],
         errors: [],
+        updatedAt: Date.now(),
     }
 }

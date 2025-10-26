@@ -37,8 +37,12 @@ export function EditorSelectorPage() {
                     >
                         <Link to={"/editor/" + localEditor.id} className="grow">
                             <div className="hover:underline truncate">
-                                <div className="text-lg">{localEditor.level.name}</div>
-                                <div className="text-sm">Yesterday</div>
+                                <div className="text-lg">
+                                    {localEditor.level.name}
+                                </div>
+                                <div className="text-sm">
+                                    {new Date(localEditor.updatedAt).toLocaleString("de-DE", { dateStyle: 'medium', timeStyle: 'short' })}
+                                </div>
                             </div>
                         </Link>
 
