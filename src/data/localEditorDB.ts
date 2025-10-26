@@ -1,8 +1,7 @@
 import Dexie, {EntityTable} from 'dexie'
 import {EditorID, EditorReducerState} from "../editor/reducer/editorReducer";
 import {LevelModel} from "./model/world/LevelModel";
-import {DebugSettingsDefault} from "../experience/debug/settings/DebugSettingsProvider";
-import {createUUID} from "./factory/UuidFactory";
+import {createEditorReducerState} from "./factory/EditorFactory";
 
 const dexieDB = new Dexie('editor') as Dexie & {
     editorStates: EntityTable<EditorReducerState, "id">;
@@ -17,17 +16,12 @@ export const localEditorDB = {
         return await dexieDB.editorStates.toArray();
     },
     async create(levelModel: LevelModel): Promise<EditorID> {
-        // TODO default in eigene Datei auslagern
-        const newEditorState: EditorReducerState = {
-            id: createUUID(),
-            level: levelModel,
-            selectedStructure: levelModel.start,
-            selectedElements: [],
-            simulationSettings: DebugSettingsDefault,
-            previousState: [],
-            nextState: [],
-            errors: [],
-        };
+        const newEditorState = createEditorReducerState();
+
+        // TODO noch nicht fertig, ich brauche das builder pattern
+        newEditorState.level = levelModel;
+        newEditorState.selectedStructure = levelModel.start;
+
         return await dexieDB.editorStates.add(newEditorState);
     },
     async get(editorID?: EditorID): Promise<EditorReducerState|undefined> {

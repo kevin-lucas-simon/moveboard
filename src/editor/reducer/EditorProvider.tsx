@@ -1,20 +1,41 @@
 import React, {createContext, useContext, useReducer} from "react";
-import {editorReducer, EditorReducerActions, EditorReducerState} from "./editorReducer";
+import {EditorID, editorReducer, EditorReducerActions, EditorReducerState} from "./editorReducer";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {StructureModel} from "../../data/model/structure/StructureModel";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementModel} from "../../data/model/element/ElementModel";
 import {filterStructures} from "../../data/factory/StructureFactory";
+import {useLiveQuery} from "dexie-react-hooks";
+import {localEditorDB} from "../../data/localEditorDB";
 
 const EditorContext = createContext<EditorReducerState|null>(null);
 const EditorDispatcher = createContext<React.Dispatch<EditorReducerActions>|null>(null);
 
 export type EditorProviderProps = {
-    editorState: EditorReducerState;
+    editorID: EditorID;
     children: React.ReactNode;
 }
 export function EditorProvider(props: EditorProviderProps) {
-    // TODO hier erklärung schreiben warum ich den useReducer so benutze mit asynchroner DB Arbeit
+    const editorState = useLiveQuery(
+        () => localEditorDB.get(props.editorID),
+        [props.editorID],
+    );
+
+    if (!editorState) {
+        return null;
+    }
+
+    return (
+        <EditorReducerProvider editorState={editorState}>
+            {props.children}
+        </EditorReducerProvider>
+    );
+}
+
+function EditorReducerProvider(props: {
+    editorState: EditorReducerState;
+    children: React.ReactNode
+}) {
     const[_, dispatch] = useReducer(editorReducer, props.editorState);
 
     return (

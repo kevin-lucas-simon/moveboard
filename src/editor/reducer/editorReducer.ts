@@ -40,6 +40,7 @@ export function editorReducer(
     });
 
     // TODO hier einen timestamp vergleichen und nur bei änderung speichern?
+    // TODO hier müsste ich die Sperr Mechanik von useEffect best practice beifügen
     localEditorDB.put(newState)
 
     return state;
