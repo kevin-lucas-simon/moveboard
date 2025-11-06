@@ -93,7 +93,7 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
                 break;
             }
         }
-        if (isSameOrder) {
+        if (isSameOrder && newGroupElements.length === groupElements.length) {
             return;
         }
 

@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useReducer} from "react";
+import React, {createContext, useContext, useReducer, useEffect} from "react";
 import {EditorID, editorReducer, EditorReducerActions, EditorReducerState} from "./editorReducer";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {StructureModel} from "../../data/model/structure/StructureModel";
@@ -36,7 +36,11 @@ function EditorReducerProvider(props: {
     editorState: EditorReducerState;
     children: React.ReactNode
 }) {
-    const[_, dispatch] = useReducer(editorReducer, props.editorState);
+    const[newState, dispatch] = useReducer(editorReducer, props.editorState);
+
+    useEffect(() => {
+        localEditorDB.put(newState);
+    }, [newState]);
 
     return (
         <EditorContext.Provider value={props.editorState}>

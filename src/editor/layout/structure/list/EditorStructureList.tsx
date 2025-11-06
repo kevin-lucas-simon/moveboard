@@ -42,12 +42,13 @@ export function EditorStructureList(props: EditorStructureListProps) {
         // check if the order actually changed (event on start)
         let isSameOrder = true;
         for (let index = 0; index < sectionStructures.length; index++) {
-            if (newSectionStructures[index].id !== sectionStructures[index].id) {
+            if (sectionStructures[index].id !== newSectionStructures[index].id) {
                 isSameOrder = false;
                 break;
             }
         }
-        if (isSameOrder) {
+
+        if (isSameOrder && newSectionStructures.length === sectionStructures.length) {
             return;
         }
 
