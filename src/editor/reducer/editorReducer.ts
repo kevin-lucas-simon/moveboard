@@ -2,7 +2,6 @@ import {selectorReducer, SelectorReducerActions, SelectorReducerState} from "./p
 import {SimulationReducerActions, SimulationReducerState, simulationReducer} from "./partial/simulationReducer";
 import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./partial/historyReducer";
 import {levelReducer, LevelReducerActions, LevelReducerState} from "./partial/levelReducer";
-import {localEditorDB} from "../../data/localEditorDB";
 import {UUID} from "../../data/model/UUID";
 
 export type EditorID = UUID;
