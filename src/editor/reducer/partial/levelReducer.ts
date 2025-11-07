@@ -20,6 +20,13 @@ export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_remove_structure',
     payload: StructureID,
 } | {
+    type: 'level_move_structure',
+    payload: {
+        structureId: StructureID,
+        newParentId: StructureID|null,
+        newParentIndex: number,
+    }
+} | {
     type: 'level_reorder_structures',
     payload: StructureID[],
 } | {
@@ -116,6 +123,24 @@ export function levelReducer(
                     structures: updatedChunks,
                 },
             }
+        }
+        case "level_move_structure": {
+            // TODO level_move_structure -> id, newParent, newIndex (relative to new parent children)
+
+
+            const newStructures = null;
+
+            if (!newStructures) {
+                return state;
+            }
+
+            return {
+                ...state,
+                level: {
+                    ...state.level,
+                    structures: newStructures,
+                },
+            };
         }
         case 'level_reorder_structures': {
             const structureIds = action.payload as StructureID[];

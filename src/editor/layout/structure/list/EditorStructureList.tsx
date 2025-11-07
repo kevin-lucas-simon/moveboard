@@ -4,6 +4,7 @@ import {StructureID, StructureModel} from "../../../../data/model/structure/Stru
 import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
+import {SortableListService} from "../../../reducer/util/SortableListService";
 
 export type EditorStructureListProps = {
     structures: {[key: StructureID]: StructureModel},
@@ -34,26 +35,19 @@ export function EditorStructureList(props: EditorStructureListProps) {
     }
 
     const reorderStructures = (newSectionStructures: StructureModel[]) => {
-        // section change is only handled by the corresponding section structure (two events on moving between groups)
-        if (newSectionStructures.length < sectionStructures.length) {
+        if (!SortableListService.hasItemsBeenMoved(sectionStructures, newSectionStructures)) {
             return;
         }
 
-        // check if the order actually changed (event on start)
-        let isSameOrder = true;
-        for (let index = 0; index < sectionStructures.length; index++) {
-            if (sectionStructures[index].id !== newSectionStructures[index].id) {
-                isSameOrder = false;
-                break;
-            }
-        }
 
-        if (isSameOrder && newSectionStructures.length === sectionStructures.length) {
-            return;
-        }
+        // TODO level_move_structure -> id, newParent, newIndex (relative to new parent children)
+
 
         // update the parent of the moved structures
-        const movedStructures = newSectionStructures.filter(structure => !sectionStructures.some(e => e.id === structure.id));
+        const movedStructures = newSectionStructures
+            .filter(structure => !sectionStructures
+                .some(e => e.id === structure.id)
+            );
         movedStructures.forEach((structure) => {
             props.dispatcher({
                 type: 'level_patch_structure',
@@ -86,7 +80,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
             return newSectionOrder;
         }
 
-        // apply the new order
+        // apply the new order TODO reducer logik
         const newTotalOrder: StructureID[] = calculateSectionOrder(null);
         props.dispatcher({
             type: 'level_reorder_structures',

@@ -7,6 +7,7 @@ import {GroupModel} from "../../../../data/model/element/system/GroupModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {SortableListService} from "../../../reducer/util/SortableListService";
 
 export type EditorChunkElementListProps = {
     elements: {[key: string]: ElementModel};
@@ -80,59 +81,18 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
 
     // Info: SortableJS do fire this event on mount for every group instance
     const reorderElements = (newGroupElements: ElementModel[]) => {
-        // group change is only handled by the corresponding group element (two events on moving between groups)
-        if (newGroupElements.length < groupElements.length) {
+        if (!SortableListService.hasItemsBeenMoved(groupElements, newGroupElements)) {
             return;
         }
 
-        // check if the order actually changed (event on start)
-        let isSameOrder = true;
-        for (let index = 0; index < groupElements.length; index++) {
-            if (newGroupElements[index].id !== groupElements[index].id) {
-                isSameOrder = false;
-                break;
-            }
-        }
-        if (isSameOrder && newGroupElements.length === groupElements.length) {
-            return;
-        }
+        const newTotalOrder = SortableListService.calculateMovedGroupOrder(
+            Object.values(props.elements),
+            groupElements,
+            newGroupElements,
+            props.parent,
+            ElementTypes.Group,
+        );
 
-        // update the parent of the moved elements
-        const movedElements = newGroupElements.filter(element => !groupElements.some(e => e.id === element.id));
-        movedElements.forEach((element) => {
-            props.dispatcher({
-                type: 'chunk_patch_element',
-                payload: {
-                    ...props.elements[element.id], // keep the old element data, do not thrust the new one
-                    parent: props.parent,
-                }
-            })
-        })
-
-        // recursively calculate the new total order of elements (we have to remove the old one)
-        const calculateGroupOrder = (parent: ElementID|null): ElementID[] => {
-            const groupElements = props.parent === parent
-                ? newGroupElements
-                : Object.values(props.elements)
-                    .filter(element => element.parent === parent)
-                    .filter(element => !movedElements.map(element => element.id).includes(element.id))
-            ;
-
-            const newGroupOrder: ElementID[] = [];
-            groupElements.forEach((element) => {
-                newGroupOrder.push(element.id);
-
-                if (element.type === ElementTypes.Group) {
-                    const childrenOrder = calculateGroupOrder(element.id);
-                    newGroupOrder.push(...childrenOrder);
-                }
-            })
-
-            return newGroupOrder;
-        }
-
-        // apply the new order to the chunk
-        const newTotalOrder: ElementID[] = calculateGroupOrder(null);
         props.dispatcher({
             type: 'chunk_reorder_elements',
             payload: newTotalOrder,
