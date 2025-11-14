@@ -2,7 +2,7 @@ import {ElementID, ElementModel} from "../../../../data/model/element/ElementMod
 
 import {ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {EditorReducerActions} from "../../editorReducer";
-import {ElementTypes} from "../../../../data/model/element/ElementTypes";
+import {SortableListService} from "../../util/SortableListService";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -16,8 +16,8 @@ export type ChunkReducerActions = {
 } | {
     type: 'chunk_reorder_elements',
     payload: {
-        parentID: ElementID | null;
-        childOrderIDs: ElementID[];
+        parentId: ElementID | null;
+        childIds: ElementID[];
     }
 } | {
     type: 'chunk_update_field';
@@ -88,54 +88,15 @@ export function chunkReducer(
             }
         }
         case "chunk_reorder_elements": {
-            const parentID = action.payload.parentID
-            const childIDs = action.payload.childOrderIDs
-
-            if (parentID && !state.elements[parentID]) {
-                throw new Error(`Parent ID ${parentID} not found`);
-            }
-            childIDs.forEach(id => {
-                if (!state.elements[id]) {
-                    throw new Error('One or more child IDs not found in elements');
-                }
-            })
-
-            const calculateNestedList = (currentParentId: ElementID|null): {[key: ElementID]: ElementModel} => {
-                let nestedItems = Object
-                    .values(state.elements)
-                    .filter(item => item.parent === currentParentId)
-                    .filter(item => !childIDs.includes(item.id))
-
-                if (currentParentId === parentID) {
-                    nestedItems = childIDs.map(id => ({
-                        ...state.elements[id],
-                        parent: parentID,
-                    }));
-                    console.log(nestedItems)
-                }
-
-                let nestedList: {[key: ElementID]: ElementModel} = {};
-                nestedItems.forEach((item) => {
-                    nestedList[item.id] = item;
-
-                    const hasNestedItems = item.type === ElementTypes.Group;
-                    if (hasNestedItems) {
-                        Object.assign(nestedList, calculateNestedList(item.id));
-                    }
-                })
-
-                return nestedList;
-            }
-
-            const newItemOrder = calculateNestedList(null);
-
-            if (Object.keys(newItemOrder).length !== Object.keys(state.elements).length) {
-                throw new Error("New order length does not match the old one")
-            }
+            const newOrder = SortableListService.reorderParentItems<ElementModel>(
+                Object.values(state.elements),
+                action.payload.parentId,
+                action.payload.childIds,
+            );
 
             return {
                 ...state,
-                elements: newItemOrder,
+                elements: newOrder,
             };
         }
         case 'chunk_remove_element': {

@@ -39,52 +39,12 @@ export function EditorStructureList(props: EditorStructureListProps) {
             return;
         }
 
-
-        // TODO level_move_structure -> id, newParent, newIndex (relative to new parent children)
-
-
-        // update the parent of the moved structures
-        const movedStructures = newSectionStructures
-            .filter(structure => !sectionStructures
-                .some(e => e.id === structure.id)
-            );
-        movedStructures.forEach((structure) => {
-            props.dispatcher({
-                type: 'level_patch_structure',
-                payload: {
-                    id: structure.id,
-                    parent: props.parent,
-                }
-            })
-        })
-
-        // recursively calculate the new total order of elements (we have to remove the old one)
-        const calculateSectionOrder = (parent: StructureID|null): StructureID[] => {
-            const sectionElements = props.parent === parent
-                ? newSectionStructures
-                : Object.values(props.structures)
-                    .filter(structure => structure.parent === parent)
-                    .filter(structure => !movedStructures.map(structure => structure.id).includes(structure.id))
-            ;
-
-            const newSectionOrder: StructureID[] = [];
-            sectionElements.forEach((structure) => {
-                newSectionOrder.push(structure.id);
-
-                if (structure.type === StructureTypes.Section) {
-                    const childrenOrder = calculateSectionOrder(structure.id);
-                    newSectionOrder.push(...childrenOrder);
-                }
-            })
-
-            return newSectionOrder;
-        }
-
-        // apply the new order TODO reducer logik
-        const newTotalOrder: StructureID[] = calculateSectionOrder(null);
         props.dispatcher({
             type: 'level_reorder_structures',
-            payload: newTotalOrder,
+            payload: {
+                parentId: props.parent,
+                childIds: newSectionStructures.map(structure => structure.id),
+            },
         })
     }
 

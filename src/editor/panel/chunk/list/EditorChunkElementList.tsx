@@ -79,7 +79,6 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
         });
     }
 
-    // Info: SortableJS do fire this event on mount for every group instance
     const reorderElements = (newGroupElements: ElementModel[]) => {
         if (!SortableListService.hasItemsBeenMoved(groupElements, newGroupElements)) {
             return;
@@ -88,8 +87,8 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
         props.dispatcher({
             type: "chunk_reorder_elements",
             payload: {
-                parentID: props.parent,
-                childOrderIDs: newGroupElements.map(e => e.id),
+                parentId: props.parent,
+                childIds: newGroupElements.map(element => element.id),
             }
         })
     }

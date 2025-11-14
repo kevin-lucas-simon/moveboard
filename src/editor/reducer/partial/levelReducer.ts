@@ -5,6 +5,7 @@ import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
 import {EditorReducerActions, EditorReducerState} from "../editorReducer";
+import {SortableListService} from "../util/SortableListService";
 
 export type LevelReducerState = {
     level: LevelModel,
@@ -20,15 +21,11 @@ export type LevelReducerActions = ChunkReducerActions | {
     type: 'level_remove_structure',
     payload: StructureID,
 } | {
-    type: 'level_move_structure',
-    payload: {
-        structureId: StructureID,
-        newParentId: StructureID|null,
-        newParentIndex: number,
-    }
-} | {
     type: 'level_reorder_structures',
-    payload: StructureID[],
+    payload: {
+        parentId: StructureID | null,
+        childIds: StructureID[],
+    },
 } | {
     type: 'level_update_field',
     payload: {
@@ -124,44 +121,18 @@ export function levelReducer(
                 },
             }
         }
-        case "level_move_structure": {
-            // TODO level_move_structure -> id, newParent, newIndex (relative to new parent children)
-
-
-            const newStructures = null;
-
-            if (!newStructures) {
-                return state;
-            }
-
-            return {
-                ...state,
-                level: {
-                    ...state.level,
-                    structures: newStructures,
-                },
-            };
-        }
         case 'level_reorder_structures': {
-            const structureIds = action.payload as StructureID[];
-            const reorderedChunks: { [key: StructureID]: StructureModel } = {};
-
-            structureIds.forEach(id => {
-                if (!state.level.structures[id]) {
-                    throw new Error(`Reorder chunk ID ${id} not found in state`);
-                }
-                reorderedChunks[id] = state.level.structures[id];
-            });
-
-            if (Object.keys(reorderedChunks).length !== Object.keys(state.level.structures).length) {
-                throw new Error('Reorder chunk IDs do not match original chunks count');
-            }
+            const newOrder = SortableListService.reorderParentItems<StructureModel>(
+                Object.values(state.level.structures),
+                action.payload.parentId,
+                action.payload.childIds,
+            );
 
             return {
                 ...state,
                 level: {
                     ...state.level,
-                    structures: reorderedChunks,
+                    structures: newOrder,
                 },
             };
         }
