@@ -106,7 +106,7 @@ function useChunkCameraTargetCalculation(
     // use two effects, one for prop and chunk change, the other one for window resize
     useEffect(
         calculateTargetChunkPosition
-    , [calculateTargetChunkPosition, cameraFov, chunkPosition, chunkDimension, cameraAspectRatio, marginInBlockSize])
+        , [calculateTargetChunkPosition, cameraFov, chunkPosition, chunkDimension, cameraAspectRatio, marginInBlockSize])
     useEffect(() => {
         window.addEventListener('resize', calculateTargetChunkPosition);
         return () => {
