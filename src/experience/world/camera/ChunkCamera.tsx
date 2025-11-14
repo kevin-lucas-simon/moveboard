@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
 import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
-import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
 
 export type ChunkCameraProps = {
     chunkPosition: Vector3Like,
@@ -24,8 +24,8 @@ export type ChunkCameraProps = {
 export function ChunkCamera(props: ChunkCameraProps) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
-    const isMoveableCamera = useDebugSettings().moveableCamera
-    const isInterpolationProhibited = useDebugSettings().isEditingMode
+    const isMoveableCamera = useDebugSettings()?.moveableCamera
+    const isInterpolationProhibited = useDebugSettings()?.isEditingMode
 
     // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
@@ -50,6 +50,7 @@ export function ChunkCamera(props: ChunkCameraProps) {
             />
             {isMoveableCamera &&
                 <OrbitControls
+                    makeDefault
                     ref={orbitControlRef}
                 />
             }
@@ -154,7 +155,7 @@ function usePositionInterpolation(
     refPositionToInterpolate: Vector3|undefined,
     targetPosition: Vector3,
     transitionSeconds: number,
-    prohibitInterpolation: boolean,
+    prohibitInterpolation: boolean = false,
 ) {
     const remainingTransitionTime = useRef<number>(0)
     const lastPosition = useRef<Vector3>(new Vector3(0, 0, 0))

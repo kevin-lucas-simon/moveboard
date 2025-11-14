@@ -1,9 +1,10 @@
-import {ChunkModel} from "../../../model/ChunkModel";
 import {Vector3, Vector3Like} from "three";
-import {JointModel} from "../../../model/JointModel";
-import {ElementModel} from "../../../model/ElementModel";
+import {JointModel} from "../../../data/model/element/joint/JointModel";
+import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
-import {BasicBlockModel} from "../../element/block/BasicBlock";
+import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
+import {ElementTypes} from "../../../data/model/element/ElementTypes";
+import {ChunkID, ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 
 export type RenderedChunk = {
     model: ChunkModel,
@@ -25,9 +26,9 @@ type RenderDimension = {
  * @param activeChunkId Active chunk defines which chunks neighbours should be visible
  */
 export function useChunkRenderer(
-    chunkModels: {[key: string]: ChunkModel},
-    activeChunkId: string
-): {[key: string]: RenderedChunk} {
+    chunkModels: {[key: ChunkID]: ChunkModel},
+    activeChunkId: ChunkID
+): {[key: ChunkID]: RenderedChunk} {
     // save rendering for next active chunk position reuse
     const calculatedChunks = useRef<{[key: string]: RenderedChunk}|undefined>(undefined);
 
@@ -57,14 +58,14 @@ export function useChunkRenderer(
  * @param renderRootNeighbour If enabled, additionally render all hidden root joint neighbours, e.g. for position access
  */
 function calculateChunks(
-    chunkModels: {[key: string]: ChunkModel},
-    rootChunkId: string,
+    chunkModels: {[key: ChunkID]: ChunkModel},
+    rootChunkId: ChunkID,
     rootChunkPosition: Vector3Like,
     renderRootNeighbour: boolean = false,
-): {[key: string]: RenderedChunk} {
+): {[key: ChunkID]: RenderedChunk} {
     type ChunkRenderTask = {
-        currentId: string,
-        parentId: string | null,
+        currentId: ChunkID,
+        parentId: ChunkID|null,
         position: Vector3Like,
         vision: number,
     }
@@ -100,21 +101,31 @@ function calculateChunks(
             continue;
         }
 
-        // get joint with parent name
-        const jointToParent = currentModel.joints
-            .find(joint => joint.neighbour === task.parentId && joint.neighbour !== null);
+        // get chunk joints
+        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
+        // set default render position to the task position
         let renderPosition = new Vector3().copy(task.position);
-        if (jointToParent) {
-            renderPosition = new Vector3()
-                .copy(task.position)
-                .sub(jointToParent.position)
-        }
+
+        // apply parent chunk position if available
+        currentJoints.forEach(joint => {
+            // find joint to parent chunk
+            if (joint.neighbour === task.parentId && joint.neighbour !== null) {
+                renderPosition = new Vector3()
+                    .copy(task.position)
+                    .sub(joint.position)
+                ;
+                return;
+            }
+        })
 
         // calculate dimensions
-        const chunkDimension = calculateRenderDimension(currentModel.elements, renderPosition);
+        const chunkDimension = calculateRenderDimension(
+            Object.values(currentModel.elements),
+            renderPosition
+        );
         const cameraDimension = calculateRenderDimension(
-            currentModel.elements.filter(element => element.type === "FloorBlock"),
+            Object.values(currentModel.elements).filter(element => element.type === ElementTypes.FloorBlock),
             renderPosition
         );
 
@@ -133,8 +144,8 @@ function calculateChunks(
         };
 
         // add new tasks
-        currentModel.joints.forEach((joint: JointModel) => {
-            if (joint.neighbour === task.parentId) {
+        currentJoints.forEach((joint: JointModel) => {
+            if (!joint.neighbour || joint.neighbour === task.parentId) {
                 return;
             }
             tasks.push({
@@ -158,6 +169,16 @@ function calculateRenderDimension(
     elementModels: ElementModel[],
     worldPosition: Vector3Like,
 ): RenderDimension {
+    // return empty dimension if no elements are available
+    if (elementModels.length === 0) {
+        return {
+            size: new Vector3(0, 0, 0),
+            centerPosition: new Vector3().copy(worldPosition),
+            minimalPosition: new Vector3().copy(worldPosition),
+            maximalPosition: new Vector3().copy(worldPosition),
+        };
+    }
+
     const minPosition = new Vector3(Infinity, Infinity, Infinity);
     const maxPosition = new Vector3(-Infinity, -Infinity, -Infinity);
 

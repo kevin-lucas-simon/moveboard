@@ -3,31 +3,12 @@ import {Vector3} from "three";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
 import {Player} from "../../entity/Player";
-import {GenericElementDefault} from "../GenericElement";
-import {ElementModel} from "../../../model/ElementModel";
+import {BounceBlockDefault, BounceBlockModel} from "../../../data/model/element/block/BounceBlockModel";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
-export type BounceBlockModel = ElementModel & {
-    diameter: number,
-    intensity: number,
-}
-export const BounceBlockDefault: BounceBlockModel = {
-    ...GenericElementDefault,
-    type: BounceBlock.name,
-    diameter: 1,
-    intensity: 1,
-}
-
-/**
- * Bouncer block that bounces the player on collision
- * @param props.position position of the bouncer
- * @param props.diameter diameter of the bouncer
- * @param props.intensity expected intensity of the bounce
- * @constructor
- */
 export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
     const [bounceAnimation, setBounceAnimation] = useState(0)
 

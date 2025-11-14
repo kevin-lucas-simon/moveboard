@@ -1,16 +1,17 @@
-import {useLevelDownloader} from "../repository/useLevelDownloader";
 import {LevelEditor} from "../editor/LevelEditor";
 import {useParams} from "react-router-dom";
+import {EditorProvider} from "../editor/reducer/EditorProvider";
+import {EditorID} from "../editor/reducer/editorReducer";
 
 export function EditorPage() {
-    const {levelName} = useParams();
-
-    const downloadedLevel = useLevelDownloader(levelName ?? "");
-    if (!downloadedLevel) {
-        return <></>;
+    const {editorID} = useParams();
+    if (!editorID) {
+        return null;
     }
 
     return (
-        <LevelEditor downloadedLevel={downloadedLevel} key={levelName} />
+        <EditorProvider editorID={editorID as EditorID}>
+            <LevelEditor/>
+        </EditorProvider>
     )
 }

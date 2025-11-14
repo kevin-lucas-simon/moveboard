@@ -1,0 +1,884 @@
+{
+    "id": "b1f650e4-61f1-4b66-b7da-dad9b62707ba",
+    "name": "TestLevel",
+    "start": "8c945baf-2c52-4b47-92e2-973e89ac69e1",
+    "structures": {
+        "dfbb5dae-8a58-4d2d-8396-a6a40f8b24c2": {
+            "id": "dfbb5dae-8a58-4d2d-8396-a6a40f8b24c2",
+            "type": "Section",
+            "name": "TestSection",
+            "parent": null,
+            "collapsed": false
+        },
+        "8c945baf-2c52-4b47-92e2-973e89ac69e1": {
+            "id": "8c945baf-2c52-4b47-92e2-973e89ac69e1",
+            "type": "Chunk",
+            "name": "FirstChunk",
+            "parent": "dfbb5dae-8a58-4d2d-8396-a6a40f8b24c2",
+            "player": {
+                "x": 2,
+                "y": 1,
+                "z": 0
+            },
+            "elements": {
+                "77d00105-071d-4489-aa13-d088573a79a7": {
+                    "id": "77d00105-071d-4489-aa13-d088573a79a7",
+                    "type": "Group",
+                    "collapsed": false,
+                    "name": "Joints",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false
+                },
+                "d5318744-d4d7-4f9b-8dfd-0cf37c6a24b1": {
+                    "id": "d5318744-d4d7-4f9b-8dfd-0cf37c6a24b1",
+                    "type": "Joint",
+                    "name": "Tunnel",
+                    "parent": "77d00105-071d-4489-aa13-d088573a79a7",
+                    "neighbour": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
+                    "position": {
+                        "x": -4,
+                        "y": 1.5,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 2
+                    },
+                    "vision": 1,
+                    "hidden": false
+                },
+                "80ee4ed5-434d-4a4d-bcf8-68c64af7522e": {
+                    "id": "80ee4ed5-434d-4a4d-bcf8-68c64af7522e",
+                    "type": "Group",
+                    "name": "Decken",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "09b0e2bb-b55d-4020-a9c1-e8e99d08f56a": {
+                    "id": "09b0e2bb-b55d-4020-a9c1-e8e99d08f56a",
+                    "type": "BarrierBlock",
+                    "name": "",
+                    "parent": "80ee4ed5-434d-4a4d-bcf8-68c64af7522e",
+                    "position": {
+                        "x": 0,
+                        "y": 4,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 1,
+                        "z": 9
+                    },
+                    "hidden": false,
+                    "color": "blue"
+                },
+                "af61d614-df3a-4129-826c-fe0a44e22c8e": {
+                    "id": "af61d614-df3a-4129-826c-fe0a44e22c8e",
+                    "type": "Group",
+                    "collapsed": true,
+                    "name": "Wände",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false
+                },
+                "1f719e78-c8c8-4354-8e27-8aebf43e61c5": {
+                    "id": "1f719e78-c8c8-4354-8e27-8aebf43e61c5",
+                    "type": "Group",
+                    "name": "Linke Wand",
+                    "parent": "af61d614-df3a-4129-826c-fe0a44e22c8e",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "7ff282e8-7d72-4850-832b-0c794f9a830e": {
+                    "id": "7ff282e8-7d72-4850-832b-0c794f9a830e",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "1f719e78-c8c8-4354-8e27-8aebf43e61c5",
+                    "position": {
+                        "x": -4,
+                        "y": 2,
+                        "z": -2.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 2.5
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "11cd767f-39e1-4c11-be78-833108e199a4": {
+                    "id": "11cd767f-39e1-4c11-be78-833108e199a4",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "1f719e78-c8c8-4354-8e27-8aebf43e61c5",
+                    "position": {
+                        "x": -4,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "de944fe1-25ee-41f9-b7af-dce4142cfe17": {
+                    "id": "de944fe1-25ee-41f9-b7af-dce4142cfe17",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "1f719e78-c8c8-4354-8e27-8aebf43e61c5",
+                    "position": {
+                        "x": -4,
+                        "y": 2,
+                        "z": 2.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 2.5
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "8f088b71-df90-45b7-b3d5-b4662147f8f9": {
+                    "id": "8f088b71-df90-45b7-b3d5-b4662147f8f9",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "af61d614-df3a-4129-826c-fe0a44e22c8e",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "z": -4
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 3,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "d7cbdd3e-3b6f-44fa-b3fc-f1a6ecb10891": {
+                    "id": "d7cbdd3e-3b6f-44fa-b3fc-f1a6ecb10891",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "af61d614-df3a-4129-826c-fe0a44e22c8e",
+                    "position": {
+                        "x": 4,
+                        "y": 2,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 3,
+                        "z": 7
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "1e64d87b-b5c0-4638-a6ad-122c09b7a0b4": {
+                    "id": "1e64d87b-b5c0-4638-a6ad-122c09b7a0b4",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "af61d614-df3a-4129-826c-fe0a44e22c8e",
+                    "position": {
+                        "x": 0,
+                        "y": 2,
+                        "z": 4
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 3,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "13f3e70d-5f3b-44f4-9faa-c2e90589b29e": {
+                    "id": "13f3e70d-5f3b-44f4-9faa-c2e90589b29e",
+                    "type": "Group",
+                    "name": "Boden",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "c9a7369c-d45f-4f36-b03e-fae08b9a1df4": {
+                    "id": "c9a7369c-d45f-4f36-b03e-fae08b9a1df4",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": "13f3e70d-5f3b-44f4-9faa-c2e90589b29e",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 9,
+                        "y": 1,
+                        "z": 9
+                    },
+                    "hidden": false,
+                    "color": "blue"
+                },
+                "4d1f11fc-3a34-4d56-b92c-e78d40cc4cd0": {
+                    "id": "4d1f11fc-3a34-4d56-b92c-e78d40cc4cd0",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "f2b02f12-ffb9-4b94-8a83-dcc0c784ac57": {
+                    "id": "f2b02f12-ffb9-4b94-8a83-dcc0c784ac57",
+                    "type": "BounceBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 1,
+                        "z": -4
+                    },
+                    "diameter": 2,
+                    "intensity": 2
+                },
+                "d727c568-3f1e-4089-a928-5881b5b42f7d": {
+                    "id": "d727c568-3f1e-4089-a928-5881b5b42f7d",
+                    "type": "BounceBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 4,
+                        "y": 1,
+                        "z": -1
+                    },
+                    "diameter": 3,
+                    "intensity": 3
+                },
+                "3881e505-e478-4d8f-88eb-263e649cf9f3": {
+                    "id": "3881e505-e478-4d8f-88eb-263e649cf9f3",
+                    "type": "BounceBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 1,
+                        "z": 3.5
+                    },
+                    "diameter": 1,
+                    "intensity": 1
+                },
+                "57657e6d-1a6e-4f6d-85c3-d1f5fbd4b1f6": {
+                    "id": "57657e6d-1a6e-4f6d-85c3-d1f5fbd4b1f6",
+                    "type": "BounceBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": -2,
+                        "y": 1,
+                        "z": 3.5
+                    },
+                    "diameter": 1,
+                    "intensity": 2
+                }
+            }
+        },
+        "f0db8f9f-14ff-4562-bd7f-457c2c9f106d": {
+            "id": "f0db8f9f-14ff-4562-bd7f-457c2c9f106d",
+            "type": "Chunk",
+            "name": "SecondChunk",
+            "parent": null,
+            "player": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+            },
+            "elements": {
+                "b333bbf1-9af5-4bce-90c0-7957718c09a0": {
+                    "id": "b333bbf1-9af5-4bce-90c0-7957718c09a0",
+                    "type": "Group",
+                    "name": "Joints",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": false
+                },
+                "d8b32b26-4e8e-4d95-9868-59f5cfbfcdb1": {
+                    "id": "d8b32b26-4e8e-4d95-9868-59f5cfbfcdb1",
+                    "type": "Joint",
+                    "name": "Tunnel",
+                    "parent": "b333bbf1-9af5-4bce-90c0-7957718c09a0",
+                    "neighbour": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 2
+                    },
+                    "vision": 0,
+                    "hidden": false
+                },
+                "4967fa19-0874-46f5-844f-286e1cb31715": {
+                    "id": "4967fa19-0874-46f5-844f-286e1cb31715",
+                    "type": "Group",
+                    "name": "Decke",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "6d1e89ea-3966-49cc-8b4a-85a529ba5712": {
+                    "id": "6d1e89ea-3966-49cc-8b4a-85a529ba5712",
+                    "type": "BarrierBlock",
+                    "name": "",
+                    "parent": "4967fa19-0874-46f5-844f-286e1cb31715",
+                    "position": {
+                        "x": 0,
+                        "y": 6,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 5
+                    },
+                    "hidden": false
+                },
+                "c921b963-6d76-423d-b393-24e41713b255": {
+                    "id": "c921b963-6d76-423d-b393-24e41713b255",
+                    "type": "Group",
+                    "name": "Boden",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "a174d6b7-bf88-4b67-a4e0-e17ec1b6d3f9": {
+                    "id": "a174d6b7-bf88-4b67-a4e0-e17ec1b6d3f9",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": "c921b963-6d76-423d-b393-24e41713b255",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 1,
+                        "z": 5
+                    },
+                    "hidden": false,
+                    "color": "green"
+                },
+                "f875a516-f65d-4dc1-aec9-4f0064b051f3": {
+                    "id": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
+                    "type": "Group",
+                    "name": "Wände",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "9d843d99-0ac8-4106-b136-6187b16c8dd8": {
+                    "id": "9d843d99-0ac8-4106-b136-6187b16c8dd8",
+                    "type": "Group",
+                    "name": "Wand rechts",
+                    "parent": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "345b4874-b283-4394-9e71-7f4ff2c93d22": {
+                    "id": "345b4874-b283-4394-9e71-7f4ff2c93d22",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "9d843d99-0ac8-4106-b136-6187b16c8dd8",
+                    "position": {
+                        "x": 2,
+                        "y": 3.5,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 4,
+                        "z": 3
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                },
+                "c281bf77-526f-4d00-bf4f-f5970823b913": {
+                    "id": "c281bf77-526f-4d00-bf4f-f5970823b913",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "9d843d99-0ac8-4106-b136-6187b16c8dd8",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": -1.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 0.5
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                },
+                "c9406852-cdfb-44e2-a13c-61a0011c7042": {
+                    "id": "c9406852-cdfb-44e2-a13c-61a0011c7042",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "9d843d99-0ac8-4106-b136-6187b16c8dd8",
+                    "position": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 1.25
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 0.5
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                },
+                "624f9f10-a97c-4a46-9c58-d45892b2f757": {
+                    "id": "624f9f10-a97c-4a46-9c58-d45892b2f757",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
+                    "position": {
+                        "x": -2,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 5,
+                        "z": 3
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                },
+                "11ded06f-747e-4f0f-9df6-672e91b29e69": {
+                    "id": "11ded06f-747e-4f0f-9df6-672e91b29e69",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 5,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                },
+                "d3bda0e5-e86d-4533-94a5-c1cf6e0ed4c5": {
+                    "id": "d3bda0e5-e86d-4533-94a5-c1cf6e0ed4c5",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 5,
+                        "y": 5,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgreen"
+                }
+            }
+        },
+        "f93bbf3b-0543-493d-90a2-8e2125f9e6f1": {
+            "id": "f93bbf3b-0543-493d-90a2-8e2125f9e6f1",
+            "type": "Chunk",
+            "name": "TunnelChunk",
+            "parent": null,
+            "player": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "elements": {
+                "6852041a-84e0-4d7e-b5cf-879fd9e8ed8d": {
+                    "id": "6852041a-84e0-4d7e-b5cf-879fd9e8ed8d",
+                    "type": "Group",
+                    "name": "Joints",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": false
+                },
+                "25b9c77c-6497-4dbd-bb19-8720f63d0d57": {
+                    "id": "25b9c77c-6497-4dbd-bb19-8720f63d0d57",
+                    "type": "Joint",
+                    "name": "Start",
+                    "parent": "6852041a-84e0-4d7e-b5cf-879fd9e8ed8d",
+                    "neighbour": "8c945baf-2c52-4b47-92e2-973e89ac69e1",
+                    "position": {
+                        "x": 4.5,
+                        "y": 1.5,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 2
+                    },
+                    "vision": 1,
+                    "hidden": false
+                },
+                "0c6a0d26-9c8d-4b6f-b98a-7455c8a2dfdf": {
+                    "id": "0c6a0d26-9c8d-4b6f-b98a-7455c8a2dfdf",
+                    "type": "Joint",
+                    "name": "Second",
+                    "parent": "6852041a-84e0-4d7e-b5cf-879fd9e8ed8d",
+                    "neighbour": "f0db8f9f-14ff-4562-bd7f-457c2c9f106d",
+                    "position": {
+                        "x": -4.5,
+                        "y": 1,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 1,
+                        "z": 1.5
+                    },
+                    "vision": 1,
+                    "hidden": false
+                },
+                "b8c54199-17c3-4c02-8870-56bfb84e06e1": {
+                    "id": "b8c54199-17c3-4c02-8870-56bfb84e06e1",
+                    "type": "Group",
+                    "name": "Decke",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "0b041f8d-ce6b-44d0-b9a5-68819460881b": {
+                    "id": "0b041f8d-ce6b-44d0-b9a5-68819460881b",
+                    "type": "BarrierBlock",
+                    "name": "",
+                    "parent": "b8c54199-17c3-4c02-8870-56bfb84e06e1",
+                    "position": {
+                        "x": -3,
+                        "y": 3,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "d00c3970-051d-4bcb-b649-fb605acee686": {
+                    "id": "d00c3970-051d-4bcb-b649-fb605acee686",
+                    "type": "BarrierBlock",
+                    "name": "",
+                    "parent": "b8c54199-17c3-4c02-8870-56bfb84e06e1",
+                    "position": {
+                        "x": 3,
+                        "y": 3,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "262ec2ce-2ea6-4fb6-824f-d499ec83f5d9": {
+                    "id": "262ec2ce-2ea6-4fb6-824f-d499ec83f5d9",
+                    "type": "BarrierBlock",
+                    "name": "",
+                    "parent": "b8c54199-17c3-4c02-8870-56bfb84e06e1",
+                    "position": {
+                        "x": 0,
+                        "y": 3,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 8
+                    },
+                    "hidden": false,
+                    "color": "lightblue"
+                },
+                "ae42e14e-a05d-45ab-94db-c34fc80b5e00": {
+                    "id": "ae42e14e-a05d-45ab-94db-c34fc80b5e00",
+                    "type": "Group",
+                    "name": "Boden",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "aa32d481-b548-4af3-8c76-a31484a99825": {
+                    "id": "aa32d481-b548-4af3-8c76-a31484a99825",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": "ae42e14e-a05d-45ab-94db-c34fc80b5e00",
+                    "position": {
+                        "x": -3,
+                        "y": 0,
+                        "z": -2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "grey"
+                },
+                "9ecb2b55-09d1-4387-9e89-8b5deb1e01ac": {
+                    "id": "9ecb2b55-09d1-4387-9e89-8b5deb1e01ac",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": "ae42e14e-a05d-45ab-94db-c34fc80b5e00",
+                    "position": {
+                        "x": 3,
+                        "y": 0,
+                        "z": 2
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 1,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "grey"
+                },
+                "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30": {
+                    "id": "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": "ae42e14e-a05d-45ab-94db-c34fc80b5e00",
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "dimension": {
+                        "x": 4,
+                        "y": 1,
+                        "z": 8
+                    },
+                    "hidden": false,
+                    "color": "grey"
+                },
+                "56203778-51b7-4782-bfb4-647aa151af28": {
+                    "id": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "type": "Group",
+                    "name": "Wände",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "collapsed": true
+                },
+                "48fe6b61-bd19-432a-b702-6010c17ab65b": {
+                    "id": "48fe6b61-bd19-432a-b702-6010c17ab65b",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": -1,
+                        "y": 1.5,
+                        "z": -3.5
+                    },
+                    "dimension": {
+                        "x": 6,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                },
+                "4098f196-865b-4080-8179-33d74be5f1f1": {
+                    "id": "4098f196-865b-4080-8179-33d74be5f1f1",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": -3,
+                        "y": 1.5,
+                        "z": -0.5
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                },
+                "58d448fe-c5a1-42e7-a1df-dba827aab25c": {
+                    "id": "58d448fe-c5a1-42e7-a1df-dba827aab25c",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": 3,
+                        "y": 1.5,
+                        "z": 0.5
+                    },
+                    "dimension": {
+                        "x": 2,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                },
+                "4c1b243d-debf-4478-b736-231e40c166c6": {
+                    "id": "4c1b243d-debf-4478-b736-231e40c166c6",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": 1.5,
+                        "y": 1.5,
+                        "z": -1
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                },
+                "b41ef2b7-ef82-4c03-8229-0335b3b8b46c": {
+                    "id": "b41ef2b7-ef82-4c03-8229-0335b3b8b46c",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": 1,
+                        "y": 1.5,
+                        "z": 3.5
+                    },
+                    "dimension": {
+                        "x": 6,
+                        "y": 2,
+                        "z": 1
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                },
+                "de40b966-5f5e-449c-8b57-a43fe1f18353": {
+                    "id": "de40b966-5f5e-449c-8b57-a43fe1f18353",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": "56203778-51b7-4782-bfb4-647aa151af28",
+                    "position": {
+                        "x": -1.5,
+                        "y": 1.5,
+                        "z": 1
+                    },
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 4
+                    },
+                    "hidden": false,
+                    "color": "lightgrey"
+                }
+            }
+        }
+    }
+}

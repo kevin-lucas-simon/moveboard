@@ -1,0 +1,39 @@
+import React from "react";
+import {EditorChunkGeneralInspector} from "./inspector/EditorChunkGeneralInspector";
+import {EditorChunkElementInspector} from "./inspector/EditorChunkElementInspector";
+
+import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {
+    useEditorDispatcher,
+    useEditorLevel,
+    useEditorActiveStructure,
+    useEditorSelectedChunkElements
+} from "../../reducer/EditorProvider";
+import {StructureTypes} from "../../../data/model/structure/StructureTypes";
+
+export function EditorChunkDetailPanel() {
+    const dispatcher = useEditorDispatcher();
+    const level = useEditorLevel();
+    const chunk = useEditorActiveStructure<ChunkModel>(StructureTypes.Chunk);
+    const selectedElements = useEditorSelectedChunkElements();
+
+    if (!dispatcher || !level || !chunk || !selectedElements) {
+        return <></>;
+    }
+
+    const selectedElement = selectedElements[Object.keys(selectedElements)[0]];
+    if (selectedElement) {
+        return <EditorChunkElementInspector
+            dispatcher={dispatcher}
+            level={level}
+            chunk={chunk}
+            element={selectedElement}
+        />;
+    }
+
+    return <EditorChunkGeneralInspector
+        level={level}
+        chunk={chunk}
+        dispatcher={dispatcher}
+    />;
+}

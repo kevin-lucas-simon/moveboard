@@ -1,28 +1,34 @@
 import {Chunk} from "./Chunk";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {useChunkRenderer} from "./render/useChunkRenderer";
-import React from "react";
-import {LevelModel} from "../../model/LevelModel";
+import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
+import {StructureTypes} from "../../data/model/structure/StructureTypes";
+import {filterStructures} from "../../data/factory/StructureFactory";
+import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
+import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
 
 export type LevelProps = LevelModel & {};
 
 export function Level(props: LevelProps) {
     const [activeChunk, setActiveChunk]
-        = useState<string>(props.start);
+        = useState<ChunkID>(props.start);
+    const allChunks
+        = filterStructures<ChunkModel>(props.structures, StructureTypes.Chunk);
     const renderedChunks
-        = useChunkRenderer(props.chunks, activeChunk);
+        = useChunkRenderer(allChunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)
 
     if (!renderedChunks[activeChunk]) {
-        throw new Error("Active chunk is not rendered");
+        console.error("Active structure with id " + activeChunk + " could not be not rendered.")
+        return <></>
     }
 
     // change active chunk when player leaves a chunk
-    function onPlayerChunkLeave(neighbour: string) {
-        if (props.chunks[neighbour]) {
+    function onPlayerChunkLeave(neighbour: ChunkID|null) {
+        if (neighbour && allChunks[neighbour]?.type === StructureTypes.Chunk) {
             setActiveChunk(neighbour);
         }
     }
@@ -30,7 +36,6 @@ export function Level(props: LevelProps) {
     // reset player position if it goes out of bounds
     function onPlayerOutOfBounds() {
         if (playerRef.current) {
-            console.log("Player out of bounds, respawning in chunk", activeChunk);
             playerRef.current.setTranslation(renderedChunks[activeChunk].playerSpawnPosition, true)
             playerRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
             playerRef.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
@@ -40,7 +45,7 @@ export function Level(props: LevelProps) {
     return (
         <>
             {Object.keys(renderedChunks).map(key => (
-                <Chunk key={key} {...renderedChunks[key]}
+                <Chunk key={key} {...renderedChunks[key as ChunkID]}
                        active={key === activeChunk}
                        onPlayerChunkLeave={onPlayerChunkLeave}
                        onPlayerOutOfBounds={onPlayerOutOfBounds}
@@ -56,6 +61,10 @@ export function Level(props: LevelProps) {
             />
 
             <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
+
+            <DebugElementSelector
+                activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}
+            />
         </>
     );
 }

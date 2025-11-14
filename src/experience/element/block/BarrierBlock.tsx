@@ -1,21 +1,10 @@
-import {BasicBlockDefault, BasicBlockModel} from "./BasicBlock";
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
-import {useDebugSettings} from "../../input/DebugSettingsProvider";
+import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
+import {BarrierBlockDefault, BarrierBlockModel} from "../../../data/model/element/block/BarrierBlockModel";
 
-export type BarrierBlockModel = BasicBlockModel
-export const BarrierBlockDefault: BarrierBlockModel = {
-    ...BasicBlockDefault,
-    type: BarrierBlock.name,
-}
-
-/**
- * Invisible block that acts as barrier for the player
- * @param props
- * @constructor
- */
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
-    const isVisible = useDebugSettings().displayEditorFeatures;
+    const isVisible = useDebugSettings()?.displayEditorFeatures;
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>

@@ -1,5 +1,5 @@
 import {Environment} from "../experience/Environment";
-import {useLevelDownloader} from "../repository/useLevelDownloader";
+import {useLevelDownloader} from "../data/repository/useLevelDownloader";
 import {Level} from "../experience/world/Level";
 import {useState} from "react";
 import {LevelSelection} from "../component/dialog/LevelSelection";

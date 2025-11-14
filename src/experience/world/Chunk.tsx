@@ -1,45 +1,47 @@
 import {Vector3} from "three";
 import React from "react";
-import {elementDefinition, elementFallback} from "../config/elementDefinition";
-import {Joint} from "./Joint";
-import {JointModel} from "../../model/JointModel";
-import {ElementModel} from "../../model/ElementModel";
+import {JointModel} from "../../data/model/element/joint/JointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
+import {Element} from "./Element";
+import {JointElement} from "../element/joint/JointElement";
+import {ElementTypes} from "../../data/model/element/ElementTypes";
+import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
-    onPlayerChunkLeave: (neighbour: string) => void,
+    onPlayerChunkLeave: (neighbour: ChunkID|null) => void,
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
-    const createChunkElement = (model: ElementModel) => {
-        const position = new Vector3()
-            .copy(props.worldPosition)
-            .add(model.position)
-        ;
-        const component = elementDefinition[model.type]?.experienceComponent ?? elementFallback.experienceComponent;
-
-        return React.createElement(component, {...model,
-            key: props.model.name+"_"+model.type+"_"+position.x+"_"+position.y+"_"+position.z,
-            position: position,
-        });
-    }
+    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementTypes.Joint);
+    const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
     return (
         <>
             {/* all displayed elements */}
-            {props.model.elements.map((element) => createChunkElement(element))}
+            {elements.map((element) =>
+                <Element
+                    {...element}
+                    key={element.id}
+                    position={new Vector3().copy(props.worldPosition).add(element.position)}
+                />)}
             {/* player chunk joint colliders */}
-            {props.model.joints.map((joint: JointModel) =>
-                <Joint
+            {joints.map((joint: JointModel) =>
+                <Element
                     {...joint}
-                    key={props.model.name + "->" + joint.neighbour}
-                    inActiveChunk={props.active}
+                    key={joint.id}
                     position={new Vector3().copy(props.worldPosition).add(joint.position)}
-                    chunkPosition={new Vector3().copy(props.worldPosition)}
-                    onChunkLeave={props.onPlayerChunkLeave}
-                />
+                >
+                    <JointElement
+                        {...joint}
+                        key={joint.id}
+                        inActiveChunk={props.active}
+                        position={new Vector3().copy(props.worldPosition).add(joint.position)}
+                        chunkPosition={new Vector3().copy(props.worldPosition)}
+                        onChunkLeave={props.onPlayerChunkLeave}
+                    />
+                </Element>
             )}
             {/* player out of bounds collider */}
             {props.active &&
