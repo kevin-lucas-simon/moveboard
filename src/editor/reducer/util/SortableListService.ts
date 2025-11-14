@@ -74,7 +74,7 @@ export const SortableListService = {
             nestedItems.forEach((item) => {
                 nestedList[item.id] = item;
 
-                const hasNestedItems = originalList.some(i => i.parent === item.id);
+                const hasNestedItems = item.id === parentId || originalList.some(i => i.parent === item.id);
                 if (hasNestedItems) {
                     Object.assign(nestedList, calculateNestedList(item.id));
                 }
