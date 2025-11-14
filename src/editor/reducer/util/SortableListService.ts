@@ -3,7 +3,7 @@ import {UUID} from "../../../data/model/UUID";
 export type SortableListItem = {
     id: UUID;
     type: string;
-    parent: UUID|null;
+    parent: UUID | null;
 }
 
 export const SortableListService = {
@@ -32,53 +32,5 @@ export const SortableListService = {
 
         // something changed
         return true;
-    },
-    calculateMovedGroupOrder: (
-        originalCompleteList: SortableListItem[],
-        originalGroupList: SortableListItem[],
-        updatedGroupList: SortableListItem[],
-        groupParentId: UUID|null,
-        groupTypeCode: string,
-    ): UUID[] => {
-        // check if we have any need to update
-        if (!SortableListService.hasItemsBeenMoved(originalGroupList, updatedGroupList)) {
-            throw new Error('No items have been moved, do you checked this before calling this method?');
-        }
-
-        // update the parent of the moved structures
-        const movedItems = updatedGroupList
-            .filter(item => !originalGroupList
-            .some(e => e.id === item.id)
-        );
-        movedItems.forEach(item => {
-            item.parent = groupParentId;
-        });
-
-        // recursively calculate the new total order of elements (we have to remove the old one)
-        const calculateGroupOrder = (parent: UUID|null): UUID[] => {
-            const sectionItems = groupParentId === parent
-                ? updatedGroupList
-                : originalCompleteList
-                    .filter(item => item.parent === parent)
-                    .filter(item => !movedItems.map(item => item.id).includes(item.id))
-            ;
-
-            const newGroupOrder: UUID[] = [];
-            sectionItems.forEach(item => {
-                newGroupOrder.push(item.id);
-
-                if (item.type === groupTypeCode) {
-                    const childOrder = calculateGroupOrder(item.id);
-                    newGroupOrder.push(...childOrder);
-                }
-            });
-
-            return newGroupOrder;
-        }
-
-        // TODO das ist ganz nett, aber ich brauche die eigentliche updated Liste samt parents und so ^^
-        //  - Also statt UUID[] lieber SortableListItem[] zurückgeben, damit level_patch_structure ersetzt werden kann
-        //  - Checke das beim EditorChunkElementList ab, vergleiche EditorStructureListItem als Referenz, bevor wir es ersetzen
-        return calculateGroupOrder(null);
     },
 }

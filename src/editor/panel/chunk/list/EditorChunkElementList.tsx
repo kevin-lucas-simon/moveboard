@@ -85,17 +85,12 @@ export function EditorChunkElementList(props: EditorChunkElementListProps) {
             return;
         }
 
-        const newTotalOrder = SortableListService.calculateMovedGroupOrder(
-            Object.values(props.elements),
-            groupElements,
-            newGroupElements,
-            props.parent,
-            ElementTypes.Group,
-        );
-
         props.dispatcher({
-            type: 'chunk_reorder_elements',
-            payload: newTotalOrder,
+            type: "chunk_reorder_elements",
+            payload: {
+                parentID: props.parent,
+                childOrderIDs: newGroupElements.map(e => e.id),
+            }
         })
     }
 
