@@ -12,7 +12,6 @@ import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/
 import {EditorLevelSettingsDialog} from "../dialog/levelEditor/EditorLevelSettingsDialog";
 import {EditorExportChangesDialog} from "../dialog/levelEditor/EditorExportChangesDialog";
 import {EditorLeaveToOverviewDialog} from "../dialog/levelEditor/EditorLeaveToOverviewDialog";
-import {EditorLeaveDialog} from "../dialog/levelOverview/EditorLeaveDialog";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -73,14 +72,16 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
                     }
                 </StructureMenuButton>
 
-                <div className={"flex " + (isCollapsed ? "flex-col" : "flex-row")}>
-                    <StructureMenuButton onClick={handleUndo}>
-                        <ArrowUturnLeftIcon className="w-5"/>
-                    </StructureMenuButton>
-                    <StructureMenuButton onClick={handleRedo}>
-                        <ArrowUturnRightIcon className="w-5"/>
-                    </StructureMenuButton>
-                </div>
+                {!props.isSimulation &&
+                    <div className={"flex " + (isCollapsed ? "flex-col" : "flex-row")}>
+                        <StructureMenuButton onClick={handleUndo}>
+                            <ArrowUturnLeftIcon className="w-5"/>
+                        </StructureMenuButton>
+                        <StructureMenuButton onClick={handleRedo}>
+                            <ArrowUturnRightIcon className="w-5"/>
+                        </StructureMenuButton>
+                    </div>
+                }
             </div>
 
             {/* collapse button */}

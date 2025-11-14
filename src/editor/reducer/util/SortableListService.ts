@@ -8,7 +8,7 @@ export type SortableListItem = {
 
 export const SortableListService = {
     /**
-     * SortableJS do fire this event on mount for every group instance, so this function prevent this
+     * SortableJS fires multiple events on mount and drag, this function prevent these unnecessary updates
      * @param originalGroupList
      * @param updatedGroupList
      */
@@ -43,6 +43,7 @@ export const SortableListService = {
         parentId: UUID | null,
         childIds: UUID[],
     ): {[key: UUID]: T} => {
+        // check existence of given elements
         if (parentId && !originalList.find(item => item.id === parentId)) {
             throw new Error(`Parent ID ${parentId} not found`);
         }
@@ -52,6 +53,7 @@ export const SortableListService = {
             }
         })
 
+        // rebuild structure with new parent order
         const calculateNestedList = (currentParentId: UUID | null): {[key: UUID]: T} => {
             let nestedItems = originalList
                 .filter(item => item.parent === currentParentId)
@@ -83,8 +85,8 @@ export const SortableListService = {
             return nestedList;
         }
 
+        // calculate from root and recheck length
         const newItemOrder = calculateNestedList(null);
-
         if (Object.keys(newItemOrder).length !== originalList.length) {
             throw new Error("New order length does not match the old one")
         }
