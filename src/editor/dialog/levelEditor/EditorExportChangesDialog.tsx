@@ -19,7 +19,7 @@ export function EditorExportChangesDialog(props: EditorDialogProps) {
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = "level.json";
+        a.download = level?.id + ".json";
 
         a.click();
 
@@ -40,7 +40,6 @@ export function EditorExportChangesDialog(props: EditorDialogProps) {
                 value={JSON.stringify(level)}
                 readOnly
             />
-
         </BasicDialog>
     );
 }
