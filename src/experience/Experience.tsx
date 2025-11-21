@@ -1,5 +1,5 @@
 import {LevelModel} from "../data/model/world/LevelModel";
-import {Environment} from "./Environment";
+import {Environment} from "./world/Environment";
 import {Level} from "./world/Level";
 import {ExperienceProvider} from "./reducer/ExperienceProvider";
 import {ChunkID} from "../data/model/structure/spacial/ChunkModel";

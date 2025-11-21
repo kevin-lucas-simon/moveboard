@@ -1,8 +1,8 @@
 import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
-import {useDebugSettings} from "./debug/settings/DebugSettingsProvider";
+import {useDebugSettings} from "../debug/settings/DebugSettingsProvider";
 import React from "react";
-import {EnvironmentPhysics} from "./world/physic/EnvironmentPhysics";
+import {EnvironmentPhysics} from "./physic/EnvironmentPhysics";
 import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
 
 export type EnvironmentProps = {
