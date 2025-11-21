@@ -9,12 +9,15 @@ import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructures} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
+import {useExperienceState, useExperienceDispatcher} from "../reducer/ExperienceProvider";
 
 export type LevelProps = LevelModel & {};
 
 export function Level(props: LevelProps) {
-    const [activeChunk, setActiveChunk]
-        = useState<ChunkID>(props.start);
+    const state = useExperienceState();
+    const dispatcher = useExperienceDispatcher();
+
+    const activeChunk = state.activeChunk
     const allChunks
         = filterStructures<ChunkModel>(props.structures, StructureTypes.Chunk);
     const renderedChunks
@@ -29,7 +32,10 @@ export function Level(props: LevelProps) {
     // change active chunk when player leaves a chunk
     function onPlayerChunkLeave(neighbour: ChunkID|null) {
         if (neighbour && allChunks[neighbour]?.type === StructureTypes.Chunk) {
-            setActiveChunk(neighbour);
+            dispatcher({
+                type: "experience_change_chunk",
+                payload: neighbour,
+            });
         }
     }
 

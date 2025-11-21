@@ -1,8 +1,7 @@
-import {Environment} from "../experience/Environment";
 import {useLevelDownloader} from "../data/repository/useLevelDownloader";
-import {Level} from "../experience/world/Level";
 import {useState} from "react";
 import {LevelSelection} from "../component/dialog/LevelSelection";
+import {Experience} from "../experience/Experience";
 
 /**
  * Game page that initializes the game
@@ -14,15 +13,20 @@ export function GamePage() {
         <>
             <LevelSelection isStarted={!!selectedLevel} onStart={(level) => setSelectedLevel(level)} />
 
-            <Environment isGranted={!!selectedLevel}>
-                {selectedLevel && <GameLevel levelName={selectedLevel} />}
-            </Environment>
+            {selectedLevel &&
+                <GameLevel isGranted={!!selectedLevel} levelName={selectedLevel} />
+            }
         </>
     );
 }
 
-function GameLevel(props: {levelName: string}) {
+function GameLevel(props: {
+    isGranted: boolean,
+    levelName: string
+}) {
     const downloadedLevel = useLevelDownloader(props.levelName);
 
-    return downloadedLevel ? <Level {...downloadedLevel} /> : <></>;
+    return (
+        <Experience isGranted={props.isGranted} level={downloadedLevel} />
+    );
 }

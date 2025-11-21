@@ -1,9 +1,8 @@
-import {Environment} from "../../../experience/Environment";
-import {Level} from "../../../experience/world/Level";
 import React from "react";
 import {useEditorActiveStructure, useEditorContext, useEditorLevel} from "../../reducer/EditorProvider";
 import {DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
+import {Experience} from "../../../experience/Experience";
 
 export function EditorSimulationScenePanel() {
     const level = useEditorLevel();
@@ -17,9 +16,12 @@ export function EditorSimulationScenePanel() {
 
     return (
         <DebugSettingsProvider debugSettings={debugSettings}>
-            <Environment key={structure.id} isGranted={false}>
-                <Level {...level} start={structure.id}/>
-            </Environment>
+            <Experience
+                key={structure.id}
+                isGranted={false}
+                level={level}
+                start={structure.id}
+            />
         </DebugSettingsProvider>
     );
 }
