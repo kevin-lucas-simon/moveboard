@@ -17,8 +17,8 @@ export function Experience(props: ExperienceProps) {
             <KeyboardKeysProvider>
                 <Environment>
                     {props.level &&
-                        <ExperienceProvider level={props.level}>
-                            <Level {...props.level} start={props.start ?? props.level.start}/>
+                        <ExperienceProvider level={props.level} startChunkID={props.start}>
+                            <Level {...props.level}/>
                         </ExperienceProvider>
                     }
                 </Environment>

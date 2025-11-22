@@ -1,6 +1,7 @@
 import {LevelModel} from "../../data/model/world/LevelModel";
 import React, {createContext, Dispatch, useContext, useReducer} from "react";
 import {experienceReducer, ExperienceReducerActions, ExperienceReducerState} from "./experienceReducer";
+import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 
 const ExperienceContext = createContext<ExperienceReducerState|null>(null);
 const ExperienceDispatcher = createContext<React.Dispatch<ExperienceReducerActions>|null>(null);
@@ -8,11 +9,12 @@ const ExperienceDispatcher = createContext<React.Dispatch<ExperienceReducerActio
 export type ExperienceProviderProps = {
     level: LevelModel,
     children: React.ReactNode,
+    startChunkID?: ChunkID,
 }
 export function ExperienceProvider(props: ExperienceProviderProps) {
     const [state, dispatcher] = useReducer(experienceReducer, {
         level: props.level,
-        activeChunkID: props.level.start,
+        activeChunkID: props.startChunkID ?? props.level.start,
     });
 
     return (
