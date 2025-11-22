@@ -12,7 +12,7 @@ export type ExperienceProviderProps = {
 export function ExperienceProvider(props: ExperienceProviderProps) {
     const [state, dispatcher] = useReducer(experienceReducer, {
         level: props.level,
-        activeChunk: props.level.start,
+        activeChunkID: props.level.start,
     });
 
     return (

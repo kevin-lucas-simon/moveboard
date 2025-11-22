@@ -1,12 +1,12 @@
 import {Chunk} from "./Chunk";
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {useChunkRenderer} from "./render/useChunkRenderer";
 import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkCamera} from "./camera/ChunkCamera";
 import {Player} from "../entity/Player";
 import {RapierRigidBody} from "@react-three/rapier";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
-import {filterStructures} from "../../data/factory/StructureFactory";
+import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
 import {useExperienceState, useExperienceDispatcher} from "../reducer/ExperienceProvider";
@@ -17,9 +17,9 @@ export function Level(props: LevelProps) {
     const state = useExperienceState();
     const dispatcher = useExperienceDispatcher();
 
-    const activeChunk = state.activeChunk
+    const activeChunk = state.activeChunkID
     const allChunks
-        = filterStructures<ChunkModel>(props.structures, StructureTypes.Chunk);
+        = filterStructuresByType<ChunkModel>(props.structures, StructureTypes.Chunk);
     const renderedChunks
         = useChunkRenderer(allChunks, activeChunk);
     const playerRef = useRef<RapierRigidBody>(null)

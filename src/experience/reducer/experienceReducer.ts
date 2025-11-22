@@ -3,7 +3,7 @@ import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
 export type ExperienceReducerState = {
-    activeChunk: ChunkID,
+    activeChunkID: ChunkID,
     level: LevelModel,
 }
 
@@ -25,7 +25,7 @@ export function experienceReducer(
 
             return {
                 ...state,
-                activeChunk: action.payload,
+                activeChunkID: action.payload,
             };
         }
     }
