@@ -82,7 +82,7 @@
                         "z": 9
                     },
                     "hidden": false,
-                    "color": "blue"
+                    "color": "dark"
                 },
                 "af61d614-df3a-4129-826c-fe0a44e22c8e": {
                     "id": "af61d614-df3a-4129-826c-fe0a44e22c8e",
@@ -126,7 +126,7 @@
                         "z": 2.5
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "11cd767f-39e1-4c11-be78-833108e199a4": {
                     "id": "11cd767f-39e1-4c11-be78-833108e199a4",
@@ -144,7 +144,7 @@
                         "z": 2
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "de944fe1-25ee-41f9-b7af-dce4142cfe17": {
                     "id": "de944fe1-25ee-41f9-b7af-dce4142cfe17",
@@ -162,7 +162,7 @@
                         "z": 2.5
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "8f088b71-df90-45b7-b3d5-b4662147f8f9": {
                     "id": "8f088b71-df90-45b7-b3d5-b4662147f8f9",
@@ -180,7 +180,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "d7cbdd3e-3b6f-44fa-b3fc-f1a6ecb10891": {
                     "id": "d7cbdd3e-3b6f-44fa-b3fc-f1a6ecb10891",
@@ -198,7 +198,7 @@
                         "z": 7
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "1e64d87b-b5c0-4638-a6ad-122c09b7a0b4": {
                     "id": "1e64d87b-b5c0-4638-a6ad-122c09b7a0b4",
@@ -216,7 +216,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "13f3e70d-5f3b-44f4-9faa-c2e90589b29e": {
                     "id": "13f3e70d-5f3b-44f4-9faa-c2e90589b29e",
@@ -247,7 +247,7 @@
                         "z": 9
                     },
                     "hidden": false,
-                    "color": "blue"
+                    "color": "dark"
                 },
                 "4d1f11fc-3a34-4d56-b92c-e78d40cc4cd0": {
                     "id": "4d1f11fc-3a34-4d56-b92c-e78d40cc4cd0",
@@ -265,7 +265,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "f2b02f12-ffb9-4b94-8a83-dcc0c784ac57": {
                     "id": "f2b02f12-ffb9-4b94-8a83-dcc0c784ac57",
@@ -423,7 +423,7 @@
                         "z": 5
                     },
                     "hidden": false,
-                    "color": "green"
+                    "color": "dark"
                 },
                 "f875a516-f65d-4dc1-aec9-4f0064b051f3": {
                     "id": "f875a516-f65d-4dc1-aec9-4f0064b051f3",
@@ -467,7 +467,7 @@
                         "z": 3
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 },
                 "c281bf77-526f-4d00-bf4f-f5970823b913": {
                     "id": "c281bf77-526f-4d00-bf4f-f5970823b913",
@@ -485,7 +485,7 @@
                         "z": 0.5
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 },
                 "c9406852-cdfb-44e2-a13c-61a0011c7042": {
                     "id": "c9406852-cdfb-44e2-a13c-61a0011c7042",
@@ -503,7 +503,7 @@
                         "z": 0.5
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 },
                 "624f9f10-a97c-4a46-9c58-d45892b2f757": {
                     "id": "624f9f10-a97c-4a46-9c58-d45892b2f757",
@@ -521,7 +521,7 @@
                         "z": 3
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 },
                 "11ded06f-747e-4f0f-9df6-672e91b29e69": {
                     "id": "11ded06f-747e-4f0f-9df6-672e91b29e69",
@@ -539,7 +539,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 },
                 "d3bda0e5-e86d-4533-94a5-c1cf6e0ed4c5": {
                     "id": "d3bda0e5-e86d-4533-94a5-c1cf6e0ed4c5",
@@ -557,7 +557,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgreen"
+                    "color": "light"
                 }
             }
         },
@@ -652,7 +652,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "d00c3970-051d-4bcb-b649-fb605acee686": {
                     "id": "d00c3970-051d-4bcb-b649-fb605acee686",
@@ -670,7 +670,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "262ec2ce-2ea6-4fb6-824f-d499ec83f5d9": {
                     "id": "262ec2ce-2ea6-4fb6-824f-d499ec83f5d9",
@@ -688,7 +688,7 @@
                         "z": 8
                     },
                     "hidden": false,
-                    "color": "lightblue"
+                    "color": "light"
                 },
                 "ae42e14e-a05d-45ab-94db-c34fc80b5e00": {
                     "id": "ae42e14e-a05d-45ab-94db-c34fc80b5e00",
@@ -719,7 +719,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "grey"
+                    "color": "dark"
                 },
                 "9ecb2b55-09d1-4387-9e89-8b5deb1e01ac": {
                     "id": "9ecb2b55-09d1-4387-9e89-8b5deb1e01ac",
@@ -737,7 +737,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "grey"
+                    "color": "dark"
                 },
                 "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30": {
                     "id": "2499b0f7-d019-4d0a-b7de-f0ef7e7d2b30",
@@ -755,7 +755,7 @@
                         "z": 8
                     },
                     "hidden": false,
-                    "color": "grey"
+                    "color": "dark"
                 },
                 "56203778-51b7-4782-bfb4-647aa151af28": {
                     "id": "56203778-51b7-4782-bfb4-647aa151af28",
@@ -786,7 +786,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 },
                 "4098f196-865b-4080-8179-33d74be5f1f1": {
                     "id": "4098f196-865b-4080-8179-33d74be5f1f1",
@@ -804,7 +804,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 },
                 "58d448fe-c5a1-42e7-a1df-dba827aab25c": {
                     "id": "58d448fe-c5a1-42e7-a1df-dba827aab25c",
@@ -822,7 +822,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 },
                 "4c1b243d-debf-4478-b736-231e40c166c6": {
                     "id": "4c1b243d-debf-4478-b736-231e40c166c6",
@@ -840,7 +840,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 },
                 "b41ef2b7-ef82-4c03-8229-0335b3b8b46c": {
                     "id": "b41ef2b7-ef82-4c03-8229-0335b3b8b46c",
@@ -858,7 +858,7 @@
                         "z": 1
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 },
                 "de40b966-5f5e-449c-8b57-a43fe1f18353": {
                     "id": "de40b966-5f5e-449c-8b57-a43fe1f18353",
@@ -876,7 +876,7 @@
                         "z": 4
                     },
                     "hidden": false,
-                    "color": "lightgrey"
+                    "color": "light"
                 }
             }
         }
