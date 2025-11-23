@@ -6,6 +6,7 @@ import {SectionModel} from "../../../../data/model/structure/system/SectionModel
 import React from "react";
 import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
 import {UUID} from "../../../../data/model/UUID";
+import {TrashIcon} from "@heroicons/react/24/outline";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
@@ -14,6 +15,7 @@ export type EditorStructureItemProps = {
     onCollapseToggle: () => void;
     onRename: (id: UUID, name: string) => void;
     onSelect: () => void;
+    onRemove: () => void;
     children?: React.ReactNode;
 }
 
@@ -26,6 +28,11 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
 
     const handleRename = (name: string) => {
         props.onRename(props.structure.id, name);
+    }
+
+    const handleRemove = (e:  React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        props.onRemove();
     }
 
     return (
@@ -58,6 +65,9 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                         }
                     })()}
                 </div>
+                <button onClick={handleRemove} className="p-2 rounded-full hidden group-hover:block hover:bg-gray-500/10">
+                    <TrashIcon className="w-4 text-black"/>
+                </button>
             </div>
             {props.children && props.structure.type === StructureTypes.Section && !(props.structure as SectionModel).collapsed && (
                 <div className="ml-6">

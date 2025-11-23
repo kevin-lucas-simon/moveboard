@@ -7,7 +7,7 @@ import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
-import {filterElements} from "../../data/factory/ElementFactory";
+import {filterElementsByType} from "../../data/factory/ElementFactory";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 
 export type ElementProps = ElementModel & {
@@ -35,7 +35,7 @@ export function Element(props: ElementProps) {
         // jump to neighbour chunk if the element is not in the active chunk
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;
         if (!isInActiveChunk) {
-            const joints = filterElements<JointModel>(activeChunk.elements, ElementTypes.Joint);
+            const joints = filterElementsByType<JointModel>(activeChunk.elements, ElementTypes.Joint);
 
             Object.values(joints).forEach(joint => {
                 if (!joint.neighbour) {

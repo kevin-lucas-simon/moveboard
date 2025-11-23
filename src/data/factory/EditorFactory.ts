@@ -17,7 +17,6 @@ export function createEditorReducerState(
         simulationSettings: DebugSettingsDefault,
         previousState: [],
         nextState: [],
-        errors: [],
         updatedAt: Date.now(),
     }
 }

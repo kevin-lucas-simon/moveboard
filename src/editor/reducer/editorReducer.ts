@@ -3,12 +3,13 @@ import {SimulationReducerActions, SimulationReducerState, simulationReducer} fro
 import {historyReducer, HistoryReducerActions, HistoryReducerState} from "./partial/historyReducer";
 import {levelReducer, LevelReducerActions, LevelReducerState} from "./partial/levelReducer";
 import {UUID} from "../../data/model/UUID";
+import toast from "react-hot-toast/headless";
 
 export type EditorID = UUID;
 
 export type EditorReducerState =
     {
-        id: EditorID, // TODO own file
+        id: EditorID,
         updatedAt: number,
     }
     & SelectorReducerState
@@ -35,9 +36,14 @@ export function editorReducer(
 ): EditorReducerState {
     let newState = state;
 
-    reducerOrder.forEach(reducer  => {
-        newState = {...newState, ...reducer(newState, action)};
-    });
+    try {
+        reducerOrder.forEach(reducer  => {
+            newState = {...newState, ...reducer(newState, action)};
+        });
+    } catch (error) {
+        toast.error(error instanceof Error ? error.message : 'Unknown editor error.');
+        return state;
+    }
 
     return newState;
 }

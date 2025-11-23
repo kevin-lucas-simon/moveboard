@@ -34,6 +34,13 @@ export function EditorStructureList(props: EditorStructureListProps) {
         })
     }
 
+    const removeStructure = (id: StructureID) => {
+        props.dispatcher({
+            type: 'level_remove_structure',
+            payload: id,
+        })
+    }
+
     const reorderStructures = (newSectionStructures: StructureModel[]) => {
         if (!SortableListService.hasItemsBeenMoved(sectionStructures, newSectionStructures)) {
             return;
@@ -77,6 +84,7 @@ export function EditorStructureList(props: EditorStructureListProps) {
                     isSelected={props.selected === structure.id}
                     onSelect={() => selectStructure(structure.id)}
                     onCollapseToggle={() => toggleCollapse(structure)}
+                    onRemove={() => removeStructure(structure.id)}
                     onRename={renameStructure}
                 >
                     {structure.type === StructureTypes.Section && (

@@ -3,6 +3,7 @@ import {EditorCollapsibleActions} from "./layout/EditorCollapsibleActions";
 import {EditorPanelCanvas} from "./panel/EditorPanelCanvas";
 
 import {EditorPanelTypes} from "./panel/EditorPanelTypes";
+import {EditorMessageToaster} from "./layout/EditorMessageToaster";
 
 type EditorPanelOverride = typeof EditorPanelTypes.Simulation | undefined;
 
@@ -11,8 +12,7 @@ export function LevelEditor() {
 
     return (
         <div className="w-full h-full flex">
-            {/* TODO ich muss eine andere Herangehensweise hierfür haben seit dem reducer refactoring */}
-            {/*<EditorMessageToaster errors={editor.errors}/>*/}
+            <EditorMessageToaster />
 
             <EditorCollapsibleActions
                 isSimulation={overridePanel === EditorPanelTypes.Simulation}

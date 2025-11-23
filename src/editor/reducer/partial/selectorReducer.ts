@@ -1,4 +1,3 @@
-import {ValidationError} from "../../../data/validator/Validator";
 import {ElementID} from "../../../data/model/element/ElementModel";
 import {StructureID} from "../../../data/model/structure/StructureModel";
 import {EditorReducerActions, EditorReducerState} from "../editorReducer";
@@ -6,7 +5,6 @@ import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 export type SelectorReducerState = {
     selectedStructure: StructureID,
     selectedElements: ElementID[],
-    errors: ValidationError[],
 }
 
 export type SelectorReducerActions = {

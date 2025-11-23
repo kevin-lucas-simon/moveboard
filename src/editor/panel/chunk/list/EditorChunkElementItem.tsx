@@ -89,7 +89,7 @@ export function EditorChunkElementItem(props: EditorChunkElementItemProps) {
                         }
                     })()}
                 </div>
-                <button onClick={handleRemove} className="p-2 rounded-full invisible group-hover:visible hover:bg-gray-500/10">
+                <button onClick={handleRemove} className="p-2 rounded-full hidden group-hover:block hover:bg-gray-500/10">
                     <TrashIcon className="w-4 text-black"/>
                 </button>
             </div>
