@@ -55,7 +55,7 @@ export function EditorChunkElementItem(props: EditorChunkElementItemProps) {
             <div
                 onClick={handleSelect}
                 className={
-                    "flex group hover:bg-gray-500/10 px-2 py-0.5 items-center "
+                    "h-9 flex group hover:bg-gray-500/10 px-2 items-center "
                     + (props.element.hidden ? "text-gray-500/50 " : "")
                 }
             >

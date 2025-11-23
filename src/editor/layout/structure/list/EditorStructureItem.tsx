@@ -6,7 +6,7 @@ import {SectionModel} from "../../../../data/model/structure/system/SectionModel
 import React from "react";
 import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
 import {UUID} from "../../../../data/model/UUID";
-import {TrashIcon} from "@heroicons/react/24/outline";
+import {StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 
 export type EditorStructureItemProps = {
     structure: StructureModel;
@@ -39,7 +39,7 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
         <li className={props.isSelected ? "bg-gray-500/10 "  : ""}>
             <div
                 onClick={props.onSelect}
-                className="flex group hover:bg-gray-500/10 px-4 py-1.5 items-center"
+                className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center"
             >
                 <div className="grow flex gap-2">
                     {(() => {
@@ -54,7 +54,6 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                             case StructureTypes.Chunk:
                                 return <EditorStructureChunkSlug
                                     structure={props.structure}
-                                    isStart={props.isStart}
                                     onRename={handleRename}
                                 />;
                             default:
@@ -65,9 +64,14 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                         }
                     })()}
                 </div>
-                <button onClick={handleRemove} className="p-2 rounded-full hidden group-hover:block hover:bg-gray-500/10">
-                    <TrashIcon className="w-4 text-black"/>
-                </button>
+                {props.isStart
+                    ? <StarIcon className="w-8 p-2" />
+                    : (
+                        <button onClick={handleRemove} className="p-2 rounded-full hidden group-hover:block hover:bg-gray-500/10">
+                            <TrashIcon className="w-4 text-black"/>
+                        </button>
+                    )
+                }
             </div>
             {props.children && props.structure.type === StructureTypes.Section && !(props.structure as SectionModel).collapsed && (
                 <div className="ml-6">
