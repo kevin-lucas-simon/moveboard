@@ -66,7 +66,7 @@ export function Level(props: LevelProps) {
                 marginInBlockSize={1}
             />
 
-            <Player playerRef={playerRef} spawnPosition={renderedChunks[props.start]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
+            <Player playerRef={playerRef} spawnPosition={renderedChunks[state.activeChunkID]?.playerSpawnPosition ?? renderedChunks[activeChunk].playerSpawnPosition}/>
 
             <DebugElementSelector
                 activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}
