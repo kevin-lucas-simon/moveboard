@@ -4,7 +4,6 @@ import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {EditorStructureSectionSlug} from "../slug/EditorStructureSectionSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
 import React from "react";
-import {EditorStructureChunkSlug} from "../slug/EditorStructureChunkSlug";
 import {UUID} from "../../../../data/model/UUID";
 import {StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 
@@ -49,11 +48,6 @@ export function EditorStructureItem(props: EditorStructureItemProps) {
                                     structure={props.structure as SectionModel}
                                     onCollapse={handleCollapseToggle}
                                     onExpand={handleCollapseToggle}
-                                    onRename={handleRename}
-                                />;
-                            case StructureTypes.Chunk:
-                                return <EditorStructureChunkSlug
-                                    structure={props.structure}
                                     onRename={handleRename}
                                 />;
                             default:
