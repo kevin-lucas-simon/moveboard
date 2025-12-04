@@ -1,0 +1,56 @@
+import {ReactSortable} from "react-sortablejs";
+import {UUID} from "../../data/model/UUID";
+import {SortableListItem, SortableListService} from "../reducer/util/SortableListService";
+import React from "react";
+
+export type BaseListProps<T extends SortableListItem> = {
+    items: T[];
+    itemContent: (item: T) => React.ReactNode;
+    isItemAGroup: (item: T) => boolean;
+    isParentOfItem: (child: T, parentId: UUID|null) => boolean;
+    isItemSelected?: (item: T) => boolean;
+    parent?: UUID|null;
+    onReorder: (itemIds: UUID[], parentId: UUID|null) => void;
+}
+
+export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
+    const parentItems = props.items.filter(item => props.isParentOfItem(item, props.parent ?? null));
+
+    const reorderParentItems = (newItems: T[]) => {
+        if (!SortableListService.hasItemsBeenMoved(parentItems, newItems)) {
+            return;
+        }
+        props.onReorder(
+            newItems.map(item => item.id),
+            props.parent ?? null,
+        );
+    }
+
+    return (
+        <ReactSortable
+            list={structuredClone(parentItems)}
+            setList={reorderParentItems}
+            tag="ul"
+            group={BaseList.name}
+        >
+            {parentItems.map(item => (
+                <li key={item.id} className={props.isItemSelected && props.isItemSelected(item) ? "bg-gray-500/10 "  : ""}>
+                    <div className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center">
+                        <div className="grow flex gap-2">
+                            {props.itemContent(item)}
+                        </div>
+                    </div>
+
+                    {props.isItemAGroup(item) && (
+                        <div className="ml-6">
+                            <BaseList
+                                {...props}
+                                parent={item.id as UUID}
+                            />
+                        </div>
+                    )}
+                </li>
+            ))}
+        </ReactSortable>
+    );
+}
