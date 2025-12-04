@@ -1,5 +1,5 @@
 import {StructureModel} from "../../../../data/model/structure/StructureModel";
-import {BaseSlug} from "../../../component/BaseSlug";
+import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {MinusIcon, SwatchIcon} from "@heroicons/react/24/outline";
 
@@ -21,7 +21,7 @@ export function EditorStructureBaseSlug(props: EditorStructureBaseSlugProps) {
                         return <></>;
                 }
             })()}
-            <BaseSlug
+            <BaseInputSlug
                 value={props.structure.name}
                 placeholder={props.structure.type}
                 onRename={props.onRename}

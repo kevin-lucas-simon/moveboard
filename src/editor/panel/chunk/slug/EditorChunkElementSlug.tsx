@@ -1,6 +1,6 @@
-import React, {useRef} from "react";
+import React from "react";
 import {ElementModel} from "../../../../data/model/element/ElementModel";
-import {BaseSlug} from "../../../component/BaseSlug";
+import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 
 export type EditorChunkElementSlugProps = {
     element: ElementModel;
@@ -9,7 +9,7 @@ export type EditorChunkElementSlugProps = {
 
 export function EditorChunkElementSlug(props: EditorChunkElementSlugProps) {
     return (
-        <BaseSlug
+        <BaseInputSlug
             value={props.element.name}
             placeholder={props.element.type}
             onRename={props.onRename}

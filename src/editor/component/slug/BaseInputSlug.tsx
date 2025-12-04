@@ -6,7 +6,7 @@ export type BaseSlugProps = {
     onRename: (name: string) => void;
 }
 
-export function BaseSlug(props: BaseSlugProps) {
+export function BaseInputSlug(props: BaseSlugProps) {
     const [isEditing, setIsEditing] = React.useState(false);
     const [inputValue, setInputValue] = React.useState(props.value || "");
     const inputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +42,7 @@ export function BaseSlug(props: BaseSlugProps) {
                     type="text"
                     value={inputValue}
                     placeholder={props.placeholder}
-                    className="w-full bg-transparent outline-none"
+                    className="w-full h-full bg-transparent outline-none"
                     autoFocus
                 />
             </form>

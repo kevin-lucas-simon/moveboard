@@ -6,10 +6,11 @@ import React from "react";
 export type BaseListProps<T extends SortableListItem> = {
     items: T[];
     itemContent: (item: T) => React.ReactNode;
-    isItemAGroup: (item: T) => boolean;
     isParentOfItem: (child: T, parentId: UUID|null) => boolean;
+    isItemAnExpandedGroup: (item: T) => boolean;
     isItemSelected?: (item: T) => boolean;
     parent?: UUID|null;
+    onSelect?: (id: UUID) => void;
     onReorder: (itemIds: UUID[], parentId: UUID|null) => void;
 }
 
@@ -35,13 +36,16 @@ export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
         >
             {parentItems.map(item => (
                 <li key={item.id} className={props.isItemSelected && props.isItemSelected(item) ? "bg-gray-500/10 "  : ""}>
-                    <div className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center">
+                    <div
+                        onClick={() => props.onSelect?.(item.id)}
+                        className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center"
+                    >
                         <div className="grow flex gap-2">
                             {props.itemContent(item)}
                         </div>
                     </div>
 
-                    {props.isItemAGroup(item) && (
+                    {props.isItemAnExpandedGroup(item) && (
                         <div className="ml-6">
                             <BaseList
                                 {...props}
