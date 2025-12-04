@@ -12,7 +12,6 @@ import {useEditorDispatcher, useEditorContext, useEditorLevel} from "../reducer/
 import {EditorLevelSettingsDialog} from "../dialog/levelEditor/EditorLevelSettingsDialog";
 import {EditorExportChangesDialog} from "../dialog/levelEditor/EditorExportChangesDialog";
 import {EditorLeaveToOverviewDialog} from "../dialog/levelEditor/EditorLeaveToOverviewDialog";
-import {StructureList} from "./structure/list/StructureList";
 
 export type EditorCollapsibleActionsProps = {
     isSimulation: boolean,
@@ -29,8 +28,6 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
     if (!dispatcher || !editor || !level) {
         return <></>;
     }
-
-    const selectedStructure = editor?.selectedStructure
 
     const handleCollapse = () => {
         setCollapsed(!isCollapsed);
@@ -57,12 +54,7 @@ export function EditorCollapsibleActions(props: EditorCollapsibleActionsProps) {
 
             {/* content */}
             <div className={"w-full grow static " + (isCollapsed ? "invisible" : "block")}>
-                <StructureList />
-                <EditorStructureOverview
-                    level={level}
-                    selectedStructure={selectedStructure}
-                    levelDispatcher={dispatcher}
-                />
+                <EditorStructureOverview />
             </div>
 
             {/* actions */}

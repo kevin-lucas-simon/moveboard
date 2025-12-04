@@ -1,66 +1,74 @@
-import {EditorStructureItem} from "./EditorStructureItem";
-import {ReactSortable} from "react-sortablejs";
-import {StructureID, StructureModel} from "../../../../data/model/structure/StructureModel";
-import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {BaseList} from "../../../component/BaseList";
+import {useEditorContext, useEditorDispatcher} from "../../../reducer/EditorProvider";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {UUID} from "../../../../data/model/UUID";
+import {StructureID, StructureModel} from "../../../../data/model/structure/StructureModel";
+import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
+import {BaseFolderSlug} from "../../../component/slug/BaseFolderSlug";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
-import {SortableListService} from "../../../reducer/util/SortableListService";
+import {MinusIcon, QuestionMarkCircleIcon, StarIcon, SwatchIcon, TrashIcon} from "@heroicons/react/24/outline";
+import React from "react";
+import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
 
-export type EditorStructureListProps = {
-    structures: {[key: StructureID]: StructureModel},
-    parent: StructureID | null,
-    selected: StructureID | null,
-    start: StructureID | null,
-    dispatcher: React.Dispatch<EditorReducerActions>,
-}
+export function EditorStructureList() {
+    const editor = useEditorContext()
+    const dispatcher = useEditorDispatcher()
 
-export function EditorStructureList(props: EditorStructureListProps) {
-    const sectionStructures = Object.values(props.structures).filter(structure => structure.parent === props.parent);
+    const structureItem = React.useCallback(
+        (structure: StructureModel) => <StructureListItem {...structure}/>,
+        []
+    );
+
+    if (!editor || !dispatcher) {
+        return <></>;
+    }
+
+    const structures = Object.values(editor.level.structures);
+    const selectedStructureId = editor.selectedStructure;
+
+    const reorderStructures = (structureIds: UUID[], parentIds: UUID|null) => {
+        dispatcher({
+            type: 'level_reorder_structures',
+            payload: {
+                parentId: parentIds,
+                childIds: structureIds,
+            },
+        })
+    }
 
     const selectStructure = (id: StructureID) => {
-        props.dispatcher({
+        dispatcher({
             type: 'editor_select_structure',
             payload: id,
         });
     }
 
-    const renameStructure = (id: StructureID, name: string) => {
-        props.dispatcher({
-            type: 'level_patch_structure',
-            payload: {
-                id: id,
-                name: name,
-            }
-        })
+    return (
+        <BaseList
+            items={structures}
+            itemContent={structureItem}
+            isItemAnExpandedGroup={structure => structure.type === StructureTypes.Section && !(structure as SectionModel).collapsed}
+            isItemSelected={structure => structure.id === selectedStructureId}
+            isParentOfItem={(child, parentId) => child.parent === parentId}
+            onReorder={reorderStructures}
+            onSelect={selectStructure}
+        />
+    );
+}
+
+function StructureListItem(structure: StructureModel) {
+    const editor = useEditorContext()
+    const dispatcher = useEditorDispatcher()
+    if (!editor || !dispatcher) {
+        return <></>;
     }
 
-    const removeStructure = (id: StructureID) => {
-        props.dispatcher({
-            type: 'level_remove_structure',
-            payload: id,
-        })
-    }
-
-    const reorderStructures = (newSectionStructures: StructureModel[]) => {
-        if (!SortableListService.hasItemsBeenMoved(sectionStructures, newSectionStructures)) {
-            return;
-        }
-
-        props.dispatcher({
-            type: 'level_reorder_structures',
-            payload: {
-                parentId: props.parent,
-                childIds: newSectionStructures.map(structure => structure.id),
-            },
-        })
-    }
-
-    const toggleCollapse = (structure: StructureModel) => {
+    const collapseSection = () => {
         if (structure.type !== StructureTypes.Section) {
             return;
         }
 
-        props.dispatcher({
+        dispatcher({
             type: 'level_patch_structure',
             payload: {
                 id: structure.id,
@@ -69,35 +77,52 @@ export function EditorStructureList(props: EditorStructureListProps) {
         })
     }
 
-    return (
-        <ReactSortable
-            list={structuredClone(sectionStructures)}
-            setList={reorderStructures}
-            tag="ul"
-            group={EditorStructureList.name}
-        >
-            {sectionStructures.map((structure) => (
-                <EditorStructureItem
-                    key={structure.id}
-                    structure={structure}
-                    isStart={structure.id === props.start}
-                    isSelected={props.selected === structure.id}
-                    onSelect={() => selectStructure(structure.id)}
-                    onCollapseToggle={() => toggleCollapse(structure)}
-                    onRemove={() => removeStructure(structure.id)}
-                    onRename={renameStructure}
-                >
-                    {structure.type === StructureTypes.Section && (
-                        <EditorStructureList
-                            structures={props.structures}
-                            parent={structure.id}
-                            start={props.start}
-                            selected={props.selected}
-                            dispatcher={props.dispatcher}
-                        />
-                    )}
-                </EditorStructureItem>
-            ))}
-        </ReactSortable>
-    );
+    const renameStructure = (name: string) => {
+        dispatcher({
+            type: 'level_patch_structure',
+            payload: {
+                id: structure.id,
+                name: name,
+            }
+        })
+    }
+
+    const removeStructure = () => {
+        dispatcher({
+            type: 'level_remove_structure',
+            payload: structure.id,
+        })
+    }
+
+    return <>
+        {structure.type === StructureTypes.Section && (
+            <BaseFolderSlug
+                collapsed={(structure as SectionModel).collapsed}
+                onCollapseToggle={collapseSection}
+            />
+        )}
+        <StructureListIcon {...structure} />
+        <BaseInputSlug
+            value={structure.name}
+            placeholder={structure.type}
+            onRename={renameStructure}
+        />
+        {editor.level.start === structure.id
+            ? <StarIcon className="w-8 p-2"/>
+            : <BaseActionSlug onClick={removeStructure}><TrashIcon className="w-4"/></BaseActionSlug>
+        }
+    </>
+}
+
+function StructureListIcon(structure: StructureModel) {
+    switch (structure.type) {
+        case StructureTypes.Chunk:
+            return <MinusIcon className="w-4" />;
+        case StructureTypes.Coloring:
+            return <SwatchIcon className="w-4" />;
+        case StructureTypes.Section:
+            return <></>;
+        default:
+            return <QuestionMarkCircleIcon className="w-4"/>;
+    }
 }
