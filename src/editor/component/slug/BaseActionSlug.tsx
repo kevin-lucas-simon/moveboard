@@ -1,8 +1,10 @@
 import React from "react";
+import clsx from "clsx";
 
 export type BaseActionSlugProps = {
     onClick: () => void;
     children: React.ReactNode;
+    hide?: boolean;
 }
 
 export function BaseActionSlug(props: BaseActionSlugProps) {
@@ -12,7 +14,12 @@ export function BaseActionSlug(props: BaseActionSlugProps) {
     }
 
     return (
-        <button onClick={handleClick} className="p-2 rounded-full hidden group-hover:block hover:bg-gray-500/10">
+        <button
+            onClick={handleClick}
+            className={clsx(
+                "p-2 rounded-full hover:bg-gray-500/10",
+                props.hide && "hidden group-hover:block"
+            )}>
             {props.children}
         </button>
     );

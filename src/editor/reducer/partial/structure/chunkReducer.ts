@@ -14,6 +14,12 @@ export type ChunkReducerActions = {
     type: 'chunk_remove_element';
     payload: ElementID;
 } | {
+    type: 'chunk_set_element_visibility';
+    payload: {
+        id: ElementID,
+        hidden: boolean,
+    }
+} | {
     type: 'chunk_reorder_elements',
     payload: {
         parentId: ElementID | null;
@@ -83,6 +89,35 @@ export function chunkReducer(
                     [id]: {
                         ...element,
                         ...patch,
+                    }
+                }
+            }
+        }
+        case 'chunk_set_element_visibility': {
+            const { id, hidden } = action.payload;
+            const element = state.elements[id];
+            if (!element) {
+                throw new Error(`Element ID ${id} not found in state`);
+            }
+
+            const children = Object.values(state.elements).filter(element => element.parent === id);
+            children.forEach((child) => {
+                state = chunkReducer(state, {
+                    type: 'chunk_set_element_visibility',
+                    payload: {
+                        id: child.id,
+                        hidden: hidden,
+                    }
+                });
+            });
+
+            return {
+                ...state,
+                elements: {
+                    ...state.elements,
+                    [id]: {
+                        ...element,
+                        hidden: hidden,
                     }
                 }
             }

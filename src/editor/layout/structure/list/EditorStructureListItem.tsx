@@ -51,7 +51,7 @@ export function EditorStructureListItem(structure: StructureModel) {
         {structure.type === StructureTypes.Section && (
             <BaseFolderSlug
                 collapsed={(structure as SectionModel).collapsed}
-                onCollapseToggle={collapseSection}
+                onClick={collapseSection}
             />
         )}
         <EditorStructureListIcon {...structure} />
@@ -62,7 +62,9 @@ export function EditorStructureListItem(structure: StructureModel) {
         />
         {editor.level.start === structure.id
             ? <StarIcon className="w-8 p-2"/>
-            : <BaseActionSlug onClick={removeStructure}><TrashIcon className="w-4"/></BaseActionSlug>
+            : <BaseActionSlug onClick={removeStructure} hide={true}>
+                <TrashIcon className="w-4"/>
+              </BaseActionSlug>
         }
     </>
 }

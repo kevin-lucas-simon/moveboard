@@ -11,6 +11,7 @@ export function EditorStructureList() {
     const editor = useEditorContext()
     const dispatcher = useEditorDispatcher()
 
+    // TODO move to <BaseList>
     const structureItem = React.useCallback(
         (structure: StructureModel) => <EditorStructureListItem {...structure}/>, []
     );
@@ -22,12 +23,12 @@ export function EditorStructureList() {
     const structures = Object.values(editor.level.structures);
     const selectedStructureId = editor.selectedStructure;
 
-    const reorderStructures = (structureIds: UUID[], parentIds: UUID|null) => {
+    const reorderStructures = (childIds: UUID[], parentId: UUID|null) => {
         dispatcher({
             type: 'level_reorder_structures',
             payload: {
-                parentId: parentIds,
-                childIds: structureIds,
+                parentId: parentId,
+                childIds: childIds,
             },
         })
     }
