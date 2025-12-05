@@ -1,7 +1,6 @@
 import React from "react";
 import {ElementDefaultProps} from "../../../data/model/element/ElementDefaultProps";
 import {BasePanel} from "../../component/BasePanel";
-import {EditorChunkElementList} from "./list/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {useEditorDispatcher, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
@@ -45,13 +44,6 @@ export function EditorChunkOverviewPanel() {
             <ChunkElementList
                 elements={elements}
                 selected={selectedElementIds}
-            />
-            brrrr
-            <EditorChunkElementList
-                elements={elements}
-                selected={selectedElementIds}
-                dispatcher={dispatcher}
-                parent={null}
             />
         </BasePanel>
     );

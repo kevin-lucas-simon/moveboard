@@ -3,9 +3,8 @@ import {BasePanel} from "../../../component/BasePanel";
 import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
-import {EditorChunkJointSlug} from "../slug/EditorChunkJointSlug";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
-import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
+import {LinkIcon, LinkSlashIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {LinkButton} from "../../../../component/button/LinkButton";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
@@ -78,16 +77,6 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
         });
     }
 
-    const renameJoint = (name: string, joint: JointModel) => {
-        props.dispatcher({
-            type: 'chunk_patch_element',
-            payload: {
-                ...joint,
-                name: name,
-            }
-        });
-    }
-
     return (
         <BasePanel title={"General"} description={isStart ? "Level Start" : undefined}>
             <ul className="mt-2">
@@ -106,20 +95,18 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                             <li
                                 key={joint.id}
                                 className="flex gap-2 px-4 py-1.5 hover:bg-gray-500/10 group"
+                                onClick={(e: any) => selectJoint(e, joint)}
                             >
-                                <EditorChunkJointSlug
-                                    key={joint.id}
-                                    element={joint}
-                                    onChunkChange={() => changeChunk(joint.neighbour)}
-                                    onRename={(name) => renameJoint(name, joint)}
-                                />
-                                <div className="grow"/>
                                 <button
-                                    onClick={(e: any) => selectJoint(e, joint)}
-                                    className="p-2 -mx-2 -my-1 rounded-full hidden group-hover:block hover:bg-gray-500/10"
+                                    onClick={() => joint.neighbour ? changeChunk(joint.neighbour) : undefined}
+                                    className="p-2 -mx-2 -my-1 rounded-full hover:bg-gray-500/10"
                                 >
-                                    <PencilIcon className="w-4"/>
+                                    {joint.neighbour
+                                        ? <LinkIcon className="w-4" />
+                                        : <LinkSlashIcon className="w-4" />
+                                    }
                                 </button>
+                                {joint.name || joint.type}
                             </li>
                         )}
                         <li className="px-2 py-1">

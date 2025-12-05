@@ -7,7 +7,7 @@ import {useEditorDispatcher} from "../../../reducer/EditorProvider";
 import React from "react";
 import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
-import {LinkIcon, TrashIcon} from "@heroicons/react/24/outline";
+import {LinkIcon, LinkSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {BaseFolderSlug} from "../../../component/slug/BaseFolderSlug";
 import {BaseVisibilitySlug} from "../../../component/slug/BaseVisibilitySlug";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
@@ -132,7 +132,10 @@ function ChunkElementListItem(element: ElementModel) {
 
             {element.type === ElementTypes.Joint
                 ? <BaseActionSlug onClick={changeChunk}>
-                    <LinkIcon className="w-4" />
+                    {(element as JointModel).neighbour
+                        ? <LinkIcon className="w-4" />
+                        : <LinkSlashIcon className="w-4" />
+                    }
                 </BaseActionSlug>
                 : <BaseActionSlug onClick={removeElement} hide={true}>
                     <TrashIcon className="w-4" />
