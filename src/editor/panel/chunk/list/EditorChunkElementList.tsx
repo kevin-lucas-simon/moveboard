@@ -5,11 +5,6 @@ import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {GroupModel} from "../../../../data/model/element/system/GroupModel";
 import {useEditorDispatcher} from "../../../reducer/EditorProvider";
 import React from "react";
-import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
-import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
-import {BaseFolderSlug} from "../../../component/slug/BaseFolderSlug";
-import {BaseVisibilitySlug} from "../../../component/slug/BaseVisibilitySlug";
-import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {EditorChunkElementListItem} from "./EditorChunkElementListItem";
 
 export type ChunkElementListProps = {
@@ -24,6 +19,13 @@ export function EditorChunkElementList(props: ChunkElementListProps) {
     }
 
     const selectElement = (id: UUID) => {
+        if (props.selected.includes(id)) {
+            dispatcher({
+                type: "editor_deselect_all"
+            })
+            return;
+        }
+
         dispatcher({
             type: "editor_select_element",
             payload: id,
