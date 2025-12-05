@@ -6,7 +6,7 @@ import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {useEditorDispatcher, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
-import {ChunkElementList} from "./list/ChunkElementList";
+import {EditorChunkElementList} from "./list/EditorChunkElementList";
 
 export function EditorChunkOverviewPanel() {
     const dispatcher = useEditorDispatcher();
@@ -41,7 +41,7 @@ export function EditorChunkOverviewPanel() {
             addOptions={Object.keys(ElementTypes)}
             onAction={addElement}
         >
-            <ChunkElementList
+            <EditorChunkElementList
                 elements={elements}
                 selected={selectedElementIds}
             />
