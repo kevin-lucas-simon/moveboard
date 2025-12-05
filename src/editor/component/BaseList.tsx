@@ -1,7 +1,7 @@
 import {ReactSortable} from "react-sortablejs";
 import {UUID} from "../../data/model/UUID";
 import {SortableListItem, SortableListService} from "../reducer/util/SortableListService";
-import React from "react";
+import React, {useCallback} from "react";
 import clsx from "clsx";
 
 export type BaseListProps<T extends SortableListItem> = {
@@ -17,7 +17,11 @@ export type BaseListProps<T extends SortableListItem> = {
 }
 
 export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
-    const parentItems = props.items.filter(item => props.isParentOfItem(item, props.parent ?? null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const cachedItemComponent = useCallback(props.itemContent, []);
+
+    const parentItems = props.items
+        .filter(item => props.isParentOfItem(item, props.parent ?? null));
 
     const reorderParentItems = (newItems: T[]) => {
         if (!SortableListService.hasItemsBeenMoved(parentItems, newItems)) {
@@ -46,7 +50,7 @@ export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
                         className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center"
                     >
                         <div className="grow flex gap-2">
-                            {props.itemContent(item)}
+                            {cachedItemComponent(item)}
                         </div>
                     </div>
 
