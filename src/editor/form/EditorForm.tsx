@@ -38,6 +38,7 @@ export function EditorForm<T extends object>(props: EditorFormProps<T>) {
                                 value={props.itemValue[key] as UUID}
                                 onChange={newValue => onChange(key, newValue)}
                                 options={props.relationKeys[key]!}
+                                nullable={props.itemDefault[key] === null}
                                 className="pl-4 pt-1 pb-2"
                             />
                         ) : (

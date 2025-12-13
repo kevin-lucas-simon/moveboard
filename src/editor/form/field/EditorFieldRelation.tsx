@@ -2,9 +2,11 @@ import {EditorFieldType} from "../EditorFieldType";
 import {UUID} from "../../../data/model/UUID";
 import {useState} from "react";
 import {Combobox, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
+import clsx from "clsx";
 
 export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
     options: {[id: UUID]: string},
+    nullable?: boolean,
 }) {
     const [query, setQuery] = useState<string>('');
     const filteredItems = Object.entries(props.options)
@@ -13,7 +15,7 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
 
     const handleSelect = (item: UUID) => {
         setQuery('');
-        if (item === props.value) {
+        if (props.nullable && item === props.value) {
             return props.onChange(null);
         }
         return props.onChange(item);
@@ -40,7 +42,10 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
                     <ComboboxOption
                         key={id}
                         value={id}
-                        className="w-full px-4 py-1 data-[focus]:bg-gray-500/10 data-[selected]:bg-gray-500/20"
+                        className={clsx(
+                            "w-full px-4 py-1 data-[focus]:bg-gray-500/10",
+                            props.nullable && "data-[selected]:bg-gray-500/20"
+                        )}
                     >
                         {display}
                     </ComboboxOption>
