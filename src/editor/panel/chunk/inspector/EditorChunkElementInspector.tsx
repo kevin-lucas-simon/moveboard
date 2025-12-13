@@ -4,7 +4,6 @@ import React from "react";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {BasePanel} from "../../../component/BasePanel";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
-import {JsonNestedEditor} from "../../../component/input/JsonNestedEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {LinkButton} from "../../../../component/button/LinkButton";
@@ -43,7 +42,6 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
         });
     }
 
-    // TODO wat machen wir damit?
     const getAvailableNeighbourChunkNames = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
         const chunkJoints = Object
             .values(props.chunk.elements)
@@ -78,6 +76,9 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                 itemValue={props.element}
                 itemDefault={ElementDefaultProps[props.element.type].defaultProps}
                 onChange={updateElement}
+                relationKeys={{
+                    "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
+                } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
             />
 
             <LinkButton onClick={deleteElement} className="m-4">

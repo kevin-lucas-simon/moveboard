@@ -1,9 +1,13 @@
 import {EditorFormFieldMapping} from "./partial/EditorFormFieldMapping";
+import React from "react";
+import {EditorFieldRelation} from "./field/EditorFieldRelation";
+import {UUID} from "../../data/model/UUID";
 
 export type EditorFormProps<T extends object> = {
     itemValue: T;
     itemDefault: T;
     hiddenKeys?: (keyof T)[];
+    relationKeys?: {[key in keyof T]?: {[id: UUID]: string}};
     onChange: (newValue: T) => void;
 }
 
@@ -29,11 +33,20 @@ export function EditorForm<T extends object>(props: EditorFormProps<T>) {
                     <label className="w-full">
                         <div className="capitalize font-bold px-4 pt-2">{String(key)}</div>
 
-                        <EditorFormFieldMapping
-                            value={props.itemValue[key]}
-                            onChange={newValue => onChange(key, newValue)}
-                            className="pl-4 pt-1 pb-2"
-                        />
+                        {props.relationKeys && props.relationKeys[key] ? (
+                            <EditorFieldRelation
+                                value={props.itemValue[key] as UUID}
+                                onChange={newValue => onChange(key, newValue)}
+                                options={props.relationKeys[key]!}
+                                className="pl-4 pt-1 pb-2"
+                            />
+                        ) : (
+                            <EditorFormFieldMapping
+                                value={props.itemValue[key]}
+                                onChange={newValue => onChange(key, newValue)}
+                                className="pl-4 pt-1 pb-2"
+                            />
+                        )}
                     </label>
                 </li>
             ))}
