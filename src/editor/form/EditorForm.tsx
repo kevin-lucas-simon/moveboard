@@ -7,7 +7,7 @@ export type EditorFormProps<T extends object> = {
     itemValue: T;
     itemDefault: T;
     hiddenKeys?: (keyof T)[];
-    relationKeys?: {[key in keyof T]?: {[id: UUID]: string}};
+    relationKeys?: {[key in keyof T]?: {[id: UUID|string]: string}};
     onChange: (newValue: T) => void;
 }
 

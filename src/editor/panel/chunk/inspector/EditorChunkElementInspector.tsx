@@ -12,6 +12,7 @@ import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/Chun
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {EditorForm} from "../../../form/EditorForm";
 import {ElementDefaultProps} from "../../../../data/model/element/ElementDefaultProps";
+import {ColorTypes} from "../../../../data/model/Color";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;
@@ -40,6 +41,13 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
             type: 'chunk_remove_element',
             payload: props.element.id,
         });
+    }
+
+    const getColorTypes = () => {
+        const swapped = Object.entries(ColorTypes).map(
+            ([key, value]) => [value, key]
+        );
+        return Object.fromEntries(swapped)
     }
 
     const getAvailableNeighbourChunkNames = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
@@ -77,6 +85,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                 itemDefault={ElementDefaultProps[props.element.type].defaultProps}
                 onChange={updateElement}
                 relationKeys={{
+                    "color": getColorTypes(),
                     "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
                 } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
             />

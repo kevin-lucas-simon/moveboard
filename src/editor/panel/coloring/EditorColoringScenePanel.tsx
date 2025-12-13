@@ -40,10 +40,18 @@ export function EditorColoringScenePanel() {
                     style={{background: structure[colorType as keyof ColoringModel] ?? "transparent"}}
                 >
                     {colorType !== selectedColor && (
-                        <PencilSquareIcon
-                            className="w-12 h-12 text-white/75 group-hover:text-white"
-                            style={{filter: "drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.75))"}}
-                        />
+                        <div className="flex flex-col items-center gap-2">
+                            <PencilSquareIcon
+                                className="w-12 h-12 text-white/75 group-hover:text-white"
+                                style={{filter: "drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.75))"}}
+                            />
+                            <span
+                                className="font-bold text-sm capitalize text-white/75 group-hover:text-white"
+                                style={{filter: "drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.75))"}}
+                            >
+                                {colorType}
+                            </span>
+                        </div>
                     )}
                     {colorType === selectedColor && (
                         <div onClick={(e) => e.stopPropagation()}>
