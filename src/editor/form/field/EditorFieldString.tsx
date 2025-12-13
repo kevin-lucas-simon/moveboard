@@ -7,6 +7,7 @@ export function EditorFieldString(props: EditorFieldType<string>) {
             className={`w-full bg-transparent outline-none ${props.className ?? ''}`}
             value={props.value}
             onChange={(e) => props.onChange(e.target.value)}
+            placeholder={"Type..."}
         />
     );
 }

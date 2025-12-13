@@ -12,6 +12,7 @@ export function EditorFieldNumber(props: EditorFieldType<number>) {
                     props.onChange(newValue);
                 }
             }}
+            placeholder={"Type..."}
         />
     );
 }

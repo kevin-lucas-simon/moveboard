@@ -11,6 +11,8 @@ import {LinkButton} from "../../../../component/button/LinkButton";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {EditorForm} from "../../../form/EditorForm";
+import {ElementDefaultProps} from "../../../../data/model/element/ElementDefaultProps";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;
@@ -26,11 +28,11 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
         });
     }
 
-    const changeElement = (index: string, value: ElementModel) => {
+    const updateElement = (element: ElementModel) => {
         props.dispatcher({
             type: 'chunk_patch_element',
-            payload: value,
-        });
+            payload: element,
+        })
     }
 
     const deleteElement = () => {
@@ -41,6 +43,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
         });
     }
 
+    // TODO wat machen wir damit?
     const getAvailableNeighbourChunkNames = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
         const chunkJoints = Object
             .values(props.chunk.elements)
@@ -71,22 +74,16 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
             actionIcon={<XMarkIcon className="w-6" />}
             onAction={deselectElement}
         >
-            <ul>
-                <JsonNestedEditor
-                    keyName={props.element.type}
-                    value={props.element}
-                    onKeyValueChange={(key, value) => changeElement(props.element.id, value)}
-                    selectionOnKey={{
-                        "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
-                    }}
-                />
-                <li className="px-2 py-4">
-                    <LinkButton onClick={deleteElement}>
-                        <TrashIcon className="w-4" />
-                        Delete Element
-                    </LinkButton>
-                </li>
-            </ul>
+            <EditorForm
+                itemValue={props.element}
+                itemDefault={ElementDefaultProps[props.element.type].defaultProps}
+                onChange={updateElement}
+            />
+
+            <LinkButton onClick={deleteElement} className="m-4">
+                <TrashIcon className="w-4" />
+                Delete Element
+            </LinkButton>
         </BasePanel>
     );
 }
