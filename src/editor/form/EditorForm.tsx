@@ -1,8 +1,4 @@
-import {EditorFieldType} from "./EditorFieldType";
-import {EditorFieldString} from "./field/EditorFieldString";
-import {EditorFieldNumber} from "./field/EditorFieldNumber";
-import {EditorFieldBoolean} from "./field/EditorFieldBoolean";
-import {EditorFieldObject} from "./field/EditorFieldObject";
+import {EditorFormFieldMapping} from "./partial/EditorFormFieldMapping";
 
 export type EditorFormProps<T extends object> = {
     itemValue: T;
@@ -33,34 +29,14 @@ export function EditorForm<T extends object>(props: EditorFormProps<T>) {
                     <label className="w-full">
                         <div className="capitalize font-bold px-4 pt-2">{String(key)}</div>
 
-                        <EditorFormField
+                        <EditorFormFieldMapping
                             value={props.itemValue[key]}
                             onChange={newValue => onChange(key, newValue)}
-                            className="px-4 pt-1 pb-2"
+                            className="pl-4 pt-1 pb-2"
                         />
                     </label>
                 </li>
             ))}
         </ul>
     );
-}
-
-function EditorFormField(props: EditorFieldType<any>) {
-    switch (typeof props.value) {
-        case "object":
-            return <EditorFieldObject {...props} />;
-        case "number":
-            return <EditorFieldNumber {...props} />;
-        case "string":
-            return <EditorFieldString {...props} />;
-        case "boolean":
-            return (
-                <div className={props.className}>
-                    <EditorFieldBoolean {...props} className="mr-auto" />
-                </div>
-            )
-        default:
-            console.warn("Unsupported editor form value type ", typeof props.value);
-            return <div className={props.className}>??</div>;
-    }
 }
