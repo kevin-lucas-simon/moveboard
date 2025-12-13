@@ -1,7 +1,8 @@
 import React from "react";
-import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
 import {BasePanel} from "../../component/BasePanel";
 import {useEditorDispatcher, useEditorContext} from "../../reducer/EditorProvider";
+import {EditorForm} from "../../form/EditorForm";
+import {DebugSettings, DebugSettingsDefault} from "../../../experience/debug/settings/DebugSettingsProvider";
 
 export function EditorSimulationOverviewPanel() {
     const settings = useEditorContext()?.simulationSettings;
@@ -11,12 +12,10 @@ export function EditorSimulationOverviewPanel() {
         return <span>No Debug Settings given</span>
     }
 
-    const handleSettingsChange = (key: string, value: any) => {
+    const updateSettings = (settings: DebugSettings) => {
         dispatcher({
             type: "simulator_patch_settings",
-            payload: {
-                [key]: value,
-            },
+            payload: settings,
         })
     }
 
@@ -25,16 +24,11 @@ export function EditorSimulationOverviewPanel() {
             title={"Simulation"}
             description={"Game play test"}
         >
-            <ul>
-                {Object.entries(settings).map(([key, value]) =>
-                    <JsonObjectEditor
-                        key={key}
-                        keyName={key}
-                        value={value}
-                        onChange={handleSettingsChange}
-                    />
-                )}
-            </ul>
+            <EditorForm
+                itemValue={settings}
+                itemDefault={DebugSettingsDefault}
+                onChange={updateSettings}
+            />
         </BasePanel>
     );
 }

@@ -25,12 +25,6 @@ export type ChunkReducerActions = {
         parentId: ElementID | null;
         childIds: ElementID[];
     }
-} | {
-    type: 'chunk_update_field';
-    payload: {
-        key: keyof ChunkModel;
-        value: any;
-    }
 };
 
 export function chunkReducer(
@@ -38,22 +32,6 @@ export function chunkReducer(
     action: EditorReducerActions
 ): ChunkModel {
     switch (action.type) {
-        case 'chunk_update_field': {
-            const updatedKey = action.payload.key;
-            const updatedValue = action.payload.value
-
-            if (!(updatedKey in state)) {
-                throw new Error(`Invalid field key: ${updatedKey}`);
-            }
-            if (['elements', 'joints'].includes(updatedKey)) {
-                throw new Error('Use dedicated actions for elements and joints');
-            }
-
-            return {
-                ...state,
-                [updatedKey]: updatedValue,
-            }
-        }
         case 'chunk_add_element': {
             const element = action.payload;
 

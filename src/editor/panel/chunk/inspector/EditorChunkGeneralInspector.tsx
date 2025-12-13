@@ -1,6 +1,5 @@
 import React from "react";
 import {BasePanel} from "../../../component/BasePanel";
-import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
@@ -8,7 +7,8 @@ import {LinkIcon, LinkSlashIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@her
 import {LinkButton} from "../../../../component/button/LinkButton";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
-import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {ChunkDefault, ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {EditorForm} from "../../../form/EditorForm";
 
 export type EditorChunkGeneralInspectorProps = {
     level: LevelModel;
@@ -20,16 +20,6 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
     const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
     const isStart = props.level.start === props.chunk.id;
 
-    const updateField = (key: string, value: any) => {
-        props.dispatcher({
-            type: 'chunk_update_field',
-            payload: {
-                key: key as keyof ChunkModel,
-                value: value,
-            }
-        })
-    }
-
     const changeChunk = (chunkId: ChunkID|null) => {
         if (!chunkId) {
             return
@@ -38,6 +28,13 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
             type: 'editor_select_structure',
             payload: chunkId,
         });
+    }
+
+    const updateChunk = (chunk: ChunkModel) => {
+        props.dispatcher({
+            type: 'level_patch_structure',
+            payload: chunk,
+        })
     }
 
     const updateChunkAsLevelStart = () => {
@@ -79,15 +76,14 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
 
     return (
         <BasePanel title={"General"} description={isStart ? "Level Start" : undefined}>
+            <EditorForm
+                itemValue={props.chunk}
+                itemDefault={ChunkDefault}
+                hiddenKeys={['elements']}
+                onChange={updateChunk}
+            />
+
             <ul className="mt-2">
-                {Object.entries(props.chunk)
-                    .filter(([key, _]) => !['elements', 'joints'].includes(key))
-                    .map(([key, value]) => {
-                        return (
-                            <JsonObjectEditor key={key} keyName={key} value={value} onChange={updateField}/>
-                        )
-                    })
-                }
                 <li className="w-full hover:bg-gray-500/10 py-2 cursor-pointer">
                     <span className="px-4">Joints</span>
                     <ul className="mt-1">

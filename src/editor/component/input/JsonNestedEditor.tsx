@@ -1,6 +1,5 @@
 import {JsonFieldEditor} from "./JsonFieldEditor";
 import {UUID} from "../../../data/model/UUID";
-import {editorConfig} from "../../../config/editorConfig";
 
 export type JsonNestedEditorProps = {
     keyName: string,
@@ -11,7 +10,7 @@ export type JsonNestedEditorProps = {
 }
 
 export function JsonNestedEditor(props: JsonNestedEditorProps) {
-    if (editorConfig.hiddenJsonKeys.includes(props.keyName)) {
+    if (["id", "type", "parent", "collapsed", "hidden"].includes(props.keyName)) {
         return <></>;
     }
 

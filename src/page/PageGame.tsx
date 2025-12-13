@@ -6,7 +6,7 @@ import {Experience} from "../experience/Experience";
 /**
  * Game page that initializes the game
  */
-export function GamePage() {
+export function PageGame() {
     const [selectedLevel, setSelectedLevel] = useState<string|undefined>();
 
     return (

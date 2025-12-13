@@ -12,7 +12,7 @@ import {LinkButton} from "../component/button/LinkButton";
 import {EditorContextMenu} from "../editor/layout/menu/EditorContextMenu";
 import { EditorDeleteDialog } from "../editor/dialog/levelOverview/EditorDeleteDialog";
 
-export function EditorSelectorPage() {
+export function PageEditorOverview() {
     const overviewLocalEditors = useLiveQuery(() => localEditorDB.list()) ?? [];
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
