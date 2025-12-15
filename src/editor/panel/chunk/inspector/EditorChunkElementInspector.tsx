@@ -6,7 +6,6 @@ import {BasePanel} from "../../../component/BasePanel";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
-import {LinkButton} from "../../../../component/button/LinkButton";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";

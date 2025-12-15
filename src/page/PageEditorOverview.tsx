@@ -53,7 +53,7 @@ export function PageEditorOverview() {
                 ))}
             </ul>
 
-            <div className="mx-2 mb-4">
+            <div className="mx-3 mt-2 mb-4">
                 <LinkButton onClick={() => setModalOpen(true)}>
                     <PlusCircleIcon className="w-6"/>
                     <span>Create Level</span>
