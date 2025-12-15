@@ -13,6 +13,7 @@ import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
 import {EditorForm} from "../../../form/EditorForm";
 import {ElementDefaultProps} from "../../../../data/model/element/ElementDefaultProps";
 import {ColorTypes} from "../../../../data/model/Color";
+import {BaseListItem} from "../../../component/BaseListItem";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;
@@ -88,12 +89,15 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                     "color": getColorTypes(),
                     "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
                 } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
+                additionalEntries={{
+                    "Actions": <>
+                        <BaseListItem onClick={deleteElement}>
+                            <TrashIcon className="w-4" />
+                            Delete Element
+                        </BaseListItem>
+                    </>
+                }}
             />
-
-            <LinkButton onClick={deleteElement} className="m-4">
-                <TrashIcon className="w-4" />
-                Delete Element
-            </LinkButton>
         </BasePanel>
     );
 }

@@ -11,6 +11,7 @@ import {EditorForm} from "../../../form/EditorForm";
 import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
 import {BaseListItem} from "../../../component/BaseListItem";
+import {BaseNameSlug} from "../../../component/slug/BaseNameSlug";
 
 export type EditorChunkGeneralInspectorProps = {
     level: LevelModel;
@@ -81,15 +82,10 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                 additionalEntries={{
                     "Joints": <>
                         {joints.map((joint) =>
-                            <BaseListItem
-                                key={joint.id}
-                                onClick={() => selectJoint(joint)}
-                            >
-                                <BaseInputSlug
-                                    value={joint.name || joint.type}
-                                    placeholder={joint.type}
-                                    onRename={() => {}}
-                                />
+                            <BaseListItem key={joint.id} onClick={() => selectJoint(joint)}>
+                                <BaseNameSlug>
+                                    {joint.name || joint.type}
+                                </BaseNameSlug>
                                 <BaseActionSlug onClick={() => changeChunk(joint.neighbour)}>
                                     {joint.neighbour
                                         ? <LinkIcon className="w-4" />
