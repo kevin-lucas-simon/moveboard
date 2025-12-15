@@ -84,6 +84,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                 itemValue={props.element}
                 itemDefault={ElementDefaultProps[props.element.type].defaultProps}
                 onChange={updateElement}
+                hiddenKeys={['parent', 'hidden']}
                 relationKeys={{
                     "color": getColorTypes(),
                     "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
