@@ -2,7 +2,7 @@ import React from "react";
 import {BasePanel} from "../../component/BasePanel";
 import {useEditorDispatcher, useEditorContext} from "../../reducer/EditorProvider";
 import {EditorForm} from "../../form/EditorForm";
-import {DebugSettings, DebugSettingsDefault} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {SimulationSettings, SimulationSettingsDefault} from "../../../experience/debug/settings/SimulationSettingsProvider";
 
 export function EditorSimulationOverviewPanel() {
     const settings = useEditorContext()?.simulationSettings;
@@ -12,7 +12,7 @@ export function EditorSimulationOverviewPanel() {
         return <span>No Debug Settings given</span>
     }
 
-    const updateSettings = (settings: DebugSettings) => {
+    const updateSettings = (settings: SimulationSettings) => {
         dispatcher({
             type: "simulator_patch_settings",
             payload: settings,
@@ -26,7 +26,7 @@ export function EditorSimulationOverviewPanel() {
         >
             <EditorForm
                 itemValue={settings}
-                itemDefault={DebugSettingsDefault}
+                itemDefault={SimulationSettingsDefault}
                 onChange={updateSettings}
             />
         </BasePanel>

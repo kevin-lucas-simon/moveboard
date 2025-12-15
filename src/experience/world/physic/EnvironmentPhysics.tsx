@@ -2,7 +2,7 @@ import React from "react";
 import {Physics} from "@react-three/rapier";
 import {useDeviceMotionContext} from "../../input/DeviceMotionProvider";
 import {Vector3, Vector3Like} from "three";
-import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
+import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {useKeyboardKeysContext} from "../../input/KeyboardKeysProvider";
 
 const GRAVITATION = 9.81;
@@ -29,7 +29,7 @@ function useUserGravityInput(): Vector3Like {
     const keyboardVector = useKeyboardVector();
     const deviceMotionVector = useDeviceMotionContext();
 
-    const isDisabled = useDebugSettings()?.pauseSimulation;
+    const isDisabled = useSimulationSettings()?.pauseSimulation;
 
     // add gravity as default input
     const combinedVector = new Vector3(0, -GRAVITATION, 0);

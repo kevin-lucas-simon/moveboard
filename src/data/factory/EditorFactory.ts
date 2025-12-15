@@ -1,7 +1,7 @@
 import {EditorReducerState} from "../../editor/reducer/editorReducer";
 import {createUUID} from "./UuidFactory";
 import {createLevel, LevelModel} from "../model/world/LevelModel";
-import {DebugSettingsDefault} from "../../experience/debug/settings/DebugSettingsProvider";
+import {SimulationSettingsDefault} from "../../experience/debug/settings/SimulationSettingsProvider";
 
 export function createEditorReducerState(
     levelModel?: LevelModel,
@@ -14,7 +14,7 @@ export function createEditorReducerState(
         level: level,
         selectedStructure: level.start,
         selectedElements: [],
-        simulationSettings: DebugSettingsDefault,
+        simulationSettings: SimulationSettingsDefault,
         previousState: [],
         nextState: [],
         updatedAt: Date.now(),

@@ -1,10 +1,10 @@
 import {RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
-import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
+import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {BarrierBlockDefault, BarrierBlockModel} from "../../../data/model/element/block/BarrierBlockModel";
 
 export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
-    const isVisible = useDebugSettings()?.displayEditorFeatures;
+    const isVisible = useSimulationSettings()?.displayEditorFeatures;
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>

@@ -1,6 +1,6 @@
 import React from "react";
 import {useEditorActiveStructure, useEditorContext, useEditorLevel} from "../../reducer/EditorProvider";
-import {DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {SimulationSettingsProvider} from "../../../experience/debug/settings/SimulationSettingsProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {Experience} from "../../../experience/Experience";
 
@@ -15,13 +15,13 @@ export function EditorSimulationScenePanel() {
     }
 
     return (
-        <DebugSettingsProvider debugSettings={debugSettings}>
+        <SimulationSettingsProvider simulationSettings={debugSettings}>
             <Experience
                 key={structure.id}
                 isGranted={false}
                 level={level}
                 start={structure.id}
             />
-        </DebugSettingsProvider>
+        </SimulationSettingsProvider>
     );
 }

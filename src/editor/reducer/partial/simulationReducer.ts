@@ -1,13 +1,13 @@
-import {DebugSettings} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {SimulationSettings} from "../../../experience/debug/settings/SimulationSettingsProvider";
 import {EditorReducerActions, EditorReducerState} from "../editorReducer";
 
 export type SimulationReducerState = {
-    simulationSettings: DebugSettings,
+    simulationSettings: SimulationSettings,
 }
 
 export type SimulationReducerActions = {
     type: 'simulator_patch_settings',
-    payload: Partial<DebugSettings>,
+    payload: Partial<SimulationSettings>,
 }
 
 export function simulationReducer(

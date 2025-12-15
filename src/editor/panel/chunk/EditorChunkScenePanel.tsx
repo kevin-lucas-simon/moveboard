@@ -1,6 +1,6 @@
 import React from "react";
 import {useEditorActiveStructure, useEditorLevel} from "../../reducer/EditorProvider";
-import {DebugSettingsDefault, DebugSettingsProvider} from "../../../experience/debug/settings/DebugSettingsProvider";
+import {SimulationSettingsDefault, SimulationSettingsProvider} from "../../../experience/debug/settings/SimulationSettingsProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {Experience} from "../../../experience/Experience";
 
@@ -12,8 +12,8 @@ export function EditorChunkScenePanel() {
     }
 
     return (
-        <DebugSettingsProvider debugSettings={{
-            ...DebugSettingsDefault,
+        <SimulationSettingsProvider simulationSettings={{
+            ...SimulationSettingsDefault,
             isEditingMode: true,
             displayEditorFeatures: true,
             moveableCamera: true,
@@ -25,6 +25,6 @@ export function EditorChunkScenePanel() {
                 level={level}
                 start={structure.id}
             />
-        </DebugSettingsProvider>
+        </SimulationSettingsProvider>
     );
 }
