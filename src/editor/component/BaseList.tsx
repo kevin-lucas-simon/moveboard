@@ -2,7 +2,7 @@ import {ReactSortable} from "react-sortablejs";
 import {UUID} from "../../data/model/UUID";
 import {SortableListItem, SortableListService} from "../reducer/util/SortableListService";
 import React, {useCallback} from "react";
-import clsx from "clsx";
+import {BaseListItem} from "./BaseListItem";
 
 export type BaseListProps<T extends SortableListItem> = {
     items: T[];
@@ -41,28 +41,23 @@ export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
             group={BaseList.name}
         >
             {parentItems.map(item => (
-                <li key={item.id} className={clsx(
-                    props.isItemSelected?.(item) && "bg-gray-500/10",
-                    props.isItemHidden?.(item) && "text-gray-500/50"
-                )}>
-                    <div
-                        onClick={() => props.onSelect?.(item.id)}
-                        className="h-9 flex group hover:bg-gray-500/10 pl-4 p-2.5 items-center"
-                    >
-                        <div className="grow flex gap-2">
-                            {cachedItemComponent(item)}
-                        </div>
-                    </div>
-
-                    {props.isItemAnExpandedGroup(item) && (
-                        <div className="ml-6">
-                            <BaseList
-                                {...props}
-                                parent={item.id as UUID}
-                            />
-                        </div>
-                    )}
-                </li>
+                <BaseListItem
+                    key={item.id}
+                    isHidden={props.isItemHidden?.(item)}
+                    isSelected={props.isItemSelected?.(item)}
+                    onClick={() => props.onSelect?.(item.id)}
+                    children={cachedItemComponent(item)}
+                    recursiveChildren={<>
+                        {props.isItemAnExpandedGroup(item) && (
+                            <div className="ml-6">
+                                <BaseList
+                                    {...props}
+                                    parent={item.id as UUID}
+                                />
+                            </div>
+                        )}
+                    </>}
+                />
             ))}
         </ReactSortable>
     );
