@@ -17,9 +17,8 @@ export type BaseListProps<T extends SortableListItem> = {
 }
 
 export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const cachedItemComponent = useCallback(props.itemContent, []);
 
+    const cachedItemComponent = useCallback(props.itemContent, [props.itemContent]);
     const parentItems = props.items
         .filter(item => props.isParentOfItem(item, props.parent ?? null));
 
