@@ -1,7 +1,5 @@
 import {LevelModel} from "../../../data/model/world/LevelModel";
 import {chunkReducer, ChunkReducerActions} from "./structure/chunkReducer";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
-import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
 import {StructureID, StructureModel} from "../../../data/model/structure/StructureModel";
 import {EditorReducerActions, EditorReducerState} from "../editorReducer";
@@ -87,37 +85,35 @@ export function levelReducer(
                 },
             };
         }
-        case "level_remove_structure": { // TODO PROBLEM: Wie mit Verweisen in Joints umgehen? Zudem wie mit Verweisen in anderen Strukturen umgehen?
-            const removedChunkId = action.payload;
+        case "level_remove_structure": {
+            const removeID = action.payload;
+            if (removeID === state.level.start) {
+                throw new Error('Cannot remove the start structure');
+            }
 
-            // update active chunk to level start if the removed chunk is currently active
-            const updatedActive = state.selectedStructure === action.payload ? state.level.start : state.selectedStructure;
+            const updatedStructures = { ...state.level.structures };
+            delete updatedStructures[removeID];
 
-            // remove chunk from level
-            const updatedChunks = Object.fromEntries(
-                Object.entries(state.level.structures).filter(([key]) => key !== removedChunkId)
-            )
+            const removeParentID = state.level.structures[removeID]?.parent;
+            Object.values(updatedStructures)
+                .filter(structure => structure.parent === removeID)
+                .forEach(structure => {
+                    updatedStructures[structure.id] = {
+                        ...structure,
+                        parent: removeParentID,
+                    };
+                });
 
-            // update joints in remaining chunks to remove references to the removed chunk
-            // TODO ganz heißes Eisen, hier nochmal refactoren! -> eigener JointReducer ^^
-            Object.entries(updatedChunks).forEach(([_, chunk]) => {
-                Object.entries((chunk as ChunkModel).elements).forEach(([_, element]) => {
-                    if (
-                        element.type === ElementTypes.Joint
-                        && (element as JointModel).neighbour === removedChunkId
-                    ) {
-                        (element as JointModel).neighbour = null;
-                    }
-                })
-            })
+            const updatedSelectedStructure = state.selectedStructure === removeID
+                ? state.level.start
+                : state.selectedStructure;
 
-            // return updated state with removed chunk
             return {
                 ...state,
-                selectedStructure: updatedActive,
+                selectedStructure: updatedSelectedStructure,
                 level: {
                     ...state.level,
-                    structures: updatedChunks,
+                    structures: updatedStructures,
                 },
             }
         }
@@ -140,7 +136,6 @@ export function levelReducer(
             const updatedKey = action.payload.key;
             const updatedValue = action.payload.value;
 
-            // validate key and value
             if (!(updatedKey in state.level)) {
                 throw new Error('Invalid field key: ' + updatedKey);
             }
@@ -148,7 +143,6 @@ export function levelReducer(
                 throw new Error('Use dedicated actions for chunks');
             }
 
-            // update the level field with the new value
             return {
                 ...state,
                 level: {
@@ -158,7 +152,6 @@ export function levelReducer(
             };
         }
         default: {
-            // delegate to chunkReducer for active chunk actions
             return {
                 ...state,
                 level: {

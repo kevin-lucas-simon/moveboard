@@ -4,7 +4,7 @@ import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {StructureModel} from "../../data/model/structure/StructureModel";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementModel} from "../../data/model/element/ElementModel";
-import {filterStructures} from "../../data/factory/StructureFactory";
+import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {useLiveQuery} from "dexie-react-hooks";
 import {localEditorDB} from "../../data/localEditorDB";
 
@@ -74,7 +74,7 @@ export function useEditorActiveStructure<T extends StructureModel>(type?: Struct
     }
 
     const structures = type
-        ? filterStructures<T>(editor.level.structures, type)
+        ? filterStructuresByType<T>(editor.level.structures, type)
         : editor.level.structures;
 
     return structures[editor.selectedStructure] as T | null;

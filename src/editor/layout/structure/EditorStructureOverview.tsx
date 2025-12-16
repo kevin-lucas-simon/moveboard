@@ -1,26 +1,24 @@
-import {BasePanel} from "../../component/BasePanel";
-import {LevelModel} from "../../../data/model/world/LevelModel";
 import React from "react";
-import {EditorStructureList} from "./list/EditorStructureList";
+import {BasePanel} from "../../component/BasePanel";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {createStructure} from "../../../data/factory/StructureFactory";
-import {EditorReducerActions} from "../../reducer/editorReducer";
-import {StructureID} from "../../../data/model/structure/StructureModel";
+import {EditorStructureList} from "./list/EditorStructureList";
+import {useEditorContext, useEditorDispatcher} from "../../reducer/EditorProvider";
 
-export type EditorStructureOverviewProps = {
-    level: LevelModel,
-    selectedStructure: StructureID | null,
-    levelDispatcher: React.Dispatch<EditorReducerActions>,
-}
+export function EditorStructureOverview() {
+    const editor = useEditorContext();
+    const dispatcher = useEditorDispatcher();
+    if (!editor || !dispatcher) {
+        return <></>;
+    }
 
-export function EditorStructureOverview(props: EditorStructureOverviewProps) {
     const addStructure = (type?: string) => {
         if (!type || !(type in StructureTypes)) {
             return;
         }
 
         const structure = createStructure(type as StructureTypes);
-        props.levelDispatcher({
+        dispatcher({
             type: 'level_add_structure',
             payload: structure,
         })
@@ -28,19 +26,11 @@ export function EditorStructureOverview(props: EditorStructureOverviewProps) {
 
     return (
         <BasePanel
-            title={props.level.name}
+            title={editor.level.name}
             onAction={addStructure}
-            addOptions={Object.keys(StructureTypes)}
+            addOptions={Object.keys(StructureTypes).filter(key => key !== StructureTypes.Unknown)}
         >
-            <ul>
-                <EditorStructureList
-                    structures={props.level.structures}
-                    parent={null}
-                    start={props.level.start}
-                    selected={props.selectedStructure}
-                    dispatcher={props.levelDispatcher}
-                />
-            </ul>
+            <EditorStructureList />
         </BasePanel>
     );
 }

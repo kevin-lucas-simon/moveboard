@@ -4,12 +4,15 @@ import React from "react";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {BasePanel} from "../../../component/BasePanel";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
-import {JsonNestedEditor} from "../../../component/input/JsonNestedEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
-import {LinkButton} from "../../../../component/button/LinkButton";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {EditorForm} from "../../../form/EditorForm";
+import {ElementDefaultProps} from "../../../../data/model/element/ElementDefaultProps";
+import {ColorTypes} from "../../../../data/model/Color";
+import {BaseListItem} from "../../../component/BaseListItem";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;
@@ -25,11 +28,11 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
         });
     }
 
-    const changeElement = (index: string, value: ElementModel) => {
+    const updateElement = (element: ElementModel) => {
         props.dispatcher({
             type: 'chunk_patch_element',
-            payload: value,
-        });
+            payload: element,
+        })
     }
 
     const deleteElement = () => {
@@ -40,30 +43,34 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
         });
     }
 
-    // get a selection of all chunks that can be selected as joint neighbour
-    const getChunkSelection = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
-        // get all joints in the current chunk
+    const getColorTypes = () => {
+        const swapped = Object.entries(ColorTypes).map(
+            ([key, value]) => [value, key]
+        );
+        return Object.fromEntries(swapped)
+    }
+
+    const getAvailableNeighbourChunkNames = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
         const chunkJoints = Object
             .values(props.chunk.elements)
             .filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
-        // populate the selection with all chunks except the active chunk
-        const chunkSelection = {} as {[id: UUID]: string};
+        const availableChunkNames = {} as {[id: UUID]: string};
         Object.values(props.level.structures)
+            .filter(structure => structure.type === StructureTypes.Chunk)
             .filter(structure => structure.id !== props.chunk.id)
             .forEach(chunk => {
                 // skip chunks that are already connected
                 if (chunkJoints.some(joint => joint.neighbour === chunk.id)) {
                     return;
                 }
-                chunkSelection[chunk.id] = chunk.name;
+                availableChunkNames[chunk.id] = chunk.name;
             });
 
-        // if a joint neighbour is specified as value, ensure it is included in the selection (display name)
         if (jointNeighbour) {
-            chunkSelection[jointNeighbour] = props.level.structures[jointNeighbour].name;
+            availableChunkNames[jointNeighbour] = props.level.structures[jointNeighbour]?.name;
         }
-        return chunkSelection;
+        return availableChunkNames;
     };
 
     return (
@@ -73,22 +80,24 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
             actionIcon={<XMarkIcon className="w-6" />}
             onAction={deselectElement}
         >
-            <ul>
-                <JsonNestedEditor
-                    keyName={props.element.type}
-                    value={props.element}
-                    onKeyValueChange={(key, value) => changeElement(props.element.id, value)}
-                    selectionOnKey={{
-                        "neighbour": getChunkSelection((props.element as JointModel).neighbour)
-                    }}
-                />
-                <li className="px-2 py-4">
-                    <LinkButton onClick={deleteElement}>
-                        <TrashIcon className="w-4" />
-                        Delete Element
-                    </LinkButton>
-                </li>
-            </ul>
+            <EditorForm
+                itemValue={props.element}
+                itemDefault={ElementDefaultProps[props.element.type].defaultProps}
+                onChange={updateElement}
+                hiddenKeys={['parent', 'hidden']}
+                relationKeys={{
+                    "color": getColorTypes(),
+                    "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
+                } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
+                additionalEntries={{
+                    "Actions": <>
+                        <BaseListItem onClick={deleteElement}>
+                            <TrashIcon className="w-4" />
+                            Delete Element
+                        </BaseListItem>
+                    </>
+                }}
+            />
         </BasePanel>
     );
 }

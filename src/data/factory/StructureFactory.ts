@@ -11,7 +11,7 @@ export function createStructure<T extends StructureModel>(type: StructureTypes):
     } as T;
 }
 
-export function filterStructures<T extends StructureModel>(
+export function filterStructuresByType<T extends StructureModel>(
     structures: { [key: StructureID]: StructureModel },
     type: StructureTypes
 ) {

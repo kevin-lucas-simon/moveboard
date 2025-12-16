@@ -4,12 +4,15 @@ import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
 import {Player} from "../../entity/Player";
 import {BounceBlockDefault, BounceBlockModel} from "../../../data/model/element/block/BounceBlockModel";
+import {useElementColoring} from "../../structure/coloring/useElementColoring";
+import {ColorTypes} from "../../../data/model/Color";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
 export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
+    const colorHex = useElementColoring(ColorTypes.Primary);
     const [bounceAnimation, setBounceAnimation] = useState(0)
 
     // calculate bounce animation diameter related to the intensity and diameter
@@ -69,7 +72,7 @@ export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
             <mesh>
                 <sphereGeometry
                     args={[props.diameter / 2 + bounceAnimation * (bounceAnimationDiameter - props.diameter) / 2]}/>
-                <meshStandardMaterial color={"grey"}/>
+                <meshStandardMaterial color={colorHex}/>
             </mesh>
         </RigidBody>
     );

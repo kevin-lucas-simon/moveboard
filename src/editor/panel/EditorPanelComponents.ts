@@ -8,6 +8,7 @@ import {EditorSimulationOverviewPanel} from "./simulation/EditorSimulationOvervi
 import {EditorPanelComponentTypes, EditorPanelTypes} from "./EditorPanelTypes";
 import {EditorSimulationScenePanel} from "./simulation/EditorSimulationScenePanel";
 import {EditorStructureOverviewPanel} from "./system/EditorStructureOverviewPanel";
+import {EditorColoringScenePanel} from "./coloring/EditorColoringScenePanel";
 
 export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
     overviewPanel: React.ComponentType<any>;
@@ -22,6 +23,10 @@ export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
         overviewPanel: EditorChunkOverviewPanel,
         detailPanel: EditorChunkDetailPanel,
         scenePanel: EditorChunkScenePanel,
+    },
+    [StructureTypes.Coloring]: {
+        overviewPanel: EditorStructureOverviewPanel,
+        scenePanel: EditorColoringScenePanel,
     },
     [StructureTypes.Unknown]: {
         overviewPanel: EditorChunkOverviewPanel,

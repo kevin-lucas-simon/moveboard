@@ -1,6 +1,7 @@
 import {BasePanel} from "../../component/BasePanel";
 import {useEditorDispatcher, useEditorActiveStructure} from "../../reducer/EditorProvider";
-import {JsonObjectEditor} from "../../component/input/JsonObjectEditor";
+import {EditorForm} from "../../form/EditorForm";
+import {StructureDefault, StructureModel} from "../../../data/model/structure/StructureModel";
 
 export function EditorStructureOverviewPanel() {
     const dispatcher = useEditorDispatcher();
@@ -10,13 +11,10 @@ export function EditorStructureOverviewPanel() {
         return <span>No Structure given</span>
     }
 
-    const handleStructureChange = (key: string, value: any) => {
+    const updateStructure = (structure: StructureModel) => {
         dispatcher({
             type: "level_patch_structure",
-            payload: {
-                id: structure.id,
-                [key]: value,
-            }
+            payload: structure,
         })
     }
 
@@ -25,16 +23,11 @@ export function EditorStructureOverviewPanel() {
             title={structure.name.trim() !== "" ? structure.name.trim() : structure.type}
             description={structure.type}
         >
-            <ul>
-                {Object.entries(structure).map(([key, value]) =>
-                    <JsonObjectEditor
-                        key={key}
-                        keyName={key}
-                        value={value}
-                        onChange={handleStructureChange}
-                    />
-                )}
-            </ul>
+            <EditorForm
+                itemValue={structure}
+                itemDefault={StructureDefault}
+                onChange={updateStructure}
+            />
         </BasePanel>
     );
 }

@@ -3,7 +3,7 @@ import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
 import {Player} from "../../entity/Player";
-import {useDebugSettings} from "../../debug/settings/DebugSettingsProvider";
+import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 
 import {ChunkID} from "../../../data/model/structure/spacial/ChunkModel";
 
@@ -14,7 +14,7 @@ export type JointProps = JointModel & {
 }
 
 export function JointElement(props: JointProps) {
-    const isVisible = useDebugSettings()?.displayEditorFeatures;
+    const isVisible = useSimulationSettings()?.displayEditorFeatures;
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {
         // if we are the neighbour chunk joint we do nothing

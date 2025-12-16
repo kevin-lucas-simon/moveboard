@@ -1,95 +1,48 @@
-import {EditorStructureItem} from "./EditorStructureItem";
-import {ReactSortable} from "react-sortablejs";
-import {StructureID, StructureModel} from "../../../../data/model/structure/StructureModel";
-import {EditorReducerActions} from "../../../reducer/editorReducer";
+import {BaseList} from "../../../component/BaseList";
+import {useEditorContext, useEditorDispatcher} from "../../../reducer/EditorProvider";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
+import {UUID} from "../../../../data/model/UUID";
+import {StructureID} from "../../../../data/model/structure/StructureModel";
 import {SectionModel} from "../../../../data/model/structure/system/SectionModel";
-import {SortableListService} from "../../../reducer/util/SortableListService";
+import React from "react";
+import {EditorStructureListItem} from "./EditorStructureListItem";
 
-export type EditorStructureListProps = {
-    structures: {[key: StructureID]: StructureModel},
-    parent: StructureID | null,
-    selected: StructureID | null,
-    start: StructureID | null,
-    dispatcher: React.Dispatch<EditorReducerActions>,
-}
+export function EditorStructureList() {
+    const editor = useEditorContext()
+    const dispatcher = useEditorDispatcher()
+    if (!editor || !dispatcher) {
+        return <></>;
+    }
 
-export function EditorStructureList(props: EditorStructureListProps) {
-    const sectionStructures = Object.values(props.structures).filter(structure => structure.parent === props.parent);
+    const structures = Object.values(editor.level.structures);
+    const selectedStructureId = editor.selectedStructure;
+
+    const reorderStructures = (childIds: UUID[], parentId: UUID|null) => {
+        dispatcher({
+            type: 'level_reorder_structures',
+            payload: {
+                parentId: parentId,
+                childIds: childIds,
+            },
+        })
+    }
 
     const selectStructure = (id: StructureID) => {
-        props.dispatcher({
+        dispatcher({
             type: 'editor_select_structure',
             payload: id,
         });
     }
 
-    const renameStructure = (id: StructureID, name: string) => {
-        props.dispatcher({
-            type: 'level_patch_structure',
-            payload: {
-                id: id,
-                name: name,
-            }
-        })
-    }
-
-    const reorderStructures = (newSectionStructures: StructureModel[]) => {
-        if (!SortableListService.hasItemsBeenMoved(sectionStructures, newSectionStructures)) {
-            return;
-        }
-
-        props.dispatcher({
-            type: 'level_reorder_structures',
-            payload: {
-                parentId: props.parent,
-                childIds: newSectionStructures.map(structure => structure.id),
-            },
-        })
-    }
-
-    const toggleCollapse = (structure: StructureModel) => {
-        if (structure.type !== StructureTypes.Section) {
-            return;
-        }
-
-        props.dispatcher({
-            type: 'level_patch_structure',
-            payload: {
-                id: structure.id,
-                collapsed: !(structure as SectionModel).collapsed,
-            } as SectionModel,
-        })
-    }
-
     return (
-        <ReactSortable
-            list={structuredClone(sectionStructures)}
-            setList={reorderStructures}
-            tag="ul"
-            group={EditorStructureList.name}
-        >
-            {sectionStructures.map((structure) => (
-                <EditorStructureItem
-                    key={structure.id}
-                    structure={structure}
-                    isStart={structure.id === props.start}
-                    isSelected={props.selected === structure.id}
-                    onSelect={() => selectStructure(structure.id)}
-                    onCollapseToggle={() => toggleCollapse(structure)}
-                    onRename={renameStructure}
-                >
-                    {structure.type === StructureTypes.Section && (
-                        <EditorStructureList
-                            structures={props.structures}
-                            parent={structure.id}
-                            start={props.start}
-                            selected={props.selected}
-                            dispatcher={props.dispatcher}
-                        />
-                    )}
-                </EditorStructureItem>
-            ))}
-        </ReactSortable>
+        <BaseList
+            items={structures}
+            itemContent={structure => <EditorStructureListItem {...structure}/>}
+            isItemAnExpandedGroup={structure => structure.type === StructureTypes.Section && !(structure as SectionModel).collapsed}
+            isItemSelected={structure => structure.id === selectedStructureId}
+            isParentOfItem={(child, parentId) => child.parent === parentId}
+            onReorder={reorderStructures}
+            onSelect={selectStructure}
+        />
     );
 }

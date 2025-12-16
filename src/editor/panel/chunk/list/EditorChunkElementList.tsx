@@ -1,133 +1,57 @@
-import {ReactSortable} from "react-sortablejs";
-import {EditorChunkElementItem} from "./EditorChunkElementItem";
-import React from "react";
+import {ElementModel} from "../../../../data/model/element/ElementModel";
 import {UUID} from "../../../../data/model/UUID";
-import {ElementID, ElementModel} from "../../../../data/model/element/ElementModel";
-import {GroupModel} from "../../../../data/model/element/system/GroupModel";
-import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {BaseList} from "../../../component/BaseList";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
-import {EditorReducerActions} from "../../../reducer/editorReducer";
-import {SortableListService} from "../../../reducer/util/SortableListService";
+import {GroupModel} from "../../../../data/model/element/system/GroupModel";
+import {useEditorDispatcher} from "../../../reducer/EditorProvider";
+import React from "react";
+import {EditorChunkElementListItem} from "./EditorChunkElementListItem";
 
-export type EditorChunkElementListProps = {
+export type ChunkElementListProps = {
     elements: {[key: string]: ElementModel};
     selected: UUID[];
-    dispatcher: React.Dispatch<EditorReducerActions>;
-    parent: ElementID | null;
 }
 
-export function EditorChunkElementList(props: EditorChunkElementListProps) {
-    const groupElements = Object.values(props.elements).filter(element => element.parent === props.parent);
+export function EditorChunkElementList(props: ChunkElementListProps) {
+    const dispatcher = useEditorDispatcher();
+    if (!dispatcher) {
+        return <></>;
+    }
 
     const selectElement = (id: UUID) => {
         if (props.selected.includes(id)) {
-            props.dispatcher({
-                type: "editor_deselect_all",
-            });
+            dispatcher({
+                type: "editor_deselect_all"
+            })
             return;
         }
-        props.dispatcher({
+
+        dispatcher({
             type: "editor_select_element",
             payload: id,
         });
     }
 
-    const renameElement = (index: string, name: string) => {
-        props.dispatcher({
-            type: "chunk_patch_element",
+    const reorderElements = (childIds: UUID[], parentId: UUID | null) => {
+        dispatcher({
+            type: 'chunk_reorder_elements',
             payload: {
-                ...props.elements[index],
-                name: name,
-            }
-        })
-    }
-
-    const removeElement = (index: string) => {
-        props.dispatcher({
-            type: 'chunk_remove_element',
-            payload: index as ElementID,
-        });
-    }
-
-    // toggle the visibility of the element and all children
-    const handleVisibility = (index: string, model: ElementModel, value: boolean) => {
-        props.dispatcher({
-            type: 'chunk_patch_element',
-            payload: {
-                ...model,
-                hidden: value,
+                childIds,
+                parentId,
             },
-        });
-
-        const groupChildren = Object.values(props.elements).filter(element => element.parent === model.id)
-        groupChildren.forEach((child) => {
-            handleVisibility(child.id, child, value);
-        })
-    }
-
-    const toggleCollapse = (index: string, value: ElementModel) => {
-        if (value.type !== ElementTypes.Group) {
-            return;
-        }
-
-        props.dispatcher({
-            type: 'chunk_patch_element',
-            payload: {
-                ...value,
-                collapsed: !(value as GroupModel).collapsed
-            } as GroupModel,
-        });
-    }
-
-    const reorderElements = (newGroupElements: ElementModel[]) => {
-        if (!SortableListService.hasItemsBeenMoved(groupElements, newGroupElements)) {
-            return;
-        }
-
-        props.dispatcher({
-            type: "chunk_reorder_elements",
-            payload: {
-                parentId: props.parent,
-                childIds: newGroupElements.map(element => element.id),
-            }
-        })
-    }
-
-    const changeChunk = (id: ElementID) => {
-        const chunkId = (props.elements[id] as JointModel).neighbour;
-        if (!chunkId) {
-            return;
-        }
-        props.dispatcher({
-            type: 'editor_select_structure',
-            payload: chunkId,
         });
     }
 
     return (
-        <ReactSortable
-            list={structuredClone(groupElements)} // deep copy to avoid reference issues
-            setList={reorderElements}
-            tag="ul"
-            group={EditorChunkElementList.name}
-        >
-            {groupElements.map((element) => (
-                <EditorChunkElementItem
-                    key={element.id}
-                    element={element}
-                    selected={props.selected.includes(element.id)}
-                    onSelect={selectElement}
-                    onRename={renameElement}
-                    onRemove={removeElement}
-                    onChunkChange={changeChunk}
-                    onHideToggle={(id) => handleVisibility(id, element, !element.hidden)}
-                    onCollapseToggle={(id) => toggleCollapse(id, element)}
-                >
-                    {element.type === ElementTypes.Group && (
-                        <EditorChunkElementList {...props} parent={element.id} />
-                    )}
-                </EditorChunkElementItem>
-            ))}
-        </ReactSortable>
-    )
+        <BaseList
+            items={Object.values(props.elements)}
+            itemContent={element => <EditorChunkElementListItem {...element} />}
+            isItemSelected={element => props.selected.includes(element.id)}
+            isItemAnExpandedGroup={element => element.type === ElementTypes.Group && !(element as GroupModel).collapsed}
+            isParentOfItem={(child, parentId) => child.parent === parentId}
+            isItemHidden={child => child.hidden}
+            onSelect={selectElement}
+            onReorder={reorderElements}
+        />
+    );
 }

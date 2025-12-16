@@ -1,15 +1,16 @@
 import React from "react";
 import {BasePanel} from "../../../component/BasePanel";
-import {JsonObjectEditor} from "../../../component/input/JsonObjectEditor";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
-import {EditorChunkJointSlug} from "../slug/EditorChunkJointSlug";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
-import {PencilIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {LinkButton} from "../../../../component/button/LinkButton";
+import {LinkIcon, LinkSlashIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
-import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {ChunkDefault, ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
+import {EditorForm} from "../../../form/EditorForm";
+import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
+import {BaseListItem} from "../../../component/BaseListItem";
+import {BaseNameSlug} from "../../../component/slug/BaseNameSlug";
 
 export type EditorChunkGeneralInspectorProps = {
     level: LevelModel;
@@ -21,17 +22,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
     const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
     const isStart = props.level.start === props.chunk.id;
 
-    const updateField = (key: string, value: any) => {
-        props.dispatcher({
-            type: 'chunk_update_field',
-            payload: {
-                key: key as keyof ChunkModel,
-                value: value,
-            }
-        })
-    }
-
-    const changeChunk = (chunkId: ChunkID|null) => {
+    const changeChunk = (chunkId: ChunkID | null) => {
         if (!chunkId) {
             return
         }
@@ -39,6 +30,13 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
             type: 'editor_select_structure',
             payload: chunkId,
         });
+    }
+
+    const updateChunk = (chunk: ChunkModel) => {
+        props.dispatcher({
+            type: 'level_patch_structure',
+            payload: chunk,
+        })
     }
 
     const updateChunkAsLevelStart = () => {
@@ -58,8 +56,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
         });
     }
 
-    const selectJoint = (e: any, joint: JointModel) => {
-        e.stopPropagation();
+    const selectJoint = (joint: JointModel) => {
         props.dispatcher({
             type: 'editor_select_element',
             payload: joint.id,
@@ -72,79 +69,53 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
             type: "chunk_add_element",
             payload: element,
         })
-        props.dispatcher({
-            type: "editor_select_element",
-            payload: element.id,
-        });
-    }
-
-    const renameJoint = (name: string, joint: JointModel) => {
-        props.dispatcher({
-            type: 'chunk_patch_element',
-            payload: {
-                ...joint,
-                name: name,
-            }
-        });
     }
 
     return (
-        <BasePanel title={"General"} description={isStart ? "Level Start" : undefined}>
-            <ul className="mt-2">
-                {Object.entries(props.chunk)
-                    .filter(([key, _]) => !['elements', 'joints'].includes(key))
-                    .map(([key, value]) => {
-                        return (
-                            <JsonObjectEditor key={key} keyName={key} value={value} onChange={updateField}/>
-                        )
-                    })
-                }
-                <li className="w-full hover:bg-gray-500/10 py-2 cursor-pointer">
-                    <span className="px-4">Joints</span>
-                    <ul className="mt-1">
+        <BasePanel title={"General"}>
+            <EditorForm
+                itemValue={props.chunk}
+                itemDefault={ChunkDefault}
+                onChange={updateChunk}
+                hiddenKeys={['elements']}
+                additionalEntries={{
+                    "Joints": <>
                         {joints.map((joint) =>
-                            <li
-                                key={joint.id}
-                                className="flex gap-2 px-4 py-1.5 hover:bg-gray-500/10 group"
-                            >
-                                <EditorChunkJointSlug
-                                    key={joint.id}
-                                    element={joint}
-                                    onChunkChange={() => changeChunk(joint.neighbour)}
-                                    onRename={(name) => renameJoint(name, joint)}
-                                />
-                                <div className="grow"/>
-                                <button
-                                    onClick={(e: any) => selectJoint(e, joint)}
-                                    className="p-2 -mx-2 -my-1 rounded-full hidden group-hover:block hover:bg-gray-500/10"
-                                >
-                                    <PencilIcon className="w-4"/>
-                                </button>
-                            </li>
+                            <BaseListItem key={joint.id} onClick={() => selectJoint(joint)}>
+                                <BaseNameSlug>
+                                    {joint.name || joint.type}
+                                </BaseNameSlug>
+                                <BaseActionSlug onClick={() => changeChunk(joint.neighbour)}>
+                                    {joint.neighbour
+                                        ? <LinkIcon className="w-4" />
+                                        : <LinkSlashIcon className="w-4" />
+                                    }
+                                </BaseActionSlug>
+                            </BaseListItem>
                         )}
-                        <li className="px-2 py-1">
-                            <LinkButton onClick={createJoint}>
-                                <PlusCircleIcon className="w-4"/>
-                                Create Joint
-                            </LinkButton>
-                        </li>
-                    </ul>
-                </li>
-
-                {!isStart &&
-                    <li className="w-full hover:bg-gray-500/10 px-2 py-2 cursor-pointer">
-                        <span className="px-2">Actions</span>
-                        <LinkButton onClick={updateChunkAsLevelStart}>
-                            <StarIcon className="w-4"/>
-                            Set as Start Chunk
-                        </LinkButton>
-                        <LinkButton onClick={removeChunk}>
-                            <TrashIcon className="w-4"/>
-                            Remove Chunk
-                        </LinkButton>
-                    </li>
-                }
-            </ul>
+                        {joints.length === 0 &&
+                            <BaseListItem>
+                                No joints
+                            </BaseListItem>}
+                    </>,
+                    "Actions": <>
+                        <BaseListItem onClick={createJoint}>
+                            <PlusCircleIcon className="w-4"/>
+                            Create Joint
+                        </BaseListItem>
+                        {!isStart && <>
+                            <BaseListItem onClick={updateChunkAsLevelStart}>
+                                <StarIcon className="w-4"/>
+                                Set as Start Chunk
+                            </BaseListItem>
+                            <BaseListItem onClick={removeChunk}>
+                                <TrashIcon className="w-4"/>
+                                Remove Chunk
+                            </BaseListItem>
+                        </>}
+                    </>,
+                }}
+            />
         </BasePanel>
     );
 }

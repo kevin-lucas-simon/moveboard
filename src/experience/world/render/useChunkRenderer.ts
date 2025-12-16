@@ -119,7 +119,6 @@ function calculateChunks(
             }
         })
 
-        // calculate dimensions
         const chunkDimension = calculateRenderDimension(
             Object.values(currentModel.elements),
             renderPosition
@@ -129,12 +128,10 @@ function calculateChunks(
             renderPosition
         );
 
-        // calculate player spawn position
         const playerSpawnPosition = new Vector3()
             .copy(renderPosition)
             .add(currentModel.player);
 
-        // create new rendered chunk
         calculatedChunks[task.currentId] = {
             model: currentModel,
             worldPosition: renderPosition,
@@ -143,11 +140,14 @@ function calculateChunks(
             cameraDimension: cameraDimension,
         };
 
-        // add new tasks
         currentJoints.forEach((joint: JointModel) => {
-            if (!joint.neighbour || joint.neighbour === task.parentId) {
+            const isParentWhereWeCameFrom = joint.neighbour === task.parentId;
+            const isJointMarkedAsHidden = joint.hidden;
+
+            if (!joint.neighbour || isParentWhereWeCameFrom || isJointMarkedAsHidden) {
                 return;
             }
+
             tasks.push({
                 currentId: joint.neighbour,
                 parentId: task.currentId,

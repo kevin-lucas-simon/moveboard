@@ -1,6 +1,6 @@
 import {RapierRigidBody, RigidBody} from "@react-three/rapier";
 import {Vector3, Vector3Like} from "three";
-import {useDebugSettings} from "../debug/settings/DebugSettingsProvider";
+import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 import {RefObject, useRef} from "react";
 
 export type PlayerProps = {
@@ -14,7 +14,7 @@ export type PlayerProps = {
  * @constructor
  */
 export function Player(props: PlayerProps) {
-    const isEditingMode = useDebugSettings()?.isEditingMode;
+    const isEditingMode = useSimulationSettings()?.isEditingMode;
     // use a ref to store the spawn position so it doesn't change on re-renders
     const spawnPosition = useRef(new Vector3().copy(props.spawnPosition));
 

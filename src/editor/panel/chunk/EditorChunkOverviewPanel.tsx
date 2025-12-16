@@ -1,12 +1,12 @@
 import React from "react";
 import {ElementDefaultProps} from "../../../data/model/element/ElementDefaultProps";
 import {BasePanel} from "../../component/BasePanel";
-import {EditorChunkElementList} from "./list/EditorChunkElementList";
 import {createElement} from "../../../data/factory/ElementFactory";
 import {ElementTypes} from "../../../data/model/element/ElementTypes";
 import {useEditorDispatcher, useEditorContext, useEditorActiveStructure} from "../../reducer/EditorProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {ChunkModel} from "../../../data/model/structure/spacial/ChunkModel";
+import {EditorChunkElementList} from "./list/EditorChunkElementList";
 
 export function EditorChunkOverviewPanel() {
     const dispatcher = useEditorDispatcher();
@@ -38,14 +38,12 @@ export function EditorChunkOverviewPanel() {
         <BasePanel
             title={chunk.name.trim() !== "" ? chunk.name : chunk.type}
             description={chunk.type}
-            addOptions={Object.keys(ElementTypes)}
+            addOptions={Object.keys(ElementTypes).filter(key => key !== ElementTypes.Unknown)}
             onAction={addElement}
         >
             <EditorChunkElementList
                 elements={elements}
                 selected={selectedElementIds}
-                dispatcher={dispatcher}
-                parent={null}
             />
         </BasePanel>
     );

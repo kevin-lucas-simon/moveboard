@@ -11,7 +11,7 @@ export function createElement(type: ElementTypes): ElementModel {
     };
 }
 
-export function filterElements<T extends ElementModel>(
+export function filterElementsByType<T extends ElementModel>(
     elements: {[key: ElementID]: ElementModel},
     type: ElementTypes,
 ) {

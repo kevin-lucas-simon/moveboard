@@ -14,16 +14,16 @@ export type ChunkReducerActions = {
     type: 'chunk_remove_element';
     payload: ElementID;
 } | {
+    type: 'chunk_set_element_visibility';
+    payload: {
+        id: ElementID,
+        hidden: boolean,
+    }
+} | {
     type: 'chunk_reorder_elements',
     payload: {
         parentId: ElementID | null;
         childIds: ElementID[];
-    }
-} | {
-    type: 'chunk_update_field';
-    payload: {
-        key: keyof ChunkModel;
-        value: any;
     }
 };
 
@@ -32,22 +32,6 @@ export function chunkReducer(
     action: EditorReducerActions
 ): ChunkModel {
     switch (action.type) {
-        case 'chunk_update_field': {
-            const updatedKey = action.payload.key;
-            const updatedValue = action.payload.value
-
-            if (!(updatedKey in state)) {
-                throw new Error(`Invalid field key: ${updatedKey}`);
-            }
-            if (['elements', 'joints'].includes(updatedKey)) {
-                throw new Error('Use dedicated actions for elements and joints');
-            }
-
-            return {
-                ...state,
-                [updatedKey]: updatedValue,
-            }
-        }
         case 'chunk_add_element': {
             const element = action.payload;
 
@@ -83,6 +67,35 @@ export function chunkReducer(
                     [id]: {
                         ...element,
                         ...patch,
+                    }
+                }
+            }
+        }
+        case 'chunk_set_element_visibility': {
+            const { id, hidden } = action.payload;
+            const element = state.elements[id];
+            if (!element) {
+                throw new Error(`Element ID ${id} not found in state`);
+            }
+
+            const children = Object.values(state.elements).filter(element => element.parent === id);
+            children.forEach((child) => {
+                state = chunkReducer(state, {
+                    type: 'chunk_set_element_visibility',
+                    payload: {
+                        id: child.id,
+                        hidden: hidden,
+                    }
+                });
+            });
+
+            return {
+                ...state,
+                elements: {
+                    ...state.elements,
+                    [id]: {
+                        ...element,
+                        hidden: hidden,
                     }
                 }
             }
