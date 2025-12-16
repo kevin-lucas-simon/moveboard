@@ -24,7 +24,6 @@ export const EditorPanelComponents: Record<EditorPanelComponentTypes, {
         detailPanel: EditorChunkDetailPanel,
         scenePanel: EditorChunkScenePanel,
     },
-    // TODO ich würde es gut finden, wenn die Standard Panels freiwillig sind und ich hier einfach austauschen kann
     [StructureTypes.Coloring]: {
         overviewPanel: EditorStructureOverviewPanel,
         scenePanel: EditorColoringScenePanel,

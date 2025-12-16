@@ -28,7 +28,7 @@ export function EditorStructureOverview() {
         <BasePanel
             title={editor.level.name}
             onAction={addStructure}
-            addOptions={Object.keys(StructureTypes)}
+            addOptions={Object.keys(StructureTypes).filter(key => key !== StructureTypes.Unknown)}
         >
             <EditorStructureList />
         </BasePanel>

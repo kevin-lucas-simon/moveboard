@@ -38,7 +38,7 @@ export function EditorChunkOverviewPanel() {
         <BasePanel
             title={chunk.name.trim() !== "" ? chunk.name : chunk.type}
             description={chunk.type}
-            addOptions={Object.keys(ElementTypes)}
+            addOptions={Object.keys(ElementTypes).filter(key => key !== ElementTypes.Unknown)}
             onAction={addElement}
         >
             <EditorChunkElementList
