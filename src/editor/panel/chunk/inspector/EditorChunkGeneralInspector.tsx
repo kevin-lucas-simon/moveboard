@@ -8,7 +8,6 @@ import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
 import {ChunkDefault, ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {EditorForm} from "../../../form/EditorForm";
-import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
 import {BaseListItem} from "../../../component/BaseListItem";
 import {BaseNameSlug} from "../../../component/slug/BaseNameSlug";

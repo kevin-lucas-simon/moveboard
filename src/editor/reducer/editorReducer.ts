@@ -42,6 +42,7 @@ export function editorReducer(
         });
     } catch (error) {
         toast.error(error instanceof Error ? error.message : 'Unknown editor error.');
+        console.error("Editor reducer error: ", error);
         return state;
     }
 
