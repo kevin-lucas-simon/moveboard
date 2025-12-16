@@ -8,25 +8,32 @@ import {useCallback, useMemo} from "react";
 export function useElementColoring(colorType: ColorType): ColorHex {
     const {level, activeChunkID} = useExperienceState();
 
-    const coloringStructures = useMemo(() => {
-        return Object.values(level.structures)
-            .filter(structure => structure.type === StructureTypes.Coloring)
+    const memoizedData = useMemo(() => {
+        const coloringStructures = Object.values(level.structures)
+            .filter(structure => structure.type === StructureTypes.Coloring);
+        
+        return {
+            structures: level.structures,
+            coloringStructures
+        };
     }, [level.structures]);
 
     const getColoringHex = useCallback((parentID: StructureID | null): ColorHex => {
-        const coloringStructure = coloringStructures.find(structure => structure.parent === parentID) as ColoringModel;
+        const coloringStructure = memoizedData.coloringStructures.find(
+            structure => structure.parent === parentID
+        ) as ColoringModel;
 
         if (coloringStructure && coloringStructure[colorType]) {
             return coloringStructure[colorType];
         }
 
-        const parentStructure = parentID ? level.structures[parentID] : null;
+        const parentStructure = parentID ? memoizedData.structures[parentID] : null;
         if (parentStructure) {
             return getColoringHex(parentStructure.parent);
         }
 
         return ColoringDefault[colorType];
-    }, [coloringStructures, colorType, level.structures]);
+    }, [memoizedData, colorType]);
 
     return useMemo(() => getColoringHex(activeChunkID), [getColoringHex, activeChunkID]);
 }
