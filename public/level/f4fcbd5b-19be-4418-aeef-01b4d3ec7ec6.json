@@ -1,0 +1,74 @@
+{
+    "id": "f4fcbd5b-19be-4418-aeef-01b4d3ec7ec6",
+    "name": "Level 1",
+    "start": "924c2b03-d474-4c57-b434-086eec222d4f",
+    "structures": {
+        "924c2b03-d474-4c57-b434-086eec222d4f": {
+            "id": "924c2b03-d474-4c57-b434-086eec222d4f",
+            "type": "Chunk",
+            "name": "New Chunk",
+            "parent": null,
+            "player": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "elements": {
+                "2bcdcaa3-6361-4555-a33c-cfe4f60d9d4a": {
+                    "id": "2bcdcaa3-6361-4555-a33c-cfe4f60d9d4a",
+                    "type": "FloorBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 0,
+                        "y": -1,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "dimension": {
+                        "x": 7,
+                        "y": 1,
+                        "z": 9
+                    },
+                    "color": "dark"
+                },
+                "eb86d355-e59b-4493-a39f-0557d9ae33a9": {
+                    "id": "eb86d355-e59b-4493-a39f-0557d9ae33a9",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": -3,
+                        "y": 0.5,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 9
+                    },
+                    "color": "light"
+                },
+                "78102954-0851-4222-b371-5eec074e72ca": {
+                    "id": "78102954-0851-4222-b371-5eec074e72ca",
+                    "type": "BasicBlock",
+                    "name": "",
+                    "parent": null,
+                    "position": {
+                        "x": 3,
+                        "y": 0.5,
+                        "z": 0
+                    },
+                    "hidden": false,
+                    "dimension": {
+                        "x": 1,
+                        "y": 2,
+                        "z": 9
+                    },
+                    "color": "light"
+                }
+            }
+        }
+    }
+}

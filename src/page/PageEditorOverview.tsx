@@ -9,7 +9,7 @@ import {
     PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import {LinkButton} from "../component/button/LinkButton";
-import {EditorContextMenu} from "../editor/layout/menu/EditorContextMenu";
+import {EditorDialogMenu} from "../editor/layout/menu/EditorDialogMenu";
 import { EditorDeleteDialog } from "../editor/dialog/levelOverview/EditorDeleteDialog";
 
 export function PageEditorOverview() {
@@ -46,7 +46,7 @@ export function PageEditorOverview() {
                             </div>
                         </Link>
 
-                        <EditorContextMenu dialogs={{
+                        <EditorDialogMenu dialogs={{
                             "Delete Level": <EditorDeleteDialog id={localEditor.id} onClose={() => {}} />,
                         }}/>
                     </li>

@@ -1,13 +1,14 @@
 import {BaseVisibilitySlug} from "../../../component/slug/BaseVisibilitySlug";
 import {BaseFolderSlug} from "../../../component/slug/BaseFolderSlug";
 import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
-import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
-import {LinkIcon, LinkSlashIcon, TrashIcon} from "@heroicons/react/24/outline";
+import {BaseActionButtonSlug} from "../../../component/slug/BaseActionButtonSlug";
+import {LinkIcon, LinkSlashIcon} from "@heroicons/react/24/outline";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ElementModel} from "../../../../data/model/element/ElementModel";
 import {useEditorDispatcher} from "../../../reducer/EditorProvider";
 import {GroupModel} from "../../../../data/model/element/system/GroupModel";
 import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {BaseActionListSlug} from "../../../component/slug/BaseActionListSlug";
 
 export function EditorChunkElementListItem(element: ElementModel) {
     const dispatcher = useEditorDispatcher()
@@ -37,6 +38,13 @@ export function EditorChunkElementListItem(element: ElementModel) {
                 name: name,
             }
         })
+    }
+
+    const duplicateElement = () => {
+        dispatcher({
+            type: 'chunk_duplicate_element',
+            payload: element.id,
+        });
     }
 
     const removeElement = () => {
@@ -86,15 +94,16 @@ export function EditorChunkElementListItem(element: ElementModel) {
             />
 
             {element.type === ElementTypes.Joint
-                ? <BaseActionSlug onClick={changeChunk}>
+                ? <BaseActionButtonSlug onClick={changeChunk}>
                     {(element as JointModel).neighbour
                         ? <LinkIcon className="w-4" />
                         : <LinkSlashIcon className="w-4" />
                     }
-                </BaseActionSlug>
-                : <BaseActionSlug onClick={removeElement} hide={true}>
-                    <TrashIcon className="w-4" />
-                </BaseActionSlug>
+                </BaseActionButtonSlug>
+                : <BaseActionListSlug options={{
+                    "Duplicate": duplicateElement,
+                    "Delete": removeElement,
+                }} />
             }
         </>
     )

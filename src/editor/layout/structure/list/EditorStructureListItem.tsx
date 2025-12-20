@@ -6,7 +6,7 @@ import {BaseFolderSlug} from "../../../component/slug/BaseFolderSlug";
 import {EditorStructureListIcon} from "./EditorStructureListIcon";
 import {BaseInputSlug} from "../../../component/slug/BaseInputSlug";
 import {StarIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
+import {BaseActionButtonSlug} from "../../../component/slug/BaseActionButtonSlug";
 import React from "react";
 
 export function EditorStructureListItem(structure: StructureModel) {
@@ -62,9 +62,9 @@ export function EditorStructureListItem(structure: StructureModel) {
         />
         {editor.level.start === structure.id
             ? <StarIcon className="w-8 p-2"/>
-            : <BaseActionSlug onClick={removeStructure} hide={true}>
+            : <BaseActionButtonSlug onClick={removeStructure} hide={true}>
                 <TrashIcon className="w-4"/>
-              </BaseActionSlug>
+              </BaseActionButtonSlug>
         }
     </>
 }

@@ -8,7 +8,7 @@ import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {createElement} from "../../../../data/factory/ElementFactory";
 import {ChunkDefault, ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {EditorForm} from "../../../form/EditorForm";
-import {BaseActionSlug} from "../../../component/slug/BaseActionSlug";
+import {BaseActionButtonSlug} from "../../../component/slug/BaseActionButtonSlug";
 import {BaseListItem} from "../../../component/BaseListItem";
 import {BaseNameSlug} from "../../../component/slug/BaseNameSlug";
 
@@ -85,12 +85,12 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                                 <BaseNameSlug>
                                     {joint.name || joint.type}
                                 </BaseNameSlug>
-                                <BaseActionSlug onClick={() => changeChunk(joint.neighbour)}>
+                                <BaseActionButtonSlug onClick={() => changeChunk(joint.neighbour)}>
                                     {joint.neighbour
                                         ? <LinkIcon className="w-4" />
                                         : <LinkSlashIcon className="w-4" />
                                     }
-                                </BaseActionSlug>
+                                </BaseActionButtonSlug>
                             </BaseListItem>
                         )}
                         {joints.length === 0 &&

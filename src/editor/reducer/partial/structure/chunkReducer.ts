@@ -3,6 +3,7 @@ import {ElementID, ElementModel} from "../../../../data/model/element/ElementMod
 import {ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {EditorReducerActions} from "../../editorReducer";
 import {SortableListService} from "../../util/SortableListService";
+import {createUUID} from "../../../../data/factory/UuidFactory";
 
 export type ChunkReducerActions = {
     type: 'chunk_add_element';
@@ -10,6 +11,9 @@ export type ChunkReducerActions = {
 } | {
     type: 'chunk_patch_element';
     payload: Partial<ElementModel>;
+} | {
+    type: 'chunk_duplicate_element';
+    payload: ElementID;
 } | {
     type: 'chunk_remove_element';
     payload: ElementID;
@@ -97,6 +101,27 @@ export function chunkReducer(
                         ...element,
                         hidden: hidden,
                     }
+                }
+            }
+        }
+        case "chunk_duplicate_element": {
+            const elementIdToDuplicate = action.payload;
+            const elementToDuplicate = state.elements[elementIdToDuplicate];
+            if (!elementToDuplicate) {
+                throw new Error(`Element ID ${elementIdToDuplicate} not found in state`);
+            }
+
+            const newElementId = createUUID();
+            const newElement: ElementModel = {
+                ...elementToDuplicate,
+                id: newElementId,
+            };
+
+            return {
+                ...state,
+                elements: {
+                    ...state.elements,
+                    [newElementId]: newElement,
                 }
             }
         }

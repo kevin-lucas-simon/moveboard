@@ -7,7 +7,7 @@ export type BaseActionSlugProps = {
     hide?: boolean;
 }
 
-export function BaseActionSlug(props: BaseActionSlugProps) {
+export function BaseActionButtonSlug(props: BaseActionSlugProps) {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         props.onClick();
