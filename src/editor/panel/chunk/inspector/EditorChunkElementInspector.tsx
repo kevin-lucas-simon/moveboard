@@ -90,12 +90,12 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                     "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
                 } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
                 additionalEntries={{
-                    "Actions": <>
+                    "Actions": <ul>
                         <BaseListItem onClick={deleteElement}>
                             <TrashIcon className="w-4" />
                             Delete Element
                         </BaseListItem>
-                    </>
+                    </ul>
                 }}
             />
         </BasePanel>

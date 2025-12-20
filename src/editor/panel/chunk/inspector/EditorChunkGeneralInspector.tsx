@@ -79,7 +79,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                 onChange={updateChunk}
                 hiddenKeys={['elements']}
                 additionalEntries={{
-                    "Joints": <>
+                    "Joints": <ul>
                         {joints.map((joint) =>
                             <BaseListItem key={joint.id} onClick={() => selectJoint(joint)}>
                                 <BaseNameSlug>
@@ -97,7 +97,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                             <BaseListItem>
                                 No joints
                             </BaseListItem>}
-                    </>,
+                    </ul>,
                     "Actions": <>
                         <BaseListItem onClick={createJoint}>
                             <PlusCircleIcon className="w-4"/>

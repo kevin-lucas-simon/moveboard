@@ -17,7 +17,6 @@ export type BaseListProps<T extends SortableListItem> = {
 }
 
 export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
-
     const cachedItemComponent = useCallback(props.itemContent, [props.itemContent]);
     const parentItems = props.items
         .filter(item => props.isParentOfItem(item, props.parent ?? null));
@@ -48,12 +47,12 @@ export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
                     children={cachedItemComponent(item)}
                     recursiveChildren={<>
                         {props.isItemAnExpandedGroup(item) && (
-                            <div className="ml-6">
+                            <ul className="ml-6">
                                 <BaseList
                                     {...props}
                                     parent={item.id as UUID}
                                 />
-                            </div>
+                            </ul>
                         )}
                     </>}
                 />
