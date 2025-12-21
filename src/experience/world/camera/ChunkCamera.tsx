@@ -1,16 +1,8 @@
-import {useCallback, useEffect, useRef, useState} from "react";
-import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
-import {PerspectiveCamera, Vector3, Vector3Like} from "three";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera, SoftShadows} from "@react-three/drei";
+import {DirectionalLight, PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
-
-export type ChunkCameraProps = {
-    chunkPosition: Vector3Like,
-    chunkDimension: Vector3Like,
-    cameraFov: number,
-    transitionSeconds: number,
-    marginInBlockSize: number,
-}
 
 /**
  * Camera that follows the active chunk and is always positioned above it
@@ -21,13 +13,21 @@ export type ChunkCameraProps = {
  * @param props.marginInBlockSize margin in block size around the displayed active chunk
  * @constructor
  */
-export function ChunkCamera(props: ChunkCameraProps) {
+export function ChunkCamera(props: {
+    chunkPosition: Vector3Like,
+    chunkDimension: Vector3Like,
+    cameraFov: number,
+    transitionSeconds: number,
+    marginInBlockSize: number,
+}) {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
+
+    const lightRef = useRef<DirectionalLight>(null)
+
     const isMoveableCamera = useSimulationSettings()?.moveableCamera
     const isInterpolationProhibited = useSimulationSettings()?.isEditingMode
 
-    // calculate camera position and target
     const [targetCameraPosition, targetChunkPosition] = useChunkCameraTargetCalculation(
         props.chunkPosition,
         props.chunkDimension,
@@ -36,12 +36,49 @@ export function ChunkCamera(props: ChunkCameraProps) {
         props.marginInBlockSize
     );
 
-    // interpolate position values to refs
-    usePositionInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, isInterpolationProhibited)
-    usePositionInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds, isInterpolationProhibited)
+    useVectorInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, isInterpolationProhibited)
+    useVectorInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds, isInterpolationProhibited)
+
+    const lightBox = Math.max(props.chunkDimension.x, props.chunkDimension.z) * 2;
+    useEffect(() => {
+        if (!lightRef.current) {
+            return;
+        }
+
+        lightRef.current.position.x = targetCameraPosition.x + 2;
+        lightRef.current.target.position.x = targetCameraPosition.x;
+
+        lightRef.current.position.y = targetCameraPosition.y + 8;
+        lightRef.current.target.position.y = targetCameraPosition.y;
+
+        lightRef.current.position.z = targetCameraPosition.z + 3;
+        lightRef.current.target.position.z = targetCameraPosition.z;
+
+        lightRef.current.target.updateMatrixWorld();
+    }, [targetCameraPosition]);
 
     return (
         <>
+            <ambientLight intensity={Math.PI/2} />
+            <SoftShadows />
+
+            <directionalLight
+                castShadow
+                ref={lightRef}
+                shadow-bias={-0.0001}
+                shadow-mapSize={[2048, 2048]}
+                intensity={1.5}
+            >
+                <orthographicCamera
+                    attach="shadow-camera"
+                    near={0.1}
+                    far={100}
+                    top={lightBox}
+                    bottom={-lightBox}
+                    left={-lightBox}
+                    right={lightBox}
+                />
+            </directionalLight>
             <DreiPerspectiveCamera
                 makeDefault
                 ref={cameraRef}
@@ -146,45 +183,42 @@ function getAspectRatioBasedChunkLength(
 
 /**
  * Interpolate position between two vectors
- * @param refPositionToInterpolate
- * @param targetPosition
+ * @param refVectorToInterpolate
+ * @param targetVector
  * @param transitionSeconds
  * @param prohibitInterpolation
  */
-function usePositionInterpolation(
-    refPositionToInterpolate: Vector3|undefined,
-    targetPosition: Vector3,
+function useVectorInterpolation(
+    refVectorToInterpolate: Vector3|undefined,
+    targetVector: Vector3,
     transitionSeconds: number,
     prohibitInterpolation: boolean = false,
 ) {
     const remainingTransitionTime = useRef<number>(0)
     const lastPosition = useRef<Vector3>(new Vector3(0, 0, 0))
 
-    // start interpolation if target position changes
     useEffect(() => {
         remainingTransitionTime.current = transitionSeconds
-        lastPosition.current = refPositionToInterpolate ?? new Vector3(0, 0, 0)
-    }, [refPositionToInterpolate, prohibitInterpolation, transitionSeconds, targetPosition])
+        lastPosition.current = refVectorToInterpolate ?? new Vector3(0, 0, 0)
+    }, [refVectorToInterpolate, prohibitInterpolation, transitionSeconds, targetVector])
 
-    // update transition if active
-    useFrame((state, delta) => {
-        // if no transition is active, do nothing
-        if (remainingTransitionTime.current <= 0 || !refPositionToInterpolate) {
+    useFrame((_, delta) => {
+        if (remainingTransitionTime.current <= 0 || !refVectorToInterpolate) {
             return
         }
-        // if transition is prohibited, stop interpolation
+
         if (prohibitInterpolation) {
-            if (refPositionToInterpolate.equals(new Vector3(0, 0, 0))) {
-                refPositionToInterpolate.copy(targetPosition)
+            if (refVectorToInterpolate.equals(new Vector3(0, 0, 0))) {
+                refVectorToInterpolate.copy(targetVector)
             }
             remainingTransitionTime.current = 0;
             return
         }
-        // interpolate position
+
         const newTransitionTime = Math.max(remainingTransitionTime.current - delta, 0)
-        refPositionToInterpolate.copy(
+        refVectorToInterpolate.copy(
             lastPosition.current.clone().lerp(
-                targetPosition,
+                targetVector,
                 Math.pow(1 - newTransitionTime / transitionSeconds, 3)
             )
         )

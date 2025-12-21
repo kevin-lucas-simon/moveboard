@@ -2,7 +2,7 @@ import {Canvas} from "@react-three/fiber";
 import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
 import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 import React from "react";
-import {EnvironmentPhysics} from "./physic/EnvironmentPhysics";
+import {EnvironmentPhysics} from "./environment/EnvironmentPhysics";
 import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
 
 export type EnvironmentProps = {
@@ -18,12 +18,7 @@ export function Environment(props: EnvironmentProps) {
     const debug = useSimulationSettings();
 
     return (
-        <Canvas resize={{ debounce: 0 }}>
-            <ambientLight intensity={Math.PI / 2} />
-            <pointLight position={[10, 10, 10]} decay={0} intensity={Math.PI/2} />
-            <pointLight position={[10, -10, -10]} decay={0} intensity={Math.PI/4} />
-            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI/4} />
-
+        <Canvas shadows resize={{ debounce: 0 }}>
             <Selection>
                 <EnvironmentPhysics>
                     {props.children}

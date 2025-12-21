@@ -8,7 +8,7 @@ export function BasicBlock(props: BasicBlockModel = BasicBlockDefault) {
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>
-            <mesh>
+            <mesh castShadow receiveShadow>
                 <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
                 <meshStandardMaterial color={colorHex} />
             </mesh>

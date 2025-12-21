@@ -30,7 +30,7 @@ export function Player(props: PlayerProps) {
             canSleep={false}
             restitution={0.98}
         >
-            <mesh>
+            <mesh castShadow receiveShadow>
                 <sphereGeometry args={[0.5]}/>
                 <meshStandardMaterial color={"hotpink"}/>
             </mesh>

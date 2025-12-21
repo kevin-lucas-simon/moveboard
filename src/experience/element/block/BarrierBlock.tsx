@@ -8,7 +8,7 @@ export function BarrierBlock(props: BarrierBlockModel = BarrierBlockDefault) {
 
     return (
         <RigidBody position={new Vector3().copy(props.position)} type={"fixed"}>
-            <mesh>
+            <mesh castShadow receiveShadow>
                 <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
                 <meshPhongMaterial color={'lightblue'} opacity={isVisible ? 0.25 : 0} transparent={true}/>
             </mesh>
