@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera, SoftShadows} from "@react-three/drei";
-import {DirectionalLight, PerspectiveCamera, Vector3, Vector3Like} from "three";
+import {OrbitControls, PerspectiveCamera as DreiPerspectiveCamera} from "@react-three/drei";
+import {PerspectiveCamera, Vector3, Vector3Like} from "three";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
+import {ChunkLighting} from "../environment/ChunkLighting";
 
 /**
  * Camera that follows the active chunk and is always positioned above it
@@ -23,8 +24,6 @@ export function ChunkCamera(props: {
     const cameraRef = useRef<PerspectiveCamera>(null)
     const orbitControlRef = useRef<any>(null)
 
-    const lightRef = useRef<DirectionalLight>(null)
-
     const isMoveableCamera = useSimulationSettings()?.moveableCamera
     const isInterpolationProhibited = useSimulationSettings()?.isEditingMode
 
@@ -39,46 +38,12 @@ export function ChunkCamera(props: {
     useVectorInterpolation(cameraRef.current?.position, targetCameraPosition, props.transitionSeconds, isInterpolationProhibited)
     useVectorInterpolation(orbitControlRef.current?.target, targetChunkPosition, props.transitionSeconds, isInterpolationProhibited)
 
-    const lightBox = Math.max(props.chunkDimension.x, props.chunkDimension.z) * 2;
-    useEffect(() => {
-        if (!lightRef.current) {
-            return;
-        }
-
-        lightRef.current.position.x = targetCameraPosition.x + 2;
-        lightRef.current.target.position.x = targetCameraPosition.x;
-
-        lightRef.current.position.y = targetCameraPosition.y + 8;
-        lightRef.current.target.position.y = targetCameraPosition.y;
-
-        lightRef.current.position.z = targetCameraPosition.z + 3;
-        lightRef.current.target.position.z = targetCameraPosition.z;
-
-        lightRef.current.target.updateMatrixWorld();
-    }, [targetCameraPosition]);
-
     return (
         <>
-            <ambientLight intensity={Math.PI/2} />
-            <SoftShadows />
-
-            <directionalLight
-                castShadow
-                ref={lightRef}
-                shadow-bias={-0.0001}
-                shadow-mapSize={[2048, 2048]}
-                intensity={1.5}
-            >
-                <orthographicCamera
-                    attach="shadow-camera"
-                    near={0.1}
-                    far={100}
-                    top={lightBox}
-                    bottom={-lightBox}
-                    left={-lightBox}
-                    right={lightBox}
-                />
-            </directionalLight>
+            <ChunkLighting
+                chunkDimension={props.chunkDimension}
+                chunkCameraPosition={targetCameraPosition}
+            />
             <DreiPerspectiveCamera
                 makeDefault
                 ref={cameraRef}
