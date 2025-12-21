@@ -26,6 +26,7 @@ export function selectorReducer(
             return {
                 ...state,
                 selectedStructure: action.payload,
+                selectedElements: [],
             };
         }
         case "editor_select_element": {
