@@ -1,11 +1,8 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
 import {ChunkID} from "../../structure/spacial/ChunkModel";
-import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementIsResizeable";
+import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementResizeable";
 
-/**
- * API data model
- */
 export type JointModel = ElementModel
     & ElementResizeable
     & {

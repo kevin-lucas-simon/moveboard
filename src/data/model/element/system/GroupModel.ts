@@ -1,16 +1,14 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
 
-/**
- * ElementGroupModel represents a group of elements within a chunk.
- * It is used to organize elements hierarchically and manage their visibility.
- */
 export type GroupModel = ElementModel & {
     collapsed: boolean;
 };
 
 export const GroupDefault: GroupModel = {
     ...ElementDefault,
+
     type: ElementTypes.Group,
+
     collapsed: false,
 }

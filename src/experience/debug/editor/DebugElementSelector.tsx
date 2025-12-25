@@ -9,7 +9,7 @@ import React, {useState} from "react";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
 import {Element} from "../../world/Element";
-import {isElementResizeable} from "../../../data/model/element/marker/ElementIsResizeable";
+import {isElementResizeable} from "../../../data/model/element/marker/ElementResizeable";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
