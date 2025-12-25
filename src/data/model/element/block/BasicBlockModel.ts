@@ -1,13 +1,12 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
-import {ColorType, ColorTypes} from "../../Color";
+import {ColorTypes} from "../../Color";
 import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementResizeable";
+import {ElementColorable} from "../marker/ElementColorable";
 
 export type BasicBlockModel = ElementModel
     & ElementResizeable
-    & {
-    color: ColorType,
-}
+    & ElementColorable
 
 export const BasicBlockDefault: BasicBlockModel = {
     ...ElementDefault,
