@@ -1,22 +1,24 @@
-import {Vector3Like} from "three";
-import {ElementDefault, ElementID, ElementModel} from "../ElementModel";
+import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
 import {ChunkID} from "../../structure/spacial/ChunkModel";
+import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementIsResizeable";
 
 /**
  * API data model
  */
-export type JointModel = ElementModel & {
-    id: ElementID,
+export type JointModel = ElementModel
+    & ElementResizeable
+    & {
     neighbour: ChunkID|null,
-    dimension: Vector3Like,
     vision: number,
 }
 
 export const JointDefault: JointModel = {
     ...ElementDefault,
+    ...ElementResizeableDefault,
+
     type: ElementTypes.Joint,
+
     neighbour: null,
-    dimension: { x: 1, y: 1, z: 1 },
     vision: 1,
 }

@@ -9,8 +9,7 @@ import React, {useState} from "react";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
 import {Element} from "../../world/Element";
-
-const SNAP_INTERVAL = 1.0;
+import {isElementResizeable} from "../../../data/model/element/marker/ElementIsResizeable";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
@@ -29,6 +28,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
         return <></>
     }
 
+    // pivot is on average position of all selected elements
     const pivotPosition = new Vector3().copy(props.activeChunkWorldPosition);
     visibleSelectedElements.forEach(element => {
         pivotPosition.add(new Vector3().copy(element.position));
@@ -36,6 +36,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
     pivotPosition.divideScalar(visibleSelectedElements.length);
 
     const handleDragEnd = () => {
+        setPivotResetCounter(c => c + 1);
         if (!pivotRef.current) {
             return;
         }
@@ -46,37 +47,49 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
             return;
         }
 
-        const pivotDrag = new Vector3().setFromMatrixPosition(pivotMatrix);
-        const snappedDrag = new Vector3(
-            Math.round(pivotDrag.x / SNAP_INTERVAL) * SNAP_INTERVAL,
-            Math.round(pivotDrag.y / SNAP_INTERVAL) * SNAP_INTERVAL,
-            Math.round(pivotDrag.z / SNAP_INTERVAL) * SNAP_INTERVAL,
-        );
-
-        setPivotResetCounter(c => c + 1);
-        if (snappedDrag.length() === 0) {
+        const pivotDimension = new Vector3().setFromMatrixScale(pivotMatrix);
+        if (!pivotDimension.equals(new Vector3(1, 1, 1))) {
+            visibleSelectedElements.forEach(element => {
+                if (!isElementResizeable(element)) {
+                    return;
+                }
+                dispatcher({
+                    type: 'chunk_patch_element',
+                    payload: {
+                        id: element.id,
+                        dimension: new Vector3()
+                            .copy(element.dimension)
+                            .multiply(pivotDimension)
+                            .round(),
+                    } as Partial<ElementModel>,
+                });
+            });
             return;
         }
 
-        visibleSelectedElements.forEach(element => {
-            const newPosition = new Vector3()
-                .copy(element.position)
-                .add(snappedDrag)
-            ;
-            dispatcher({
-                type: 'chunk_patch_element',
-                payload: {
-                    id: element.id,
-                    position: newPosition,
-                }
+        const pivotPosition = new Vector3().setFromMatrixPosition(pivotMatrix);
+        if (!pivotPosition.equals(new Vector3(0, 0, 0))) {
+            visibleSelectedElements.forEach(element => {
+                dispatcher({
+                    type: 'chunk_patch_element',
+                    payload: {
+                        id: element.id,
+                        position: new Vector3()
+                            .copy(element.position)
+                            .add(pivotPosition)
+                            .round(),
+                    },
+                });
+
             });
-        });
+            return;
+        }
     };
 
     return (
         <PivotControls
             disableRotations={true}
-            disableScaling={true}
+            disableScaling={visibleSelectedElements.length !== 1 || !isElementResizeable(visibleSelectedElements[0])}
             disableSliders={true}
             depthTest={false}
             opacity={0.75}
