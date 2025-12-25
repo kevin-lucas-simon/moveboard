@@ -71,7 +71,7 @@ export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
             <mesh castShadow receiveShadow>
                 <sphereGeometry
                     args={[props.diameter / 2 + bounceAnimation * (bounceAnimationDiameter - props.diameter) / 2]}/>
-                <meshStandardMaterial color={colorHex}/>
+                <meshStandardMaterial color={colorHex} roughness={0.5} />
             </mesh>
         </RigidBody>
     );
