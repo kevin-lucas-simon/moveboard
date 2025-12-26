@@ -1,13 +1,13 @@
 import {ElementTypes} from "../ElementTypes";
 import {ElementDefault, ElementModel} from "../ElementModel";
-import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementResizeable";
+import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
 
 export type BarrierBlockModel = ElementModel
-    & ElementResizeable
+    & ElementDimensionable
 
 export const BarrierBlockDefault: BarrierBlockModel = {
     ...ElementDefault,
-    ...ElementResizeableDefault,
+    ...ElementDimensionableDefault,
 
     type: ElementTypes.BarrierBlock,
 }

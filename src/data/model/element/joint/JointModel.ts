@@ -1,10 +1,10 @@
 import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
 import {ChunkID} from "../../structure/spacial/ChunkModel";
-import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementResizeable";
+import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
 
 export type JointModel = ElementModel
-    & ElementResizeable
+    & ElementDimensionable
     & {
     neighbour: ChunkID|null,
     vision: number,
@@ -12,7 +12,7 @@ export type JointModel = ElementModel
 
 export const JointDefault: JointModel = {
     ...ElementDefault,
-    ...ElementResizeableDefault,
+    ...ElementDimensionableDefault,
 
     type: ElementTypes.Joint,
 

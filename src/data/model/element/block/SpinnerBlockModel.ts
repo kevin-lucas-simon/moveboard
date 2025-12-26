@@ -2,10 +2,10 @@ import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementColorable, ElementColorableDefault} from "../marker/ElementColorable";
 import {ElementTypes} from "../ElementTypes";
 import {ColorTypes} from "../../Color";
-import {ElementResizeable, ElementResizeableDefault} from "../marker/ElementResizeable";
+import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
 
 export type SpinnerBlockModel = ElementModel
-    & ElementResizeable
+    & ElementDimensionable
     & ElementColorable
     & {
         speed: number,
@@ -13,7 +13,7 @@ export type SpinnerBlockModel = ElementModel
 
 export const SpinnerBlockDefault: SpinnerBlockModel = {
     ...ElementDefault,
-    ...ElementResizeableDefault,
+    ...ElementDimensionableDefault,
     ...ElementColorableDefault,
 
     type: ElementTypes.SpinnerBlock,
