@@ -6,6 +6,7 @@ import {FloorBlockDefault} from "./block/FloorBlockModel";
 import {GroupDefault} from "./system/GroupModel";
 import {JointDefault} from "./joint/JointModel";
 import {ElementTypes} from "./ElementTypes";
+import {SpinnerBlockDefault} from "./block/SpinnerBlockModel";
 
 export const ElementDefaultProps: Record<ElementTypes, {
     defaultProps: ElementModel;
@@ -27,6 +28,9 @@ export const ElementDefaultProps: Record<ElementTypes, {
     },
     [ElementTypes.Joint]: {
         defaultProps: JointDefault,
+    },
+    [ElementTypes.SpinnerBlock]: {
+        defaultProps: SpinnerBlockDefault,
     },
     [ElementTypes.Unknown]: {
         defaultProps: ElementDefault,
