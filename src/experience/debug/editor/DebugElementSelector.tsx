@@ -10,6 +10,7 @@ import {ElementModel} from "../../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
 import {Element} from "../../world/Element";
 import {isElementResizeable} from "../../../data/model/element/marker/ElementResizeable";
+import {useSimulationSettings} from "../settings/SimulationSettingsProvider";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
@@ -19,12 +20,13 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
     const editor = useEditorContext();
     const dispatcher = useEditorDispatcher();
 
+    const isEditingMode = useSimulationSettings()?.isEditingMode;
     const visibleSelectedElements = Object.values(useEditorSelectedChunkElements()).filter((element: ElementModel) => !element.hidden);
 
     const [pivotResetCounter, setPivotResetCounter] = useState<number>(0);
     const pivotRef = React.useRef<any>(null);
 
-    if (!editor || !dispatcher || visibleSelectedElements.length === 0) {
+    if (!editor || !dispatcher || visibleSelectedElements.length === 0 || !isEditingMode) {
         return <></>
     }
 

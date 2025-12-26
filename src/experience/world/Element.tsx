@@ -9,6 +9,7 @@ import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
 import {filterElementsByType} from "../../data/factory/ElementFactory";
 import {JointModel} from "../../data/model/element/joint/JointModel";
+import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;
@@ -17,6 +18,7 @@ export type ElementProps = ElementModel & {
 export function Element(props: ElementProps) {
     const editorContext = useEditorContext();
     const editorActions = useEditorDispatcher();
+    const isEditingMode = useSimulationSettings()?.isEditingMode;
 
     if (props.hidden) {
         return <></>
@@ -25,7 +27,7 @@ export function Element(props: ElementProps) {
     const selected = editorContext?.selectedElements.includes(props.id) ?? false;
 
     const selectElement = (e: ThreeEvent<MouseEvent>) => {
-        if (!editorContext || !editorActions) {
+        if (!editorContext || !editorActions || !isEditingMode) {
             return;
         }
 
