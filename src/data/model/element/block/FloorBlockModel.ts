@@ -1,10 +1,17 @@
-import {BasicBlockDefault, BasicBlockModel} from "./BasicBlockModel";
 import {ElementTypes} from "../ElementTypes";
 import {ColorTypes} from "../../Color";
+import {ElementDefault, ElementModel} from "../ElementModel";
+import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
+import {ElementColorable, ElementColorableDefault} from "../marker/ElementColorable";
 
-export type FloorBlockModel = BasicBlockModel
+export type FloorBlockModel = ElementModel
+    & ElementDimensionable
+    & ElementColorable
+
 export const FloorBlockDefault: FloorBlockModel = {
-    ...BasicBlockDefault,
+    ...ElementDefault,
+    ...ElementDimensionableDefault,
+    ...ElementColorableDefault,
 
     type: ElementTypes.FloorBlock,
 

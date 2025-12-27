@@ -5,6 +5,7 @@ import {Vector3} from "three";
 import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
+import {Angle} from "../../../data/model/Angle";
 
 export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const colorHex = useElementColoring(props.color);
@@ -15,18 +16,20 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
 
     useFrame((_, delta) => {
         if (spinnerRef.current) {
-            spinnerRef.current.setAngvel(new Vector3(0, props.speed * delta, 0), true);
+            const initialRotation = new Angle().copy(props.rotation).toEuler();
+            const spinnerAngle = new Vector3(0, props.speed * delta, 0).applyEuler(initialRotation);
+
+            spinnerRef.current.setAngvel(spinnerAngle, true);
         }
     });
 
     return (
         <>
             <RigidBody
-                name={"SpinnerBlock"}
                 ref={spinnerRef}
                 position={new Vector3().copy(props.position)}
+                rotation={new Angle().copy(props.rotation).toEuler()}
                 type={isEditingMode ? "fixed" : "kinematicVelocity"}
-                colliders={"cuboid"}
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
@@ -35,7 +38,10 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
             </RigidBody>
 
             {isEditingMode && (
-                <mesh position={new Vector3().copy(props.position)}>
+                <mesh
+                    position={new Vector3().copy(props.position)}
+                    rotation={new Angle().copy(props.rotation).toEuler()}
+                >
                     <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />
                     <meshPhongMaterial color={colorHex} opacity={0.1} transparent/>
                 </mesh>

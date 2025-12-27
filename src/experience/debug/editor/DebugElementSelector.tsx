@@ -4,13 +4,15 @@ import {
     useEditorContext,
     useEditorSelectedChunkElements
 } from "../../../editor/reducer/EditorProvider";
-import {Matrix4, Vector3, Vector3Like} from "three";
+import {Euler, Matrix4, Vector3, Vector3Like} from "three";
 import React, {useState} from "react";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {Select} from "@react-three/postprocessing";
 import {Element} from "../../world/Element";
-import {isElementResizeable} from "../../../data/model/element/marker/ElementDimensionable";
+import {isElementDimensionable} from "../../../data/model/element/marker/ElementDimensionable";
 import {useSimulationSettings} from "../settings/SimulationSettingsProvider";
+import {Angle} from "../../../data/model/Angle";
+import {isElementRotatable} from "../../../data/model/element/marker/ElementRotatable";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
@@ -20,30 +22,40 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
     const editor = useEditorContext();
     const dispatcher = useEditorDispatcher();
 
-    const isEditingMode = useSimulationSettings()?.isEditingMode;
-    const visibleSelectedElements = Object.values(useEditorSelectedChunkElements()).filter((element: ElementModel) => !element.hidden);
-
     const [pivotResetCounter, setPivotResetCounter] = useState<number>(0);
     const pivotRef = React.useRef<any>(null);
 
-    if (!editor || !dispatcher || visibleSelectedElements.length === 0 || !isEditingMode) {
+    const selectedElements = Object
+        .values(useEditorSelectedChunkElements())
+        .filter((element: ElementModel) => !element.hidden);
+
+    const enableEditing = useSimulationSettings()?.isEditingMode;
+
+    if (!editor || !dispatcher || selectedElements.length === 0 || !enableEditing) {
         return <></>
     }
 
-    // pivot is on average position of all selected elements
+    const enableRotation = selectedElements.length === 1 && isElementRotatable(selectedElements[0]);
+    const enableScaling = selectedElements.length === 1 && isElementDimensionable(selectedElements[0]);
+
+    // pivot position is on average of all selected elements
     const pivotPosition = new Vector3().copy(props.activeChunkWorldPosition);
-    visibleSelectedElements.forEach(element => {
+    selectedElements.forEach(element => {
         pivotPosition.add(new Vector3().copy(element.position));
     });
-    pivotPosition.divideScalar(visibleSelectedElements.length);
+    pivotPosition.divideScalar(selectedElements.length);
+
+    // pivot rotation is only for first selected element
+    const pivotRotation = new Euler();
+    if (enableRotation && isElementRotatable(selectedElements[0])) {
+        const elementRotation = new Angle().copy(selectedElements[0].rotation).toEuler();
+        pivotRotation.copy(elementRotation);
+    }
 
     const handleDragEnd = () => {
         setPivotResetCounter(c => c + 1);
-        if (!pivotRef.current) {
-            return;
-        }
 
-        const pivotMatrix = pivotRef.current.matrix as Matrix4;
+        const pivotMatrix = pivotRef.current?.matrix as Matrix4;
         if (!pivotMatrix) {
             console.warn("Pivot matrix not found: " + pivotRef.current);
             return;
@@ -51,8 +63,8 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
 
         const pivotDimension = new Vector3().setFromMatrixScale(pivotMatrix);
         if (!pivotDimension.equals(new Vector3(1, 1, 1))) {
-            visibleSelectedElements.forEach(element => {
-                if (!isElementResizeable(element)) {
+            selectedElements.forEach(element => {
+                if (!isElementDimensionable(element)) {
                     return;
                 }
                 dispatcher({
@@ -71,7 +83,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
 
         const pivotPosition = new Vector3().setFromMatrixPosition(pivotMatrix);
         if (!pivotPosition.equals(new Vector3(0, 0, 0))) {
-            visibleSelectedElements.forEach(element => {
+            selectedElements.forEach(element => {
                 dispatcher({
                     type: 'chunk_patch_element',
                     payload: {
@@ -90,24 +102,22 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
 
     return (
         <PivotControls
+            key={pivotResetCounter}
+            ref={pivotRef}
+            offset={pivotPosition.toArray()}
+            rotation={[pivotRotation.x, pivotRotation.y, pivotRotation.z]}
             disableRotations={true}
-            disableScaling={visibleSelectedElements.length !== 1 || !isElementResizeable(visibleSelectedElements[0])}
+            disableScaling={!enableScaling}
             disableSliders={true}
             depthTest={false}
-            opacity={0.75}
             lineWidth={2}
             scale={2}
-            offset={pivotPosition.toArray()}
-            key={pivotResetCounter} // force re-mount to reset position
-            ref={pivotRef}
+            opacity={0.75}
             onDragEnd={handleDragEnd}
         >
-            {visibleSelectedElements.map(element =>
+            {selectedElements.map(element =>
                 <Select enabled={true} key={element.id}>
-                    <Element
-                        {...element}
-                        key={element.id}
-                    />
+                    <Element {...element} key={element.id} />
                 </Select>
             )}
         </PivotControls>

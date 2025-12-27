@@ -9,6 +9,6 @@ export const ElementDimensionableDefault = {
     dimension: {x: 1, y: 1, z: 1},
 } as const;
 
-export function isElementResizeable(element: ElementModel): element is ElementDimensionable {
+export function isElementDimensionable(element: ElementModel): element is ElementDimensionable {
     return (element as ElementDimensionable).dimension !== undefined;
 }
