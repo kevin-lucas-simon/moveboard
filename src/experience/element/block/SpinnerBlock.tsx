@@ -43,7 +43,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
                     rotation={new Angle().copy(props.rotation).toEuler()}
                 >
                     <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />
-                    <meshPhongMaterial color={colorHex} opacity={0.1} transparent/>
+                    <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>
                 </mesh>
             )}
         </>

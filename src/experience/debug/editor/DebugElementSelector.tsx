@@ -90,8 +90,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
                         id: element.id,
                         position: new Vector3()
                             .copy(element.position)
-                            .add(pivotPosition)
-                            .round(),
+                            .add(pivotPosition.round()),
                     },
                 });
 
