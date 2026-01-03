@@ -8,6 +8,7 @@ import {EmptyElement} from "./system/EmptyElement";
 import {JointElement} from "./joint/JointElement";
 import {UnknownElement} from "./system/UnknownElement";
 import {SpinnerBlock} from "./block/SpinnerBlock";
+import {ButtonBlock} from "./block/ButtonBlock";
 
 export const ElementExperienceComponents: Record<ElementTypes, {
     experienceComponent: React.ComponentType<any>;
@@ -20,6 +21,9 @@ export const ElementExperienceComponents: Record<ElementTypes, {
     },
     [ElementTypes.BounceBlock]: {
         experienceComponent: BounceBlock,
+    },
+    [ElementTypes.ButtonBlock]: {
+        experienceComponent: ButtonBlock,
     },
     [ElementTypes.FloorBlock]: {
         experienceComponent: FloorBlock,
