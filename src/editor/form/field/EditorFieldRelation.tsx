@@ -24,7 +24,7 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
     return (
         <Combobox
             value={props.value}
-            // onChange={handleSelect} TODO
+            onChange={handleSelect}
             onClose={() => setQuery('')}
             immediate={true}
         >
