@@ -5,7 +5,7 @@ import {RefObject, useRef} from "react";
 
 export type PlayerProps = {
     spawnPosition: Vector3Like,
-    playerRef: RefObject<RapierRigidBody>,
+    playerRef: RefObject<RapierRigidBody|null>,
 }
 
 /**
@@ -32,7 +32,7 @@ export function Player(props: PlayerProps) {
         >
             <mesh castShadow receiveShadow>
                 <sphereGeometry args={[0.5]}/>
-                <meshStandardMaterial color={"hotpink"} roughness={0.5}/>
+                <meshBasicMaterial color={"hotpink"}/>
             </mesh>
         </RigidBody>
     )

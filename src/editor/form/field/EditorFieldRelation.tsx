@@ -13,7 +13,7 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
         .filter(([_, display]) => display.toLowerCase().includes(query.toLowerCase()))
     ;
 
-    const handleSelect = (item: UUID) => {
+    const handleSelect = (item: UUID|null) => {
         setQuery('');
         if (props.nullable && item === props.value) {
             return props.onChange(null);

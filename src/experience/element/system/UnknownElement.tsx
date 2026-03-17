@@ -11,11 +11,11 @@ export function UnknownElement(props: ElementModel = ElementDefault) {
         <group position={new Vector3().copy(props.position)}>
             <mesh>
                 <sphereGeometry args={[0.75]}/>
-                <meshPhongMaterial color={'black'} opacity={0.25} transparent={true}/>
+                {/*<meshPhongMaterial color={'black'} opacity={0.25} transparent={true}/>*/}
             </mesh>
             <mesh>
                 <sphereGeometry/>
-                <meshPhongMaterial color={'orange'} opacity={0.5} transparent={true}/>
+                {/*<meshPhongMaterial color={'orange'} opacity={0.5} transparent={true}/>*/}
             </mesh>
         </group>
     );

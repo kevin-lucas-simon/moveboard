@@ -55,11 +55,11 @@ export function JointElement(props: JointProps) {
                 <group position={new Vector3().copy(props.position)}>
                     <mesh>
                         <sphereGeometry args={[0.05]}/>
-                        <meshStandardMaterial color={"green"}/>
+                        <meshBasicMaterial color={"green"}/>
                     </mesh>
                     <mesh>
                         <boxGeometry args={new Vector3().copy(props.dimension).toArray()}/>
-                        <meshPhongMaterial color={"green"} opacity={0.25} transparent/>
+                        {/*<meshPhongMaterial color={"green"} opacity={0.25} transparent/>*/}
                     </mesh>
                 </group>
             }

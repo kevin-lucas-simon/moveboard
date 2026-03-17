@@ -33,7 +33,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshStandardMaterial color={colorHex} />
+                    <meshBasicMaterial color={colorHex} />
                 </mesh>
             </RigidBody>
 
@@ -43,7 +43,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
                     rotation={new Angle().copy(props.rotation).toEuler()}
                 >
                     <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />
-                    <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>
+                    {/*<meshPhongMaterial color={colorHex} opacity={0.2} transparent/>*/}
                 </mesh>
             )}
         </>
