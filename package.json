@@ -24,6 +24,7 @@
     "react-scripts": "5.0.1",
     "react-sortablejs": "^6.1.4",
     "sortablejs": "^1.15.6",
+    "typescript": "^5.9.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
