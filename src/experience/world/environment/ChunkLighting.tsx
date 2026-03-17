@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from "react";
 import {DirectionalLight, Vector3Like} from "three";
-import {SoftShadows} from "@react-three/drei";
 
 export function ChunkLighting(props: {
     chunkDimension: Vector3Like,
@@ -29,7 +28,6 @@ export function ChunkLighting(props: {
 
     return (
         <>
-            <SoftShadows />
             <ambientLight intensity={Math.PI/2} />
 
             <directionalLight
