@@ -18,7 +18,7 @@ export function Environment(props: EnvironmentProps) {
     const debug = useSimulationSettings();
 
     return (
-        <Canvas shadows resize={{ debounce: 0 }}>
+        <Canvas resize={{ debounce: 0 }}>
             <Selection>
                 <EnvironmentPhysics>
                     {props.children}
