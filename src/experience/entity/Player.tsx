@@ -32,7 +32,7 @@ export function Player(props: PlayerProps) {
         >
             <mesh castShadow receiveShadow>
                 <sphereGeometry args={[0.5]}/>
-                <meshBasicMaterial color={"hotpink"}/>
+                <meshStandardMaterial color={"hotpink"}/>
             </mesh>
         </RigidBody>
     )

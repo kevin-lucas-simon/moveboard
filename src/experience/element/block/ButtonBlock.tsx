@@ -32,7 +32,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
             <RigidBody type={"fixed"}>
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshBasicMaterial color={isPressed ? colorActive : colorInactive} />
+                    <meshStandardMaterial color={isPressed ? colorActive : colorInactive} />
                 </mesh>
 
                 {/* TODO ich will hier nen statischen Border als Rand machen */}
@@ -56,7 +56,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
                         isPressed ? buttonHeightPressed*2 : buttonHeight*2,
                         props.dimension.z - 2*buttonPadding,
                     ]}/>
-                    <meshBasicMaterial color={isPressed ? colorActive : colorInactive} />
+                    <meshStandardMaterial color={isPressed ? colorActive : colorInactive} />
                 </mesh>
             </CuboidCollider>
         </group>

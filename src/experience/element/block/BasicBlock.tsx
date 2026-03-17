@@ -15,7 +15,7 @@ export function BasicBlock(props: BasicBlockModel = BasicBlockDefault) {
         >
             <mesh castShadow receiveShadow>
                 <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                <meshBasicMaterial color={colorHex} />
+                <meshStandardMaterial color={colorHex} />
             </mesh>
         </RigidBody>
     );

@@ -55,7 +55,7 @@ export function JointElement(props: JointProps) {
                 <group position={new Vector3().copy(props.position)}>
                     <mesh>
                         <sphereGeometry args={[0.05]}/>
-                        <meshBasicMaterial color={"green"}/>
+                        <meshStandardMaterial color={"green"}/>
                     </mesh>
                     <mesh>
                         <boxGeometry args={new Vector3().copy(props.dimension).toArray()}/>

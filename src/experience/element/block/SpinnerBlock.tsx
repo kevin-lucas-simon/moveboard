@@ -33,7 +33,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshBasicMaterial color={colorHex} />
+                    <meshStandardMaterial color={colorHex} />
                 </mesh>
             </RigidBody>
 
