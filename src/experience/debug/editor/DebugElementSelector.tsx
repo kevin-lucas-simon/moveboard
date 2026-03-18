@@ -117,8 +117,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
                 // TODO React Postprocessing is outdated, here is an other solution needed
                 // TODO view React Three new Outline feature
                 // <Select enabled={true} key={element.id}>
-                    <Element {...element} key={element.id} />
-                // </Select>
+                <Element {...element} key={element.id} />
             )}
         </PivotControls>
     );

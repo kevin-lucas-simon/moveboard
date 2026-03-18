@@ -6,7 +6,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@react-three/drei": "^11.0.0-alpha.5",
-    "@react-three/fiber": "^9.5",
+    "@react-three/fiber": "10.0.0-alpha.2",
     "@react-three/rapier": "^2.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^16",
@@ -27,7 +27,8 @@
     "web-vitals": "^2.1.4"
   },
   "overrides": {
-    "typescript": "^5"
+    "typescript": "^5",
+    "@react-three/fiber": "$@react-three/fiber"
   },
   "scripts": {
     "start": "react-scripts start",
