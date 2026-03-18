@@ -63,7 +63,7 @@ export function EditorCreateLevelDialog(props: EditorDialogProps) {
                         placeholder="Use no Server Level as Preset"
                         className="w-full p-2 border border-gray-300 bg-transparent rounded"
                         displayValue={(serverLevel: LevelOverviewModel) => serverLevel?.name}
-                        onChange={(event) => setQuery(event.target.value)}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
                     />
                     <ComboboxOptions
                         anchor="bottom start"

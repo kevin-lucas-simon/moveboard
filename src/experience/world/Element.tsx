@@ -1,7 +1,6 @@
 import {ElementModel} from "../../data/model/element/ElementModel";
 import React from "react";
 import {useEditorDispatcher, useEditorContext} from "../../editor/reducer/EditorProvider";
-import {ThreeEvent} from "@react-three/fiber/dist/declarations/src/core/events";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
@@ -10,6 +9,7 @@ import {ElementExperienceComponents} from "../element/ElementExperienceComponent
 import {filterElementsByType} from "../../data/factory/ElementFactory";
 import {JointModel} from "../../data/model/element/joint/JointModel";
 import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
+import {ThreeEvent} from "@react-three/fiber";
 
 export type ElementProps = ElementModel & {
     children?: React.ReactNode;

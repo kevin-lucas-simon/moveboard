@@ -7,11 +7,12 @@
     "@heroicons/react": "^2.2.0",
     "@react-three/drei": "^11.0.0-alpha.5",
     "@react-three/postprocessing": "^3.0.4",
+    "@react-three/fiber": ">=10.0.0-0",
     "@react-three/rapier": "^2.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^16",
     "@testing-library/user-event": "^13.5.0",
-    "@types/three": "^0.181",
+    "@types/three": "^0.182",
     "clsx": "^2.1.1",
     "dexie": "^4.2.0",
     "dexie-react-hooks": "^4.2.0",
@@ -23,6 +24,7 @@
     "react-scripts": "5.0.1",
     "react-sortablejs": "^6.1.4",
     "sortablejs": "^1.15.6",
+    "three": "^0.182",
     "web-vitals": "^2.1.4"
   },
   "overrides": {

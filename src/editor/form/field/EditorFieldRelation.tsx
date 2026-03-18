@@ -1,6 +1,6 @@
 import {EditorFieldType} from "../EditorFieldType";
 import {UUID} from "../../../data/model/UUID";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Combobox, ComboboxInput, ComboboxOption, ComboboxOptions} from "@headlessui/react";
 import clsx from "clsx";
 
@@ -31,7 +31,7 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
             <ComboboxInput
                 className={`w-full grow bg-transparent outline-none ${props.className ?? ''}`}
                 displayValue={(item: UUID) => props.options[item] ?? ''}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
                 placeholder={"Select..."}
             />
             <ComboboxOptions

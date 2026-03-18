@@ -1,4 +1,3 @@
-import {PivotControls} from "@react-three/drei";
 import {
     useEditorDispatcher,
     useEditorContext,
@@ -13,6 +12,7 @@ import {isElementDimensionable} from "../../../data/model/element/marker/Element
 import {useSimulationSettings} from "../settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
 import {isElementRotatable} from "../../../data/model/element/marker/ElementRotatable";
+import {PivotControls} from "@react-three/drei/webgpu";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;

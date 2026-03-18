@@ -1,5 +1,5 @@
 import {Canvas, extend} from "@react-three/fiber";
-import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
+import {Stats} from "@react-three/drei";
 import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 import React from "react";
 import {EnvironmentPhysics} from "./environment/EnvironmentPhysics";
@@ -32,27 +32,22 @@ export function Environment(props: EnvironmentProps) {
                 return renderer.init().then(() => renderer)
             }}
         >
-            <Selection>
+            {/*<Selection>*/}
                 <EnvironmentPhysics>
                     {props.children}
                 </EnvironmentPhysics>
 
-                {debug?.displayEditorFeatures &&
-                    <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                        <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
-                    </GizmoHelper>
-                }
                 {debug?.displayPerformanceStats &&
                     <Stats />
                 }
-                <EffectComposer autoClear={false}>
-                    <Outline
-                        edgeStrength={10000}
-                        visibleEdgeColor={0xff0000}
-                        hiddenEdgeColor={0xff0000}
-                    />
-                </EffectComposer>
-            </Selection>
+                {/*<EffectComposer autoClear={false}>*/}
+                {/*    <Outline*/}
+                {/*        edgeStrength={10000}*/}
+                {/*        visibleEdgeColor={0xff0000}*/}
+                {/*        hiddenEdgeColor={0xff0000}*/}
+                {/*    />*/}
+                {/*</EffectComposer>*/}
+            {/*</Selection>*/}
         </Canvas>
     )
 }

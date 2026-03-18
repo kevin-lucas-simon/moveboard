@@ -6,7 +6,7 @@ export function EditorFieldBoolean(props: EditorFieldType<boolean>) {
     return (
         <Switch
             checked={props.value}
-            onChange={e => props.onChange(e)}
+            onChange={(checked: boolean) => props.onChange(checked)}
             className={clsx(
                 "group relative flex h-5 w-9 cursor-pointer rounded-full bg-gray-500/25 p-1 place-self-center",
                 "transition-colors duration-200 ease-in-out focus:outline-none",
