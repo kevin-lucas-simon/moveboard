@@ -28,7 +28,7 @@ export function BasicDialog(props: EditorDialogProps) {
                     <div className="flex min-h-full items-center justify-center p-6">
                         <DialogPanel
                             transition
-                            className="w-full max-w-lg rounded-xl bg-gray-50 p-6 data-[closed]:opacity-0"
+                            className="w-full max-w-lg rounded-xl bg-gray-50 p-6 data-closed:opacity-0"
                         >
                             <DialogTitle as="h3" className="text-xl mb-2">
                                 {props.title}

@@ -36,15 +36,15 @@ export function EditorFieldRelation(props: EditorFieldType<UUID|null> & {
             />
             <ComboboxOptions
                 anchor="bottom start"
-                className="w-[var(--input-width)] border-t border-gray-500/10 empty:invisible rounded-b-xl bg-white shadow-lg drop-shadow-xl "
+                className="w-(--input-width) border-t border-gray-500/10 empty:invisible rounded-b-xl bg-white shadow-lg drop-shadow-xl "
             >
                 {filteredItems.map(([id, display]) => (
                     <ComboboxOption
                         key={id}
                         value={id}
                         className={clsx(
-                            "w-full px-4 py-1 data-[focus]:bg-gray-500/10",
-                            props.nullable && "data-[selected]:bg-gray-500/20"
+                            "w-full px-4 py-1 data-focus:bg-gray-500/10",
+                            props.nullable && "data-selected:bg-gray-500/20"
                         )}
                     >
                         {display}

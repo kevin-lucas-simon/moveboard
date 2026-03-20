@@ -20,7 +20,7 @@ export function LevelSelection(props: StartupModalProps) {
         >
             <DialogPanel
                 transition
-                className="w-full h-full bg-white duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+                className="w-full h-full bg-white duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
             >
                 <div className="h-full w-full flex flex-col p-8 text-center">
                     <div className="h-2/3 flex gap-4 items-center justify-center">
