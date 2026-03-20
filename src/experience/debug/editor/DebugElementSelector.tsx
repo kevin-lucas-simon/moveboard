@@ -118,6 +118,7 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
                 // TODO view React Three new Outline feature
                 // <Select enabled={true} key={element.id}>
                 <Element {...element} key={element.id} />
+                // see https://drei.docs.pmnd.rs/abstractions/outlines
             )}
         </PivotControls>
     );
