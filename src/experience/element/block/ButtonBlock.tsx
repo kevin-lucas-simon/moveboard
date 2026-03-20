@@ -9,7 +9,7 @@ const buttonHeight = 0.2;
 const buttonHeightPressed = 0.05;
 
 export function ButtonBlock(props: ButtonBlockModel) {
-    const [isPressed, setPresed] = useState(false);
+    const [isPressed, setPressed] = useState(false);
 
     const colorActive = "green";
     const colorInactive = "gray";
@@ -47,8 +47,8 @@ export function ButtonBlock(props: ButtonBlockModel) {
                     buttonHeight,
                     (props.dimension.z - 2*buttonPadding)/2,
                 ]}
-                onIntersectionEnter={() => setPresed(true)}
-                onIntersectionExit={() => setPresed(false)}
+                onIntersectionEnter={() => setPressed(true)}
+                onIntersectionExit={() => setPressed(false)}
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={[
