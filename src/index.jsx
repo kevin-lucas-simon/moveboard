@@ -7,5 +7,3 @@ ReactDOM
     .createRoot(document.getElementById('root'))
     .render(<App/>)
 ;
-
-console.log('Hello world!');
