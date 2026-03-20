@@ -16,7 +16,7 @@ export function BaseListItem(props: {
     } ;
 
     return (
-        <div className={clsx(
+        <li className={clsx(
             props.isSelected && "bg-gray-500/10",
             props.isHidden && "text-gray-500/50"
         )}>
@@ -29,6 +29,6 @@ export function BaseListItem(props: {
                 </div>
             </div>
             {props.recursiveChildren}
-        </div>
+        </li>
     );
 }
