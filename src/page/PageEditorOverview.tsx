@@ -1,7 +1,7 @@
 import {useLiveQuery} from "dexie-react-hooks";
 import {localEditorDB} from "../data/localEditorDB";
 import {EditorMainMenu} from "../editor/layout/menu/EditorMainMenu";
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import {EditorLeaveDialog} from "../editor/dialog/levelOverview/EditorLeaveDialog";
 import {EditorCreateLevelDialog} from "../editor/dialog/levelOverview/EditorCreateLevelDialog";
 import React, {useState} from "react";
