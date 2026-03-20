@@ -8,6 +8,7 @@
     "@react-three/drei": "^11.0.0-alpha.5",
     "@react-three/fiber": "10.0.0-alpha.2",
     "@react-three/rapier": "^2.2.0",
+    "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^16",
@@ -24,6 +25,7 @@
     "react-router-dom": "^6.28.0",
     "react-sortablejs": "^6.1.4",
     "sortablejs": "^1.15.6",
+    "tailwindcss": "^4.2.2",
     "three": "^0.182",
     "vite": "^8.0.1",
     "vite-plugin-svgr": "^4.5.0",
@@ -58,7 +60,6 @@
     ]
   },
   "devDependencies": {
-    "@types/sortablejs": "^1.15.8",
-    "tailwindcss": "^3.4.3"
+    "@types/sortablejs": "^1.15.8"
   }
 }
