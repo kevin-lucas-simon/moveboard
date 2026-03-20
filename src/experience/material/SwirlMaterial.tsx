@@ -21,5 +21,5 @@ export function SwirlMaterial(props: {
         return mul(_node2, _node11);
     }, [props.color]);
 
-    return <meshStandardNodeMaterial colorNode={colorNode} />
+    return <meshStandardNodeMaterial key={props.color} colorNode={colorNode} />
 }
