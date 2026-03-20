@@ -6,6 +6,7 @@ import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
+import {SwirlMaterial} from "../../material/SwirlMaterial";
 
 export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const colorHex = useElementColoring(props.color);
@@ -33,19 +34,19 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshStandardMaterial color={colorHex} />
+                    <SwirlMaterial color={colorHex} />
                 </mesh>
             </RigidBody>
 
-            {isEditingMode && (
-                <mesh
-                    position={new Vector3().copy(props.position)}
-                    rotation={new Angle().copy(props.rotation).toEuler()}
-                >
-                    <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />
-                    <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>
-                </mesh>
-            )}
+            {/*{isEditingMode && (*/}
+            {/*    <mesh*/}
+            {/*        position={new Vector3().copy(props.position)}*/}
+            {/*        rotation={new Angle().copy(props.rotation).toEuler()}*/}
+            {/*    >*/}
+            {/*        <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />*/}
+            {/*        <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>*/}
+            {/*    </mesh>*/}
+            {/*)}*/}
         </>
     );
 }

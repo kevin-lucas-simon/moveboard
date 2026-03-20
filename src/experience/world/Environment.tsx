@@ -1,13 +1,16 @@
-import {Canvas} from "@react-three/fiber";
-import {GizmoHelper, GizmoViewport, Stats} from "@react-three/drei";
+import {Canvas, extend} from "@react-three/fiber";
+import {Stats} from "@react-three/drei";
 import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 import React from "react";
 import {EnvironmentPhysics} from "./environment/EnvironmentPhysics";
-import {EffectComposer, Outline, Selection} from "@react-three/postprocessing";
+import * as THREE from 'three/webgpu'
 
 export type EnvironmentProps = {
     children?: React.ReactNode | undefined,
 }
+
+// @ts-ignore
+extend(THREE)
 
 /**
  * Main game experience component to wrap the game and physics engine
@@ -18,28 +21,23 @@ export function Environment(props: EnvironmentProps) {
     const debug = useSimulationSettings();
 
     return (
-        <Canvas shadows resize={{ debounce: 0 }}>
-            <Selection>
-                <EnvironmentPhysics>
-                    {props.children}
-                </EnvironmentPhysics>
+        <Canvas
+            shadows
+            resize={{ debounce: 0 }}
+            gl={async (props) => {
+                // @ts-ignore
+                const renderer = new THREE.WebGPURenderer(props)
+                await renderer.init();
+                return renderer;
+            }}
+        >
+            <EnvironmentPhysics>
+                {props.children}
+            </EnvironmentPhysics>
 
-                {debug?.displayEditorFeatures &&
-                    <GizmoHelper alignment="bottom-right" margin={[80, 80]}>
-                        <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
-                    </GizmoHelper>
-                }
-                {debug?.displayPerformanceStats &&
-                    <Stats />
-                }
-                <EffectComposer autoClear={false}>
-                    <Outline
-                        edgeStrength={10000}
-                        visibleEdgeColor={0xff0000}
-                        hiddenEdgeColor={0xff0000}
-                    />
-                </EffectComposer>
-            </Selection>
+            {debug?.displayPerformanceStats &&
+                <Stats />
+            }
         </Canvas>
     )
 }

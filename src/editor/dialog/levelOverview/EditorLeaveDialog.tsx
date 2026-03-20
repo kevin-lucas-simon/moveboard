@@ -1,6 +1,6 @@
 import {EditorDialogProps} from "../EditorDialogProps";
 import {BasicDialog} from "../../../component/dialog/BasicDialog";
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router";
 
 export function EditorLeaveDialog(props: EditorDialogProps) {
     const navigate = useNavigate()

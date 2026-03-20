@@ -35,7 +35,6 @@ export function BaseList<T extends SortableListItem>(props: BaseListProps<T>) {
         <ReactSortable
             list={structuredClone(parentItems)}
             setList={reorderParentItems}
-            tag="ul"
             group={BaseList.name}
         >
             {parentItems.map(item => (

@@ -1,4 +1,3 @@
-import {PivotControls} from "@react-three/drei";
 import {
     useEditorDispatcher,
     useEditorContext,
@@ -7,12 +6,12 @@ import {
 import {Euler, Matrix4, Vector3, Vector3Like} from "three";
 import React, {useState} from "react";
 import {ElementModel} from "../../../data/model/element/ElementModel";
-import {Select} from "@react-three/postprocessing";
 import {Element} from "../../world/Element";
 import {isElementDimensionable} from "../../../data/model/element/marker/ElementDimensionable";
 import {useSimulationSettings} from "../settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
 import {isElementRotatable} from "../../../data/model/element/marker/ElementRotatable";
+import {PivotControls} from "@react-three/drei/webgpu";
 
 export type DebugElementSelectorProps = {
     activeChunkWorldPosition: Vector3Like;
@@ -115,9 +114,11 @@ export function DebugElementSelector(props: DebugElementSelectorProps) {
             onDragEnd={handleDragEnd}
         >
             {selectedElements.map(element =>
-                <Select enabled={true} key={element.id}>
-                    <Element {...element} key={element.id} />
-                </Select>
+                // TODO React Postprocessing is outdated, here is an other solution needed
+                // TODO view React Three new Outline feature
+                // <Select enabled={true} key={element.id}>
+                <Element {...element} key={element.id} />
+                // see https://drei.docs.pmnd.rs/abstractions/outlines
             )}
         </PivotControls>
     );
