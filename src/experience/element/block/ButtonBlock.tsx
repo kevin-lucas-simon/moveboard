@@ -3,6 +3,7 @@ import {CuboidCollider, RigidBody} from "@react-three/rapier";
 import {useState} from "react";
 import {Vector3} from "three";
 import {Angle} from "../../../data/model/Angle";
+import {BorderBlockMaterial} from "../../material/BorderBlockMaterial";
 
 const buttonPadding = 0.1;
 const buttonHeight = 0.2;
@@ -13,6 +14,11 @@ export function ButtonBlock(props: ButtonBlockModel) {
 
     const colorActive = "green";
     const colorInactive = "gray";
+
+    // TODO ich habe das Ziel, ja hier mit Farben zu verknüpfen auf welcher Ebene wir schalten
+    // TODO daher muss ich Muster haben, die zb auf Chunki Ebene agieren
+    // TODO Das Muster muss als Material gebaut werden, der Color selector muss das anzeigen und alle aktiven Elemente sollen dies austauschen dürfen
+    // TODO das Material soll nachhaltig auch animationen haben aktiv und farblos bei deaktiviertem State
 
     // TODO backdrop mesh
     // TODO sensor area mesh
@@ -32,11 +38,13 @@ export function ButtonBlock(props: ButtonBlockModel) {
             <RigidBody type={"fixed"}>
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshStandardMaterial color={isPressed ? colorActive : colorInactive} />
+                    <BorderBlockMaterial
+                        innerColor={isPressed ? colorActive : colorInactive}
+                        borderColor={"black"}
+                        blockDimension={props.dimension}
+                        borderThickness={0.1}
+                    />
                 </mesh>
-
-                {/* TODO ich will hier nen statischen Border als Rand machen */}
-                {/* vlt damit? https://threejs.org/docs/?q=subt#ExtrudeGeometry */}
             </RigidBody>
 
             <CuboidCollider
