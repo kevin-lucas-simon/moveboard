@@ -1,12 +1,12 @@
 import {ColorHex, ColorType} from "../../../data/model/Color";
-import {useExperienceState} from "../../reducer/ExperienceProvider";
+import {useLevelState} from "../../reducer/LevelStateProvider";
 import {StructureTypes} from "../../../data/model/structure/StructureTypes";
 import {StructureID} from "../../../data/model/structure/StructureModel";
 import {ColoringDefault, ColoringModel} from "../../../data/model/structure/material/ColoringModel";
 import {useCallback, useMemo} from "react";
 
 export function useElementColoring(colorType: ColorType): ColorHex {
-    const {level, activeChunkID} = useExperienceState();
+    const {level, activeChunkID} = useLevelState();
 
     const memoizedData = useMemo(() => {
         const coloringStructures = Object.values(level.structures)

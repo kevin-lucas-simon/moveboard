@@ -18,7 +18,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
     // TODO ich habe das Ziel, ja hier mit Farben zu verknüpfen auf welcher Ebene wir schalten
     // TODO daher muss ich Muster haben, die zb auf Chunki Ebene agieren
     // TODO Das Muster muss als Material gebaut werden, der Color selector muss das anzeigen und alle aktiven Elemente sollen dies austauschen dürfen
-    // TODO das Material soll nachhaltig auch animationen haben aktiv und farblos bei deaktiviertem State
+    // TODO das Material soll nachhaltig auch animationen haben aktiv und farblos bei deaktiviertem States
 
     // TODO backdrop mesh
     // TODO sensor area mesh

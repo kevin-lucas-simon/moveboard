@@ -2,20 +2,20 @@ import {LevelModel} from "../../data/model/world/LevelModel";
 import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 import {StructureTypes} from "../../data/model/structure/StructureTypes";
 
-export type ExperienceReducerState = {
+export type LevelReducerState = {
     activeChunkID: ChunkID,
     level: LevelModel,
 }
 
-export type ExperienceReducerActions = {
+export type LevelReducerActions = {
     type: 'experience_change_chunk',
     payload: ChunkID,
 };
 
-export function experienceReducer(
-    state: ExperienceReducerState,
-    action: ExperienceReducerActions,
-): ExperienceReducerState {
+export function levelStateReducer(
+    state: LevelReducerState,
+    action: LevelReducerActions,
+): LevelReducerState {
     switch (action.type) {
         case "experience_change_chunk": {
             if (state.level.structures[action.payload].type !== StructureTypes.Chunk) {

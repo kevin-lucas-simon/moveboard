@@ -9,13 +9,13 @@ import {StructureTypes} from "../../data/model/structure/StructureTypes";
 import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
-import {useExperienceState, useExperienceDispatcher} from "../reducer/ExperienceProvider";
+import {useLevelState, useLevelDispatcher} from "../reducer/LevelStateProvider";
 
 export type LevelProps = LevelModel & {};
 
 export function Level(props: LevelProps) {
-    const state = useExperienceState();
-    const dispatcher = useExperienceDispatcher();
+    const state = useLevelState();
+    const dispatcher = useLevelDispatcher();
 
     const activeChunk = state.activeChunkID
     const allChunks
