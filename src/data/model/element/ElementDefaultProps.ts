@@ -8,6 +8,7 @@ import {JointDefault} from "./joint/JointModel";
 import {ElementTypes} from "./ElementTypes";
 import {SpinnerBlockDefault} from "./block/SpinnerBlockModel";
 import {ButtonBlockDefault} from "./block/ButtonBlock";
+import {DoorBlockDefault} from "./block/DoorBlockModel";
 
 export const ElementDefaultProps: Record<ElementTypes, {
     defaultProps: ElementModel;
@@ -23,6 +24,9 @@ export const ElementDefaultProps: Record<ElementTypes, {
     },
     [ElementTypes.ButtonBlock]: {
         defaultProps: ButtonBlockDefault,
+    },
+    [ElementTypes.DoorBlock]: {
+        defaultProps: DoorBlockDefault,
     },
     [ElementTypes.FloorBlock]: {
         defaultProps: FloorBlockDefault,

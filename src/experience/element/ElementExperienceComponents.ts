@@ -9,6 +9,7 @@ import {JointElement} from "./joint/JointElement";
 import {UnknownElement} from "./system/UnknownElement";
 import {SpinnerBlock} from "./block/SpinnerBlock";
 import {ButtonBlock} from "./block/ButtonBlock";
+import {DoorBlock} from "./block/DoorBlock";
 
 export const ElementExperienceComponents: Record<ElementTypes, {
     experienceComponent: React.ComponentType<any>;
@@ -24,6 +25,9 @@ export const ElementExperienceComponents: Record<ElementTypes, {
     },
     [ElementTypes.ButtonBlock]: {
         experienceComponent: ButtonBlock,
+    },
+    [ElementTypes.DoorBlock]: {
+        experienceComponent: DoorBlock,
     },
     [ElementTypes.FloorBlock]: {
         experienceComponent: FloorBlock,

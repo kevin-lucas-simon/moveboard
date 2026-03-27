@@ -10,6 +10,7 @@ import {filterStructuresByType} from "../../data/factory/StructureFactory";
 import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
 import {useLevelState, useLevelDispatcher} from "../reducer/LevelStateProvider";
+import {ChunkStateProvider} from "../reducer/ChunkStateProvider";
 
 export type LevelProps = LevelModel & {};
 
@@ -50,13 +51,15 @@ export function Level(props: LevelProps) {
 
     return (
         <>
-            {Object.keys(renderedChunks).map(key => (
-                <Chunk key={key} {...renderedChunks[key as ChunkID]}
-                       active={key === activeChunk}
-                       onPlayerChunkLeave={onPlayerChunkLeave}
-                       onPlayerOutOfBounds={onPlayerOutOfBounds}
-                />
-            ))}
+            <ChunkStateProvider key={activeChunk}>
+                {Object.keys(renderedChunks).map(key => (
+                    <Chunk key={key} {...renderedChunks[key as ChunkID]}
+                           active={key === activeChunk}
+                           onPlayerChunkLeave={onPlayerChunkLeave}
+                           onPlayerOutOfBounds={onPlayerOutOfBounds}
+                    />
+                ))}
+            </ChunkStateProvider>
 
             <ChunkCamera
                 chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}

@@ -1,16 +1,16 @@
 import {ButtonBlockModel} from "../../../data/model/element/block/ButtonBlock";
 import {CuboidCollider, RigidBody} from "@react-three/rapier";
-import {useState} from "react";
 import {Vector3} from "three";
 import {Angle} from "../../../data/model/Angle";
 import {BorderBlockMaterial} from "../../material/BorderBlockMaterial";
+import {useChunkSensor} from "../../reducer/ChunkStateProvider";
 
 const buttonPadding = 0.1;
 const buttonHeight = 0.2;
 const buttonHeightPressed = 0.05;
 
 export function ButtonBlock(props: ButtonBlockModel) {
-    const [isPressed, setPressed] = useState(false);
+    const [isPressed, setPressed] = useChunkSensor(props.id);
 
     const colorActive = "green";
     const colorInactive = "gray";
@@ -22,13 +22,11 @@ export function ButtonBlock(props: ButtonBlockModel) {
 
     // TODO backdrop mesh
     // TODO sensor area mesh
-    // TODO interaction handling
     // TODO backdrop indicator coloring
 
     // TODO refactor color management, divide colors from normal colors and action colors
     // TODO Chunk Action Provider Pattern
     // TODO Rename ButtonBlock to ButtonSensor?
-    // TODO Add Mechanism/Excecutor Component
 
     return (
         <group
