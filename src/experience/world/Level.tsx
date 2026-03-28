@@ -51,15 +51,15 @@ export function Level(props: LevelProps) {
 
     return (
         <>
-            <SensorReactorProvider key={activeChunk}>
-                {Object.keys(renderedChunks).map(key => (
+            {Object.keys(renderedChunks).map(key => (
+                <SensorReactorProvider key={key}>
                     <Chunk key={key} {...renderedChunks[key as ChunkID]}
                            active={key === activeChunk}
                            onPlayerChunkLeave={onPlayerChunkLeave}
                            onPlayerOutOfBounds={onPlayerOutOfBounds}
                     />
-                ))}
-            </SensorReactorProvider>
+                </SensorReactorProvider>
+            ))}
 
             <ChunkCamera
                 chunkPosition={renderedChunks[activeChunk].cameraDimension.centerPosition}

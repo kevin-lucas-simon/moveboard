@@ -21,7 +21,7 @@ export function SensorReactorProvider(props: {
 export function useSensor(elementID: ElementID): readonly [boolean, (isActive: boolean) => void] {
     const store = useContext(ChunkStateContext);
     if (!store) {
-        throw new Error("useChunkSensor must be used within a ChunkStateProvider");
+        return [false, () => {}];
     }
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export function useSensor(elementID: ElementID): readonly [boolean, (isActive: b
 export function useSensorReactor(): boolean {
     const store = useContext(ChunkStateContext);
     if (!store) {
-        throw new Error("useChunkReactor must be used within a ChunkReactorProvider");
+        return false;
     }
 
     return useSyncExternalStore(
