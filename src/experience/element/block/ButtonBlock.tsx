@@ -3,14 +3,14 @@ import {CuboidCollider, RigidBody} from "@react-three/rapier";
 import {Vector3} from "three";
 import {Angle} from "../../../data/model/Angle";
 import {BorderBlockMaterial} from "../../material/BorderBlockMaterial";
-import {useChunkSensor} from "../../reducer/ChunkStateProvider";
+import {useSensor} from "../../reducer/SensorReactorProvider";
 
 const buttonPadding = 0.1;
 const buttonHeight = 0.2;
 const buttonHeightPressed = 0.05;
 
 export function ButtonBlock(props: ButtonBlockModel) {
-    const [isPressed, setPressed] = useChunkSensor(props.id);
+    const [isPressed, setPressed] = useSensor(props.id);
 
     const colorActive = "green";
     const colorInactive = "gray";
