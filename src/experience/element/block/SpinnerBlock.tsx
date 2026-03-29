@@ -13,6 +13,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const spinnerRef = useRef<RapierRigidBody>(null);
 
     const isEditingMode = useSimulationSettings()?.isEditingMode;
+    const spinnerLength = Math.max(props.dimension.x, props.dimension.z) / 2;
 
     useFrame((_, delta) => {
         if (spinnerRef.current) {
@@ -38,15 +39,15 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
                 </mesh>
             </RigidBody>
 
-            {/*{isEditingMode && (*/}
-            {/*    <mesh*/}
-            {/*        position={new Vector3().copy(props.position)}*/}
-            {/*        rotation={new Angle().copy(props.rotation).toEuler()}*/}
-            {/*    >*/}
-            {/*        <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />*/}
-            {/*        <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>*/}
-            {/*    </mesh>*/}
-            {/*)}*/}
+            {isEditingMode && (
+                <mesh
+                    position={new Vector3().copy(props.position)}
+                    rotation={new Angle().copy(props.rotation).toEuler()}
+                >
+                    <cylinderGeometry args={[spinnerLength, spinnerLength, props.dimension.y, 32]} />
+                    <meshPhongMaterial color={colorHex} opacity={0.2} transparent/>
+                </mesh>
+            )}
         </>
     );
 }
