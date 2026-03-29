@@ -9,6 +9,7 @@ export function BasicBlock(props: BasicBlockModel = BasicBlockDefault) {
 
     return (
         <RigidBody
+            key={JSON.stringify(props)}
             position={new Vector3().copy(props.position)}
             rotation={new Angle().copy(props.rotation).toEuler()}
             type={"fixed"}

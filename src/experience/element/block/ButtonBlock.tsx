@@ -33,7 +33,10 @@ export function ButtonBlock(props: ButtonBlockModel) {
             position={new Vector3().copy(props.position)}
             rotation={new Angle().copy(props.rotation).toEuler()}
         >
-            <RigidBody type={"fixed"}>
+            <RigidBody
+                key={JSON.stringify(props)}
+                type={"fixed"}
+            >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
                     <BorderBlockMaterial

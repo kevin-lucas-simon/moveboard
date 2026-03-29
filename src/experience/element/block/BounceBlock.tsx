@@ -62,6 +62,7 @@ export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
 
     return (
         <RigidBody
+            key={JSON.stringify(props)}
             name={"Bouncer"}
             position={new Vector3().copy(props.position)}
             type={"fixed"}
