@@ -6,7 +6,8 @@ import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
-import {SwirlMaterial} from "../../material/SwirlMaterial";
+import {useNodeSwirl} from "../../material/useNodeSwirl";
+import {useNodeBorder} from "../../material/useNodeBorder";
 
 export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const colorHex = useElementColoring(props.color);
@@ -14,6 +15,14 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
 
     const isEditingMode = useSimulationSettings()?.isEditingMode;
     const spinnerLength = Math.max(props.dimension.x, props.dimension.z) / 2;
+
+    const nodeSwirl = useNodeSwirl({color: colorHex});
+    const nodeBorder = useNodeBorder({
+        blockDimension: props.dimension,
+        borderThickness: 0.1,
+        borderColor: "#555555",
+        innerColor: nodeSwirl,
+    })
 
     useFrame((_, delta) => {
         if (spinnerRef.current) {
@@ -35,7 +44,7 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <SwirlMaterial color={colorHex} />
+                    <meshStandardNodeMaterial colorNode={nodeBorder} />
                 </mesh>
             </RigidBody>
 

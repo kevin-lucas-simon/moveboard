@@ -1,9 +1,12 @@
 import {ButtonBlockModel} from "../../../data/model/element/block/ButtonBlock";
 import {CuboidCollider, RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
+import {Color, Vector3} from "three";
 import {Angle} from "../../../data/model/Angle";
-import {BorderBlockMaterial} from "../../material/BorderBlockMaterial";
+import {useNodeBorder} from "../../material/useNodeBorder";
 import {useSensor} from "../../reducer/SensorReactorProvider";
+import {useElementColoring} from "../../structure/coloring/useElementColoring";
+import {ColorTypes} from "../../../data/model/Color";
+import {useUniform} from "../../material/useUniform";
 
 const buttonPadding = 0.1;
 const buttonHeight = 0.2;
@@ -12,20 +15,22 @@ const buttonHeightPressed = 0.05;
 export function ButtonBlock(props: ButtonBlockModel) {
     const [isPressed, setPressed] = useSensor(props.id);
 
-    const colorActive = "green";
-    const colorInactive = "gray";
+    const colorBase = useElementColoring(ColorTypes.Light);
+    const colorActive = useElementColoring(ColorTypes.Primary);
+
+    const colorNode = useUniform<Color>(new Color(isPressed ? colorActive : colorBase));
+
+    const nodeBorder = useNodeBorder({
+        blockDimension: props.dimension,
+        borderThickness: 0.1,
+        borderColor: "#555555",
+        innerColor: colorNode,
+    })
 
     // TODO ich habe das Ziel, ja hier mit Farben zu verknüpfen auf welcher Ebene wir schalten
     // TODO daher muss ich Muster haben, die zb auf Chunki Ebene agieren
-    // TODO Das Muster muss als Material gebaut werden, der Color selector muss das anzeigen und alle aktiven Elemente sollen dies austauschen dürfen
-    // TODO das Material soll nachhaltig auch animationen haben aktiv und farblos bei deaktiviertem States
-
     // TODO backdrop mesh
-    // TODO sensor area mesh
     // TODO backdrop indicator coloring
-
-    // TODO refactor color management, divide colors from normal colors and action colors
-    // TODO Chunk Action Provider Pattern
     // TODO Rename ButtonBlock to ButtonSensor?
 
     return (
@@ -39,12 +44,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <BorderBlockMaterial
-                        innerColor={isPressed ? colorActive : colorInactive}
-                        borderColor={"black"}
-                        blockDimension={props.dimension}
-                        borderThickness={0.1}
-                    />
+                    <meshStandardNodeMaterial colorNode={nodeBorder} />
                 </mesh>
             </RigidBody>
 
@@ -65,7 +65,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
                         isPressed ? buttonHeightPressed*2 : buttonHeight*2,
                         props.dimension.z - 2*buttonPadding,
                     ]}/>
-                    <meshStandardMaterial color={isPressed ? colorActive : colorInactive} />
+                    <meshStandardMaterial color={isPressed ? colorActive : colorBase} />
                 </mesh>
             </CuboidCollider>
         </group>
