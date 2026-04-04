@@ -16,14 +16,16 @@ export function ButtonBlock(props: ButtonBlockModel) {
     const [isPressed, setPressed] = useSensor(props.id);
 
     const colorBase = useElementColoring(ColorTypes.Light);
+    const colorBaseDark = useElementColoring(ColorTypes.Dark);
     const colorActive = useElementColoring(ColorTypes.Primary);
 
     const colorNode = useUniform<Color>(new Color(isPressed ? colorActive : colorBase));
+    const colorBorderNode = useUniform<Color>(new Color(colorBaseDark));
 
     const nodeBorder = useNodeBorder({
         blockDimension: props.dimension,
         borderThickness: 0.1,
-        borderColor: "#555555",
+        borderColor: colorBorderNode,
         innerColor: colorNode,
     })
 

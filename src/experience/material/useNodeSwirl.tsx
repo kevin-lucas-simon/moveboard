@@ -8,9 +8,6 @@ export function useNodeSwirl(props: {
     color: string
 }): TSLNode {
     const colorNode = useUniform<Color>(new Color(props.color));
-    // const colorNode = useUniforms<{color: Color}>({
-    //     color: new Color(props.color)
-    // });
 
     return useMemo(() => {
         const positionLocal = TSL.positionLocal;

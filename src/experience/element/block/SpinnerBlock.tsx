@@ -1,13 +1,14 @@
 import {SpinnerBlockDefault, SpinnerBlockModel} from "../../../data/model/element/block/SpinnerBlockModel";
 import {RapierRigidBody, RigidBody} from "@react-three/rapier";
 import {useElementColoring} from "../../structure/coloring/useElementColoring";
-import {Vector3} from "three";
+import {Color, Vector3} from "three";
 import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
 import {useNodeSwirl} from "../../material/useNodeSwirl";
 import {useNodeBorder} from "../../material/useNodeBorder";
+import {useUniform} from "../../material/useUniform";
 
 export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const colorHex = useElementColoring(props.color);
@@ -16,11 +17,12 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const isEditingMode = useSimulationSettings()?.isEditingMode;
     const spinnerLength = Math.max(props.dimension.x, props.dimension.z) / 2;
 
+    const nodeBorderColor = useUniform<Color>(new Color("#555555"));
     const nodeSwirl = useNodeSwirl({color: colorHex});
     const nodeBorder = useNodeBorder({
         blockDimension: props.dimension,
         borderThickness: 0.1,
-        borderColor: "#555555",
+        borderColor: nodeBorderColor,
         innerColor: nodeSwirl,
     })
 
