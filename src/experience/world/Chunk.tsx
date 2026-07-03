@@ -7,6 +7,7 @@ import {Element} from "./Element";
 import {JointElement} from "../element/joint/JointElement";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
+import {ChunkSensorProvider} from "../reducer/SensorReactorProvider";
 
 export type ChunkProps = RenderedChunk & {
     active: boolean,
@@ -18,7 +19,7 @@ export function Chunk(props: ChunkProps) {
     const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
 
     return (
-        <>
+        <ChunkSensorProvider>
             {/* all displayed elements */}
             {elements.map((element) =>
                 <Element
@@ -52,6 +53,6 @@ export function Chunk(props: ChunkProps) {
                     position={new Vector3().copy(props.chunkDimension.centerPosition)}
                 />
             }
-        </>
+        </ChunkSensorProvider>
     );
 }

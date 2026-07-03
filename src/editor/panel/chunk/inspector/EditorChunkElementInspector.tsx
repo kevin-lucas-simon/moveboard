@@ -13,6 +13,7 @@ import {EditorForm} from "../../../form/EditorForm";
 import {ElementDefaultProps} from "../../../../data/model/element/ElementDefaultProps";
 import {ColorTypes} from "../../../../data/model/Color";
 import {BaseListItem} from "../../../component/BaseListItem";
+import {CHANNEL_LABELS} from "../../../../data/model/element/marker/ChannelID";
 
 export type EditorElementInspectorProps = {
     dispatcher: React.Dispatch<EditorReducerActions>;
@@ -60,7 +61,6 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
             .filter(structure => structure.type === StructureTypes.Chunk)
             .filter(structure => structure.id !== props.chunk.id)
             .forEach(chunk => {
-                // skip chunks that are already connected
                 if (chunkJoints.some(joint => joint.neighbour === chunk.id)) {
                     return;
                 }
@@ -87,7 +87,9 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                 hiddenKeys={['parent', 'hidden']}
                 relationKeys={{
                     "color": getColorTypes(),
-                    "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour)
+                    "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour),
+                    "outputChannel": CHANNEL_LABELS,
+                    "inputChannel": CHANNEL_LABELS,
                 } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}
                 additionalEntries={{
                     "Actions": <ul>

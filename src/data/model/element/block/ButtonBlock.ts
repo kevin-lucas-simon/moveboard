@@ -2,16 +2,18 @@ import {ElementDefault, ElementModel} from "../ElementModel";
 import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
 import {ElementTypes} from "../ElementTypes";
 import {ElementRotatable, ElementRotatableDefault} from "../marker/ElementRotatable";
+import {ElementChannelPublisher, ElementChannelPublisherDefault} from "../marker/ElementChannelPublisher";
 
 export type ButtonBlockModel = ElementModel
     & ElementDimensionable
     & ElementRotatable
+    & ElementChannelPublisher
 
 export const ButtonBlockDefault: ButtonBlockModel = {
     ...ElementDefault,
     ...ElementDimensionableDefault,
     ...ElementRotatableDefault,
-
+    ...ElementChannelPublisherDefault,
     type: ElementTypes.ButtonBlock,
     rotation: {x: -90, y: 0, z: 0},
 }

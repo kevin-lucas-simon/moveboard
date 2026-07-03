@@ -61,6 +61,13 @@ The editor form system (`src/editor/form/`) renders property editors dynamically
 
 Three routes: `/` (game), `/editor` (level overview), `/editor/:editorID` (level editing). Defined in `src/page/routes.tsx` using React Router v7.
 
+### Data Persistence & Testing Constraints
+
+- **Editor state** lives in **IndexedDB (Dexie)** in the user's browser — not accessible via the filesystem or in headless test runners (Playwright gets an empty IndexedDB in a fresh context).
+- **Published levels** are exported as static JSON files under `/public/level/<UUID>.json` and fetched by the game at runtime. No server-side database exists by design (no attack surface, git-versionable).
+- **WebGPU** (used by the R3F canvas) does not work in headless Chromium — the 3D canvas will be blank in automated test runs. UI tests should target the editor DOM panels only, not the 3D scene.
+- **Backward compatibility:** The project is at v0.x and not yet released. No migration strategy exists for IndexedDB data. When adding new fields to element models, always add a safe fallback in the component (`props.newField ?? defaultValue`) to avoid crashes with older persisted data.
+
 ### Adding a New Element Type
 
 1. Add the type to `ElementTypes` enum.

@@ -1,124 +1,104 @@
 import React, {createContext, useContext, useEffect, useRef, useSyncExternalStore} from "react";
 import {ElementID} from "../../data/model/element/ElementModel";
+import {ChannelID, isLevelChannel} from "../../data/model/element/marker/ChannelID";
+import {SensorStateStore} from "./SensorStateStore";
 
-const ChunkStateContext = createContext<SensorStateStore|null>(null);
+interface SensorScope {
+    level: SensorStateStore;
+    chunk: SensorStateStore | null;
+}
 
-export function SensorReactorProvider(props: {
-    children: React.ReactNode;
-}) {
-    const storeRef = useRef<SensorStateStore|null>(null)
+const SensorScopeContext = createContext<SensorScope | null>(null);
+
+export function LevelSensorProvider(props: { children: React.ReactNode }) {
+    const storeRef = useRef<SensorStateStore | null>(null);
     if (!storeRef.current) {
         storeRef.current = new SensorStateStore();
     }
 
     return (
-        <ChunkStateContext.Provider value={storeRef.current}>
+        <SensorScopeContext.Provider value={{ level: storeRef.current, chunk: null }}>
             {props.children}
-        </ChunkStateContext.Provider>
-    )
+        </SensorScopeContext.Provider>
+    );
 }
 
-export function useSensor(elementID: ElementID): readonly [boolean, (isActive: boolean) => void] {
-    const store = useContext(ChunkStateContext);
-    if (!store) {
-        return [false, () => {}];
+export function ChunkSensorProvider(props: { children: React.ReactNode }) {
+    const scope = useContext(SensorScopeContext)!;
+    const storeRef = useRef<SensorStateStore | null>(null);
+    if (!storeRef.current) {
+        storeRef.current = new SensorStateStore();
     }
+
+    return (
+        <SensorScopeContext.Provider value={{ ...scope, chunk: storeRef.current }}>
+            {props.children}
+        </SensorScopeContext.Provider>
+    );
+}
+
+function useStore(channel: ChannelID | null): SensorStateStore | null {
+    const scope = useContext(SensorScopeContext);
+
+    if (!scope || !channel) {
+        return null;
+    }
+    if (isLevelChannel(channel)) {
+        return scope.level;
+    }
+    return scope.chunk;
+}
+
+export function useSensor(elementID: ElementID, channel: ChannelID | null): readonly [boolean, (isActive: boolean) => void] {
+    const store = useStore(channel);
 
     useEffect(() => {
-        return store.registerSensor(elementID);
-    }, [elementID, store])
+        if (!store || !channel) {
+            return;
+        }
+        return store.registerSensor(elementID, channel);
+    }, [elementID, channel, store]);
 
     const isActive = useSyncExternalStore(
-        (callback) => store.subscribeSensorCallback(elementID, callback),
-        () => store.getSensorState(elementID) ?? false,
+        (callback) => {
+            if (!store || !channel) {
+                return () => {};
+            }
+            return store.subscribeSensorCallback(elementID, callback);
+        },
+        () => {
+            if (!store || !channel) {
+                return false;
+            }
+            return store.getSensorState(elementID);
+        }
     );
 
-    const setActiveState = (isActive: boolean) => {
-        store.updateSensorState(elementID, isActive);
-    }
+    const setActiveState = (newState: boolean) => {
+        if (!store || !channel) {
+            return;
+        }
+        store.updateSensorState(elementID, newState);
+    };
 
     return [isActive, setActiveState] as const;
 }
 
-export function useSensorReactor(): boolean {
-    const store = useContext(ChunkStateContext);
-    if (!store) {
-        return false;
-    }
+export function useSensorReactor(channel: ChannelID | null): boolean {
+    const store = useStore(channel);
 
     return useSyncExternalStore(
-        (listener) => store.subscribeReactorCallback(listener),
-        () => store.getReactorState(),
-    );
-}
-
-class SensorStateStore {
-    private sensorStates: Map<ElementID, boolean> = new Map();
-    private sensorListeners: Map<ElementID, Set<() => void>> = new Map();
-    private subscriber: Set<() => void> = new Set();
-
-    registerSensor(elementID: ElementID): () => void {
-        this.sensorStates.set(elementID, false);
-        this.sensorListeners.set(elementID, new Set())
-        return () => {
-            this.sensorStates.delete(elementID)
-            this.sensorListeners.delete(elementID)
-        };
-    }
-
-    subscribeSensorCallback(elementID: ElementID, callback: () => void): () => void {
-        const subscriber = this.sensorListeners.get(elementID);
-        if (!subscriber) {
-            return () => {};
-        }
-        subscriber.add(callback);
-        return () => subscriber.delete(callback);
-    }
-
-    subscribeReactorCallback(callback: () => void) {
-        this.subscriber.add(callback);
-        return () => this.subscriber.delete(callback);
-    }
-
-    updateSensorState(elementID: ElementID, newSensorState: boolean) {
-        if (!this.sensorStates.has(elementID)) {
-            return;
-        }
-
-        const oldSensorState = this.sensorStates.get(elementID);
-        const oldReactorState = this.isEverySensorActive();
-
-        this.sensorStates.set(elementID, newSensorState);
-
-        const newReactorValue = this.isEverySensorActive();
-
-        if (oldSensorState !== newSensorState) {
-            const listeners = this.sensorListeners.get(elementID);
-            listeners?.forEach(listener => listener());
-        }
-
-        if (oldReactorState !== newReactorValue) {
-            this.subscriber.forEach(listener => listener());
-        }
-    }
-
-    getSensorState(elementID: ElementID) {
-        return this.sensorStates.get(elementID);
-    }
-
-    getReactorState() {
-        return this.isEverySensorActive();
-    }
-
-    private isEverySensorActive(): boolean {
-        if (this.sensorStates.size === 0) {
-            return false;
-        }
-        for (const state of this.sensorStates.values()) {
-            if (!state) {
+        (callback) => {
+            if (!store || !channel) {
+                return () => {};
+            }
+            return store.subscribeChannelCallback(channel, callback);
+        },
+        () => {
+            if (!store || !channel) {
                 return false;
             }
+            return store.getChannelState(channel);
         }
-        return true;
-    }
+    );
 }

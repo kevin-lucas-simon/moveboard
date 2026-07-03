@@ -13,7 +13,7 @@ const buttonHeight = 0.2;
 const buttonHeightPressed = 0.05;
 
 export function ButtonBlock(props: ButtonBlockModel) {
-    const [isPressed, setPressed] = useSensor(props.id);
+    const [isPressed, setPressed] = useSensor(props.id, props.outputChannel);
 
     const colorBase = useElementColoring(ColorTypes.Light);
     const colorBaseDark = useElementColoring(ColorTypes.Dark);

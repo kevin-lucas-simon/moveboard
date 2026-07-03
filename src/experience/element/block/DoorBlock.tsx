@@ -3,7 +3,7 @@ import {BasicBlock} from "./BasicBlock";
 import {DoorBlockModel} from "../../../data/model/element/block/DoorBlockModel";
 
 export function DoorBlock(props: DoorBlockModel) {
-    const active = useSensorReactor();
+    const active = useSensorReactor(props.inputChannel);
 
     if (active) {
         return <></>
