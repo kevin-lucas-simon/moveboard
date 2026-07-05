@@ -8,24 +8,16 @@ import { Angle } from "../../../data/model/Angle";
 import { useNodeBorder, useNodeBorderMask } from "../../material/useNodeBorder";
 import { useSensorReactor } from "../../reducer/SensorReactorProvider";
 import { useUniform } from "../../material/useUniform";
-import { ChannelID } from "../../../data/model/element/marker/ChannelID";
 import {useElementColoring} from "../../structure/coloring/useElementColoring";
 import {ColorTypes} from "../../../data/model/Color";
 
 const BORDER_THICKNESS = 0.1;
 
-const CHANNEL_COLORS: Record<ChannelID, string> = {
-    [ChannelID.ChunkPrimary]:   '#00CCFF',
-    [ChannelID.ChunkSecondary]: '#88AAFF',
-    [ChannelID.LevelPrimary]:   '#EEEEFF',
-};
-
 export function DoorBlock(props: DoorBlockModel) {
-    const baseColor = useElementColoring(ColorTypes.Light)
+    const baseColor = useElementColoring(ColorTypes.Light);
+    const channelHex = useElementColoring(props.inputChannel ?? ColorTypes.Accent);
 
     const active = useSensorReactor(props.inputChannel);
-
-    const channelHex = props.inputChannel ? CHANNEL_COLORS[props.inputChannel] : '#555555';
 
     const channelColorUniform = useUniform<Color>(new Color(channelHex));
     const baseColorUniform    = useUniform<Color>(new Color(baseColor));

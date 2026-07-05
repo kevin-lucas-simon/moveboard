@@ -7,8 +7,9 @@ import { useNodeBorder } from "../../material/useNodeBorder";
 import { useNodeNoiseMembrane } from "../../material/useNodeNoiseMembrane";
 import { useSensor } from "../../reducer/SensorReactorProvider";
 import { useUniform } from "../../material/useUniform";
-import { ChannelID } from "../../../data/model/element/marker/ChannelID";
 import { useFrame } from "@react-three/fiber";
+import { useElementColoring } from "../../structure/coloring/useElementColoring";
+import { ColorTypes } from "../../../data/model/Color";
 import * as TSL from 'three/tsl';
 
 const buttonPadding = 0.1;
@@ -20,19 +21,14 @@ const PRESS_SPEED = 18;
 const RELEASE_SPEED = 2;
 const SIGNAL_RELEASE_THRESHOLD = 0.05;
 
-const CHANNEL_COLORS: Record<ChannelID, string> = {
-    [ChannelID.ChunkPrimary]:   '#00CCFF',
-    [ChannelID.ChunkSecondary]: '#88AAFF',
-    [ChannelID.LevelPrimary]:   '#EEEEFF',
-};
-
 export function ButtonBlock(props: ButtonBlockModel) {
     const [, setSignalActive] = useSensor(props.id, props.outputChannel);
 
-    const channelHex = props.outputChannel ? CHANNEL_COLORS[props.outputChannel] : '#555555';
+    const channelHex = useElementColoring(props.outputChannel ?? ColorTypes.Accent);
+    const lightHex = useElementColoring(ColorTypes.Light);
 
     const channelColorUniform = useUniform<Color>(new Color(channelHex));
-    const lightColorUniform = useMemo(() => TSL.uniform(new Color('#E8E8E8')), []);
+    const lightColorUniform = useUniform<Color>(new Color(lightHex));
     const isActiveUniform = useUniform<number>(0.0);
     const isActiveAlwaysOn = useMemo(() => TSL.uniform(1.0), []);
     const activeTimeUniform = useMemo(() => TSL.uniform(0), []);

@@ -1,15 +1,15 @@
-export enum ChannelID {
-    ChunkPrimary   = 'chunk:primary',
-    ChunkSecondary = 'chunk:secondary',
-    LevelPrimary   = 'level:primary',
-}
+export const ChannelIDs = {
+    Chunk: "chunk",
+    Level: "level",
+} as const;
 
-export function isLevelChannel(id: ChannelID): boolean {
-    return id.startsWith('level:');
+export type ChannelID = typeof ChannelIDs[keyof typeof ChannelIDs];
+
+export function isLevelChannel(channel: ChannelID): boolean {
+    return channel === ChannelIDs.Level;
 }
 
 export const CHANNEL_LABELS: Record<ChannelID, string> = {
-    [ChannelID.ChunkPrimary]:   "Chunk: Primary",
-    [ChannelID.ChunkSecondary]: "Chunk: Secondary",
-    [ChannelID.LevelPrimary]:   "Level: Primary",
+    [ChannelIDs.Chunk]: "Chunk",
+    [ChannelIDs.Level]: "Level",
 };

@@ -9,15 +9,17 @@ import {Angle} from "../../../data/model/Angle";
 import {useNodeSwirl} from "../../material/useNodeSwirl";
 import {useNodeBorder} from "../../material/useNodeBorder";
 import {useUniform} from "../../material/useUniform";
+import {ColorTypes} from "../../../data/model/Color";
 
 export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const colorHex = useElementColoring(props.color);
+    const accentHex = useElementColoring(ColorTypes.Accent);
     const spinnerRef = useRef<RapierRigidBody>(null);
 
     const isEditingMode = useSimulationSettings()?.isEditingMode;
     const spinnerLength = Math.max(props.dimension.x, props.dimension.z) / 2;
 
-    const nodeBorderColor = useUniform<Color>(new Color("#555555"));
+    const nodeBorderColor = useUniform<Color>(new Color(accentHex));
     const nodeSwirl = useNodeSwirl({color: colorHex});
     const nodeBorder = useNodeBorder({
         blockDimension: props.dimension,

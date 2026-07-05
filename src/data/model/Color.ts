@@ -1,11 +1,16 @@
+import {ChannelIDs} from "./element/marker/ChannelID";
+
 export type ColorHex = `#${string}`;
 
+const BaseColorTypes = {
+    Dark:   "dark",
+    Light:  "light",
+    Accent: "accent",
+} as const;
+
 export const ColorTypes = {
-    Dark: "dark",
-    Light: "light",
-    Primary: "primary",
-    Secondary: "secondary",
-    Tertiary: "tertiary",
+    ...BaseColorTypes,
+    ...ChannelIDs,
 } as const;
 
 export type ColorType = typeof ColorTypes[keyof typeof ColorTypes];

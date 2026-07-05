@@ -22,6 +22,6 @@ export const SpinnerBlockDefault: SpinnerBlockModel = {
     type: ElementTypes.SpinnerBlock,
 
     dimension: {x: 3, y: 1, z: 1},
-    color: ColorTypes.Primary,
+    color: ColorTypes.Accent,
     speed: 10,
 }

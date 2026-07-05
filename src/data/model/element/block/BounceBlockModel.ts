@@ -14,7 +14,7 @@ export const BounceBlockDefault: BounceBlockModel = {
 
     type: ElementTypes.BounceBlock,
 
-    color: ColorTypes.Primary,
+    color: ColorTypes.Accent,
     diameter: 1,
     intensity: 1,
 }
