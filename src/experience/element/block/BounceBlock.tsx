@@ -1,18 +1,33 @@
 import {CollisionEnterPayload, RigidBody} from "@react-three/rapier";
-import {Vector3} from "three";
+import {Color, Vector3} from "three";
 import {useMemo, useState} from "react";
 import {useFrame} from "@react-three/fiber";
+import * as TSL from 'three/tsl';
 import {Player} from "../../entity/Player";
 import {BounceBlockDefault, BounceBlockModel} from "../../../data/model/element/block/BounceBlockModel";
 import {useElementColoring} from "../../structure/coloring/useElementColoring";
+import {useUniform} from "../../material/useUniform";
+import {ColorTypes} from "../../../data/model/Color";
 
 // constants for animation finetuning
 const INTENSITY_PHYSIC_FACTOR = 10
 const INTENSITY_ANIMATION_FACTOR = 1
 
 export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
-    const colorHex = useElementColoring(props.color);
+    const accentHex = useElementColoring(props.color);
+    const lightHex  = useElementColoring(ColorTypes.Light);
     const [bounceAnimation, setBounceAnimation] = useState(0)
+
+    const accentColorUniform = useUniform<Color>(new Color(accentHex));
+    const lightColorUniform  = useUniform<Color>(new Color(lightHex));
+
+    // Concentric latitude rings — horizontal bands on the sphere surface
+    const ringNode = useMemo(() => {
+        const latitude    = TSL.add(TSL.mul(TSL.normalLocal.y, 0.5), 0.5); // maps -1..1 to 0..1
+        const rings       = TSL.mul(latitude, 6.0);
+        const ringPattern = TSL.step(0.3, TSL.fract(rings));
+        return TSL.mix(accentColorUniform, lightColorUniform, ringPattern);
+    }, [accentColorUniform, lightColorUniform]);
 
     // calculate bounce animation diameter related to the intensity and diameter
     const bounceAnimationDiameter = useMemo(() => {
@@ -72,7 +87,7 @@ export function BounceBlock(props: BounceBlockModel = BounceBlockDefault) {
             <mesh castShadow receiveShadow>
                 <sphereGeometry
                     args={[props.diameter / 2 + bounceAnimation * (bounceAnimationDiameter - props.diameter) / 2]}/>
-                <meshStandardMaterial color={colorHex} />
+                <meshStandardNodeMaterial colorNode={ringNode} />
             </mesh>
         </RigidBody>
     );

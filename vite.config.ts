@@ -12,5 +12,8 @@ export default defineConfig({
         checker({
             typescript: true,
         })
-    ]
+    ],
+    server: {
+        allowedHosts: true,
+    }
 })

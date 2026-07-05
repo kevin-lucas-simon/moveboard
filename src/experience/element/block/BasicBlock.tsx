@@ -3,9 +3,14 @@ import {Vector3} from "three";
 import {BasicBlockDefault, BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
 import {useElementColoring} from "../../structure/coloring/useElementColoring";
 import {Angle} from "../../../data/model/Angle";
+import {ColorTypes} from "../../../data/model/Color";
+import {useNodeTile} from "../../material/useNodeTile";
 
 export function BasicBlock(props: BasicBlockModel = BasicBlockDefault) {
-    const colorHex = useElementColoring(props.color);
+    const tileHex  = useElementColoring(props.color);
+    const groutHex = useElementColoring(ColorTypes.Dark);
+
+    const nodeTile = useNodeTile({ tileColor: tileHex, groutColor: groutHex });
 
     return (
         <RigidBody
@@ -16,7 +21,7 @@ export function BasicBlock(props: BasicBlockModel = BasicBlockDefault) {
         >
             <mesh castShadow receiveShadow>
                 <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                <meshStandardMaterial color={colorHex} />
+                <meshStandardNodeMaterial colorNode={nodeTile} />
             </mesh>
         </RigidBody>
     );

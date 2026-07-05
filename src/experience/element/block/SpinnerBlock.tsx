@@ -6,7 +6,7 @@ import {useRef} from "react";
 import {useFrame} from "@react-three/fiber";
 import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProvider";
 import {Angle} from "../../../data/model/Angle";
-import {useNodeSwirl} from "../../material/useNodeSwirl";
+import {useNodeGeometricStripes} from "../../material/useNodeGeometricStripes";
 import {useNodeBorder} from "../../material/useNodeBorder";
 import {useUniform} from "../../material/useUniform";
 import {ColorTypes} from "../../../data/model/Color";
@@ -20,12 +20,12 @@ export function SpinnerBlock(props: SpinnerBlockModel = SpinnerBlockDefault) {
     const spinnerLength = Math.max(props.dimension.x, props.dimension.z) / 2;
 
     const nodeBorderColor = useUniform<Color>(new Color(accentHex));
-    const nodeSwirl = useNodeSwirl({color: colorHex});
+    const nodeStripes = useNodeGeometricStripes({ primaryColor: colorHex, accentColor: accentHex });
     const nodeBorder = useNodeBorder({
         blockDimension: props.dimension,
         borderThickness: 0.1,
         borderColor: nodeBorderColor,
-        innerColor: nodeSwirl,
+        innerColor: nodeStripes,
     })
 
     useFrame((_, delta) => {

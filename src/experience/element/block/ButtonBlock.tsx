@@ -3,8 +3,7 @@ import { ButtonBlockModel } from "../../../data/model/element/block/ButtonBlock"
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
 import { Color, Mesh, Vector3 } from "three";
 import { Angle } from "../../../data/model/Angle";
-import { useNodeBorder } from "../../material/useNodeBorder";
-import { useNodeNoiseMembrane } from "../../material/useNodeNoiseMembrane";
+import { useNodePulseGrid } from "../../material/useNodePulseGrid";
 import { useSensor } from "../../reducer/SensorReactorProvider";
 import { useUniform } from "../../material/useUniform";
 import { useFrame } from "@react-three/fiber";
@@ -31,7 +30,6 @@ export function ButtonBlock(props: ButtonBlockModel) {
     const lightColorUniform = useUniform<Color>(new Color(lightHex));
     const isActiveUniform = useUniform<number>(0.0);
     const isActiveAlwaysOn = useMemo(() => TSL.uniform(1.0), []);
-    const activeTimeUniform = useMemo(() => TSL.uniform(0), []);
 
     const innerMeshRef = useRef<Mesh>(null);
     const animTimeRef = useRef(0);           // linear 0→1, drives the smoothstep curve
@@ -56,7 +54,6 @@ export function ButtonBlock(props: ButtonBlockModel) {
         }
 
         isActiveUniform.value = pressAmount;
-        if (pressAmount > 0) activeTimeUniform.value += delta;
 
         // Signal deactivates only when the release animation has nearly completed
         const shouldSignal = isPressing || pressAmount > SIGNAL_RELEASE_THRESHOLD;
@@ -69,38 +66,20 @@ export function ButtonBlock(props: ButtonBlockModel) {
         }
     });
 
-    const noiseNode = useNodeNoiseMembrane({
-        activeTime: activeTimeUniform,
+    const pulseNode = useNodePulseGrid({
         channelColor: channelColorUniform,
         lightColor: lightColorUniform,
         isActive: isActiveUniform,
-        blockDimension: props.dimension,
-        lineScale: 4,
-        lineThickness: 0.4,
     });
 
-    const innerNoiseNode = useNodeNoiseMembrane({
-        activeTime: activeTimeUniform,
+    const innerPulseNode = useNodePulseGrid({
         channelColor: channelColorUniform,
         lightColor: lightColorUniform,
         isActive: isActiveAlwaysOn,
-        blockDimension: props.dimension,
-        lineScale: 4,
-        lineThickness: 0.4,
     });
 
-    // When active: border blends into inner noise → invisible. When inactive: channel-colored border visible.
-    const borderColorNode = TSL.mix(channelColorUniform, noiseNode, isActiveUniform);
-
-    const nodeBorder = useNodeBorder({
-        blockDimension: props.dimension,
-        borderThickness: 0.1,
-        borderColor: borderColorNode,
-        innerColor: noiseNode,
-    });
-
-    // When active: solid channel color. When inactive: channel-dominant stripes.
-    const innerButtonColorNode = TSL.mix(innerNoiseNode, channelColorUniform, isActiveUniform);
+    // When active: solid channel color. When inactive: channel-dominant grid.
+    const innerButtonColorNode = TSL.mix(innerPulseNode, channelColorUniform, isActiveUniform);
 
     // TODO Rename ButtonBlock to ButtonSensor
 
@@ -115,7 +94,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshStandardNodeMaterial colorNode={nodeBorder} />
+                    <meshStandardNodeMaterial colorNode={pulseNode} />
                 </mesh>
             </RigidBody>
 

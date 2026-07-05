@@ -6,6 +6,7 @@ import * as TSL from 'three/tsl';
 import { DoorBlockModel } from "../../../data/model/element/block/DoorBlockModel";
 import { Angle } from "../../../data/model/Angle";
 import { useNodeBorder, useNodeBorderMask } from "../../material/useNodeBorder";
+import { useNodeTile } from "../../material/useNodeTile";
 import { useSensorReactor } from "../../reducer/SensorReactorProvider";
 import { useUniform } from "../../material/useUniform";
 import {useElementColoring} from "../../structure/coloring/useElementColoring";
@@ -14,13 +15,13 @@ import {ColorTypes} from "../../../data/model/Color";
 const BORDER_THICKNESS = 0.1;
 
 export function DoorBlock(props: DoorBlockModel) {
-    const baseColor = useElementColoring(ColorTypes.Light);
+    const baseColor  = useElementColoring(ColorTypes.Light);
     const channelHex = useElementColoring(props.inputChannel ?? ColorTypes.Accent);
+    const darkHex    = useElementColoring(ColorTypes.Dark);
 
     const active = useSensorReactor(props.inputChannel);
 
     const channelColorUniform = useUniform<Color>(new Color(channelHex));
-    const baseColorUniform    = useUniform<Color>(new Color(baseColor));
     const transitionUniform   = useMemo(() => TSL.uniform(active ? 1.0 : 0.0), []);
 
     useFrame((_, delta) => {
@@ -29,12 +30,15 @@ export function DoorBlock(props: DoorBlockModel) {
         transitionUniform.value += (transitionTarget - transitionUniform.value) * Math.min(delta * transitionSpeed, 1.0);
     });
 
-    // Color: base grey for inner, channel color for border
+    // Inner face: tile pattern using base light + dark grout
+    const innerTileNode = useNodeTile({ tileColor: baseColor, groutColor: darkHex });
+
+    // Color: tile pattern for inner, channel color for border
     const colorNode = useNodeBorder({
         blockDimension: props.dimension,
         borderThickness: BORDER_THICKNESS,
         borderColor: channelColorUniform,
-        innerColor: baseColorUniform,
+        innerColor: innerTileNode,
     });
 
     // Border mask: 1 = border pixel, 0 = inner pixel — drives opacity separately from color
