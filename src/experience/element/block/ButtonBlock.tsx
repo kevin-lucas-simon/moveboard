@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { ButtonBlockModel } from "../../../data/model/element/block/ButtonBlock";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { Color, Vector3 } from "three";
+import { Color, Mesh, Vector3 } from "three";
 import { Angle } from "../../../data/model/Angle";
 import { useNodeBorder } from "../../material/useNodeBorder";
 import { useNodeNoiseMembrane } from "../../material/useNodeNoiseMembrane";
@@ -14,6 +14,11 @@ import * as TSL from 'three/tsl';
 const buttonPadding = 0.1;
 const buttonHeight = 0.2;
 const buttonHeightPressed = 0.05;
+const buttonTravelDistance = buttonHeight - buttonHeightPressed;
+
+const PRESS_SPEED = 18;
+const RELEASE_SPEED = 2;
+const SIGNAL_RELEASE_THRESHOLD = 0.05;
 
 const CHANNEL_COLORS: Record<ChannelID, string> = {
     [ChannelID.ChunkPrimary]:   '#00CCFF',
@@ -22,18 +27,50 @@ const CHANNEL_COLORS: Record<ChannelID, string> = {
 };
 
 export function ButtonBlock(props: ButtonBlockModel) {
-    const [isPressed, setPressed] = useSensor(props.id, props.outputChannel);
+    const [, setSignalActive] = useSensor(props.id, props.outputChannel);
 
     const channelHex = props.outputChannel ? CHANNEL_COLORS[props.outputChannel] : '#555555';
 
     const channelColorUniform = useUniform<Color>(new Color(channelHex));
     const lightColorUniform = useMemo(() => TSL.uniform(new Color('#E8E8E8')), []);
-    const isActiveUniform = useUniform<number>(isPressed ? 1.0 : 0.0);
+    const isActiveUniform = useUniform<number>(0.0);
     const isActiveAlwaysOn = useMemo(() => TSL.uniform(1.0), []);
     const activeTimeUniform = useMemo(() => TSL.uniform(0), []);
 
+    const innerMeshRef = useRef<Mesh>(null);
+    const animTimeRef = useRef(0);           // linear 0→1, drives the smoothstep curve
+    const intersectionCountRef = useRef(0);  // count allows multiple entities simultaneously
+    const signalSentRef = useRef(false);
+
     useFrame((_, delta) => {
-        if (isPressed) activeTimeUniform.value += delta;
+        const isPressing = intersectionCountRef.current > 0;
+        const direction = isPressing ? 1 : -1;
+        const speed = isPressing ? PRESS_SPEED : RELEASE_SPEED;
+
+        animTimeRef.current = Math.max(0, Math.min(1,
+            animTimeRef.current + direction * speed * delta
+        ));
+
+        // Smoothstep: velocity = 6t(1-t) → zero at both endpoints, peak at midpoint
+        const animTime = animTimeRef.current;
+        const pressAmount = animTime * animTime * (3 - 2 * animTime);
+
+        if (innerMeshRef.current) {
+            innerMeshRef.current.position.y = -pressAmount * buttonTravelDistance;
+        }
+
+        isActiveUniform.value = pressAmount;
+        if (pressAmount > 0) activeTimeUniform.value += delta;
+
+        // Signal deactivates only when the release animation has nearly completed
+        const shouldSignal = isPressing || pressAmount > SIGNAL_RELEASE_THRESHOLD;
+        if (shouldSignal && !signalSentRef.current) {
+            setSignalActive(true);
+            signalSentRef.current = true;
+        } else if (!shouldSignal && signalSentRef.current) {
+            setSignalActive(false);
+            signalSentRef.current = false;
+        }
     });
 
     const noiseNode = useNodeNoiseMembrane({
@@ -94,13 +131,13 @@ export function ButtonBlock(props: ButtonBlockModel) {
                     buttonHeight,
                     (props.dimension.z - 2*buttonPadding)/2,
                 ]}
-                onIntersectionEnter={() => setPressed(true)}
-                onIntersectionExit={() => setPressed(false)}
+                onIntersectionEnter={() => { intersectionCountRef.current += 1; }}
+                onIntersectionExit={() => { intersectionCountRef.current -= 1; }}
             >
-                <mesh castShadow receiveShadow>
+                <mesh ref={innerMeshRef} castShadow receiveShadow>
                     <boxGeometry args={[
                         props.dimension.x - 2*buttonPadding,
-                        isPressed ? buttonHeightPressed*2 : buttonHeight*2,
+                        buttonHeight * 2,
                         props.dimension.z - 2*buttonPadding,
                     ]}/>
                     <meshStandardNodeMaterial colorNode={innerButtonColorNode} />
