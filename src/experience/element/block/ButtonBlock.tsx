@@ -94,7 +94,7 @@ export function ButtonBlock(props: ButtonBlockModel) {
             >
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={new Vector3().copy(props.dimension).toArray()} />
-                    <meshStandardNodeMaterial colorNode={pulseNode} />
+                    <meshStandardNodeMaterial colorNode={pulseNode} polygonOffset polygonOffsetFactor={-1} polygonOffsetUnits={-1} />
                 </mesh>
             </RigidBody>
 
