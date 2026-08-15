@@ -16,6 +16,6 @@ export const FloorBlockDefault: FloorBlockModel = {
     type: ElementTypes.FloorBlock,
 
     color: ColorTypes.Dark,
-    position: {x: 0, y: -1, z: 0},
-    dimension: {x: 5, y: 1, z: 5},
+    position: {x: 0, y: -1, z: 5},
+    dimension: {x: 9, y: 1, z: 9},
 }

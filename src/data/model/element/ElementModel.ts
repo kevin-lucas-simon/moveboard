@@ -27,6 +27,6 @@ export const ElementDefault: ElementModel = {
 
     name: "",
     parent: null,
-    position: {x: 0, y: 0, z: 0},
+    position: {x: 0, y: 0, z: 2},
     hidden: false,
 }

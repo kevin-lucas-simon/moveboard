@@ -11,6 +11,7 @@ import {ChunkID, ChunkModel} from "../../data/model/structure/spacial/ChunkModel
 import {DebugElementSelector} from "../debug/editor/DebugElementSelector";
 import {useLevelState, useLevelDispatcher} from "../reducer/LevelStateProvider";
 import {LevelSensorProvider} from "../reducer/SensorReactorProvider";
+import {DebugChunkAnchorJoint} from "../debug/editor/DebugChunkAnchorJoint";
 
 export type LevelProps = LevelModel & {};
 
@@ -71,9 +72,9 @@ export function Level(props: LevelProps) {
 
             <Player playerRef={playerRef} spawnPosition={renderedChunks[activeChunk].playerSpawnPosition}/>
 
-            <DebugElementSelector
-                activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}
-            />
+            <DebugElementSelector activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}/>
+
+            <DebugChunkAnchorJoint activeChunkWorldPosition={renderedChunks[activeChunk].worldPosition}/>
         </>
     );
 }

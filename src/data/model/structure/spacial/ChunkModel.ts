@@ -14,6 +14,6 @@ export const ChunkDefault: ChunkModel = {
     ...StructureDefault,
     type: StructureTypes.Chunk,
     name: "New Chunk",
-    player: {x: 0, y: 0, z: 0},
+    player: {x: 0, y: 0, z: 1},
     elements: {},
 }
