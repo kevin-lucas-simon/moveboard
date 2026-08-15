@@ -1,11 +1,10 @@
 import {Vector3} from "three";
 import React from "react";
-import {StaticJointModel} from "../../data/model/element/joint/StaticJointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {Element} from "./Element";
-import {StaticJointElement} from "../element/joint/StaticJointElement";
-import {ElementTypes} from "../../data/model/element/ElementTypes";
+import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
+import {ElementJoint, isElementJoint} from "../../data/model/element/marker/ElementJoint";
 import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 import {ChunkSensorProvider} from "../reducer/SensorReactorProvider";
 
@@ -15,8 +14,8 @@ export type ChunkProps = RenderedChunk & {
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
-    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementTypes.StaticJoint);
-    const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.StaticJoint) as StaticJointModel[];
+    const elements = Object.values(props.model.elements).filter(element => !isElementJoint(element));
+    const joints = Object.values(props.model.elements).filter(isElementJoint);
 
     return (
         <ChunkSensorProvider>
@@ -28,22 +27,25 @@ export function Chunk(props: ChunkProps) {
                     position={new Vector3().copy(props.worldPosition).add(element.position)}
                 />)}
             {/* player chunk joint colliders */}
-            {joints.map((joint: StaticJointModel) =>
-                <Element
-                    {...joint}
-                    key={joint.id}
-                    position={new Vector3().copy(props.worldPosition).add(joint.position)}
-                >
-                    <StaticJointElement
+            {joints.map((joint: ElementJoint) => {
+                const JointComponent = ElementExperienceComponents[joint.type].experienceComponent;
+                return (
+                    <Element
                         {...joint}
                         key={joint.id}
-                        inActiveChunk={props.active}
                         position={new Vector3().copy(props.worldPosition).add(joint.position)}
-                        chunkPosition={new Vector3().copy(props.worldPosition)}
-                        onChunkLeave={props.onPlayerChunkLeave}
-                    />
-                </Element>
-            )}
+                    >
+                        <JointComponent
+                            {...joint}
+                            key={joint.id}
+                            inActiveChunk={props.active}
+                            position={new Vector3().copy(props.worldPosition).add(joint.position)}
+                            chunkPosition={new Vector3().copy(props.worldPosition)}
+                            onChunkLeave={props.onPlayerChunkLeave}
+                        />
+                    </Element>
+                );
+            })}
             {/* player out of bounds collider */}
             {props.active &&
                 <CuboidCollider

@@ -1,21 +1,16 @@
-import {ElementDefault, ElementModel} from "../ElementModel";
+import {ElementDefault} from "../ElementModel";
 import {ElementTypes} from "../ElementTypes";
-import {ChunkID} from "../../structure/spacial/ChunkModel";
 import {ElementDimensionable, ElementDimensionableDefault} from "../marker/ElementDimensionable";
+import {ElementJoint, ElementJointDefault} from "../marker/ElementJoint";
 
-export type StaticJointModel = ElementModel
+export type StaticJointModel = ElementJoint
     & ElementDimensionable
-    & {
-    neighbour: ChunkID|null,
-    vision: number,
-}
+    & {}
 
 export const StaticJointDefault: StaticJointModel = {
     ...ElementDefault,
     ...ElementDimensionableDefault,
+    ...ElementJointDefault,
 
     type: ElementTypes.StaticJoint,
-
-    neighbour: null,
-    vision: 1,
 }

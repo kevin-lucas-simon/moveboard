@@ -6,6 +6,7 @@ export enum ElementTypes {
     DoorBlock = "DoorBlock",
     FloorBlock = "FloorBlock",
     Group = "Group",
+    RandomJoint = "RandomJoint",
     SpinnerBlock = "SpinnerBlock",
     StaticJoint = "StaticJoint",
     Unknown = "Unknown",

@@ -1,7 +1,7 @@
 import React from "react";
 import {BasePanel} from "../../../component/BasePanel";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
-import {StaticJointModel} from "../../../../data/model/element/joint/StaticJointModel";
+import {ElementJoint, isElementJoint} from "../../../../data/model/element/marker/ElementJoint";
 import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {LinkIcon, LinkSlashIcon, PlusCircleIcon, StarIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
@@ -19,7 +19,7 @@ export type EditorChunkGeneralInspectorProps = {
 }
 
 export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorProps) {
-    const joints = Object.values(props.chunk.elements).filter(element => element.type === ElementTypes.StaticJoint) as StaticJointModel[];
+    const joints = Object.values(props.chunk.elements).filter(isElementJoint);
     const isStart = props.level.start === props.chunk.id;
 
     const changeChunk = (chunkId: ChunkID | null) => {
@@ -56,15 +56,15 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
         });
     }
 
-    const selectJoint = (joint: StaticJointModel) => {
+    const selectJoint = (joint: ElementJoint) => {
         props.dispatcher({
             type: 'editor_select_element',
             payload: joint.id,
         });
     }
 
-    const createJoint = () => {
-        const element = createElement(ElementTypes.StaticJoint) as StaticJointModel;
+    const createJoint = (type: ElementTypes.StaticJoint | ElementTypes.RandomJoint) => () => {
+        const element = createElement(type);
         props.dispatcher({
             type: "chunk_add_element",
             payload: element,
@@ -79,7 +79,7 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                 onChange={updateChunk}
                 hiddenKeys={['elements']}
                 additionalEntries={{
-                    "Static Joints": <ul>
+                    "Joints": <ul>
                         {joints.map((joint) =>
                             <BaseListItem key={joint.id} onClick={() => selectJoint(joint)}>
                                 <BaseNameSlug>
@@ -95,13 +95,17 @@ export function EditorChunkGeneralInspector(props: EditorChunkGeneralInspectorPr
                         )}
                         {joints.length === 0 &&
                             <BaseListItem>
-                                No static joints
+                                No joints
                             </BaseListItem>}
                     </ul>,
                     "Actions": <>
-                        <BaseListItem onClick={createJoint}>
+                        <BaseListItem onClick={createJoint(ElementTypes.StaticJoint)}>
                             <PlusCircleIcon className="w-4"/>
                             Create Static Joint
+                        </BaseListItem>
+                        <BaseListItem onClick={createJoint(ElementTypes.RandomJoint)}>
+                            <PlusCircleIcon className="w-4"/>
+                            Create Random Joint
                         </BaseListItem>
                         {!isStart && <>
                             <BaseListItem onClick={updateChunkAsLevelStart}>

@@ -6,6 +6,7 @@ import {BounceBlock} from "./block/BounceBlock";
 import {FloorBlock} from "./block/FloorBlock";
 import {EmptyElement} from "./system/EmptyElement";
 import {StaticJointElement} from "./joint/StaticJointElement";
+import {RandomJointElement} from "./joint/RandomJointElement";
 import {UnknownElement} from "./system/UnknownElement";
 import {SpinnerBlock} from "./block/SpinnerBlock";
 import {ButtonBlock} from "./block/ButtonBlock";
@@ -34,6 +35,9 @@ export const ElementExperienceComponents: Record<ElementTypes, {
     },
     [ElementTypes.Group]: {
         experienceComponent: EmptyElement,
+    },
+    [ElementTypes.RandomJoint]: {
+        experienceComponent: RandomJointElement,
     },
     [ElementTypes.SpinnerBlock]: {
         experienceComponent: SpinnerBlock,
