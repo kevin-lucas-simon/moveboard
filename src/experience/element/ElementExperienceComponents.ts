@@ -5,7 +5,7 @@ import {BasicBlock} from "./block/BasicBlock";
 import {BounceBlock} from "./block/BounceBlock";
 import {FloorBlock} from "./block/FloorBlock";
 import {EmptyElement} from "./system/EmptyElement";
-import {JointElement} from "./joint/JointElement";
+import {StaticJointElement} from "./joint/StaticJointElement";
 import {UnknownElement} from "./system/UnknownElement";
 import {SpinnerBlock} from "./block/SpinnerBlock";
 import {ButtonBlock} from "./block/ButtonBlock";
@@ -35,11 +35,11 @@ export const ElementExperienceComponents: Record<ElementTypes, {
     [ElementTypes.Group]: {
         experienceComponent: EmptyElement,
     },
-    [ElementTypes.Joint]: {
-        experienceComponent: JointElement,
-    },
     [ElementTypes.SpinnerBlock]: {
         experienceComponent: SpinnerBlock,
+    },
+    [ElementTypes.StaticJoint]: {
+        experienceComponent: StaticJointElement,
     },
     [ElementTypes.Unknown]: {
         experienceComponent: UnknownElement,

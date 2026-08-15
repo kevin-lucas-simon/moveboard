@@ -1,10 +1,10 @@
 import {Vector3} from "three";
 import React from "react";
-import {JointModel} from "../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../data/model/element/joint/StaticJointModel";
 import {CuboidCollider} from "@react-three/rapier";
 import {RenderedChunk} from "./render/useChunkRenderer";
 import {Element} from "./Element";
-import {JointElement} from "../element/joint/JointElement";
+import {StaticJointElement} from "../element/joint/StaticJointElement";
 import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkID} from "../../data/model/structure/spacial/ChunkModel";
 import {ChunkSensorProvider} from "../reducer/SensorReactorProvider";
@@ -15,8 +15,8 @@ export type ChunkProps = RenderedChunk & {
     onPlayerOutOfBounds: () => void,
 }
 export function Chunk(props: ChunkProps) {
-    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementTypes.Joint);
-    const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
+    const elements = Object.values(props.model.elements).filter(element => element.type !== ElementTypes.StaticJoint);
+    const joints = Object.values(props.model.elements).filter(element => element.type === ElementTypes.StaticJoint) as StaticJointModel[];
 
     return (
         <ChunkSensorProvider>
@@ -28,13 +28,13 @@ export function Chunk(props: ChunkProps) {
                     position={new Vector3().copy(props.worldPosition).add(element.position)}
                 />)}
             {/* player chunk joint colliders */}
-            {joints.map((joint: JointModel) =>
+            {joints.map((joint: StaticJointModel) =>
                 <Element
                     {...joint}
                     key={joint.id}
                     position={new Vector3().copy(props.worldPosition).add(joint.position)}
                 >
-                    <JointElement
+                    <StaticJointElement
                         {...joint}
                         key={joint.id}
                         inActiveChunk={props.active}

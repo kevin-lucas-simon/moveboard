@@ -1,4 +1,4 @@
-import {JointModel} from "../../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../../data/model/element/joint/StaticJointModel";
 import {Vector3} from "three";
 import {CuboidCollider} from "@react-three/rapier";
 import {IntersectionExitPayload} from "@react-three/rapier/dist/declarations/src/types";
@@ -7,13 +7,13 @@ import {useSimulationSettings} from "../../debug/settings/SimulationSettingsProv
 
 import {ChunkID} from "../../../data/model/structure/spacial/ChunkModel";
 
-export type JointProps = JointModel & {
+export type StaticJointProps = StaticJointModel & {
     inActiveChunk: boolean,
     chunkPosition: Vector3,
     onChunkLeave: (neighbour: ChunkID|null) => void,
 }
 
-export function JointElement(props: JointProps) {
+export function StaticJointElement(props: StaticJointProps) {
     const isVisible = useSimulationSettings()?.displayEditorFeatures;
 
     const emitEventWhenLeavingChunk = (event: IntersectionExitPayload) => {

@@ -4,7 +4,7 @@ import {BasicBlockDefault} from "./block/BasicBlockModel";
 import {BounceBlockDefault} from "./block/BounceBlockModel";
 import {FloorBlockDefault} from "./block/FloorBlockModel";
 import {GroupDefault} from "./system/GroupModel";
-import {JointDefault} from "./joint/JointModel";
+import {StaticJointDefault} from "./joint/StaticJointModel";
 import {ElementTypes} from "./ElementTypes";
 import {SpinnerBlockDefault} from "./block/SpinnerBlockModel";
 import {ButtonBlockDefault} from "./block/ButtonBlock";
@@ -34,11 +34,11 @@ export const ElementDefaultProps: Record<ElementTypes, {
     [ElementTypes.Group]: {
         defaultProps: GroupDefault,
     },
-    [ElementTypes.Joint]: {
-        defaultProps: JointDefault,
-    },
     [ElementTypes.SpinnerBlock]: {
         defaultProps: SpinnerBlockDefault,
+    },
+    [ElementTypes.StaticJoint]: {
+        defaultProps: StaticJointDefault,
     },
     [ElementTypes.Unknown]: {
         defaultProps: ElementDefault,

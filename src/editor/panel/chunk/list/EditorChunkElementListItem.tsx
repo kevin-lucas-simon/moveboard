@@ -7,7 +7,7 @@ import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ElementModel} from "../../../../data/model/element/ElementModel";
 import {useEditorDispatcher} from "../../../reducer/EditorProvider";
 import {GroupModel} from "../../../../data/model/element/system/GroupModel";
-import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../../../data/model/element/joint/StaticJointModel";
 import {BaseActionListSlug} from "../../../component/slug/BaseActionListSlug";
 
 export function EditorChunkElementListItem(element: ElementModel) {
@@ -65,7 +65,7 @@ export function EditorChunkElementListItem(element: ElementModel) {
     }
 
     const changeChunk = () => {
-        const chunkId = (element as JointModel).neighbour;
+        const chunkId = (element as StaticJointModel).neighbour;
         if (!chunkId) {
             return;
         }
@@ -93,9 +93,9 @@ export function EditorChunkElementListItem(element: ElementModel) {
                 onRename={renameElement}
             />
 
-            {element.type === ElementTypes.Joint
+            {element.type === ElementTypes.StaticJoint
                 ? <BaseActionButtonSlug onClick={changeChunk}>
-                    {(element as JointModel).neighbour
+                    {(element as StaticJointModel).neighbour
                         ? <LinkIcon className="w-4" />
                         : <LinkSlashIcon className="w-4" />
                     }

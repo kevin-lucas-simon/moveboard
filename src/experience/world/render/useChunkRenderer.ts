@@ -1,5 +1,5 @@
 import {Vector3, Vector3Like} from "three";
-import {JointModel} from "../../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../../data/model/element/joint/StaticJointModel";
 import {ElementModel} from "../../../data/model/element/ElementModel";
 import {useMemo, useRef} from "react";
 import {BasicBlockModel} from "../../../data/model/element/block/BasicBlockModel";
@@ -102,7 +102,7 @@ function calculateChunks(
         }
 
         // get chunk joints
-        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementTypes.Joint) as JointModel[];
+        const currentJoints = Object.values(currentModel.elements).filter(element => element.type === ElementTypes.StaticJoint) as StaticJointModel[];
 
         // set default render position to the task position
         let renderPosition = new Vector3().copy(task.position);
@@ -140,7 +140,7 @@ function calculateChunks(
             cameraDimension: cameraDimension,
         };
 
-        currentJoints.forEach((joint: JointModel) => {
+        currentJoints.forEach((joint: StaticJointModel) => {
             const isParentWhereWeCameFrom = joint.neighbour === task.parentId;
             const isJointMarkedAsHidden = joint.hidden;
 

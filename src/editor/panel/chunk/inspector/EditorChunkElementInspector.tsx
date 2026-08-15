@@ -5,7 +5,7 @@ import {EditorReducerActions} from "../../../reducer/editorReducer";
 import {BasePanel} from "../../../component/BasePanel";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {LevelModel} from "../../../../data/model/world/LevelModel";
-import {JointModel} from "../../../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../../../data/model/element/joint/StaticJointModel";
 import {ElementTypes} from "../../../../data/model/element/ElementTypes";
 import {ChunkID, ChunkModel} from "../../../../data/model/structure/spacial/ChunkModel";
 import {StructureTypes} from "../../../../data/model/structure/StructureTypes";
@@ -54,7 +54,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
     const getAvailableNeighbourChunkNames = (jointNeighbour: ChunkID|null): {[id: UUID]: string} => {
         const chunkJoints = Object
             .values(props.chunk.elements)
-            .filter(element => element.type === ElementTypes.Joint) as JointModel[];
+            .filter(element => element.type === ElementTypes.StaticJoint) as StaticJointModel[];
 
         const availableChunkNames = {} as {[id: UUID]: string};
         Object.values(props.level.structures)
@@ -87,7 +87,7 @@ export function EditorChunkElementInspector(props: EditorElementInspectorProps) 
                 hiddenKeys={['parent', 'hidden']}
                 relationKeys={{
                     "color": getColorTypes(),
-                    "neighbour": getAvailableNeighbourChunkNames((props.element as JointModel).neighbour),
+                    "neighbour": getAvailableNeighbourChunkNames((props.element as StaticJointModel).neighbour),
                     "outputChannel": CHANNEL_LABELS,
                     "inputChannel": CHANNEL_LABELS,
                 } as {[key in keyof ElementModel]?: {[id: UUID]: string}}}

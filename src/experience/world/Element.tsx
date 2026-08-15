@@ -7,7 +7,7 @@ import {ElementTypes} from "../../data/model/element/ElementTypes";
 import {ChunkModel} from "../../data/model/structure/spacial/ChunkModel";
 import {ElementExperienceComponents} from "../element/ElementExperienceComponents";
 import {filterElementsByType} from "../../data/factory/ElementFactory";
-import {JointModel} from "../../data/model/element/joint/JointModel";
+import {StaticJointModel} from "../../data/model/element/joint/StaticJointModel";
 import {useSimulationSettings} from "../debug/settings/SimulationSettingsProvider";
 import {ThreeEvent} from "@react-three/fiber";
 
@@ -37,7 +37,7 @@ export function Element(props: ElementProps) {
         // jump to neighbour chunk if the element is not in the active chunk
         const isInActiveChunk = activeChunk?.elements[props.id] !== undefined;
         if (!isInActiveChunk) {
-            const joints = filterElementsByType<JointModel>(activeChunk.elements, ElementTypes.Joint);
+            const joints = filterElementsByType<StaticJointModel>(activeChunk.elements, ElementTypes.StaticJoint);
 
             Object.values(joints).forEach(joint => {
                 if (!joint.neighbour) {
